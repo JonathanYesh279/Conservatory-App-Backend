@@ -1,0 +1,18 @@
+# Create and open .gitignore file
+echo "# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store" > .gitignore
