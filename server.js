@@ -2,15 +2,46 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { initializeMongoDB } from './services/mongoDB.service.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const _filename = fileURLToPath(import.meta.url)
+const _dirname = path.dirname(_filename)
 
 const app = express()
+
+const NODE_ENV = process.env.NODE_ENV || 'development'
+const MONGO_URI = process.env.MONGO_URI
+const FRONTEND_URL = process.env.FRONTEND_URL === 'production'
+  ? process.env.FRONTEND_URL
+  : 'http://localhost:5173'
+
+const corsOptions = {
+  origin: NODE_ENV === 'production'
+    ? [FRONTEND_URL]
+    : ['http://localhost:5173'],
+  credentials: true,
+  optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions))
+app.use(express.json())
+
 
 // Middlewares
 app.use(cors())
 app.use(express.json())
 
 // Initialzie MongoDB
-await initializeMongoDB().catch(console.error)
+await initializeMongoDB(MONGO_URI).catch(console.error)
+
+if (NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  })
+}
 
 // Test route
 app.get('/api/test', (req, res) => {
