@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "backend - conservatory app - manage your students",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "type": "module",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "Yehonatan Yeshayahu",
   "license": "ISC",
