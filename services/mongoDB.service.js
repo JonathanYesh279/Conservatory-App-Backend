@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient } from 'mongodb'
 
 let db = null;
 
@@ -8,7 +8,7 @@ export async function initializeMongoDB() {
     db = client.db('Conservatory-DB')
     console.log('Connected to MongoDB')
   } catch (err) {
-    console.error('MongoDB connection error', error)
+    console.error('MongoDB connection error', err)
     process.exit(1)
   }
 }
