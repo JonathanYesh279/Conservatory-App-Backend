@@ -19,3 +19,8 @@ export function getDB() {
   }
   return db
 }
+
+export function getCollection(collectionName) {
+  const db = getDB()
+  return db.collection(collectionName)
+}
