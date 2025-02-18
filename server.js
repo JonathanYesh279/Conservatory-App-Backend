@@ -5,6 +5,8 @@ import { initializeMongoDB } from './services/mongoDB.service.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import studentRoutes from './api/student/student.route.js'
+ 
 const _filename = fileURLToPath(import.meta.url)
 const _dirname = path.dirname(_filename)
 
@@ -42,6 +44,9 @@ if (NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
   })
 }
+
+// Routes
+app.use('/api/student', studentRoutes)
 
 // Test route
 app.get('/api/test', (req, res) => {
