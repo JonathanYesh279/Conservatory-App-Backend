@@ -2,6 +2,7 @@ import Joi from 'joi'
 
 const VALID_CLASSES = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'יא', 'יב', 'אחר']
 const VALID_STAGES = [1, 2, 3, 4, 5, 6, 7, 8]
+const VALID_INSTRUMENTS = ['חצוצרה', 'חליל צד', 'קלרינט', 'קרן יער', 'בריטון', 'טרומבון', 'סקסופון']
 
 
 export const studentSchema = Joi.object({
@@ -14,7 +15,9 @@ export const studentSchema = Joi.object({
   }).required(),
 
   academicInfo: Joi.object({
-    instrument: Joi.string().required(),
+    instrument: Joi.string()
+      .valid(...VALID_INSTRUMENTS)
+      .required(),
     currentStage: Joi.number()
       .valid(...VALID_STAGES)
       .required()
