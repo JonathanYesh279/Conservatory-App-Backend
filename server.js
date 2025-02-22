@@ -4,8 +4,12 @@ import cors from 'cors'
 import { initializeMongoDB } from './services/mongoDB.service.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import cookieParser from 'cookie-parser'
 
 import studentRoutes from './api/student/student.route.js'
+import teacherRoutes from './api/teacher/teacher.route.js'
+import authRoutes from './api/auth/auth.route.js'
+import { authenticateToken } from './middleware/auth.middleware.js'
  
 const _filename = fileURLToPath(import.meta.url)
 const _dirname = path.dirname(_filename)
@@ -28,6 +32,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use(cookieParser())
 
 
 // Middlewares
@@ -46,7 +51,9 @@ if (NODE_ENV === 'production') {
 }
 
 // Routes
-app.use('/api/student', studentRoutes)
+app.use('/api/auth', authRoutes)
+app.use('/api/student', authenticateToken, studentRoutes)
+app.use('/api/teacher', authenticateToken, teacherRoutes)
 
 // Test route
 app.get('/api/test', (req, res) => {

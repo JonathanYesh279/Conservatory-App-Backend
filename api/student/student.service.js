@@ -60,17 +60,16 @@ async function updateStudent(studentId, studentToUpdate) {
     const { error, value } = validateStudent(studentToUpdate)
     if (error) throw new Error(`Invalid student data: ${error.message}`)
 
-    value.updatedAt = new Date()
-
     const collection = await getCollection('student')
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(studentId) },
-      { $set: value },
+      { $set: {...value, updatedAt: new Date()} },
       { returnDocument: 'after' }
     )
 
-    if (!result.value) throw new Error(`Student with id ${studentId} not found`)
-    return result.value
+    if (!result) throw new Error(`Student with id ${studentId} not found`)
+    
+    return result
   } catch (err) {
     console.error(`Error updating student: ${err.message}`)
     throw new Error(`Error updating student: ${err.message}`)
@@ -80,18 +79,19 @@ async function updateStudent(studentId, studentToUpdate) {
 async function removeStudent(studentId) {
   try {
     const collection = await getCollection('student')
-    const result = await collection.findOneandUpdate(
+    const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(studentId) },
       {
         $set: {
-         isActive: false,
+          isActive: false,
+          updatedAt: new Date()
         }
       },
       { returnDocument: 'after' }
     )
 
-    if (!result.value) throw new Error(`Student with id ${studentId} not found`)
-    return result.value
+    if (!result) throw new Error(`Student with id ${studentId} not found`)
+    return result
   } catch (err) {
     console.error(`Error removing student ${studentId}: ${err.message}`)
     throw err
