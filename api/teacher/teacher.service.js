@@ -1,6 +1,7 @@
 import { getCollection } from '../../services/mongoDB.service.js'
 import { validateTeacher } from './teacher.validation.js'
 import { ObjectId } from 'mongodb'
+import { authService } from '../auth/auth.service.js'
 
 export const teacherService = {
   getTeachers,
@@ -11,8 +12,7 @@ export const teacherService = {
   getTeacherByRole
 }
 
-async function getTeachers() {
-import { create } from './../../node_modules/@types/whatwg-url/lib/URLSearchParams.d';
+async function getTeachers(filterBy) {
   try {
     const collection = await getCollection('teacher')
     const criteria = _buildCriteria(filterBy)
@@ -45,6 +45,8 @@ async function addTeacher(teacherToAdd) {
     const { error, value } = validateTeacher(teacherToAdd)
     if (error) throw new Error(`Invalid teacher data: ${error.message}`)
     
+    value.credentials.password = await authService.encryptPassword(value.credentials.password)
+    
     value.createdAt = new Date()
     value.updatedAt = new Date()
 
@@ -71,8 +73,8 @@ async function updateTeacher(teacherId, teacherToUpdate) {
       { returnDocument: 'after' }
     )
 
-    if (!result.value) throw new Error(`Teacher with id ${teacherId} not found`)
-    return result.value
+    if (!result) throw new Error(`Teacher with id ${teacherId} not found`)
+    return result
   } catch (err) {
     console.error(`Error updating teacher: ${err.message}`)
     throw new Error(`Error updating teacher: ${err.message}`)
@@ -93,8 +95,8 @@ async function removeTeacher(teacherId) {
       { returnDocument: 'after' }
     )
 
-    if (!result.value) throw new Error(`Teacher with id ${teacherId} not found`)
-    return result.value
+    if (!result) throw new Error(`Teacher with id ${teacherId} not found`)
+    return result
   } catch (err) {
     console.error(`Error removing teacher: ${err.message}`)
     throw new Error(`Error removing teacher: ${err.message}`)
@@ -105,7 +107,7 @@ async function getTeacherByRole(role) {
   try {
     const collection = await getCollection('teacher')
     return await collection.find({
-      role: role,
+      roles: role,
       isActive: true
     }).toArray()
   } catch (err) {

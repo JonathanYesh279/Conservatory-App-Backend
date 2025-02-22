@@ -1,5 +1,4 @@
 import Joi from 'joi'
-import { VALID_STAGES } from '../student/student.validation'
 
 const VALID_RULES = ['מורה', 'מנצח', 'מדריך הרכב', 'מנהל', 'מדריך תאוריה']
 const VALID_DURATION = [30, 45, 60] 
@@ -12,11 +11,12 @@ export const teacherSchema = Joi.object({
     address: Joi.string().required(),
   }).required(),
 
+  roles: Joi.array()
+    .items(Joi.string().valid(...VALID_RULES))
+    .required(),
+
   professionalInfo: Joi.object({
     instrument: Joi.string().required(),
-    roles: Joi.array()
-      .items(Joi.string().valid(...VALID_RULES))
-      .required(),
     isActive: Joi.boolean().default(true),
   }).required(),
 
@@ -37,7 +37,7 @@ export const teacherSchema = Joi.object({
   }).required(),
 
   conducting: Joi.object({
-    orchestraIds: Joi.array().items(Joi.string()).default([])
+    orchestraIds: Joi.array().items(Joi.string()).default([]),
   }).default({}),
 
   ensemblesIds: Joi.array().items(Joi.string()).default([]),
@@ -47,8 +47,8 @@ export const teacherSchema = Joi.object({
     password: Joi.string().required(),
   }).required(),
 
-  isActive: Joi.boolean().default(true)
-})
+  isActive: Joi.boolean().default(true),
+});
 
 export function validateTeacher(teacher) {
   return teacherSchema.validate(teacher, { abortEarly: false })
