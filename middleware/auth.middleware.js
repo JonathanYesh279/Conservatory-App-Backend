@@ -51,6 +51,7 @@ export function requireAuth(roles) {
       }
 
       if (teacher.roles.includes('מנהל')) {
+        req.isAdmin = true
         return next()
       }
 
@@ -59,39 +60,9 @@ export function requireAuth(roles) {
         return res.status(403).json({ error: 'Insufficient permissions' })
       }
 
-      if (req.method !== 'GET' && req.params.id) {
-        const isOwner = await _checkOwnership(teacher, req)
-        if (!isOwner) {
-          return res.status(403).json({ error: 'Not authorized to modify this resource' })
-        }
-      }
-
       next()
     } catch (err) {
       next(err)
     }
   }
-}
-
-async function _checkOwnership(teacher, req) {
-  const resourceId = req.params.id
-  const path = req.path
-
-  if (path.includes('/student')) {
-    if (teacher.roles.includes('מורה')) {
-      return teacher.teaching.studentIds.includes(resourceId)
-    }
-  }
-  else if (path.includes('/orchestra')) {
-    if (teacher.roles.includes('מנצח')) {
-      return teacher.conducting.orchestraIds.includes(resourceId)
-    }
-  }
-  else if (path.includes('/ensemble')) {
-    if (teacher.roles.includes('מדריך הרכב')) {
-      return teacher.ensembleIds.includes(resourceId)
-    }
-  }
-
-  return false
 }

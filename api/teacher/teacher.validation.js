@@ -48,7 +48,14 @@ export const teacherSchema = Joi.object({
   }).required(),
 
   isActive: Joi.boolean().default(true),
-});
+}).custom((obj, helpers) => {
+  if (obj.personalInfo.email !== obj.credentials.email) {
+    return helpers.error('any.invalid', {
+      message: 'Credentials email must match personal info email',
+    })
+  }
+  return obj
+})
 
 export function validateTeacher(teacher) {
   return teacherSchema.validate(teacher, { abortEarly: false })
