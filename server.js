@@ -11,6 +11,7 @@ import studentRoutes from './api/student/student.route.js'
 import teacherRoutes from './api/teacher/teacher.route.js'
 import authRoutes from './api/auth/auth.route.js'
 import orchestraRoutes from './api/orchestra/orchestra.route.js'
+import rehearsalRoutes from './api/rehearsal/rehearsal.route.js'
  
 const _filename = fileURLToPath(import.meta.url)
 const _dirname = path.dirname(_filename)
@@ -56,6 +57,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/student', authenticateToken, studentRoutes)
 app.use('/api/teacher', authenticateToken, teacherRoutes)
 app.use('/api/orchestra', authenticateToken, orchestraRoutes)
+app.use('/api/rehearsal', authenticateToken, rehearsalRoutes)
 
 // Test route
 app.get('/api/test', (req, res) => {
@@ -63,6 +65,14 @@ app.get('/api/test', (req, res) => {
         status: 'OK',
         message: 'Server is running'
     })
+})
+
+app.use((req, res) => {
+  console.log('404 Not Found:', req.method, req.originalUrl);
+  res.status(404).json({
+    error: 'Not Found',
+    path: req.originalUrl,
+  })
 })
 
 const PORT = process.env.PORT || 3000
