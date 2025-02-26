@@ -6,7 +6,7 @@ const VALID_DURATION = [30, 45, 60]
 export const teacherSchema = Joi.object({
   personalInfo: Joi.object({
     fullName: Joi.string().required(),
-    phone: Joi.string().pattern(/^05\d{8}$/),
+    phone: Joi.string().pattern(/^05\d{8}$/).required(),
     email: Joi.string().email().required(),
     address: Joi.string().required(),
   }).required(),

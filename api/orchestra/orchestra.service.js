@@ -299,14 +299,29 @@ async function getStudentAttendanceStats(orchestraId, studentId) {
     const attended = attendanceRecords.filter(record => record.status === 'הגיע/ה').length
     const attendanceRate = totalRehearsals ? (attended / totalRehearsals) * 100 : 0
 
-    return {
+    const recentHistory = attendanceRecords
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 10)
+      .map((record) => ({
+        date: record.date,
+        status: record.status,
+        sessionId: record.sessionId,
+        notes: record.notes,
+      }))
+
+    const result = {
       totalRehearsals,
       attended,
       attendanceRate,
-      recentHistory: attendanceRecords
-        .sort((a, b) => b.date - a.date)
-        .slice(0, 10)
+      recentHistory,
     }
+
+    // For empty results, add a message
+    if (totalRehearsals === 0) {
+      result.message =
+        'No attendance records found for this student in this orchestra'
+    }
+    return result
   } catch (err) {
     console.error(`Error in orchestraService.getStudentAttendanceStats: ${err}`)
     throw new Error(`Error in orchestraService.getStudentAttendanceStats: ${err}`)

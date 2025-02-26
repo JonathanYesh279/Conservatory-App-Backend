@@ -17,6 +17,6 @@ router.delete('/:id/members/:studentId', requireAuth(['מנצח', 'מנהל']), 
 router.get('/:id/rehearsals/:rehearsalId/attendance', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), orchestraController.getRehearsalAttendance)
 router.put('/:id/rehearsals/:rehearsalId/attendance', requireAuth(['מנצח', 'מנהל']), orchestraController.updateRehearsalAttendance)
 
-router.get('/:orchestraId/students/:studentId/attendance', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), orchestraController.getStudentAttendanceStats)
+router.get('/:orchestraId/student/:studentId/attendance', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), orchestraController.getStudentAttendanceStats)
 
 export default router
