@@ -7,7 +7,8 @@ export const rehearsalController = {
   addRehearsal,
   updateRehearsal,
   removeRehearsal,
-  bulkCreateRehearsals
+  bulkCreateRehearsals,
+  updateAttendance,
 }
 
 async function getRehearsals(req, res, next) {
@@ -60,9 +61,15 @@ async function getOrchestraRehearsals(req, res, next) {
 async function addRehearsal(req, res, next) {
   try {
     const rehearsalToAdd = req.body
-    const addedRehearsal = await rehearsalService.addRehearsal(rehearsalToAdd)
+    const isAdmin = req.teacher.roles.includes('מנהל')
+
+    const addedRehearsal = await rehearsalService.addRehearsal(rehearsalToAdd, isAdmin)
     res.status(201).json(addedRehearsal)  
   } catch (err) {
+    if (err.message.includes('Not authorized')) {
+      return res.status(403).json({ error: err.message })
+    }
+
     next(err)
   }
 }
@@ -115,9 +122,39 @@ async function removeRehearsal(req, res, next) {
 
 async function bulkCreateRehearsals(req, res, next) {
   try {
-    const result = await rehearsalService.bulkCreateRehearsals(req.body)
+    const data = req.body
+    const isAdmin = req.teacher.roles.includes('מנהל')
+
+    const result = await rehearsalService.bulkCreateRehearsals(data, isAdmin)
     res.status(201).json(result)
   } catch (err) {
+    if (err.message.includes('Not authorized')) {
+      return res.status(403).json({ error: err.message })
+    }
+
+    next(err)
+  }
+}
+
+async function updateAttendance(req, res, next) {
+  try {
+    const { rehearsalId } = req.params
+    const attendanceData = req.body
+    const teacherId = req.teacher._id
+    const isAdmin = req.teacher.roles.includes('מנהל')
+
+    const updateRehearsal = await rehearsalService.updateAttendance(
+      rehearsalId,
+      attendanceData,
+      teacherId,
+      isAdmin
+    )
+    res.json(updateRehearsal)
+  } catch (err) {
+    if (err.message === 'Not authorized to modify this rehearsal') {
+      return res.status(403).json({ error: err.message })
+    }
+
     next(err)
   }
 }

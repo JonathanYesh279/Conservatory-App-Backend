@@ -47,3 +47,12 @@ export const bulkCreateSchema = Joi.object({
 export function validateBulkCreate(data) {
   return bulkCreateSchema.validate(data, { abortEarly: false })
 }
+
+export const attendanceSchema = Joi.object({
+  present: Joi.array().items(Joi.string()).default([]),
+  absent: Joi.array().items(Joi.string()).default([]),
+})
+
+export function validateAttendance(attendance) {
+  return attendanceSchema.validate(attendance, { abortEarly: false })
+}

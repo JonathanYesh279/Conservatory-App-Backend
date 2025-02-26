@@ -6,12 +6,15 @@ const VALID_INSTRUMENTS = ['חצוצרה', 'חליל צד', 'קלרינט', 'ק�
 
 
 export const studentSchema = Joi.object({
-  personalInfo: Joi.object({
+   personalInfo: Joi.object({
     fullName: Joi.string().required(),
-    phone: Joi.string().pattern(/^05\d{8}$/),
-    address: Joi.string().required(),
-    parentName: Joi.string().required(),
-    parentPhone: Joi.string().pattern(/^05\d{8}$/),
+    phone: Joi.string().pattern(/^05\d{8}$/).allow(null),
+    age: Joi.number().min(0).max(99).allow(null),
+    address: Joi.string().allow(null),
+    parentName: Joi.string().allow(null),
+    parentPhone: Joi.string().pattern(/^05\d{8}$/).allow(null),
+    parentEmail: Joi.string().email().allow(null),
+    studentEmail: Joi.string().email().allow(null),
   }).required(),
 
   academicInfo: Joi.object({

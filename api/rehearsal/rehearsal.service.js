@@ -1,6 +1,5 @@
-import { get } from 'http'
 import { getCollection } from '../../services/mongoDB.service.js'
-import { validateRehearsal, validateBulkCreate } from './rehearsal.validation.js'
+import { validateRehearsal, validateBulkCreate, validateAttendance } from './rehearsal.validation.js'
 import { ObjectId } from 'mongodb'
 
 export const rehearsalService = {
@@ -10,7 +9,8 @@ export const rehearsalService = {
   addRehearsal,
   updateRehearsal,
   removeRehearsal,
-  bulkCreateRehearsals
+  bulkCreateRehearsals,
+  updateAttendance
 }
 
 async function getRehearsals(filterBy = {}) {
@@ -53,11 +53,14 @@ async function getOrchestraRehearsals(orchestraId, filterBy = {}) {
   }
 }
 
-async function addRehearsal(rehearsalToAdd) {
+async function addRehearsal(rehearsalToAdd, isAdmin = false) {
   try {
     const { error, value } = validateRehearsal(rehearsalToAdd)
-
     if (error) throw error
+
+    if (!isAdmin) {
+      throw new Error('Not authorized to add rehearsal')
+    }
 
     value.createdAt = new Date()
     value.updatedAt = new Date()
@@ -163,11 +166,15 @@ async function removeRehearsal(rehearsalId, teacherId, isAdmin = false) {
   }
 }
 
-async function bulkCreateRehearsals(data) {
+async function bulkCreateRehearsals(data, isAdmin = false) {
   try {
     const { error, value } = validateBulkCreate(data)
 
     if (error) throw error
+
+    if (!isAdmin) {
+      throw new Error('Not authorized to bulk create rehearsals')
+    }
 
     const {
       orchestraId,
@@ -229,6 +236,78 @@ async function bulkCreateRehearsals(data) {
   } catch (err) {
     console.error(`Failed to bulk create rehearsals: ${err}`)
     throw new Error(`Failed to bulk create rehearsals: ${err}`)
+  }
+}
+
+async function updateAttendance(rehearsalId, attendanceData, isAdmin = false) {
+  try {
+    const { error, value } = validateAttendance(attendanceData)
+    if (error) throw error
+
+    const { present, absent } = value
+
+    if (!isAdmin) {
+      throw new Error('Not authorized to update attendance')
+    }
+
+    const rehearsal = await getRehearsalById(rehearsalId)
+
+    const collection = await getCollection('rehearsal')
+    const result = await collection.findOneAndUpdate(
+      { _id: ObjectId.createFromHexString(rehearsalId) },
+      {
+        $set: {
+          attendance: {
+            present,
+            absent
+          },
+          updatedAt: new Date()
+        }
+      },
+      { returnDocument: 'after' }
+    )
+
+    if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`)
+    
+    const activityCollection = await getCollection('activity_attendance')
+
+    await activityCollection.deleteMany({
+      sessionId: rehearsalId,
+      activityType: 'תזמורת'
+    })
+
+    const presentPromises = present.map((studentId) =>
+      activityCollection.insertOne({
+        studentId,
+        activityType: 'תזמורת',
+        groupId: rehearsal.groupId,
+        sessionId: rehearsalId,
+        date: rehearsal.date,
+        status: 'הגיע/ה',
+        notes: '',
+        createdAt: new Date()
+      })
+    )
+
+    const absentPromises = absent.map(studentId => 
+      activityCollection.insertOne({
+        studentId,
+        activityType: 'תזמורת',
+        groupId: rehearsal.groupId,
+        sessionId: rehearsalId,
+        date: rehearsal.date,
+        status: 'לא הגיע/ה',
+        notes: '',
+        createdAt: new Date()
+      })
+    )
+
+    await Promise.all([...presentPromises, ...absentPromises])
+
+    return result
+  } catch (err) {
+    console.error(`Error updating attendance ${rehearsalId}: ${err.message}`)
+    throw new Error(`Error updating attendance ${rehearsalId}: ${err.message}`)
   }
 }
 
