@@ -14,6 +14,6 @@ router.delete('/:id', requireAuth(['מנצח', 'מנהל']), rehearsalController
 
 router.put('/:rehearsalId/attendance', requireAuth(['מנצח', 'מנהל']), rehearsalController.updateAttendance)
 
-router.post('/bulk-create', requireAuth(['מנהל']), rehearsalController.bulkCreateRehearsals)
+router.post('/bulk-create', requireAuth(['מנהל', 'מנצח']), rehearsalController.bulkCreateRehearsals)
 
 export default router

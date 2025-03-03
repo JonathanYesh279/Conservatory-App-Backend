@@ -61,9 +61,14 @@ async function getOrchestraRehearsals(req, res, next) {
 async function addRehearsal(req, res, next) {
   try {
     const rehearsalToAdd = req.body
+    const teacherId = req.teacher._id
     const isAdmin = req.teacher.roles.includes('מנהל')
 
-    const addedRehearsal = await rehearsalService.addRehearsal(rehearsalToAdd, isAdmin)
+    const addedRehearsal = await rehearsalService.addRehearsal(
+      rehearsalToAdd,
+      teacherId,
+      isAdmin
+    )
     res.status(201).json(addedRehearsal)  
   } catch (err) {
     if (err.message.includes('Not authorized')) {
@@ -123,9 +128,14 @@ async function removeRehearsal(req, res, next) {
 async function bulkCreateRehearsals(req, res, next) {
   try {
     const data = req.body
+    const teacherId = req.teacher._id
     const isAdmin = req.teacher.roles.includes('מנהל')
 
-    const result = await rehearsalService.bulkCreateRehearsals(data, isAdmin)
+    const result = await rehearsalService.bulkCreateRehearsals(
+      data,
+      teacherId,
+      isAdmin
+    )
     res.status(201).json(result)
   } catch (err) {
     if (err.message.includes('Not authorized')) {

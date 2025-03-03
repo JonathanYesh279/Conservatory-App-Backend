@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import mongoSanitize from 'express-mongo-sanitize'
+import helmet from 'helmet'
 import { initializeMongoDB } from './services/mongoDB.service.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -12,6 +14,7 @@ import teacherRoutes from './api/teacher/teacher.route.js'
 import authRoutes from './api/auth/auth.route.js'
 import orchestraRoutes from './api/orchestra/orchestra.route.js'
 import rehearsalRoutes from './api/rehearsal/rehearsal.route.js'
+import bagrutRoutes from './api/bagrut/bagrut.route.js'
  
 const _filename = fileURLToPath(import.meta.url)
 const _dirname = path.dirname(_filename)
@@ -35,11 +38,8 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
-
-
-// Middlewares
-app.use(cors())
-app.use(express.json())
+app.use(helmet())
+app.use(mongoSanitize())
 
 // Initialzie MongoDB
 await initializeMongoDB(MONGO_URI).catch(console.error)
@@ -58,6 +58,7 @@ app.use('/api/student', authenticateToken, studentRoutes)
 app.use('/api/teacher', authenticateToken, teacherRoutes)
 app.use('/api/orchestra', authenticateToken, orchestraRoutes)
 app.use('/api/rehearsal', authenticateToken, rehearsalRoutes)
+app.use('/api/bagrut', authenticateToken, bagrutRoutes)
 
 // Test route
 app.get('/api/test', (req, res) => {
