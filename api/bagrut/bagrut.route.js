@@ -11,7 +11,7 @@ router.get('/:id', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess,
 router.get('/student/:studentId', requireAuth(['מנהל', 'מורה']), bagrutController.getBagrutByStudentId)
 
 // Add new bagrut
-router.post('/', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.addBagrut)
+router.post('/', requireAuth(['מנהל', 'מורה']), bagrutController.addBagrut)
 // Update bagrut
 router.put('/:id', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess,bagrutController.updateBagrut)
 
