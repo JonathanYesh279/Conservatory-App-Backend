@@ -53,13 +53,20 @@ async function getOrchestraRehearsals(orchestraId, filterBy = {}) {
   }
 }
 
-async function addRehearsal(rehearsalToAdd, isAdmin = false) {
+async function addRehearsal(rehearsalToAdd, teacherId, isAdmin = false) {
   try {
     const { error, value } = validateRehearsal(rehearsalToAdd)
     if (error) throw error
 
     if (!isAdmin) {
-      throw new Error('Not authorized to add rehearsal')
+      const orchestra = await getCollection('orchestra').findOne({
+        _id: ObjectId.createFromHexString(value.groupId),
+        conductorId: teacherId.toString()
+      })
+
+      if (!orchestra) {
+        throw new Error('Not authorized to add rehearsal for this orchestra')  
+      }
     }
 
     value.createdAt = new Date()
@@ -166,14 +173,20 @@ async function removeRehearsal(rehearsalId, teacherId, isAdmin = false) {
   }
 }
 
-async function bulkCreateRehearsals(data, isAdmin = false) {
+async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
   try {
     const { error, value } = validateBulkCreate(data)
-
     if (error) throw error
 
     if (!isAdmin) {
-      throw new Error('Not authorized to bulk create rehearsals')
+      const orchestra = await getCollection('orchestra').findOne({
+        _id: ObjectId.createFromHexString(value.orchestraId),
+        conductorId: teacherId.toString()
+      })
+
+      if (!orchestra) {
+        throw new Error('Not authorized to bulk create rehearsals for this orchestra')
+      }
     }
 
     const {
