@@ -2,6 +2,7 @@ import express from 'express'
 import { bagrutController } from './bagrut.controller.js'
 import { requireAuth } from '../../middleware/auth.middleware.js'
 import { authorizeBagrutAccess } from '../../middleware/bagrut.middleware.js'
+import { uploadSingleFile } from '../../middleware/file.middleware.js'
 
 const router = express.Router()
 
@@ -22,7 +23,7 @@ router.put('/:id/presentation/:presentationIndex', requireAuth(['מנהל', 'מ�
 router.put('/:id/magenBagrut', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.updateMagenBagrut)
 
 // Document routes
-router.post('/:id/document', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.addDocument)
+router.post('/:id/document', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, uploadSingleFile('document'), bagrutController.addDocument)
 router.delete('/:id/document/:documentId', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.removeDocument)
 
 // Program routes

@@ -5,6 +5,8 @@ import mongoSanitize from 'express-mongo-sanitize'
 import helmet from 'helmet'
 import { initializeMongoDB } from './services/mongoDB.service.js'
 import path from 'path'
+import fileRoutes from './api/file/file.route.js'  
+import { STORAGE_MODE } from './services/fileStorage.service.js'
 import { fileURLToPath } from 'url'
 import cookieParser from 'cookie-parser'
 import { authenticateToken } from './middleware/auth.middleware.js'
@@ -37,6 +39,10 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 
+if (STORAGE_MODE === 'local') {
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+}
+
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
@@ -63,6 +69,7 @@ app.use('/api/orchestra', authenticateToken, addSchoolYearToRequest, orchestraRo
 app.use('/api/rehearsal', authenticateToken, addSchoolYearToRequest, rehearsalRoutes)
 app.use('/api/bagrut', authenticateToken, addSchoolYearToRequest, bagrutRoutes)
 app.use('/api/school-year', authenticateToken, addSchoolYearToRequest, schoolYearRoutes)
+app.use('/api/files', authenticateToken, fileRoutes)
 
 // Test route
 app.get('/api/test', (req, res) => {
