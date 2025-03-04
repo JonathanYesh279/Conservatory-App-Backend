@@ -8,7 +8,9 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import cookieParser from 'cookie-parser'
 import { authenticateToken } from './middleware/auth.middleware.js'
+import { addSchoolYearToRequest } from './middleware/school-year.middleware.js'
 
+import schoolYearRoutes from './api/school-year/school-year.route.js'
 import studentRoutes from './api/student/student.route.js'
 import teacherRoutes from './api/teacher/teacher.route.js'
 import authRoutes from './api/auth/auth.route.js'
@@ -54,11 +56,13 @@ if (NODE_ENV === 'production') {
 
 // Routes
 app.use('/api/auth', authRoutes)
-app.use('/api/student', authenticateToken, studentRoutes)
-app.use('/api/teacher', authenticateToken, teacherRoutes)
-app.use('/api/orchestra', authenticateToken, orchestraRoutes)
-app.use('/api/rehearsal', authenticateToken, rehearsalRoutes)
-app.use('/api/bagrut', authenticateToken, bagrutRoutes)
+
+app.use('/api/student', authenticateToken, addSchoolYearToRequest, studentRoutes)
+app.use('/api/teacher', authenticateToken, addSchoolYearToRequest, teacherRoutes)
+app.use('/api/orchestra', authenticateToken, addSchoolYearToRequest, orchestraRoutes)
+app.use('/api/rehearsal', authenticateToken, addSchoolYearToRequest, rehearsalRoutes)
+app.use('/api/bagrut', authenticateToken, addSchoolYearToRequest, bagrutRoutes)
+app.use('/api/school-year', authenticateToken, addSchoolYearToRequest, schoolYearRoutes)
 
 // Test route
 app.get('/api/test', (req, res) => {

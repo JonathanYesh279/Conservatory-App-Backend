@@ -25,6 +25,7 @@ export const rehearsalSchema = Joi.object({
     absent: Joi.array().items(Joi.string()).default([])
   }).default({ present: [], absent: [] }),
   notes: Joi.string().allow('').default(''),
+  schoolYearId: Joi.string().required(),
   isActive: Joi.boolean().default(true)
 })
 

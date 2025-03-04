@@ -50,8 +50,22 @@ export const studentSchema = Joi.object({
     }).default({}),
   }).required(),
 
+  enrollments: Joi.object({
+    orchestraIds: Joi.array().items(Joi.string()).default([]),
+    ensembleIds: Joi.array().items(Joi.string()).default([]),
+
+    schoolYears: Joi.array().items(
+      Joi.object({
+        schoolYearId: Joi.string().required(),
+        isActive: Joi.boolean().default(true),
+      })
+    ).default([]),
+  }).default({ orchestraIds: [], ensembleIds: [], schoolYears: [] }),
+
   isActive: Joi.boolean().default(true),
-});
+  createdAt: Joi.date().default(new Date()),
+  updatedAt: Joi.date().default(new Date()),
+})
 
 export function validateStudent(student) {
   return studentSchema.validate(student, {  abortEarly: false })

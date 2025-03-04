@@ -43,6 +43,24 @@ async function addStudent(studentToAdd) {
     const { error, value } = validateStudent(studentToAdd)
     if (error) throw error
 
+    if (!value.enrollments.schoolYears || value.enrollments.schoolYears.length === 0) {
+      const schoolYearService = require('../school-year/school-year.service.js').schoolYearService
+      const currentSchoolYear = await schoolYearService.getCurrentSchoolYear()
+
+      if (!value.enrollments) {
+        value.enrollments = {}
+      }
+
+      if (!value.enrollments.schoolYears) {
+        value.enrollments.schoolYear = []
+      }
+
+      value.enrollments.schoolYears.push({
+        schoolYearId: currentSchoolYear._id.toString(),
+        isActive: true
+      })
+    }
+
     value.createdAt = new Date()
     value.updatedAt = new Date()
 
@@ -138,6 +156,15 @@ function _buildCriteria(filterBy) {
     criteria['enrollments.orchestras'] = {
       $elemMatch: {
         orchestraId: filterBy.orchestraId
+      }
+    }
+  }
+
+  if (filterBy.schoolYearId) {
+    criteria['enrollments.schoolYears'] = {
+      $elemMatch: {
+        schoolYearId: filterBy.schoolYearId,
+        isActive: true
       }
     }
   }

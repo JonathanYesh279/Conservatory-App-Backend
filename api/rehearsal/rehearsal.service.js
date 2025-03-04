@@ -67,6 +67,12 @@ async function addRehearsal(rehearsalToAdd, teacherId, isAdmin = false) {
       if (!orchestra) {
         throw new Error('Not authorized to add rehearsal for this orchestra')  
       }
+
+      if (!value.schoolYearId) {
+      const schoolYearService = require('../school-year/school-year.service.js').schoolYearService
+      const currentSchoolYear = await schoolYearService.getCurrentSchoolYear()
+      value.schoolYearId = currentSchoolYear._id.toString()
+      }
     }
 
     value.createdAt = new Date()
