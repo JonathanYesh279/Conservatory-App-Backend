@@ -49,6 +49,12 @@ async function addOrchestra(orchestraToAdd) {
 
     if (error) throw new Error(`Validation error: ${error.message}`)
     
+    if (!value.schoolYearId) {
+      const schoolYearService = require('../school-year/school-year.service.js').schoolYearService
+      const currentSchoolYear = await schoolYearService.getCurrentSchoolYear()
+      value.schoolYearId = currentSchoolYear._id.toString()
+    }
+    
     const collection = await getCollection('orchestra')
     const result = await collection.insertOne(value)
 
@@ -157,7 +163,7 @@ async function addMember(orchestraId, studentId, teacherId, isAdmin = false) {
 
     await getCollection('student').updateOne(
       { _id: ObjectId.createFromHexString(studentId) },
-      { $addToSet: { 'enrollments.orchestaIds': orchestraId } }
+      { $addToSet: { 'enrollments.orchestraIds': orchestraId } }
     )
 
     const collection = await getCollection('orchestra')
@@ -345,6 +351,10 @@ function _buildCriteria(filterBy) {
 
   if (filterBy.memberId) {
     criteria.memberIds = filterBy.memberId
+  }
+
+  if (filterBy.schoolYearId) {
+    criteria.schoolYearId = filterBy.schoolYearId
   }
 
   if (filterBy.showInactive) {

@@ -42,6 +42,13 @@ export const teacherSchema = Joi.object({
 
   ensemblesIds: Joi.array().items(Joi.string()).default([]),
 
+  schoolYears: Joi.array().items(
+    Joi.object({
+      schoolYearId: Joi.string().required(),
+      isActive: Joi.boolean().default(true)
+    })
+  ).default([]),
+
   credentials: Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required(),

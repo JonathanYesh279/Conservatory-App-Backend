@@ -9,6 +9,7 @@ export const orchestraSchema = Joi.object({
   conductorId: Joi.string().required(),
   memberIds: Joi.array().items(Joi.string()).default([]),
   rehearsalIds: Joi.array().items(Joi.string()).default([]),
+  schoolYearId: Joi.string().required(),
   isActive: Joi.boolean().default(true)
 })
 
