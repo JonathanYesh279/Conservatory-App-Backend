@@ -121,15 +121,26 @@ async function updateMagenBagrut(req, res, next) {
 async function addDocument(req, res, next) {
   try {
     const { id } = req.params
-    const documentData = req.body
     const teacherId = req.teacher._id.toString()
+
+    if (!req.processedFile) {
+      return res.status(400).json({ error: 'No file information available' })
+    }
+
+    const documentData = {
+      title: req.body.title || req.processedFile.originalname,
+      fileUrl: req.processedFile.url,
+      fileKey: req.processedFile.key || null,
+      uploadDate: new Date(),
+      uploadedBy: teacherId,
+    }
 
     // No need to check authorization - middleware already did it
     const updatedBagrut = await bagrutService.addDocument(
       id,
       documentData,
       teacherId
-    );
+    )
     res.json(updatedBagrut)
   } catch (err) {
     next(err)
@@ -139,6 +150,18 @@ async function addDocument(req, res, next) {
 async function removeDocument(req, res, next) {
   try {
     const { id, documentId } = req.params
+
+    const document = req.bagrut.documents.find(
+      doc => doc._id.toString() === documentId
+    )
+
+    if (document && document.fileUrl) {
+      try {
+        await deleteFile(document.fileUrl)
+      } catch (deleteError) {
+        console.warn(`Error deleting file: ${deleteError.message}`)
+      }
+    }
 
     // No need to check authorization - middleware already did it
     const updatedBagrut = await bagrutService.removeDocument(id, documentId)

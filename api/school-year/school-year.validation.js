@@ -10,6 +10,6 @@ export const schoolYearSchema = Joi.object({
   updatedAt: Joi.date().default(Date.now)
 })
 
-export function validationSchoolYear(schoolYear) {
+export function validateSchoolYear(schoolYear) {
   return schoolYearSchema.validate(schoolYear, { abortEarly: false })
 }

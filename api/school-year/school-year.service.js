@@ -1,7 +1,6 @@
 import { getCollection } from '../../services/mongoDB.service.js'
 import { validateSchoolYear } from './school-year.validation.js'
 import { ObjectId } from 'mongodb'
-import { create } from './../../node_modules/@types/whatwg-url/lib/URLSearchParams.d';
 
 export const schoolYearService = {
   getSchoolYears,
@@ -53,7 +52,7 @@ async function getCurrentSchoolYear() {
       }
 
       const { id } = await createSchoolYear(defaultYear)
-      return await getSchoolYearById(_id.toString())
+      return await getSchoolYearById(id.toString())
     }
 
     return schoolYear
