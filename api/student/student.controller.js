@@ -51,7 +51,10 @@ async function updateStudent(req, res, next) {
   try {
     const { id } = req.params 
     const studentToUpdate = req.body
-    const updatedStudent = await studentService.updateStudent(id, studentToUpdate)
+    const teacherId = req.teacher._id.toString()
+    const isAdmin = req.teacher.roles.includes('מנהל')
+
+    const updatedStudent = await studentService.updateStudent(id, studentToUpdate, teacherId, isAdmin)
     res.json(updatedStudent)
   } catch (err) {
     next(err)
