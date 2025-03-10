@@ -50,7 +50,7 @@ describe('Auth api tests', () => {
     await closeDB()
   })
 
-  describe('POST /auth/login', () => {
+  describe('POST /api/auth/login', () => {
     it('should login admin successfully with correct credentials', async () => {
       const response = await request(app)
         .post('/auth/login')
@@ -69,7 +69,7 @@ describe('Auth api tests', () => {
 
     it('should login teacher successfully with correct credentials', async () => {
       const response = await request(app)
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({
           email: 'teacher@test.com',
           password: 'teacher123'
@@ -78,10 +78,12 @@ describe('Auth api tests', () => {
       expect(response.status).toBe(200)
       expect(response.body).toHaveProperty('accessToken')
       expect(response.body).toHaveProperty('מורה')
+      expect(response.body.teacher.roles).toContain('מורה')
     })
 
     it('should return 401 with incorrect credentials', async () => {
       const response = await request(app)
+        .post('/api/auth/login')
         .send({
           email: 'admin@test.com',
           password: 'wrongPassword'
@@ -93,7 +95,7 @@ describe('Auth api tests', () => {
 
     it('should return 401 with non-existing user', async () => {
       const response = await request(app)
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({
           email: 'nonexistent@test.com',
           password: 'anypassword'
@@ -104,10 +106,10 @@ describe('Auth api tests', () => {
     })
   })
 
-  describe('POST /auth/refresh', () => {
+  describe('POST /api/auth/refresh', () => {
     it('should generate a new access token with valid refresh token', async () => {
       const loginResponse = await request(app)
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({
           email: 'admin@test.com',
           password: 'admin123'
@@ -118,7 +120,7 @@ describe('Auth api tests', () => {
       const refreshToken = refreshTokenCookie.split(';')[0].split('=')[1]
 
       const refreshResponse = await request(app)
-        .post('/auth/refresh')
+        .post('/api/auth/refresh')
         .set('Cookie', `refreshToken=${refreshToken}`)
       
       expect(refreshResponse.status).toBe(200)
@@ -127,7 +129,7 @@ describe('Auth api tests', () => {
 
     it('should return 401 with missing refresh token', async () => {
       const response = await request(app)
-        .post('/auth/refresh')
+        .post('/api/auth/refresh')
       
       expect(response.status).toBe(401)
       expect(response.body).toHaveProperty('error', 'Refresh token is required')
@@ -135,7 +137,7 @@ describe('Auth api tests', () => {
 
     it('should return 401 with invalid refresh token', async () => {
       const response = await request(app)
-        .post('/auth/refresh')
+        .post('/api/auth/refresh')
         .set('Cookie', 'refreshToken=invalidToken')
       
       expect(response.status).toBe(401)
@@ -143,10 +145,10 @@ describe('Auth api tests', () => {
     })
   })
 
-  describe('POST /auth/logout', () => {
+  describe('POST /api/auth/logout', () => {
     it('should successfully logout a user', async () => {
       const loginResponse = await request(app)
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({
           email: 'admin@test.com',
           password: 'admin123'
@@ -155,7 +157,7 @@ describe('Auth api tests', () => {
       const accessToken = loginResponse.body.accessToken  
 
       const logoutResponse = await request(app)
-        .post('/auth/logout')
+        .post('/api/auth/logout')
         .set('Authorization', `Bearer ${accessToken}`)
       
       expect(logoutResponse.status).toBe(200)
@@ -166,19 +168,19 @@ describe('Auth api tests', () => {
 
     it('should return 401 when trying to logout without authentication', async () => {
       const response = await request(app) 
-        .post('/auth/logout')
+        .post('/api/auth/logout')
       
       expect(response.status).toBe(401) 
       expect(response.body).toHaveProperty('error', 'Unauthorized')
     })
   })
 
-  describe('POST /auth/init-admin', () => {
+  describe('POST /api/auth/init-admin', () => {
     it('should initialize admin user successfully', async () => {
       await clearDB()
 
       const response = await request(app)
-        .post('/auth/init-admin')
+        .post('/api/auth/init-admin')
       
       expect(response.status).toBe(201)
       expect(response.body).toHaveProperty('message', 'Admin user initialized successfully')
@@ -192,7 +194,7 @@ describe('Auth api tests', () => {
 
     it('should return 400 when trying to initialize admin when one already exists', async () => {
       const response = await request(app)
-        .post('/auth/init-admin')
+        .post('/api/auth/init-admin')
       
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('error', 'Admin user already exists')
