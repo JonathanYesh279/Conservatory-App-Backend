@@ -37,7 +37,10 @@ async function getStudentById(req, res, next) {
 async function addStudent(req, res, next) {
   try {
     const studentToAdd = req.body
-    const addedStudent = await studentService.addStudent(studentToAdd)
+    const teacherId = req.teacher._id.toString()
+    const isAdmin = req.teacher.roles.includes('מנהל')
+
+    const addedStudent = await studentService.addStudent(studentToAdd, teacherId, isAdmin)
     res.status(201).json(addedStudent)
   } catch (err) {
     next(err)
@@ -58,8 +61,11 @@ async function updateStudent(req, res, next) {
 async function removeStudent(req, res, next) {
   try {
     const { id } = req.params
-    const removedStudent = await studentService.removeStudent(id)
-    res.json(removedStudent)
+    const teacherId = req.teacher._id.toString()
+    const isAdmin = req.teacher.roles.includes('מנהל')
+
+    const result = await studentService.removeStudent(id, teacherId, isAdmin)
+    res.json(result)
   } catch (err) {
     next(err)
   }

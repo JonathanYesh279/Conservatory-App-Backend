@@ -7,8 +7,8 @@ const router = express.Router()
 router.get('/', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), studentController.getStudents)
 router.get('/:id', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), studentController.getStudentById)
 
-router.post('/', requireAuth(['מנהל']), studentController.addStudent);
+router.post('/', requireAuth(['מנהל', 'מורה']), studentController.addStudent);
 router.put('/:id', requireAuth(['מורה', 'מנהל']), studentController.updateStudent)
-router.delete('/:id', requireAuth(['מנהל']), studentController.removeStudent)
+router.delete('/:id', requireAuth(['מנהל', 'מורה']), studentController.removeStudent)
 
 export default router

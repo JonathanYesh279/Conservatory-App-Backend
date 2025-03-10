@@ -66,6 +66,11 @@ async function addStudent(studentToAdd) {
 
     const collection = await getCollection('student')
     const result = await collection.insertOne(value)
+
+    if (teacherId && !isAdmin) {
+      await associateStudentWithTeacher(result.insertedId.toString(), teacherId)
+    }
+
     return { _id: result.insertedId, ...value }
   } catch (err) {
     console.error(`Error adding student: ${err.message}`)
@@ -96,6 +101,15 @@ async function updateStudent(studentId, studentToUpdate) {
 
 async function removeStudent(studentId) {
   try {
+    if (teacherId && !isAdmin) {
+      const hasAccess = await checkTeacherHasAccessToStudent(teacherId, studentId)
+      if (!hasAccess) {
+        throw new Error('Not authorized to remove student')
+      }
+
+      return await removeStudentTeacherAssociation(studentId, teacherId)
+    }
+
     const collection = await getCollection('student')
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(studentId) },
@@ -113,6 +127,61 @@ async function removeStudent(studentId) {
   } catch (err) {
     console.error(`Error removing student ${studentId}: ${err.message}`)
     throw err
+  }
+}
+
+async function checkTeacherHasAccessToStudent(teacherId, studentId) {
+  try {
+    const teacherCollection = await getCollection('teacher')
+    const teacher = await teacherCollection.findOne({
+      _id: ObjectId.createFromHexString(teacherId),
+      'teaching.studentIds': studentId,
+      isActive: true
+    })
+
+    return !!teacher
+  } catch(err) {
+    console.error(`Error checking teacher access to student: ${err.message}`)
+    throw new Error(`Error checking teacher access to student: ${err.message}`)
+  }
+}
+
+async function associateStudentWithTeacher(studentId, teacherId) { 
+  try {
+    const teacherCollection = await getCollection('teacher')
+    await teacherCollection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      { $addToSet: { 'teaching.studentIds': studentId } }
+    )
+
+    return { success: true }
+  } catch (err) {
+    console.error(`Error associating student with teacher: ${err.message}`)
+    throw new Error(`Error associating student with teacher: ${err.message}`)
+  }
+}
+
+async function removeStudentTeacherAssociation(studentId, teacherId) { 
+  try {
+    const teacherCollection = await getCollection('teacher')
+    await teacherCollection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      { $pull: { 'teaching.studentIds': studentId } }
+    )
+
+    await teacherCollection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      { $pull: { 'teaching.schedule': { studentId: studentId } } }
+    )
+
+    return {
+      message: 'Student removed from teacher successfully',
+      studentId, 
+      teacherId
+    }
+  } catch (err) {
+    console.error(`Error removing student from teacher: ${err.message}`)
+    throw new Error(`Error removing student from teacher: ${err.message}`)
   }
 }
 
