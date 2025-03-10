@@ -78,10 +78,17 @@ async function addStudent(studentToAdd) {
   }
 }
 
-async function updateStudent(studentId, studentToUpdate) {
+async function updateStudent(studentId, studentToUpdate, teacherId = null, isAdmin = false) {
   try {
     const { error, value } = validateStudent(studentToUpdate)
     if (error) throw new Error(`Invalid student data: ${error.message}`)
+    
+    if (teacherId && !isAdmin) {
+      const hasAccess = await checkTeacherHasAccessToStudent(teacherId, studentId)
+      if (!hasAccess) {
+        throw new Error('Not authorized to update student')
+      }
+    }
 
     const collection = await getCollection('student')
     const result = await collection.findOneAndUpdate(
