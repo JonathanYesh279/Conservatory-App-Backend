@@ -4,7 +4,6 @@ import { MongoClient, ObjectId } from 'mongodb'
 import { setupTestApp } from '../setup-test-server.js'
 import { connectDB, closeDB, clearDB, getCollection } from '../test-db-config.js'
 import { setupTestUsers } from '../fixtures/auth.fixtures.js'
-import { testUsers } from './../fixtures/auth.fixtures';
 
 process.env.ACCESS_TOKEN_SECRET = 'test-access-token-secret'
 process.env.REFRESH_TOKEN_SECRET = 'test-refresh-token-secret'
@@ -184,7 +183,7 @@ describe('Auth api tests', () => {
       expect(response.status).toBe(201)
       expect(response.body).toHaveProperty('message', 'Admin user initialized successfully')
 
-      const colleciton = await getCollection('teacher')
+      const collection = await getCollection('teacher');
       const admins = await collection.find({ roles: { $in: ['מנהל'] } }).toArray()
       
       expect(admins.length).toBe(1)
