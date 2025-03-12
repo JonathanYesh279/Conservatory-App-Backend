@@ -53,7 +53,7 @@ describe('Auth api tests', () => {
   describe('POST /api/auth/login', () => {
     it('should login admin successfully with correct credentials', async () => {
       const response = await request(app)
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({
           email: 'admin@test.com',
           password: 'admin123'

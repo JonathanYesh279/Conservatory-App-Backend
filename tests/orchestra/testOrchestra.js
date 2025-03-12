@@ -748,240 +748,6 @@ describe('Orchestra API Tests', () => {
       )
     })
     
-    it('should allow admin to update rehearsal attendance', async () => {
-      const orchestraId = orchestraIds.beginners
-      const rehearsalId = rehearsals.monday._id
-      
-      const updatedAttendance = {
-        present: [Object.values(students)[0]._id.toString(), Object.values(students)[1]._id.toString()],
-        absent: [Object.values(students)[2]._id.toString()]
-      }
-      
-      const response = await request(app)
-        .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
-        .set('Authorization', `Bearer ${adminToken}`)
-        .send(updatedAttendance)
-
-      expect(response.status).toBe(200)
-      expect(response.body.attendance.present).toEqual(updatedAttendance.present)
-      expect(response.body.attendance.absent).toEqual(updatedAttendance.absent)
-      
-      // Check that attendance records were created
-      const attendanceCollection = await getCollection('activity_attendance')
-      const attendanceRecords = await attendanceCollection.find({ 
-        sessionId: rehearsalId,
-        activityType: 'תזמורת'
-      }).toArray()
-      
-      expect(attendanceRecords.length).toBe(3) // Total of present + absent students
-    })
-
-    it('should allow conductor to update rehearsal attendance for their orchestra', async () => {
-      const orchestraId = orchestraIds.beginners
-      const rehearsalId = rehearsals.monday._id
-      
-      const updatedAttendance = {
-        present: [Object.values(students)[0]._id.toString()],
-        absent: [Object.values(students)[1]._id.toString(), Object.values(students)[2]._id.toString()]
-      }
-      
-      const response = await request(app)
-        .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
-        .set('Authorization', `Bearer ${conductorToken}`)
-        .send(updatedAttendance)
-
-      expect(response.status).toBe(200)
-      expect(response.body.attendance.present).toEqual(updatedAttendance.present)
-      expect(response.body.attendance.absent).toEqual(updatedAttendance.absent)
-    })
-
-    it('should not allow teacher to update rehearsal attendance', async () => {
-      const orchestraId = orchestraIds.beginners
-      const rehearsalId = rehearsals.monday._id
-      
-      const updatedAttendance = {
-        present: [Object.values(students)[0]._id.toString()],
-        absent: [Object.values(students)[1]._id.toString(), Object.values(students)[2]._id.toString()]
-      }
-      
-      const response = await request(app)
-        .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
-        .set('Authorization', `Bearer ${teacherToken}`)
-        .send(updatedAttendance)
-
-      expect(response.status).toBe(403)
-      expect(response.body).toHaveProperty('error')
-    })
-    
-    it('should validate attendance data format', async () => {
-      const orchestraId = orchestraIds.beginners
-      const rehearsalId = rehearsals.monday._id
-      
-      const invalidAttendanceData = {
-        // Missing 'absent' field which should be required
-        present: [Object.values(students)[0]._id.toString()]
-      }
-      
-      const response = await request(app)
-        .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
-        .set('Authorization', `Bearer ${adminToken}`)
-        .send(invalidAttendanceData)
-
-      // Your validation might handle this differently
-      expect(response.status).not.toBe(200)
-    })
-    
-    it('should handle invalid student IDs in attendance data', async () => {
-      const orchestraId = orchestraIds.beginners
-      const rehearsalId = rehearsals.monday._id
-      
-      const invalidStudentId = new ObjectId().toString()
-      const attendanceWithInvalidStudent = {
-        present: [invalidStudentId],
-        absent: [Object.values(students)[1]._id.toString()]
-      }
-      
-      const response = await request(app)
-        .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
-        .set('Authorization', `Bearer ${adminToken}`)
-        .send(attendanceWithInvalidStudent)
-
-      // Should still work, as your service might not validate student existence
-      expect(response.status).toBe(200)
-    })
-  })
-
-  describe('GET /api/orchestra/:orchestraId/student/:studentId/attendance', () => {
-    let rehearsals = {}
-
-    beforeEach(async () => {
-      // Set up rehearsals with attendance records
-      const orchestraId = orchestraIds.beginners
-      const rehearsalData = setupTestRehearsals(orchestraId, currentSchoolYearId, 
-        Object.values(students).map(s => s._id.toString()))
-      
-      const rehearsalCollection = await getCollection('rehearsal')
-      await rehearsalCollection.insertMany(Object.values(rehearsalData))
-      
-      // Store rehearsal objects with their IDs for reference in tests
-      const insertedRehearsals = await rehearsalCollection.find({
-        groupId: orchestraId
-      }).toArray()
-      
-      // Create activity attendance records
-      const attendanceCollection = await getCollection('activity_attendance')
-      const attendanceRecords = insertedRehearsals.flatMap(rehearsal => {
-        const student1Record = {
-          studentId: Object.values(students)[0]._id.toString(),
-          sessionId: rehearsal._id.toString(),
-          activityType: 'תזמורת',
-          groupId: orchestraId,
-          date: rehearsal.date,
-          status: 'הגיע/ה',
-          createdAt: new Date()
-        }
-        
-        const student2Record = {
-          studentId: Object.values(students)[1]._id.toString(),
-          sessionId: rehearsal._id.toString(),
-          activityType: 'תזמורת',
-          groupId: orchestraId,
-          date: rehearsal.date,
-          status: 'לא הגיע/ה',
-          createdAt: new Date()
-        }
-        
-        return [student1Record, student2Record]
-      })
-      
-      await attendanceCollection.insertMany(attendanceRecords)
-    })
-
-    it('should allow admin to get student attendance stats', async () => {
-      const orchestraId = orchestraIds.beginners
-      const studentId = Object.values(students)[0]._id.toString()
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${orchestraId}/student/${studentId}/attendance`)
-        .set('Authorization', `Bearer ${adminToken}`)
-
-      expect(response.status).toBe(200)
-      expect(response.body).toHaveProperty('totalRehearsals')
-      expect(response.body).toHaveProperty('attended')
-      expect(response.body).toHaveProperty('attendanceRate')
-      expect(response.body).toHaveProperty('recentHistory')
-      expect(Array.isArray(response.body.recentHistory)).toBe(true)
-    })
-
-    it('should allow conductor to get student attendance stats', async () => {
-      const orchestraId = orchestraIds.beginners
-      const studentId = Object.values(students)[0]._id.toString()
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${orchestraId}/student/${studentId}/attendance`)
-        .set('Authorization', `Bearer ${conductorToken}`)
-
-      expect(response.status).toBe(200)
-      expect(response.body).toHaveProperty('attended')
-      expect(response.body).toHaveProperty('attendanceRate')
-    })
-
-    it('should allow teacher to get student attendance stats', async () => {
-      const orchestraId = orchestraIds.beginners
-      const studentId = Object.values(students)[0]._id.toString()
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${orchestraId}/student/${studentId}/attendance`)
-        .set('Authorization', `Bearer ${teacherToken}`)
-
-      expect(response.status).toBe(200)
-      expect(response.body).toHaveProperty('attended')
-    })
-    
-    it('should return appropriate response for student with no attendance records', async () => {
-      const orchestraId = orchestraIds.beginners
-      const studentWithNoRecords = Object.values(students)[2]._id.toString() // Third student has no records
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${orchestraId}/student/${studentWithNoRecords}/attendance`)
-        .set('Authorization', `Bearer ${adminToken}`)
-
-      expect(response.status).toBe(200)
-      expect(response.body).toHaveProperty('totalRehearsals', 0)
-      expect(response.body).toHaveProperty('attended', 0)
-      expect(response.body).toHaveProperty('attendanceRate', 0)
-      expect(response.body).toHaveProperty('message')
-    })
-    
-    it('should handle non-existent student', async () => {
-      const orchestraId = orchestraIds.beginners
-      const nonExistentStudentId = new ObjectId().toString()
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${orchestraId}/student/${nonExistentStudentId}/attendance`)
-        .set('Authorization', `Bearer ${adminToken}`)
-
-      // Your service should handle this appropriately
-      expect(response.status).toBe(200)
-      expect(response.body.totalRehearsals).toBe(0)
-    })
-    
-    it('should handle non-existent orchestra', async () => {
-      const nonExistentOrchestraId = new ObjectId().toString()
-      const studentId = Object.values(students)[0]._id.toString()
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${nonExistentOrchestraId}/student/${studentId}/attendance`)
-        .set('Authorization', `Bearer ${adminToken}`)
-
-      // Your service should handle this appropriately
-      expect(response.status).toBe(200)
-      expect(response.body.totalRehearsals).toBe(0)
-    })
-  })
-})
-
-
     it('should allow admin to get rehearsal attendance', async () => {
       const orchestraId = orchestraIds.beginners
       const rehearsalId = rehearsals.monday._id
@@ -994,81 +760,313 @@ describe('Orchestra API Tests', () => {
       expect(response.body).toHaveProperty('present')
       expect(response.body).toHaveProperty('absent')
       expect(Array.isArray(response.body.present)).toBe(true)
-      expect(Array.isArray(response.body.absent)).toBe(true)
-    })
+     expect(Array.isArray(response.body.absent)).toBe(true)
+   })
 
-    it('should allow conductor to get rehearsal attendance for their orchestra', async () => {
-      const orchestraId = orchestraIds.beginners
-      const rehearsalId = rehearsals.monday._id
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
-        .set('Authorization', `Bearer ${conductorToken}`)
+   it('should allow conductor to get rehearsal attendance for their orchestra', async () => {
+     const orchestraId = orchestraIds.beginners
+     const rehearsalId = rehearsals.monday._id
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
+       .set('Authorization', `Bearer ${conductorToken}`)
 
-      expect(response.status).toBe(200)
-      expect(response.body).toHaveProperty('present')
-      expect(response.body).toHaveProperty('absent')
-    })
+     expect(response.status).toBe(200)
+     expect(response.body).toHaveProperty('present')
+     expect(response.body).toHaveProperty('absent')
+   })
 
-    it('should allow teacher to get rehearsal attendance', async () => {
-      const orchestraId = orchestraIds.beginners
-      const rehearsalId = rehearsals.monday._id
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
-        .set('Authorization', `Bearer ${teacherToken}`)
+   it('should allow teacher to get rehearsal attendance', async () => {
+     const orchestraId = orchestraIds.beginners
+     const rehearsalId = rehearsals.monday._id
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
+       .set('Authorization', `Bearer ${teacherToken}`)
 
-      expect(response.status).toBe(200)
-    })
+     expect(response.status).toBe(200)
+   })
 
-    it('should return 500 for non-existent rehearsal', async () => {
-      const orchestraId = orchestraIds.beginners
-      const nonExistentRehearsalId = new ObjectId().toString()
-      
-      const response = await request(app)
-        .get(`/api/orchestra/${orchestraId}/rehearsals/${nonExistentRehearsalId}/attendance`)
-        .set('Authorization', `Bearer ${adminToken}`)
+   it('should return 500 for non-existent rehearsal', async () => {
+     const orchestraId = orchestraIds.beginners
+     const nonExistentRehearsalId = new ObjectId().toString()
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${orchestraId}/rehearsals/${nonExistentRehearsalId}/attendance`)
+       .set('Authorization', `Bearer ${adminToken}`)
 
-      expect(response.status).toBe(500)
-      expect(response.body).toHaveProperty('error')
-    })
-  })
+     expect(response.status).toBe(500)
+     expect(response.body).toHaveProperty('error')
+   })
+ })
 
-describe('PUT /api/orchestra/:id/rehearsals/:rehearsalId/attendance', () => {
-  let rehearsals = {}
+ describe('PUT /api/orchestra/:id/rehearsals/:rehearsalId/attendance', () => {
+   let rehearsals = {}
 
-  beforeEach(async () => {
-    // Set up rehearsals with attendance records
-    const orchestraId = orchestraIds.beginners
-    const rehearsalData = setupTestRehearsals(orchestraId, currentSchoolYearId,
-      Object.values(students).map(s => s._id.toString()))
-      
-    const rehearsalCollection = await getCollection('rehearsal')
-    await rehearsalCollection.insertMany(Object.values(rehearsalData))
-      
-    // Store rehearsal objects with their IDs for reference in tests
-    const insertedRehearsals = await rehearsalCollection.find({
-      groupId: orchestraId
-    }).toArray()
+   beforeEach(async () => {
+     // Set up rehearsals with attendance records
+     const orchestraId = orchestraIds.beginners
+     const rehearsalData = setupTestRehearsals(orchestraId, currentSchoolYearId, 
+       Object.values(students).map(s => s._id.toString()))
+     
+     const rehearsalCollection = await getCollection('rehearsal')
+     await rehearsalCollection.insertMany(Object.values(rehearsalData))
+     
+     // Store rehearsal objects with their IDs for reference in tests
+     const insertedRehearsals = await rehearsalCollection.find({
+       groupId: orchestraId
+     }).toArray()
 
-    for (const rehearsal of insertedRehearsals) {
-      if (rehearsal.dayOfWeek === 1) { // Monday
-        rehearsals.monday = {
-          _id: rehearsal._id.toString(),
-          date: rehearsal.date
-        }
-      } else if (rehearsal.dayOfWeek === 3) { // Wednesday
-        rehearsals.wednesday = {
-          _id: rehearsal._id.toString(),
-          date: rehearsal.date
-        }
-      }
-    }
-      
-    // Update orchestra with rehearsal IDs
-    await getCollection('orchestra').updateOne(
-      { _id: ObjectId.createFromHexString(orchestraId) },
-      { $set: { rehearsalIds: insertedRehearsals.map(r => r._id.toString()) } }
-    )
-  })
+     for (const rehearsal of insertedRehearsals) {
+       if (rehearsal.dayOfWeek === 1) { // Monday
+         rehearsals.monday = {
+           _id: rehearsal._id.toString(),
+           date: rehearsal.date
+         }
+       } else if (rehearsal.dayOfWeek === 3) { // Wednesday
+         rehearsals.wednesday = {
+           _id: rehearsal._id.toString(),
+           date: rehearsal.date
+         }
+       }
+     }
+     
+     // Update orchestra with rehearsal IDs
+     await getCollection('orchestra').updateOne(
+       { _id: ObjectId.createFromHexString(orchestraId) },
+       { $set: { rehearsalIds: insertedRehearsals.map(r => r._id.toString()) } }
+     )
+   })
+   
+   it('should allow admin to update rehearsal attendance', async () => {
+     const orchestraId = orchestraIds.beginners
+     const rehearsalId = rehearsals.monday._id
+     
+     const updatedAttendance = {
+       present: [Object.values(students)[0]._id.toString(), Object.values(students)[1]._id.toString()],
+       absent: [Object.values(students)[2]._id.toString()]
+     }
+     
+     const response = await request(app)
+       .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
+       .set('Authorization', `Bearer ${adminToken}`)
+       .send(updatedAttendance)
+
+     expect(response.status).toBe(200)
+     expect(response.body.attendance.present).toEqual(updatedAttendance.present)
+     expect(response.body.attendance.absent).toEqual(updatedAttendance.absent)
+     
+     // Check that attendance records were created
+     const attendanceCollection = await getCollection('activity_attendance')
+     const attendanceRecords = await attendanceCollection.find({ 
+       sessionId: rehearsalId,
+       activityType: 'תזמורת'
+     }).toArray()
+     
+     expect(attendanceRecords.length).toBe(3) // Total of present + absent students
+   })
+
+   it('should allow conductor to update rehearsal attendance for their orchestra', async () => {
+     const orchestraId = orchestraIds.beginners
+     const rehearsalId = rehearsals.monday._id
+     
+     const updatedAttendance = {
+       present: [Object.values(students)[0]._id.toString()],
+       absent: [Object.values(students)[1]._id.toString(), Object.values(students)[2]._id.toString()]
+     }
+     
+     const response = await request(app)
+       .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
+       .set('Authorization', `Bearer ${conductorToken}`)
+       .send(updatedAttendance)
+
+     expect(response.status).toBe(200)
+     expect(response.body.attendance.present).toEqual(updatedAttendance.present)
+     expect(response.body.attendance.absent).toEqual(updatedAttendance.absent)
+   })
+
+   it('should not allow teacher to update rehearsal attendance', async () => {
+     const orchestraId = orchestraIds.beginners
+     const rehearsalId = rehearsals.monday._id
+     
+     const updatedAttendance = {
+       present: [Object.values(students)[0]._id.toString()],
+       absent: [Object.values(students)[1]._id.toString(), Object.values(students)[2]._id.toString()]
+     }
+     
+     const response = await request(app)
+       .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
+       .set('Authorization', `Bearer ${teacherToken}`)
+       .send(updatedAttendance)
+
+     expect(response.status).toBe(403)
+     expect(response.body).toHaveProperty('error')
+   })
+   
+   it('should validate attendance data format', async () => {
+     const orchestraId = orchestraIds.beginners
+     const rehearsalId = rehearsals.monday._id
+     
+     const invalidAttendanceData = {
+       // Missing 'absent' field which should be required
+       present: [Object.values(students)[0]._id.toString()]
+     }
+     
+     const response = await request(app)
+       .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
+       .set('Authorization', `Bearer ${adminToken}`)
+       .send(invalidAttendanceData)
+
+     // Your validation might handle this differently
+     expect(response.status).not.toBe(200)
+   })
+   
+   it('should handle invalid student IDs in attendance data', async () => {
+     const orchestraId = orchestraIds.beginners
+     const rehearsalId = rehearsals.monday._id
+     
+     const invalidStudentId = new ObjectId().toString()
+     const attendanceWithInvalidStudent = {
+       present: [invalidStudentId],
+       absent: [Object.values(students)[1]._id.toString()]
+     }
+     
+     const response = await request(app)
+       .put(`/api/orchestra/${orchestraId}/rehearsals/${rehearsalId}/attendance`)
+       .set('Authorization', `Bearer ${adminToken}`)
+       .send(attendanceWithInvalidStudent)
+
+     // Should still work, as your service might not validate student existence
+     expect(response.status).toBe(200)
+   })
+ })
+
+ describe('GET /api/orchestra/:orchestraId/student/:studentId/attendance', () => {
+   let rehearsals = {}
+
+   beforeEach(async () => {
+     // Set up rehearsals with attendance records
+     const orchestraId = orchestraIds.beginners
+     const rehearsalData = setupTestRehearsals(orchestraId, currentSchoolYearId, 
+       Object.values(students).map(s => s._id.toString()))
+     
+     const rehearsalCollection = await getCollection('rehearsal')
+     await rehearsalCollection.insertMany(Object.values(rehearsalData))
+     
+     // Store rehearsal objects with their IDs for reference in tests
+     const insertedRehearsals = await rehearsalCollection.find({
+       groupId: orchestraId
+     }).toArray()
+     
+     // Create activity attendance records
+     const attendanceCollection = await getCollection('activity_attendance')
+     const attendanceRecords = insertedRehearsals.flatMap(rehearsal => {
+       const student1Record = {
+         studentId: Object.values(students)[0]._id.toString(),
+         sessionId: rehearsal._id.toString(),
+         activityType: 'תזמורת',
+         groupId: orchestraId,
+         date: rehearsal.date,
+         status: 'הגיע/ה',
+         createdAt: new Date()
+       }
+       
+       const student2Record = {
+         studentId: Object.values(students)[1]._id.toString(),
+         sessionId: rehearsal._id.toString(),
+         activityType: 'תזמורת',
+         groupId: orchestraId,
+         date: rehearsal.date,
+         status: 'לא הגיע/ה',
+         createdAt: new Date()
+       }
+       
+       return [student1Record, student2Record]
+     })
+     
+     await attendanceCollection.insertMany(attendanceRecords)
+   })
+
+   it('should allow admin to get student attendance stats', async () => {
+     const orchestraId = orchestraIds.beginners
+     const studentId = Object.values(students)[0]._id.toString()
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${orchestraId}/student/${studentId}/attendance`)
+       .set('Authorization', `Bearer ${adminToken}`)
+
+     expect(response.status).toBe(200)
+     expect(response.body).toHaveProperty('totalRehearsals')
+     expect(response.body).toHaveProperty('attended')
+     expect(response.body).toHaveProperty('attendanceRate')
+     expect(response.body).toHaveProperty('recentHistory')
+     expect(Array.isArray(response.body.recentHistory)).toBe(true)
+   })
+
+   it('should allow conductor to get student attendance stats', async () => {
+     const orchestraId = orchestraIds.beginners
+     const studentId = Object.values(students)[0]._id.toString()
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${orchestraId}/student/${studentId}/attendance`)
+       .set('Authorization', `Bearer ${conductorToken}`)
+
+     expect(response.status).toBe(200)
+     expect(response.body).toHaveProperty('attended')
+     expect(response.body).toHaveProperty('attendanceRate')
+   })
+
+   it('should allow teacher to get student attendance stats', async () => {
+     const orchestraId = orchestraIds.beginners
+     const studentId = Object.values(students)[0]._id.toString()
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${orchestraId}/student/${studentId}/attendance`)
+       .set('Authorization', `Bearer ${teacherToken}`)
+
+     expect(response.status).toBe(200)
+     expect(response.body).toHaveProperty('attended')
+   })
+   
+   it('should return appropriate response for student with no attendance records', async () => {
+     const orchestraId = orchestraIds.beginners
+     const studentWithNoRecords = Object.values(students)[2]._id.toString() // Third student has no records
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${orchestraId}/student/${studentWithNoRecords}/attendance`)
+       .set('Authorization', `Bearer ${adminToken}`)
+
+     expect(response.status).toBe(200)
+     expect(response.body).toHaveProperty('totalRehearsals', 0)
+     expect(response.body).toHaveProperty('attended', 0)
+     expect(response.body).toHaveProperty('attendanceRate', 0)
+     expect(response.body).toHaveProperty('message')
+   })
+   
+   it('should handle non-existent student', async () => {
+     const orchestraId = orchestraIds.beginners
+     const nonExistentStudentId = new ObjectId().toString()
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${orchestraId}/student/${nonExistentStudentId}/attendance`)
+       .set('Authorization', `Bearer ${adminToken}`)
+
+     // Your service should handle this appropriately
+     expect(response.status).toBe(200)
+     expect(response.body.totalRehearsals).toBe(0)
+   })
+   
+   it('should handle non-existent orchestra', async () => {
+     const nonExistentOrchestraId = new ObjectId().toString()
+     const studentId = Object.values(students)[0]._id.toString()
+     
+     const response = await request(app)
+       .get(`/api/orchestra/${nonExistentOrchestraId}/student/${studentId}/attendance`)
+       .set('Authorization', `Bearer ${adminToken}`)
+
+     // Your service should handle this appropriately
+     expect(response.status).toBe(200)
+     expect(response.body.totalRehearsals).toBe(0)
+   })
+ })
 })
