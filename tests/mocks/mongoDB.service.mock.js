@@ -1,15 +1,41 @@
-import { getCollection as getTestCollection } from '../test-db-config.js'
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { MongoClient } from 'mongodb';
 
-export function getCollection(collectionName) {
-  return getTestCollection(collectionName)
-}
+let mongoServer;
+let mongoClient;
+let db;
+
+// Make sure we initialize the database once
+let isInitialized = false;
 
 export async function initializeMongoDB() {
-  return Promise.resolve()
+  if (isInitialized) {
+    return Promise.resolve(db);
+  }
+
+  console.log('Initializing in-memory MongoDB for tests...');
+  mongoServer = await MongoMemoryServer.create();
+  const uri = mongoServer.getUri();
+
+  mongoClient = await MongoClient.connect(uri);
+  db = mongoClient.db('test-db');
+
+  isInitialized = true;
+  console.log('In-memory MongoDB initialized successfully');
+
+  return db;
 }
 
 export function getDB() {
-  return {
-    collection: getCollection
+  if (!db) {
+    throw new Error('Database not initialized');
   }
+  return db;
+}
+
+export function getCollection(collectionName) {
+  if (!db) {
+    throw new Error('Database not initialized');
+  }
+  return db.collection(collectionName);
 }
