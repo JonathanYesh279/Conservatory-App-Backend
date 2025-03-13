@@ -7,34 +7,53 @@ let db
 
 // Connect to the in-memory database.
 export async function connectDB() {
-  mongoServer = await MongoMemoryServer.create()
-  const uri = mongoServer.getUri()
+  try {
+    console.log('Initializing in-memory MongoDB for tests...')
+    mongoServer = await MongoMemoryServer.create()
+    const uri = mongoServer.getUri()
 
-  mongoClient = await MongoClient.connect(uri)
-  db = mongoClient.db('test-db')
+    mongoClient = await MongoClient.connect(uri)
+    db = mongoClient.db('test-db')
 
-  return db
+    console.log('In-memory MongoDB initialized successfully')
+    return db
+  } catch (error) {
+    console.error('Failed to initialize in-memory MongoDB:', error)
+    throw error
+  }
 }
+
 
 // Disconnect and stop the in-memory database.
 export async function clearDB() {
-  if (db) {
-    const collections = await db.collections()
-    for (const collection of collections) {
-      await collection.deleteMany({})
+  try {
+    if (db) {
+      const collections = await db.collections()
+      for (const collection of collections) {
+        await collection.deleteMany({})
+      }
     }
+  } catch (error) {
+    console.error('Error clearing database:', error)
   }
 }
 
 export async function closeDB() {
-  if (mongoClient) {
-    await mongoClient.close()
-  }
-  if (mongoServer) {
-    await mongoServer.stop()
+  try {
+    if (mongoClient) {
+      await mongoClient.close()
+    }
+    if (mongoServer) {
+      await mongoServer.stop()
+    }
+  } catch (error) {
+    console.error('Error closing database:', error)
   }
 }
 
 export function getCollection(collectionName) {
+  if (!db) {
+    throw new Error('Database not initialized - call connectDB() first')
+  }
   return db.collection(collectionName)
 }

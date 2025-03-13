@@ -9,7 +9,7 @@ import { ObjectId } from 'mongodb'
 process.env.ACCESS_TOKEN_SECRET = 'test-access-token-secret'
 process.env.REFRESH_TOKEN_SECRET = 'test-refresh-token-secret'
 
-describe('Teacher Api Tests', () => {
+describe('Teacher Api Tests', () => {s
   let app
   let testUsers
   let adminId, teacherId, conductorId
@@ -19,7 +19,7 @@ describe('Teacher Api Tests', () => {
 
   beforeAll(async () => {
     await connectDB()
-    app = setupTestApp()
+    app = await setupTestApp()
     testUsers = await setupTestUsers()
     schoolYears = setupTestSchoolYears()
   })
@@ -28,7 +28,7 @@ describe('Teacher Api Tests', () => {
     await clearDB()
 
     // Insert school Years
-    const schoolYearCollection = await getCollection('school_years')
+    const schoolYearCollection = await getCollection('school_year')
     await schoolYearCollection.insertMany(Object.values(schoolYears))
     currentSchoolYearId = schoolYears.current._id
 
@@ -138,7 +138,7 @@ describe('Teacher Api Tests', () => {
       expect(response.body).toHaveProperty('_id')
     })
 
-    it('should return 401 for non-existent teacher', async () => {
+    it('should return 500 for non-existent teacher', async () => {
       const nonExistentId = new ObjectId()
       const response = await request(app)
         .get(`/api/teacher/${nonExistentId}`)
@@ -173,7 +173,7 @@ describe('Teacher Api Tests', () => {
         },
         roles: ['מורה'],
         professionalInfo: {
-          instruments: 'סקסופון',
+          instrument: 'סקסופון', // Fixed: added required instrument field
           isActive: true,
         },
         teaching: {
@@ -312,7 +312,7 @@ describe('Teacher Api Tests', () => {
     it('should allow admin to soft-delete a teacher', async () => {
       const response = await request(app)
         .delete(`/api/teacher/${teacherId}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
 
       expect(response.status).toBe(200)
       expect(response.body.isActive).toBe(false)

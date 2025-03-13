@@ -7,30 +7,38 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --testTimeout=10000 --detectOpenHandles",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage"
   },
   "jest": {
+    "transform": {
+      "^.+\\.js$": [
+        "babel-jest",
+        {
+          "configFile": "./babel.config.js"
+        }
+      ]
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!.*\\.mjs$)"
+    ],
     "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "transform": {},
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.(js|jsx)$": "$1"
+    },
     "testMatch": [
-      "**/__tests__/**/*.js",
-      "**/?(*.)+(spec|test).js"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
+  "**/tests/**/*test*.js",
+  "!**/tests/fixtures/**",
+  "!**/tests/mocks/**",
+  "!**/tests/setup-test-server.js",
+  "!**/tests/test-db-config.js",
+  "!**/tests/school-year.fixtures.js"
+],
     "setupFilesAfterEnv": [
       "./jest.setup.js"
-    ]
+    ],
+    "testTimeout": 30000
   },
   "author": "Yehonatan Yeshayahu",
   "license": "ISC",
@@ -52,6 +60,9 @@
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "mongodb-memory-server": "^10.1.4",

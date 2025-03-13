@@ -20,7 +20,7 @@ describe('Student API Tests', () => {
 
   beforeAll(async () => {
     await connectDB()
-    app = setupTestApp()
+    app = await setupTestApp()
     testUsers = await setupTestUsers()
     schoolYears = setupTestSchoolYears()
   })

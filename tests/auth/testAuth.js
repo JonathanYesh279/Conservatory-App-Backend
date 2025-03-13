@@ -5,6 +5,7 @@ import { setupTestApp } from '../setup-test-server.js'
 import { connectDB, closeDB, clearDB, getCollection } from '../test-db-config.js'
 import { setupTestUsers } from '../fixtures/auth.fixtures.js'
 
+
 process.env.ACCESS_TOKEN_SECRET = 'test-access-token-secret'
 process.env.REFRESH_TOKEN_SECRET = 'test-refresh-token-secret'
 
@@ -15,7 +16,7 @@ describe('Auth api tests', () => {
 
   beforeAll(async () => {
     await connectDB()
-    app = setupTestApp()
+    app = await setupTestApp()
     testUsers = await setupTestUsers()  
   })
 
@@ -53,7 +54,7 @@ describe('Auth api tests', () => {
   describe('POST /api/auth/login', () => {
     it('should login admin successfully with correct credentials', async () => {
       const response = await request(app)
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({
           email: 'admin@test.com',
           password: 'admin123'
