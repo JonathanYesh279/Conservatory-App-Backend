@@ -1,26 +1,31 @@
 import { MongoClient } from 'mongodb'
 
-let db = null;
+let db = null
 
-export async function initializeMongoDB() {
+export async function initializeMongoDB(uri) {
+  if (db) return db
+  
   try {
-    const client = await MongoClient.connect(process.env.MONGODB_URI)
-    db = client.db('Conservatory-DB')
+    const client = await MongoClient.connect(uri || process.env.MONGODB_URI)
+    db = client.db(process.env.MONGODB_NAME || 'Conservatory-DB')
     console.log('Connected to MongoDB')
+    return db
   } catch (err) {
     console.error('MongoDB connection error', err)
-    process.exit(1)
+    throw err
   }
 }
 
 export function getDB() {
   if (!db) {
-    throw new Error('Database not initialized')
+    throw new Error('Database not initialized. Call initializeMongoDB first')
   }
   return db
 }
 
-export function getCollection(collectionName) {
-  const db = getDB()
+export async function getCollection(collectionName) {
+  if (!db) {
+    await initializeMongoDB()
+  }
   return db.collection(collectionName)
 }
