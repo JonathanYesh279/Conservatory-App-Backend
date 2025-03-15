@@ -41,8 +41,9 @@ describe('Teacher Service', () => {
       findOneAndUpdate: mockFindOneAndUpdate
     }
     
+    // Properly chain the find and toArray methods
     mockFind.mockReturnValue({
-      toArray: vi.fn()
+      toArray: mockCollection.toArray
     })
     
     getCollection.mockResolvedValue(mockCollection)
@@ -56,10 +57,10 @@ describe('Teacher Service', () => {
         { _id: '2', personalInfo: { fullName: 'Teacher 2' } }
       ]
       
-      mockCollection.find().toArray.mockResolvedValue(mockTeachers)
+      mockCollection.toArray.mockResolvedValue(mockTeachers)
 
       // Execute
-      const result = await teacherService.getTeachers()
+      const result = await teacherService.getTeachers({})
 
       // Assert
       expect(mockCollection.find).toHaveBeenCalledWith({ isActive: true })
@@ -69,7 +70,7 @@ describe('Teacher Service', () => {
     it('should apply name filter correctly', async () => {
       // Setup
       const filterBy = { name: 'Teacher 1' }
-      mockCollection.find().toArray.mockResolvedValue([])
+      mockCollection.toArray.mockResolvedValue([])
 
       // Execute
       await teacherService.getTeachers(filterBy)
@@ -84,7 +85,7 @@ describe('Teacher Service', () => {
     it('should apply instrument filter correctly', async () => {
       // Setup
       const filterBy = { instrument: 'Piano' }
-      mockCollection.find().toArray.mockResolvedValue([])
+      mockCollection.toArray.mockResolvedValue([])
 
       // Execute
       await teacherService.getTeachers(filterBy)
@@ -99,7 +100,7 @@ describe('Teacher Service', () => {
     it('should apply student filter correctly', async () => {
       // Setup
       const filterBy = { studentId: '123' }
-      mockCollection.find().toArray.mockResolvedValue([])
+      mockCollection.toArray.mockResolvedValue([])
 
       // Execute
       await teacherService.getTeachers(filterBy)
@@ -114,7 +115,7 @@ describe('Teacher Service', () => {
     it('should apply orchestra filter correctly', async () => {
       // Setup
       const filterBy = { orchestraId: '456' }
-      mockCollection.find().toArray.mockResolvedValue([])
+      mockCollection.toArray.mockResolvedValue([])
 
       // Execute
       await teacherService.getTeachers(filterBy)
@@ -129,7 +130,7 @@ describe('Teacher Service', () => {
     it('should apply ensemble filter correctly', async () => {
       // Setup
       const filterBy = { ensembleId: '789' }
-      mockCollection.find().toArray.mockResolvedValue([])
+      mockCollection.toArray.mockResolvedValue([])
 
       // Execute
       await teacherService.getTeachers(filterBy)
@@ -144,7 +145,7 @@ describe('Teacher Service', () => {
     it('should include inactive teachers when showInactive is true', async () => {
       // Setup
       const filterBy = { showInactive: true, isActive: false }
-      mockCollection.find().toArray.mockResolvedValue([])
+      mockCollection.toArray.mockResolvedValue([])
 
       // Execute
       await teacherService.getTeachers(filterBy)
@@ -157,10 +158,12 @@ describe('Teacher Service', () => {
 
     it('should handle database errors', async () => {
       // Setup
-      mockCollection.find().toArray.mockRejectedValue(new Error('Database error'))
+      const dbError = new Error('Database error')
+      mockCollection.toArray.mockRejectedValue(dbError)
 
       // Execute & Assert
-      await expect(teacherService.getTeachers()).rejects.toThrow('Error getting teachers: Database error')
+      await expect(teacherService.getTeachers({}))
+        .rejects.toThrow('Error getting teachers: Database error')
     })
   })
 
@@ -465,7 +468,7 @@ describe('Teacher Service', () => {
         { _id: '2', personalInfo: { fullName: 'Teacher 2' }, roles: ['מורה', 'מנצח'] }
       ]
       
-      mockCollection.find().toArray.mockResolvedValue(mockTeachers)
+      mockCollection.toArray.mockResolvedValue(mockTeachers)
 
       // Execute
       const result = await teacherService.getTeacherByRole(role)
@@ -480,7 +483,7 @@ describe('Teacher Service', () => {
 
     it('should handle database errors', async () => {
       // Setup
-      mockCollection.find().toArray.mockRejectedValue(new Error('Database error'))
+      mockCollection.toArray.mockRejectedValue(new Error('Database error'))
 
       // Execute & Assert
       await expect(teacherService.getTeacherByRole('מורה'))
