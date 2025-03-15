@@ -133,18 +133,21 @@ describe('Auth Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({ error: 'Teacher was not found' })
     })
 
-    it('should return 401 if teacher is not active', async () => {
+    it('should handle server errors', async () => {
       // Setup
       req.headers['authorization'] = 'Bearer valid-token'
       jwt.verify.mockReturnValue({ _id: '6579e36c83c8b3a5c2df8a8b' })
-      mockFindOne.mockResolvedValue(null) // No teacher found with isActive: true
+      mockFindOne.mockRejectedValue(new Error('Database error'))
+      
+      const consoleSpy = vi.spyOn(console, 'error')
 
       // Execute
       await authenticateToken(req, res, next)
 
       // Assert
-      expect(res.status).toHaveBeenCalledWith(401)
-      expect(res.json).toHaveBeenCalledWith({ error: 'Teacher was not found' })
+      expect(consoleSpy).toHaveBeenCalled()
+      expect(res.status).toHaveBeenCalledWith(500)
+      expect(res.json).toHaveBeenCalledWith({ error: 'Internal server error' })
     })
 
     it('should log detailed error for debugging when token verification fails', async () => {
