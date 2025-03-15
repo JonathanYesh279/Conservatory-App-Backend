@@ -1,4 +1,3 @@
-// api/student/__tests__/student.controller.test.js
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { studentController } from '../student.controller.js'
 import { studentService } from '../student.service.js'
@@ -52,7 +51,7 @@ describe('Student Controller', () => {
         instrument: 'Violin',
         stage: '3',
         isActive: 'true',
-        showInActive: true // Changed to boolean to match implementation
+        showInActive: 'true'
       }
 
       const mockStudents = [
@@ -70,7 +69,7 @@ describe('Student Controller', () => {
         instrument: 'Violin',
         stage: '3',
         isActive: 'true',
-        showInActive: true // Changed to boolean to match implementation
+        showInactive: true  // This should match what the controller passes
       })
       expect(res.json).toHaveBeenCalledWith(mockStudents)
     })
@@ -125,7 +124,7 @@ describe('Student Controller', () => {
   describe('addStudent', () => {
     it('should add a new student', async () => {
       // Setup - Admin user
-      req.isAdmin = true
+      req.teacher.roles = ['מנהל']
       
       const studentToAdd = {
         personalInfo: { fullName: 'New Student' },
@@ -143,13 +142,17 @@ describe('Student Controller', () => {
       await studentController.addStudent(req, res, next)
 
       // Assert
-      expect(studentService.addStudent).toHaveBeenCalledWith(studentToAdd, undefined, true)
+      expect(studentService.addStudent).toHaveBeenCalledWith(
+        studentToAdd, 
+        req.teacher._id.toString(),
+        true // isAdmin should be true for this test
+      )
+      expect(res.status).toHaveBeenCalledWith(201)
       expect(res.json).toHaveBeenCalledWith(addedStudent)
     })
 
     it('should add student with teacher role (not admin)', async () => {
       // Setup - Teacher (not admin)
-      req.isAdmin = false
       req.teacher = { 
         _id: new ObjectId('6579e36c83c8b3a5c2df8a8b'),
         roles: ['מורה']
@@ -174,8 +177,9 @@ describe('Student Controller', () => {
       expect(studentService.addStudent).toHaveBeenCalledWith(
         studentToAdd, 
         req.teacher._id.toString(),
-        false
+        false // isAdmin should be false for this test
       )
+      expect(res.status).toHaveBeenCalledWith(201)
       expect(res.json).toHaveBeenCalledWith(addedStudent)
     })
 
@@ -196,7 +200,7 @@ describe('Student Controller', () => {
   describe('updateStudent', () => {
     it('should update an existing student as admin', async () => {
       // Setup - Admin user
-      req.isAdmin = true
+      req.teacher.roles = ['מנהל']
       
       const studentId = new ObjectId('6579e36c83c8b3a5c2df8a8b')
       req.params = { id: studentId.toString() }
@@ -220,15 +224,14 @@ describe('Student Controller', () => {
       expect(studentService.updateStudent).toHaveBeenCalledWith(
         studentId.toString(), 
         studentToUpdate,
-        undefined,
-        true
+        req.teacher._id.toString(),
+        true // isAdmin should be true for this test
       )
       expect(res.json).toHaveBeenCalledWith(updatedStudent)
     })
 
     it('should update student as teacher (not admin)', async () => {
       // Setup - Teacher (not admin)
-      req.isAdmin = false
       req.teacher = { 
         _id: new ObjectId('6579e36c83c8b3a5c2df8a8b'),
         roles: ['מורה']
@@ -257,7 +260,7 @@ describe('Student Controller', () => {
         studentId.toString(), 
         studentToUpdate,
         req.teacher._id.toString(),
-        false
+        false // isAdmin should be false for this test
       )
       expect(res.json).toHaveBeenCalledWith(updatedStudent)
     })
@@ -280,7 +283,7 @@ describe('Student Controller', () => {
   describe('removeStudent', () => {
     it('should remove (deactivate) a student as admin', async () => {
       // Setup - Admin user
-      req.isAdmin = true
+      req.teacher.roles = ['מנהל']
       
       const studentId = new ObjectId('6579e36c83c8b3a5c2df8a8b')
       req.params = { id: studentId.toString() }
@@ -298,15 +301,14 @@ describe('Student Controller', () => {
       // Assert
       expect(studentService.removeStudent).toHaveBeenCalledWith(
         studentId.toString(),
-        undefined,
-        true
+        req.teacher._id.toString(),
+        true // isAdmin should be true for this test
       )
       expect(res.json).toHaveBeenCalledWith(removedStudent)
     })
 
     it('should remove student as teacher (not admin)', async () => {
       // Setup - Teacher (not admin)
-      req.isAdmin = false
       req.teacher = { 
         _id: new ObjectId('6579e36c83c8b3a5c2df8a8b'),
         roles: ['מורה']
@@ -329,7 +331,7 @@ describe('Student Controller', () => {
       expect(studentService.removeStudent).toHaveBeenCalledWith(
         studentId.toString(),
         req.teacher._id.toString(),
-        false
+        false // isAdmin should be false for this test
       )
       expect(res.json).toHaveBeenCalledWith(removedStudent)
     })
