@@ -1,4 +1,6 @@
+// api/bagrut/bagrut.controller.js
 import { bagrutService } from './bagrut.service.js'
+import { deleteFile } from '../../services/fileStorage.service.js'
 
 export const bagrutController = {
   getBagruts,
@@ -93,7 +95,7 @@ async function updatePresentation(req, res, next) {
       parseInt(presentationIndex),
       presentationData,
       teacherId
-    );
+    )
     res.json(updatedBagrut)
   } catch (err) {
     next(err)
@@ -151,12 +153,14 @@ async function removeDocument(req, res, next) {
   try {
     const { id, documentId } = req.params
 
+    // Find the document to delete its file
     const document = req.bagrut.documents.find(
       doc => doc._id.toString() === documentId
     )
 
     if (document && document.fileUrl) {
       try {
+        // Use the imported deleteFile function
         await deleteFile(document.fileUrl)
       } catch (deleteError) {
         console.warn(`Error deleting file: ${deleteError.message}`)
@@ -205,7 +209,7 @@ async function addAccompanist(req, res, next) {
     const updatedBagrut = await bagrutService.addAccompanist(
       id,
       accompanistData
-    );
+    )
     res.json(updatedBagrut)
   } catch (err) {
     next(err)
@@ -220,7 +224,7 @@ async function removeAccompanist(req, res, next) {
     const updatedBagrut = await bagrutService.removeAccompanist(
       id,
       accompanistId
-    );
+    )
     res.json(updatedBagrut)
   } catch (err) {
     next(err)
