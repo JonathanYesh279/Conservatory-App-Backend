@@ -21,8 +21,8 @@ export const rehearsalSchema = Joi.object({
   endTime: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).required(),
   location: Joi.string().required(),
   attendance: Joi.object({
-    present: Joi.array().items(Joi.string()).default([]),
-    absent: Joi.array().items(Joi.string()).default([])
+    present: Joi.array().items(Joi.string()).required(),
+    absent: Joi.array().items(Joi.string()).required()
   }).default({ present: [], absent: [] }),
   notes: Joi.string().allow('').default(''),
   schoolYearId: Joi.string().required(),

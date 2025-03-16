@@ -1,4 +1,3 @@
-// api/rehearsal/__tests__/rehearsal.controller.test.js
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { rehearsalController } from '../rehearsal.controller.js'
 import { rehearsalService } from '../rehearsal.service.js'
@@ -74,7 +73,7 @@ describe('Rehearsal Controller', () => {
         fromDate: '2023-01-01',
         toDate: '2023-12-31',
         isActive: 'true',
-        showInactive: 'true'
+        showInactive: true // Boolean true
       })
       expect(res.json).toHaveBeenCalledWith(mockRehearsals)
     })
@@ -158,7 +157,7 @@ describe('Rehearsal Controller', () => {
           fromDate: '2023-01-01',
           toDate: '2023-12-31',
           isActive: 'true',
-          showInactive: 'true'
+          showInactive: true // Boolean true
         }
       )
       expect(res.json).toHaveBeenCalledWith(mockRehearsals)
