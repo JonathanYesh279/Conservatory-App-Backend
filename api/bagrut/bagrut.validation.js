@@ -27,7 +27,7 @@ const accompanistSchema = Joi.object({
 const documentSchema = Joi.object({
   title: Joi.string().required(),
   fileUrl: Joi.string().required(),
-  uploadDate: Joi.date().default(Date.now),
+  uploadDate: Joi.date().default(() => new Date()),
   uploadedBy: Joi.string().required(),
 })
 
@@ -61,12 +61,12 @@ export const bagrutSchema = Joi.object({
   testDate: Joi.date().allow(null).default(null),
   notes: Joi.string().allow('').default(''),
   isActive: Joi.boolean().default(true),
-  createdAt: Joi.date().default(Date.now),
-  updatedAt: Joi.date().default(Date.now),
+  createdAt: Joi.date().default(() => new Date()),
+  updatedAt: Joi.date().default(() => new Date()),
 })
 
 export function validateBagrut(bagrut) {
-  return bagrutSchema.validate(bagrut, { abortEarly: false });
+  return bagrutSchema.validate(bagrut, { abortEarly: false })
 }
 
 export const BAGRUT_CONSTANTS = {

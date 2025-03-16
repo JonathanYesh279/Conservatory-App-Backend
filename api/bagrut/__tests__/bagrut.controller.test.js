@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { bagrutController } from '../bagrut.controller.js'
 import { bagrutService } from '../bagrut.service.js'
 import { ObjectId } from 'mongodb'
-import { deleteFile } from '../../../services/fileStorage.service.js'
 
 // Mock dependencies
 vi.mock('../bagrut.service.js', () => ({
@@ -24,9 +23,19 @@ vi.mock('../bagrut.service.js', () => ({
   }
 }))
 
+// Mock the actual controller module to intercept its imports
+vi.mock('../bagrut.controller.js', async () => {
+  const actual = await vi.importActual('../bagrut.controller.js')
+  return actual
+})
+
+// Mock the deleteFile function
 vi.mock('../../../services/fileStorage.service.js', () => ({
-  deleteFile: vi.fn()
+  deleteFile: vi.fn().mockResolvedValue({ success: true })
 }))
+
+// Import the mocked deleteFile function
+import { deleteFile } from '../../../services/fileStorage.service.js'
 
 describe('Bagrut Controller', () => {
   let req, res, next
@@ -509,7 +518,6 @@ describe('Bagrut Controller', () => {
         documents: [] // Document removed
       }
       bagrutService.removeDocument.mockResolvedValue(updatedBagrut)
-      deleteFile.mockResolvedValue({ success: true })
 
       // Execute
       await bagrutController.removeDocument(req, res, next)
@@ -547,7 +555,7 @@ describe('Bagrut Controller', () => {
       }
       
       const deleteError = new Error('File not found')
-      deleteFile.mockRejectedValue(deleteError)
+      deleteFile.mockRejectedValueOnce(deleteError)
       bagrutService.removeDocument.mockResolvedValue(updatedBagrut)
       
       // Spy on console.warn
