@@ -15,7 +15,7 @@ async function getStudents(req, res, next) {
       instrument: req.query.instrument,
       stage: req.query.stage,
       isActive: req.query.isActive,
-      showInActive: req.query.showInActive === 'true'
+      showInactive: req.query.showInActive === 'true'
     }
     const students = await studentService.getStudents(filterBy)
     res.json(students)
@@ -37,8 +37,8 @@ async function getStudentById(req, res, next) {
 async function addStudent(req, res, next) {
   try {
     const studentToAdd = req.body
-    const teacherId = req.teacher._id.toString()
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const teacherId = req.teacher?._id?.toString()
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false
 
     const addedStudent = await studentService.addStudent(studentToAdd, teacherId, isAdmin)
     res.status(201).json(addedStudent)
@@ -51,8 +51,8 @@ async function updateStudent(req, res, next) {
   try {
     const { id } = req.params 
     const studentToUpdate = req.body
-    const teacherId = req.teacher._id.toString()
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const teacherId = req.teacher?._id?.toString()
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false
 
     const updatedStudent = await studentService.updateStudent(id, studentToUpdate, teacherId, isAdmin)
     res.json(updatedStudent)
@@ -64,8 +64,8 @@ async function updateStudent(req, res, next) {
 async function removeStudent(req, res, next) {
   try {
     const { id } = req.params
-    const teacherId = req.teacher._id.toString()
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const teacherId = req.teacher?._id?.toString()
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false
 
     const result = await studentService.removeStudent(id, teacherId, isAdmin)
     res.json(result)

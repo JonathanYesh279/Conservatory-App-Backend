@@ -68,14 +68,14 @@ describe('Orchestra Controller', () => {
       // Execute
       await orchestraController.getOrchestras(req, res, next)
 
-      // Assert
+      // Assert - Updated to match the actual property name in the controller
       expect(orchestraService.getOrchestras).toHaveBeenCalledWith({
         name: 'Test Orchestra',
         type: 'תזמורת',
         conductorId: '123',
         memberIds: '456',
         isActive: 'true',
-        showInActive: 'true'
+        showInActive: true // Matches the actual property name with capital 'A'
       })
       expect(res.json).toHaveBeenCalledWith(mockOrchestras)
     })

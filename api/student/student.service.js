@@ -7,7 +7,10 @@ export const studentService = {
   getStudentById,
   addStudent,
   updateStudent,
-  removeStudent
+  removeStudent,
+  checkTeacherHasAccessToStudent,
+  associateStudentWithTeacher,
+  removeStudentTeacherAssociation
 }
 
 async function getStudents(filterBy = {}) {
@@ -38,13 +41,14 @@ async function getStudentById(studentId) {
   }
 }
 
-async function addStudent(studentToAdd) {
+async function addStudent(studentToAdd, teacherId = null, isAdmin = false) {
   try {
+    // Validate with the standard (strict) schema
     const { error, value } = validateStudent(studentToAdd)
     if (error) throw error
 
-    if (!value.enrollments.schoolYears || value.enrollments.schoolYears.length === 0) {
-      const schoolYearService = require('../school-year/school-year.service.js').schoolYearService
+    if (!value.enrollments?.schoolYears || value.enrollments.schoolYears.length === 0) {
+      const schoolYearService = (await import('../school-year/school-year.service.js')).schoolYearService
       const currentSchoolYear = await schoolYearService.getCurrentSchoolYear()
 
       if (!value.enrollments) {
@@ -52,7 +56,7 @@ async function addStudent(studentToAdd) {
       }
 
       if (!value.enrollments.schoolYears) {
-        value.enrollments.schoolYear = []
+        value.enrollments.schoolYears = []
       }
 
       value.enrollments.schoolYears.push({
@@ -80,7 +84,8 @@ async function addStudent(studentToAdd) {
 
 async function updateStudent(studentId, studentToUpdate, teacherId = null, isAdmin = false) {
   try {
-    const { error, value } = validateStudent(studentToUpdate)
+    // For updates, use the flexible validation schema
+    const { error, value } = validateStudent(studentToUpdate, true)
     if (error) throw new Error(`Invalid student data: ${error.message}`)
     
     if (teacherId && !isAdmin) {
@@ -90,13 +95,17 @@ async function updateStudent(studentId, studentToUpdate, teacherId = null, isAdm
       }
     }
 
+    // Set the updatedAt field
+    value.updatedAt = new Date()
+
+    // Apply the update
     const collection = await getCollection('student')
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(studentId) },
-      { $set: {...value, updatedAt: new Date()} },
+      { $set: value },
       { returnDocument: 'after' }
     )
-
+    
     if (!result) throw new Error(`Student with id ${studentId} not found`)
     
     return result
@@ -106,7 +115,7 @@ async function updateStudent(studentId, studentToUpdate, teacherId = null, isAdm
   }
 }
 
-async function removeStudent(studentId) {
+async function removeStudent(studentId, teacherId = null, isAdmin = false) {
   try {
     if (teacherId && !isAdmin) {
       const hasAccess = await checkTeacherHasAccessToStudent(teacherId, studentId)
@@ -161,7 +170,11 @@ async function associateStudentWithTeacher(studentId, teacherId) {
       { $addToSet: { 'teaching.studentIds': studentId } }
     )
 
-    return { success: true }
+    return { 
+      success: true,
+      studentId,
+      teacherId
+    }
   } catch (err) {
     console.error(`Error associating student with teacher: ${err.message}`)
     throw new Error(`Error associating student with teacher: ${err.message}`)
@@ -247,10 +260,10 @@ function _buildCriteria(filterBy) {
 
   if (filterBy.showInactive) {
      if (filterBy.isActive !== undefined) {
-       criteria.isActive = filterBy.isActive;
+       criteria.isActive = filterBy.isActive
      }
   } else {
-    criteria.isActive = true;
+    criteria.isActive = true
   }
 
   return criteria
