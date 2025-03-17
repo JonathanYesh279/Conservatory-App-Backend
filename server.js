@@ -21,7 +21,7 @@ import rehearsalRoutes from './api/rehearsal/rehearsal.route.js'
 import bagrutRoutes from './api/bagrut/bagrut.route.js'
  
 const _filename = fileURLToPath(import.meta.url)
-const _dirname = path.dirname(_filename)
+const __dirname = path.dirname(_filename)
 
 const app = express()
 
