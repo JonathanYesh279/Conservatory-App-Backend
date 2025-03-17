@@ -1,4 +1,4 @@
-import { getCollection } from '../../services/mongoDB.service.js'
+import { getCollection } from '../services/mongoDB.service.js'
 import { ObjectId } from 'mongodb'
 
 export async function addSchoolYearToRequest(req, res, next) {
