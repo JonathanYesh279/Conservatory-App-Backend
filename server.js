@@ -87,8 +87,70 @@ app.use((req, res) => {
   })
 })
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-})
+// Improved server startup with error handling
+const startServer = () => {
+  // Create the server instance separately from starting it
+  const server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
+  });
+
+  // Handle port in use errors
+  server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+      console.log(`Port ${PORT} is already in use`);
+      
+      // Try to release the port
+      console.log('Attempting to free the port...');
+      
+      // Create a temporary server to attempt releasing the port
+      const temp = require('net').createServer();
+      
+      // Try to listen on the port
+      temp.listen(PORT);
+      
+      // If we can't listen, the port is truly in use
+      temp.on('error', () => {
+        console.error(`Port ${PORT} is still in use by another process.`);
+        process.exit(1);
+      });
+      
+      // If we can listen, close the connection and try again
+      temp.on('listening', () => {
+        console.log(`Found orphaned connection on port ${PORT}, cleaning up...`);
+        temp.close();
+        
+        setTimeout(() => {
+          console.log('Trying to restart server...');
+          startServer();
+        }, 1000);
+      });
+    } else {
+      console.error('Server error:', error);
+      process.exit(1);
+    }
+  });
+
+  // Handle graceful shutdown for nodemon restarts
+  process.on('SIGINT', () => {
+    console.log('SIGINT received, shutting down server gracefully');
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  });
+
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down server gracefully');
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  });
+
+  return server;
+};
+
+// Start the server using our improved startup function
+startServer();

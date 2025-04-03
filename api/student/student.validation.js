@@ -2,7 +2,7 @@ import Joi from 'joi'
 
 const VALID_CLASSES = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'יא', 'יב', 'אחר']
 const VALID_STAGES = [1, 2, 3, 4, 5, 6, 7, 8]
-const VALID_INSTRUMENTS = ['חצוצרה', 'חליל צד', 'קלרינט', 'קרן יער', 'בריטון', 'טרומבון', 'סקסופון']
+const VALID_INSTRUMENTS = ['חצוצרה', 'חליל צד', 'קלרינט', 'קרן יער', 'בריטון', 'טרומבון', 'סקסופון', 'אבוב']
 
 // Schema for creating a new student (all required fields)
 export const studentSchema = Joi.object({
@@ -62,6 +62,8 @@ export const studentSchema = Joi.object({
     ).default([]),
   }).default({ orchestraIds: [], ensembleIds: [], schoolYears: [] }),
 
+  teacherIds: Joi.array().items(Joi.string()).default([]),
+
   isActive: Joi.boolean().default(true),
   createdAt: Joi.date().default(new Date()),
   updatedAt: Joi.date().default(new Date()),
@@ -117,6 +119,7 @@ export const studentUpdateSchema = Joi.object({
       })
     ),
   }),
+  teacherIds: Joi.array().items(Joi.string()).default([]),
 
   isActive: Joi.boolean(),
   updatedAt: Joi.date().default(new Date()),

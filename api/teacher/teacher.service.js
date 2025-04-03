@@ -9,7 +9,8 @@ export const teacherService = {
   addTeacher,
   updateTeacher,
   removeTeacher,
-  getTeacherByRole
+  getTeacherByRole,
+  updateTeacherSchedule
 }
 
 async function getTeachers(filterBy) {
@@ -114,6 +115,21 @@ async function getTeacherByRole(role) {
     console.error(`Error getting teacher by role: ${err.message}`)
     throw new Error(`Error getting teacher by role: ${err.message}`)
   }
+}
+
+async function updateTeacherSchedule(teacherId, scheduleData) {
+  const { studentId, day, time, duration } = scheduleData
+
+  const collection = await getCollection('teacher')
+  return await collection.updateOne(
+    { _id: ObjectId.createFromHexString(teacherId) },
+    {
+      $addToSet: { 'teaching.studentIds': studentId },
+      $push: {
+        'teaching.schedule': { studentId, day, time, duration }
+      }
+    }
+  )
 }
 
 function _buildCriteria(filterBy) {

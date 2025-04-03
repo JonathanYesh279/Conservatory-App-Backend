@@ -6,7 +6,8 @@ export const teacherController = {
   addTeacher,
   updateTeacher,
   removeTeacher,
-  getTeacherByRole
+  getTeacherByRole,
+  updateTeacherSchedule,
 }
 
 async function getTeachers(req, res, next) {
@@ -73,6 +74,18 @@ async function getTeacherByRole(req, res, next) {
     const { role } = req.params
     const teachers = await teacherService.getTeacherByRole(role)
     res.json(teachers)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function updateTeacherSchedule(req, res, next) {
+   try {
+    const { id: teacherId } = req.params
+    const scheduleData = req.body
+    
+    const result = await teacherService.updateTeacherSchedule(teacherId, scheduleData)
+    res.json(result)
   } catch (err) {
     next(err)
   }
