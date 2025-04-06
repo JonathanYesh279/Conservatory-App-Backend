@@ -40,8 +40,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-// Set Content-Type header for all responses
-app.use((req, res, next) => {
+app.use('/api', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   next();
 });
@@ -96,9 +95,13 @@ app.use('/api/files', authenticateToken, fileRoutes);
 
 // Test route
 app.get('/api/test', (req, res) => {
-  res.json({
+  console.log('API test route hit');
+  res.status(200).json({
     status: 'OK',
-    message: 'Server is running',
+    message: 'API Server is running',
+    time: new Date().toISOString(),
+    path: req.originalUrl,
+    headers: req.headers,
   });
 });
 
