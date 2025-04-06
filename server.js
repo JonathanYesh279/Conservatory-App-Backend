@@ -53,11 +53,11 @@ app.use(mongoSanitize())
 await initializeMongoDB(MONGO_URI).catch(console.error)
 
 if (NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  app.use(express.static(path.join(__dirname, 'public')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  })
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+  });
 }
 
 // Routes
