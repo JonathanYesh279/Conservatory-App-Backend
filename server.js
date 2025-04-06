@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import { createServer } from 'net'
 import mongoSanitize from 'express-mongo-sanitize'
 import helmet from 'helmet'
 import { initializeMongoDB } from './services/mongoDB.service.js'
@@ -105,7 +106,7 @@ const startServer = () => {
       console.log('Attempting to free the port...');
       
       // Create a temporary server to attempt releasing the port
-      const temp = require('net').createServer();
+      const temp = createServer();
       
       // Try to listen on the port
       temp.listen(PORT);
