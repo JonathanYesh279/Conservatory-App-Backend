@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-const VALID_RULES = ['מורה', 'מנצח', 'מדריך הרכב', 'מנהל', 'מדריך תאוריה']
+const VALID_RULES = ['מורה', 'מנצח', 'מדריך הרכב', 'מנהל', 'מורה תאוריה']
 const VALID_DURATION = [30, 45, 60] 
 
 export const teacherSchema = Joi.object({

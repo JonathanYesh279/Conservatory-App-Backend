@@ -142,56 +142,65 @@ async function removeRehearsal(rehearsalId, teacherId, isAdmin = false) {
     const rehearsal = await getRehearsalById(rehearsalId)
 
     if (!isAdmin) {
-      const orchestra = await getCollection('orchestra').findOne({
-        _id: ObjectId.createFromHexString(rehearsal.groupId)
+      const orchestraCollection = await getCollection('orchestra')
+      const orchestra = await orchestraCollection.findOne({
+        _id: ObjectId.createFromHexString(rehearsal.groupId),
       })
 
-      if (!orchestra) throw new Error(`Orchestra with id ${rehearsal.groupId} not found`)
-      
-      if (orchestra.conductorId !== teacherId.toString()) throw new Error(`Teacher with id ${teacherId} is not the conductor of the orchestra`)
+      if (!orchestra)
+        throw new Error(`Orchestra with id ${rehearsal.groupId} not found`);
+
+      if (orchestra.conductorId !== teacherId.toString())
+        throw new Error(
+          `Teacher with id ${teacherId} is not the conductor of the orchestra`
+        )
     }
-    
+
     if (rehearsal.type === 'תזמורת') {
-      await getCollection('orchestra').updateOne(
+      const orchestraCollection = await getCollection('orchestra');
+      await orchestraCollection.updateOne(
         { _id: ObjectId.createFromHexString(rehearsal.groupId) },
         { $pull: { rehearsalIds: rehearsalId } }
       )
     }
 
-    const collection = await getCollection('rehearsal')
+    const collection = await getCollection('rehearsal');
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(rehearsalId) },
       {
         $set: {
           isActive: false,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       },
       { returnDocument: 'after' }
-    )
+    );
 
-    if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`)
-    
-    return result
+    if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`);
+
+    return result;
   } catch (err) {
-    console.error(`Failed to remove rehearsal: ${err}`)
-    throw new Error(`Failed to remove rehearsal: ${err}`)
+    console.error(`Failed to remove rehearsal: ${err}`);
+    throw new Error(`Failed to remove rehearsal: ${err}`);
   }
 }
 
 async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
   try {
-    const { error, value } = validateBulkCreate(data)
-    if (error) throw error
+    const { error, value } = validateBulkCreate(data);
+    if (error) throw error;
 
     if (!isAdmin) {
-      const orchestra = await getCollection('orchestra').findOne({
+      const orchestraCollection = await getCollection('orchestra');
+      const orchestra = await orchestraCollection.findOne({
         _id: ObjectId.createFromHexString(value.orchestraId),
-        conductorId: teacherId.toString()
-      })
+        conductorId: teacherId.toString(),
+      });
 
       if (!orchestra) {
-        throw new Error('Not authorized to bulk create rehearsals for this orchestra')
+        throw new Error(
+          'Not authorized to bulk create rehearsals for this orchestra'
+        );
       }
     }
 
@@ -203,17 +212,26 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
       startTime,
       endTime,
       location,
-      excludesDates = [],
-    } = value
+      excludeDates = [], // Changed from excludesDates to excludeDates
+      notes,
+    } = value;
+
+    // Get current school year
+    const schoolYearServiceModule = await import(
+      '../school-year/school-year.service.js'
+    );
+    const schoolYearService = schoolYearServiceModule.schoolYearService;
+    const currentSchoolYear = await schoolYearService.getCurrentSchoolYear();
+    const schoolYearId = currentSchoolYear._id.toString();
 
     const dates = _generateDatesForDayOfWeek(
       new Date(startDate),
       new Date(endDate),
       dayOfWeek,
-      excludesDates.map(day => new Date(day))
-    )
+      (excludeDates || []).map((day) => new Date(day))
+    );
 
-    const rehearsals = dates.map(date => ({
+    const rehearsals = dates.map((date) => ({
       groupId: orchestraId,
       type: 'תזמורת',
       date,
@@ -222,39 +240,44 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
       endTime,
       location,
       attendance: { present: [], absent: [] },
-      notes: "",
+      notes: notes || '',
+      schoolYearId, // Add school year ID
       isActive: true,
       createdAt: new Date(),
-      updatedAt: new Date()
-    }))
+      updatedAt: new Date(),
+    }));
 
     if (rehearsals.length === 0) {
-      return { insertedCount: 0, rehearsalIds: [] }
+      return { insertedCount: 0, rehearsalIds: [] };
     }
 
-    const collection = await getCollection('rehearsal')
-    const result = { insertedCount: 0, rehearsalIds: [] }
+    const rehearsalCollection = await getCollection('rehearsal');
+    const result = { insertedCount: 0, rehearsalIds: [] };
 
-    const batchSize = 100
+    const batchSize = 100;
     for (let i = 0; i < rehearsals.length; i += batchSize) {
-      const batch = rehearsals.slice(i, i + batchSize)
-      const batchResult = await collection.insertMany(batch)
+      const batch = rehearsals.slice(i, i + batchSize);
+      const batchResult = await rehearsalCollection.insertMany(batch);
 
-      result.insertedCount += batchResult.insertedCount
-      const batchIds = Object.values(batchResult.insertedIds).map(id => id.toString())
-      result.rehearsalIds = [...result.rehearsalIds, ...batchIds]
+      result.insertedCount += batchResult.insertedCount;
+      const batchIds = Object.values(batchResult.insertedIds).map((id) =>
+        id.toString()
+      );
+      result.rehearsalIds = [...result.rehearsalIds, ...batchIds];
     }
 
     if (result.rehearsalIds.length > 0) {
-      await getCollection('orchestra').updateOne(
+      const orchestraCollection = await getCollection('orchestra');
+      await orchestraCollection.updateOne(
         { _id: ObjectId.createFromHexString(orchestraId) },
         { $push: { rehearsalIds: { $each: result.rehearsalIds } } }
-      )
+      );
     }
-    return result
+
+    return result;
   } catch (err) {
-    console.error(`Failed to bulk create rehearsals: ${err}`)
-    throw new Error(`Failed to bulk create rehearsals: ${err}`)
+    console.error(`Failed to bulk create rehearsals: ${err}`);
+    throw new Error(`Failed to bulk create rehearsals: ${err}`);
   }
 }
 
@@ -366,9 +389,13 @@ function _buildCriteria(filterBy) {
     criteria.type = filterBy.type
   }
 
-  if (filterBy.formDate) {
-    criteria.date = criteria.date || {}
-    criteria.date.$gte = new Date(filterBy.fromDate)
+  if (filterBy.fromDate) {
+    criteria.date = criteria.date || {};
+    criteria.date.$gte = new Date(filterBy.fromDate);
+    console.log('Date filter applied:', {
+      fromDate: filterBy.fromDate,
+      converted: new Date(filterBy.fromDate),
+    });
   }
 
   if (filterBy.toDate) {
