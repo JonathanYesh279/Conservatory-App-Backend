@@ -45,30 +45,45 @@ async function getOrchestraById(orchestraId) {
 
 async function addOrchestra(orchestraToAdd) {
   try {
-    const { error, value } = validateOrchestra(orchestraToAdd)
+    const { error, value } = validateOrchestra(orchestraToAdd);
 
-    if (error) throw new Error(`Validation error: ${error.message}`)
-    
+    if (error) throw new Error(`Validation error: ${error.message}`);
+
     if (!value.schoolYearId) {
-      const schoolYearService = require('../school-year/school-year.service.js').schoolYearService
-      const currentSchoolYear = await schoolYearService.getCurrentSchoolYear()
-      value.schoolYearId = currentSchoolYear._id.toString()
+      const schoolYearService =
+        require('../school-year/school-year.service.js').schoolYearService;
+      const currentSchoolYear = await schoolYearService.getCurrentSchoolYear();
+      value.schoolYearId = currentSchoolYear._id.toString();
     }
-    
-    const collection = await getCollection('orchestra')
-    const result = await collection.insertOne(value)
 
-    await getCollection('teacher').updateOne(
+    // Insert into orchestra collection
+    const collection = await getCollection('orchestra');
+    const result = await collection.insertOne(value);
+
+    // Get teacher collection explicitly and check if it's valid
+    const teacherCollection = await getCollection('teacher');
+    if (
+      !teacherCollection ||
+      typeof teacherCollection.updateOne !== 'function'
+    ) {
+      console.error('Teacher collection is not valid:', teacherCollection);
+      throw new Error(
+        'Database connection issue: Cannot access teacher collection'
+      );
+    }
+
+    // Update teacher record
+    await teacherCollection.updateOne(
       { _id: ObjectId.createFromHexString(value.conductorId) },
       {
-        $push: { 'conducting.orchestraIds': result.insertedId.toString() }
+        $push: { 'conducting.orchestraIds': result.insertedId.toString() },
       }
-    )
+    );
 
-    return { id: result.insertedId, ...value }
+    return { _id: result.insertedId, ...value };
   } catch (err) {
-    console.error(`Error in orchestraService.addOrchestra: ${err}`)
-    throw new Error(`Error in orchestraService.addOrchestra: ${err}`)
+    console.error(`Error in orchestraService.addOrchestra: ${err}`);
+    throw new Error(`Error in orchestraService.addOrchestra: ${err}`);
   }
 }
 
@@ -118,40 +133,60 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
 
 async function removeOrchestra(orchestraId, teacherId, isAdmin = false) {
   try {
-    const collection = await getCollection('orchestra')
-    const orchestra = await getOrchestraById(orchestraId)
+    const collection = await getCollection('orchestra');
+    const orchestra = await getOrchestraById(orchestraId);
 
     if (!isAdmin && orchestra.conductorId !== teacherId.toString()) {
-      throw new Error('Not authorized to modify this orchestra')
+      throw new Error('Not authorized to modify this orchestra');
     }
 
-    await getCollection('teacher').updateOne(
+    const teacherCollection = await getCollection('teacher');
+    if (
+      !teacherCollection ||
+      typeof teacherCollection.updateOne !== 'function'
+    ) {
+      throw new Error(
+        'Teacher collection not available or updateOne method not found'
+      );
+    }
+
+    await teacherCollection.updateOne(
       { _id: ObjectId.createFromHexString(orchestra.conductorId) },
       {
-        $pull: { 'conducting.orchestraIds': orchestraId }
+        $pull: { 'conducting.orchestraIds': orchestraId },
       }
-    )
+    );
 
-    await getCollection('student').updateMany(
+    const studentCollection = await getCollection('student');
+    if (
+      !studentCollection ||
+      typeof studentCollection.updateMany !== 'function'
+    ) {
+      throw new Error(
+        'Student collection not available or updateMany method not found'
+      );
+    }
+
+    await studentCollection.updateMany(
       { 'enrollments.orchestraIds': orchestraId },
       {
-        $pull: { 'enrollments.orchestraIds': orchestraId }
+        $pull: { 'enrollments.orchestraIds': orchestraId },
       }
-    )
+    );
 
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(orchestraId) },
       { $set: { isActive: false } },
       { returnDocument: 'after' }
-    )
+    );
 
-    if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`)
-    return result
+    if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`);
+    return result;
   } catch (err) {
-    console.error(`Error in orchestraService.removeOrchestra: ${err}`)
-    throw new Error(`Error in orchestraService.removeOrchestra: ${err}`)
+    console.error(`Error in orchestraService.removeOrchestra: ${err}`);
+    throw new Error(`Error in orchestraService.removeOrchestra: ${err}`);
   }
-} 
+}
 
 async function addMember(orchestraId, studentId, teacherId, isAdmin = false) {
   try {

@@ -1,6 +1,5 @@
 import Joi from 'joi'
 
-const VALID_NAMES = ['תזמורת מתחילים נשיפה', 'תזמורת עתודה נשיפה', 'תזמורת צעירה נשיפה', 'תזמורת יצוגית נשיפה', 'תזמורת סימפונית']
 const VALID_TYPES = ['הרכב', 'תזמורת']
 const VALID_LOCATIONS = [
   'אולם ערן',
@@ -38,22 +37,26 @@ const VALID_LOCATIONS = [
 ];
 
 export const orchestraSchema = Joi.object({
-  name: Joi.string().valid(...VALID_NAMES).required(),
-  type: Joi.string().valid(...VALID_TYPES).required(),
+  // Allow any name string (removed validation against VALID_NAMES)
+  name: Joi.string().trim().required(),
+  type: Joi.string()
+    .valid(...VALID_TYPES)
+    .required(),
   conductorId: Joi.string().required(),
   memberIds: Joi.array().items(Joi.string()).default([]),
   rehearsalIds: Joi.array().items(Joi.string()).default([]),
   schoolYearId: Joi.string().required(),
-  location: Joi.string().valid(...VALID_LOCATIONS).default('חדר 1'),
-  isActive: Joi.boolean().default(true)
-})
+  location: Joi.string()
+    .valid(...VALID_LOCATIONS)
+    .default('חדר 1'),
+  isActive: Joi.boolean().default(true),
+});
 
 export function validateOrchestra(orchestra) {
-  return orchestraSchema.validate(orchestra, { abortEarly: false })
+  return orchestraSchema.validate(orchestra, { abortEarly: false });
 }
 
 export const ORCHESTRA_CONSTANTS = {
   VALID_TYPES,
-  VALID_NAMES,
-  VALID_LOCATIONS
+  VALID_LOCATIONS,
 };
