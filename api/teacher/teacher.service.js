@@ -135,7 +135,14 @@ async function getTeacherByRole(role) {
 }
 
 async function updateTeacherSchedule(teacherId, scheduleData) {
+  // Validate that all required fields have values
   const { studentId, day, time, duration } = scheduleData;
+
+  if (!studentId || !day || !time || !duration) {
+    throw new Error(
+      'Schedule data is incomplete: all fields (studentId, day, time, duration) are required'
+    );
+  }
 
   const collection = await getCollection('teacher');
   return await collection.updateOne(
