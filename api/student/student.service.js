@@ -82,36 +82,143 @@ async function addStudent(studentToAdd, teacherId = null, isAdmin = false) {
   }
 }
 
-async function updateStudent(studentId, studentToUpdate, teacherId = null, isAdmin = false) {
+async function updateStudent(
+  studentId,
+  studentToUpdate,
+  teacherId = null,
+  isAdmin = false
+) {
   try {
-    // For updates, use the flexible validation schema
-    const { error, value } = validateStudent(studentToUpdate, true)
-    if (error) throw new Error(`Invalid student data: ${error.message}`)
-    
-    if (teacherId && !isAdmin) {
-      const hasAccess = await checkTeacherHasAccessToStudent(teacherId, studentId)
-      if (!hasAccess) {
-        throw new Error('Not authorized to update student')
+    // Check if this is a test status update only
+    const isTestStatusUpdate =
+      studentToUpdate.academicInfo?.tests &&
+      Object.keys(studentToUpdate).length === 1 &&
+      Object.keys(studentToUpdate.academicInfo).length === 1;
+
+    // If it's just a test status update, handle it differently
+    if (isTestStatusUpdate) {
+      // First get the current student data
+      const collection = await getCollection('student');
+      const currentStudent = await collection.findOne({
+        _id: ObjectId.createFromHexString(studentId),
+      });
+
+      if (!currentStudent)
+        throw new Error(`Student with id ${studentId} not found`);
+
+      // Check teacher access if needed
+      if (teacherId && !isAdmin) {
+        const hasAccess = await checkTeacherHasAccessToStudent(
+          teacherId,
+          studentId
+        );
+        if (!hasAccess) {
+          throw new Error('Not authorized to update student');
+        }
       }
+
+      // Create a focused update for just the tests
+      const testsUpdate = {
+        'academicInfo.tests': studentToUpdate.academicInfo.tests,
+        updatedAt: new Date(),
+      };
+
+      // Check if we need to auto-increment the stage
+      if (studentToUpdate.academicInfo?.tests?.stageTest?.status) {
+        const newStatus = studentToUpdate.academicInfo.tests.stageTest.status;
+        const previousStatus =
+          currentStudent.academicInfo?.tests?.stageTest?.status || 'לא נבחן';
+
+        // Check if the status is changed to any pass status and previous wasn't a pass
+        const passStatuses = ['עבר/ה', 'עבר/ה בהצלחה', 'עבר/ה בהצטיינות'];
+
+        if (
+          passStatuses.includes(newStatus) &&
+          !passStatuses.includes(previousStatus) &&
+          currentStudent.academicInfo.currentStage < 8 // Don't increment beyond max stage
+        ) {
+          // Auto-increment the stage
+          testsUpdate['academicInfo.currentStage'] =
+            currentStudent.academicInfo.currentStage + 1;
+        }
+      }
+
+      // Apply the focused update
+      const result = await collection.findOneAndUpdate(
+        { _id: ObjectId.createFromHexString(studentId) },
+        { $set: testsUpdate },
+        { returnDocument: 'after' }
+      );
+
+      if (!result) throw new Error(`Student with id ${studentId} not found`);
+      return result;
     }
+    // For standard updates, use the existing validation logic
+    else {
+      // For updates, use the flexible validation schema
+      const { error, value } = validateStudent(studentToUpdate, true);
+      if (error) throw new Error(`Invalid student data: ${error.message}`);
 
-    // Set the updatedAt field
-    value.updatedAt = new Date()
+      if (teacherId && !isAdmin) {
+        const hasAccess = await checkTeacherHasAccessToStudent(
+          teacherId,
+          studentId
+        );
+        if (!hasAccess) {
+          throw new Error('Not authorized to update student');
+        }
+      }
 
-    // Apply the update
-    const collection = await getCollection('student')
-    const result = await collection.findOneAndUpdate(
-      { _id: ObjectId.createFromHexString(studentId) },
-      { $set: value },
-      { returnDocument: 'after' }
-    )
-    
-    if (!result) throw new Error(`Student with id ${studentId} not found`)
-    
-    return result
+      // Set the updatedAt field
+      value.updatedAt = new Date();
+
+      // Before applying the update, get the current student data
+      const collection = await getCollection('student');
+      const currentStudent = await collection.findOne({
+        _id: ObjectId.createFromHexString(studentId),
+      });
+
+      if (!currentStudent)
+        throw new Error(`Student with id ${studentId} not found`);
+
+      // Check if we need to auto-increment the stage
+      if (value.academicInfo?.tests?.stageTest?.status) {
+        const newStatus = value.academicInfo.tests.stageTest.status;
+        const previousStatus =
+          currentStudent.academicInfo?.tests?.stageTest?.status || 'לא נבחן';
+
+        // Check if the status is changed to any pass status and previous wasn't a pass
+        const passStatuses = ['עבר/ה', 'עבר/ה בהצלחה', 'עבר/ה בהצטיינות'];
+
+        if (
+          passStatuses.includes(newStatus) &&
+          !passStatuses.includes(previousStatus) &&
+          currentStudent.academicInfo.currentStage < 8 // Don't increment beyond max stage
+        ) {
+          // Auto-increment the stage if not explicitly set in the update
+          if (!value.academicInfo) {
+            value.academicInfo = {};
+          }
+          if (value.academicInfo.currentStage === undefined) {
+            value.academicInfo.currentStage =
+              currentStudent.academicInfo.currentStage + 1;
+          }
+        }
+      }
+
+      // Apply the update
+      const result = await collection.findOneAndUpdate(
+        { _id: ObjectId.createFromHexString(studentId) },
+        { $set: value },
+        { returnDocument: 'after' }
+      );
+
+      if (!result) throw new Error(`Student with id ${studentId} not found`);
+      return result;
+    }
   } catch (err) {
-    console.error(`Error updating student: ${err.message}`)
-    throw new Error(`Error updating student: ${err.message}`)
+    console.error(`Error updating student: ${err.message}`);
+    throw new Error(`Error updating student: ${err.message}`);
   }
 }
 

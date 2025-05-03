@@ -1,18 +1,53 @@
-import Joi from 'joi'
+import Joi from 'joi';
 
-const VALID_CLASSES = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'יא', 'יב', 'אחר']
-const VALID_STAGES = [1, 2, 3, 4, 5, 6, 7, 8]
-const VALID_INSTRUMENTS = ['חצוצרה', 'חליל צד', 'קלרינט', 'קרן יער', 'בריטון', 'טרומבון', 'סקסופון', 'אבוב']
+const VALID_CLASSES = [
+  'א',
+  'ב',
+  'ג',
+  'ד',
+  'ה',
+  'ו',
+  'ז',
+  'ח',
+  'ט',
+  'י',
+  'יא',
+  'יב',
+  'אחר',
+];
+const VALID_STAGES = [1, 2, 3, 4, 5, 6, 7, 8];
+const VALID_INSTRUMENTS = [
+  'חצוצרה',
+  'חליל צד',
+  'קלרינט',
+  'קרן יער',
+  'בריטון',
+  'טרומבון',
+  'סקסופון',
+  'אבוב',
+];
+// Update the test statuses to include the new options
+const TEST_STATUSES = [
+  'לא נבחן',
+  'עבר/ה',
+  'לא עבר/ה',
+  'עבר/ה בהצלחה',
+  'עבר/ה בהצטיינות',
+];
 
 // Schema for creating a new student (all required fields)
 export const studentSchema = Joi.object({
-   personalInfo: Joi.object({
+  personalInfo: Joi.object({
     fullName: Joi.string().required(),
-    phone: Joi.string().pattern(/^05\d{8}$/).allow(null),
+    phone: Joi.string()
+      .pattern(/^05\d{8}$/)
+      .allow(null),
     age: Joi.number().min(0).max(99).allow(null),
     address: Joi.string().allow(null),
     parentName: Joi.string().allow(null),
-    parentPhone: Joi.string().pattern(/^05\d{8}$/).allow(null),
+    parentPhone: Joi.string()
+      .pattern(/^05\d{8}$/)
+      .allow(null),
     parentEmail: Joi.string().email().allow(null),
     studentEmail: Joi.string().email().allow(null),
   }).required(),
@@ -33,7 +68,7 @@ export const studentSchema = Joi.object({
     tests: Joi.object({
       stageTest: Joi.object({
         status: Joi.string()
-          .valid('לא נבחן', 'עבר/ה', 'לא עבר/ה')
+          .valid(...TEST_STATUSES)
           .default('לא נבחן'),
         lastTestDate: Joi.date().allow(null),
         nextTestDate: Joi.date().allow(null),
@@ -54,12 +89,14 @@ export const studentSchema = Joi.object({
     orchestraIds: Joi.array().items(Joi.string()).default([]),
     ensembleIds: Joi.array().items(Joi.string()).default([]),
 
-    schoolYears: Joi.array().items(
-      Joi.object({
-        schoolYearId: Joi.string().required(),
-        isActive: Joi.boolean().default(true),
-      })
-    ).default([]),
+    schoolYears: Joi.array()
+      .items(
+        Joi.object({
+          schoolYearId: Joi.string().required(),
+          isActive: Joi.boolean().default(true),
+        })
+      )
+      .default([]),
   }).default({ orchestraIds: [], ensembleIds: [], schoolYears: [] }),
 
   teacherIds: Joi.array().items(Joi.string()).default([]),
@@ -67,17 +104,21 @@ export const studentSchema = Joi.object({
   isActive: Joi.boolean().default(true),
   createdAt: Joi.date().default(new Date()),
   updatedAt: Joi.date().default(new Date()),
-})
+});
 
 // Schema for updating a student (partial updates allowed)
 export const studentUpdateSchema = Joi.object({
-   personalInfo: Joi.object({
+  personalInfo: Joi.object({
     fullName: Joi.string(),
-    phone: Joi.string().pattern(/^05\d{8}$/).allow(null),
+    phone: Joi.string()
+      .pattern(/^05\d{8}$/)
+      .allow(null),
     age: Joi.number().min(0).max(99).allow(null),
     address: Joi.string().allow(null),
     parentName: Joi.string().allow(null),
-    parentPhone: Joi.string().pattern(/^05\d{8}$/).allow(null),
+    parentPhone: Joi.string()
+      .pattern(/^05\d{8}$/)
+      .allow(null),
     parentEmail: Joi.string().email().allow(null),
     studentEmail: Joi.string().email().allow(null),
   }),
@@ -92,15 +133,13 @@ export const studentUpdateSchema = Joi.object({
     class: Joi.string().valid(...VALID_CLASSES),
     tests: Joi.object({
       stageTest: Joi.object({
-        status: Joi.string()
-          .valid('לא נבחן', 'עבר/ה', 'לא עבר/ה'),
+        status: Joi.string().valid(...TEST_STATUSES),
         lastTestDate: Joi.date().allow(null),
         nextTestDate: Joi.date().allow(null),
         notes: Joi.string().allow(''),
       }),
       technicalTest: Joi.object({
-        status: Joi.string()
-          .valid('לא נבחן', 'עבר/ה', 'לא עבר/ה'),
+        status: Joi.string().valid('לא נבחן', 'עבר/ה', 'לא עבר/ה'),
         lastTestDate: Joi.date().allow(null),
         nextTestDate: Joi.date().allow(null),
         notes: Joi.string().allow(''),
@@ -123,15 +162,15 @@ export const studentUpdateSchema = Joi.object({
 
   isActive: Joi.boolean(),
   updatedAt: Joi.date().default(new Date()),
-})
+});
 
 export function validateStudent(student, isUpdate = false) {
-  const schema = isUpdate ? studentUpdateSchema : studentSchema
-  return schema.validate(student, { abortEarly: false })
+  const schema = isUpdate ? studentUpdateSchema : studentSchema;
+  return schema.validate(student, { abortEarly: false });
 }
 
 export const STUDENT_CONSTANTS = {
   VALID_CLASSES,
   VALID_STAGES,
-  TEST_STATUSES: ['לא נבחן', 'עבר/ה', 'לא עבר/ה'],
-}
+  TEST_STATUSES,
+};
