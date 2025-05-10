@@ -31,9 +31,41 @@ const TEST_STATUSES = [
   'לא נבחן',
   'עבר/ה',
   'לא עבר/ה',
-  'עבר/ה בהצלחה',
   'עבר/ה בהצטיינות',
+  'עבר/ה בהצטיינות יתרה',
 ];
+
+// Schema for instrument-specific progress tracking
+const instrumentProgressSchema = Joi.object({
+  instrumentName: Joi.string()
+    .valid(...VALID_INSTRUMENTS)
+    .required(),
+  isPrimary: Joi.boolean().default(false),
+  currentStage: Joi.number()
+    .valid(...VALID_STAGES)
+    .required()
+    .messages({
+      'any.only': 'Current stage must be a number between 1 and 8',
+    }),
+  tests: Joi.object({
+    stageTest: Joi.object({
+      status: Joi.string()
+        .valid(...TEST_STATUSES)
+        .default('לא נבחן'),
+      lastTestDate: Joi.date().allow(null),
+      nextTestDate: Joi.date().allow(null),
+      notes: Joi.string().allow(''),
+    }),
+    technicalTest: Joi.object({
+      status: Joi.string()
+        .valid('לא נבחן', 'עבר/ה', 'לא עבר/ה')
+        .default('לא נבחן'),
+      lastTestDate: Joi.date().allow(null),
+      nextTestDate: Joi.date().allow(null),
+      notes: Joi.string().allow(''),
+    }),
+  }).default({}),
+});
 
 // Schema for creating a new student (all required fields)
 export const studentSchema = Joi.object({
@@ -53,36 +85,13 @@ export const studentSchema = Joi.object({
   }).required(),
 
   academicInfo: Joi.object({
-    instrument: Joi.string()
-      .valid(...VALID_INSTRUMENTS)
+    instrumentProgress: Joi.array()
+      .items(instrumentProgressSchema)
+      .min(1)
       .required(),
-    currentStage: Joi.number()
-      .valid(...VALID_STAGES)
-      .required()
-      .messages({
-        'any.only': 'Current stage must be a number between 1 and 8',
-      }),
     class: Joi.string()
       .valid(...VALID_CLASSES)
       .required(),
-    tests: Joi.object({
-      stageTest: Joi.object({
-        status: Joi.string()
-          .valid(...TEST_STATUSES)
-          .default('לא נבחן'),
-        lastTestDate: Joi.date().allow(null),
-        nextTestDate: Joi.date().allow(null),
-        notes: Joi.string().allow(''),
-      }),
-      technicalTest: Joi.object({
-        status: Joi.string()
-          .valid('לא נבחן', 'עבר/ה', 'לא עבר/ה')
-          .default('לא נבחן'),
-        lastTestDate: Joi.date().allow(null),
-        nextTestDate: Joi.date().allow(null),
-        notes: Joi.string().allow(''),
-      }),
-    }).default({}),
   }).required(),
 
   enrollments: Joi.object({
@@ -124,27 +133,8 @@ export const studentUpdateSchema = Joi.object({
   }),
 
   academicInfo: Joi.object({
-    instrument: Joi.string().valid(...VALID_INSTRUMENTS),
-    currentStage: Joi.number()
-      .valid(...VALID_STAGES)
-      .messages({
-        'any.only': 'Current stage must be a number between 1 and 8',
-      }),
+    instrumentProgress: Joi.array().items(instrumentProgressSchema),
     class: Joi.string().valid(...VALID_CLASSES),
-    tests: Joi.object({
-      stageTest: Joi.object({
-        status: Joi.string().valid(...TEST_STATUSES),
-        lastTestDate: Joi.date().allow(null),
-        nextTestDate: Joi.date().allow(null),
-        notes: Joi.string().allow(''),
-      }),
-      technicalTest: Joi.object({
-        status: Joi.string().valid('לא נבחן', 'עבר/ה', 'לא עבר/ה'),
-        lastTestDate: Joi.date().allow(null),
-        nextTestDate: Joi.date().allow(null),
-        notes: Joi.string().allow(''),
-      }),
-    }),
   }),
 
   enrollments: Joi.object({
