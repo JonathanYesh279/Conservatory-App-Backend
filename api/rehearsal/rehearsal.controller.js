@@ -143,6 +143,7 @@ async function bulkCreateRehearsals(req, res) {
       JSON.stringify(bulkData, null, 2)
     );
 
+    // Validate that we have schoolYearId
     if (!bulkData.schoolYearId) {
       console.error('Missing schoolYearId in bulk rehearsal data');
       return res.status(400).json({
@@ -152,9 +153,40 @@ async function bulkCreateRehearsals(req, res) {
       });
     }
 
+    // Ensure all other required fields are present
+    const requiredFields = [
+      'orchestraId',
+      'startDate',
+      'endDate',
+      'dayOfWeek',
+      'startTime',
+      'endTime',
+      'location',
+    ];
+    for (const field of requiredFields) {
+      if (!bulkData[field] && bulkData[field] !== 0) {
+        // Allow 0 for dayOfWeek
+        console.error(
+          `Missing required field: ${field} in bulk rehearsal data`
+        );
+        return res.status(400).json({
+          error: `Missing required field: ${field} in bulk rehearsal data`,
+        });
+      }
+    }
+
+    // Ensure teacherId is properly passed
+    const teacherId = req.loggedinUser?._id;
+    if (!teacherId) {
+      return res.status(401).json({
+        error: 'Authentication required for bulk rehearsal creation',
+      });
+    }
+
+    // Call the service function with the proper parameters
     const result = await rehearsalService.bulkCreateRehearsals(
       bulkData,
-      req.loggedinUser._id,
+      teacherId,
       req.loggedinUser.roles.includes('מנהל')
     );
 

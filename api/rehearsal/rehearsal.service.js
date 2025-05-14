@@ -443,18 +443,41 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
   }
 }
 
-async function updateAttendance(rehearsalId, attendanceData, isAdmin = false) {
+async function updateAttendance(
+  rehearsalId,
+  attendanceData,
+  teacherId,
+  isAdmin = false
+) {
   try {
     const { error, value } = validateAttendance(attendanceData);
     if (error) throw error;
 
     const { present, absent } = value;
 
-    if (!isAdmin) {
-      throw new Error('Not authorized to update attendance');
-    }
-
+    // Load the rehearsal to get details
     const rehearsal = await getRehearsalById(rehearsalId);
+
+    if (!isAdmin) {
+      // Check if teacher has permissions for this orchestra
+      const orchestraCollection = await getCollection('orchestra');
+      if (!orchestraCollection) {
+        throw new Error(
+          'Database error: Failed to access orchestra collection'
+        );
+      }
+
+      const orchestra = await orchestraCollection.findOne({
+        _id: ObjectId.createFromHexString(rehearsal.groupId),
+        conductorId: teacherId.toString(),
+      });
+
+      if (!orchestra) {
+        throw new Error(
+          'Not authorized to update attendance for this rehearsal'
+        );
+      }
+    }
 
     const collection = await getCollection('rehearsal');
     if (!collection) {
@@ -477,48 +500,48 @@ async function updateAttendance(rehearsalId, attendanceData, isAdmin = false) {
 
     if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`);
 
-    const activityCollection = await getCollection('activity_attendance');
-    if (!activityCollection) {
-      console.warn(
-        'Activity attendance collection not available, skipping attendance records'
-      );
-      return result;
+    try {
+      const activityCollection = await getCollection('activity_attendance');
+      if (activityCollection) {
+        // Delete existing attendance records
+        await activityCollection.deleteMany({
+          sessionId: rehearsalId,
+          activityType: 'תזמורת',
+        });
+
+        // Create new attendance records
+        const presentPromises = present.map((studentId) =>
+          activityCollection.insertOne({
+            studentId,
+            activityType: 'תזמורת',
+            groupId: rehearsal.groupId,
+            sessionId: rehearsalId,
+            date: rehearsal.date,
+            status: 'הגיע/ה',
+            notes: '',
+            createdAt: new Date(),
+          })
+        );
+
+        const absentPromises = absent.map((studentId) =>
+          activityCollection.insertOne({
+            studentId,
+            activityType: 'תזמורת',
+            groupId: rehearsal.groupId,
+            sessionId: rehearsalId,
+            date: rehearsal.date,
+            status: 'לא הגיע/ה',
+            notes: '',
+            createdAt: new Date(),
+          })
+        );
+
+        await Promise.all([...presentPromises, ...absentPromises]);
+      }
+    } catch (activityErr) {
+      // Log but don't fail if activity records couldn't be created
+      console.warn(`Could not create activity records: ${activityErr.message}`);
     }
-
-    // Delete existing attendance records
-    await activityCollection.deleteMany({
-      sessionId: rehearsalId,
-      activityType: 'תזמורת',
-    });
-
-    // Create new attendance records
-    const presentPromises = present.map((studentId) =>
-      activityCollection.insertOne({
-        studentId,
-        activityType: 'תזמורת',
-        groupId: rehearsal.groupId,
-        sessionId: rehearsalId,
-        date: rehearsal.date,
-        status: 'הגיע/ה',
-        notes: '',
-        createdAt: new Date(),
-      })
-    );
-
-    const absentPromises = absent.map((studentId) =>
-      activityCollection.insertOne({
-        studentId,
-        activityType: 'תזמורת',
-        groupId: rehearsal.groupId,
-        sessionId: rehearsalId,
-        date: rehearsal.date,
-        status: 'לא הגיע/ה',
-        notes: '',
-        createdAt: new Date(),
-      })
-    );
-
-    await Promise.all([...presentPromises, ...absentPromises]);
 
     return result;
   } catch (err) {
@@ -527,6 +550,7 @@ async function updateAttendance(rehearsalId, attendanceData, isAdmin = false) {
   }
 }
 
+// Helper function to generate dates for a specific day of the week
 function _generateDatesForDayOfWeek(
   startDate,
   endDate,
@@ -562,6 +586,7 @@ function _generateDatesForDayOfWeek(
   return dates;
 }
 
+// Helper function to build query criteria from filter
 function _buildCriteria(filterBy) {
   const criteria = {};
 
