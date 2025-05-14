@@ -1,6 +1,11 @@
-import { getCollection } from '../../services/mongoDB.service.js'
-import { validateRehearsal, validateBulkCreate, validateAttendance } from './rehearsal.validation.js'
-import { ObjectId } from 'mongodb'
+// api/rehearsal/rehearsal.service.js
+import { getCollection } from '../../services/mongoDB.service.js';
+import {
+  validateRehearsal,
+  validateBulkCreate,
+  validateAttendance,
+} from './rehearsal.validation.js';
+import { ObjectId } from 'mongodb';
 
 export const rehearsalService = {
   getRehearsals,
@@ -10,142 +15,219 @@ export const rehearsalService = {
   updateRehearsal,
   removeRehearsal,
   bulkCreateRehearsals,
-  updateAttendance
-}
+  updateAttendance,
+};
 
 async function getRehearsals(filterBy = {}) {
   try {
-    const collection = await getCollection('rehearsal')
-    const criteria = _buildCriteria(filterBy) 
+    const collection = await getCollection('rehearsal');
+    const criteria = _buildCriteria(filterBy);
 
-    const rehearsal = await collection.find(criteria).sort({ date: 1 }).toArray()
+    const rehearsal = await collection
+      .find(criteria)
+      .sort({ date: 1 })
+      .toArray();
 
-    return rehearsal
+    return rehearsal;
   } catch (err) {
-    console.error(`Failed to get rehearsals: ${err}`)
-    throw new Error(`Failed to get rehearsals: ${err}`)
+    console.error(`Failed to get rehearsals: ${err}`);
+    throw new Error(`Failed to get rehearsals: ${err}`);
   }
 }
 
 async function getRehearsalById(rehearsalId) {
   try {
-    const collection = await getCollection('rehearsal')
+    const collection = await getCollection('rehearsal');
     const rehearsal = await collection.findOne({
-      _id: ObjectId.createFromHexString(rehearsalId)
-    })
+      _id: ObjectId.createFromHexString(rehearsalId),
+    });
 
-    if (!rehearsal) throw new Error(`Rehearsal with id ${rehearsalId} not found`)
-    return rehearsal
+    if (!rehearsal)
+      throw new Error(`Rehearsal with id ${rehearsalId} not found`);
+    return rehearsal;
   } catch (err) {
-    console.error(`Failed to get rehearsal by id: ${err}`)
-    throw new Error(`Failed to get rehearsal by id: ${err}`)
+    console.error(`Failed to get rehearsal by id: ${err}`);
+    throw new Error(`Failed to get rehearsal by id: ${err}`);
   }
 }
 
 async function getOrchestraRehearsals(orchestraId, filterBy = {}) {
   try {
-    filterBy.groupId = orchestraId
+    filterBy.groupId = orchestraId;
 
-    return await getRehearsals(filterBy)
+    return await getRehearsals(filterBy);
   } catch (err) {
-    console.error(`Failed to get orchestra rehearsals: ${err}`)
-    throw new Error(`Failed to get orchestra rehearsals: ${err}`)
+    console.error(`Failed to get orchestra rehearsals: ${err}`);
+    throw new Error(`Failed to get orchestra rehearsals: ${err}`);
   }
 }
 
 async function addRehearsal(rehearsalToAdd, teacherId, isAdmin = false) {
   try {
-    const { error, value } = validateRehearsal(rehearsalToAdd)
-    if (error) throw error
+    console.log(
+      'Adding rehearsal with data:',
+      JSON.stringify(rehearsalToAdd, null, 2)
+    );
+
+    const { error, value } = validateRehearsal(rehearsalToAdd);
+    if (error) {
+      console.error(`Validation error:`, error.details);
+      throw error;
+    }
+
+    if (!value.schoolYearId) {
+      console.error('Missing required schoolYearId in rehearsal data');
+      throw new Error('School year ID is required');
+    }
 
     if (!isAdmin) {
-      const orchestra = await getCollection('orchestra').findOne({
+      // Get the orchestra collection first and verify permissions
+      const orchestraCollection = await getCollection('orchestra');
+      if (!orchestraCollection) {
+        console.error('Failed to get orchestra collection');
+        throw new Error(
+          'Database error: Failed to access orchestra collection'
+        );
+      }
+
+      const orchestra = await orchestraCollection.findOne({
         _id: ObjectId.createFromHexString(value.groupId),
-        conductorId: teacherId.toString()
-      })
+        conductorId: teacherId.toString(),
+      });
 
       if (!orchestra) {
-        throw new Error('Not authorized to add rehearsal for this orchestra')  
-      }
-
-      if (!value.schoolYearId) {
-      const schoolYearService = require('../school-year/school-year.service.js').schoolYearService
-      const currentSchoolYear = await schoolYearService.getCurrentSchoolYear()
-      value.schoolYearId = currentSchoolYear._id.toString()
+        throw new Error('Not authorized to add rehearsal for this orchestra');
       }
     }
 
-    value.createdAt = new Date()
-    value.updatedAt = new Date()
+    // Set creation timestamps
+    value.createdAt = new Date();
+    value.updatedAt = new Date();
 
+    // Calculate day of week if not provided
     if (value.dayOfWeek === undefined) {
-      const rehearsalDate = new Date(value.date)
-      value.dayOfWeek = rehearsalDate.getDay()
+      const rehearsalDate = new Date(value.date);
+      value.dayOfWeek = rehearsalDate.getDay();
     }
 
-    const collection = await getCollection('rehearsal')
-    const result = await collection.insertOne(value)
+    // Insert rehearsal
+    const rehearsalCollection = await getCollection('rehearsal');
+    if (!rehearsalCollection) {
+      console.error('Failed to get rehearsal collection');
+      throw new Error('Database error: Failed to access rehearsal collection');
+    }
 
+    const result = await rehearsalCollection.insertOne(value);
+    console.log(
+      `Successfully inserted rehearsal with ID: ${result.insertedId}`
+    );
+
+    // Update orchestra if this is an orchestra rehearsal
     if (value.type === 'תזמורת') {
-      await getCollection('orchestra').updateOne(
-        { _id: ObjectId.createFromHexString(value.groupId) },
-        { $push: { rehearsalIds: result.insertedId.toString() } }
-      )
+      try {
+        const orchestraCollection = await getCollection('orchestra');
+        if (!orchestraCollection) {
+          console.error('Failed to get orchestra collection for updating');
+          throw new Error(
+            'Database error: Failed to access orchestra collection'
+          );
+        }
+
+        const updateResult = await orchestraCollection.updateOne(
+          { _id: ObjectId.createFromHexString(value.groupId) },
+          { $push: { rehearsalIds: result.insertedId.toString() } }
+        );
+
+        console.log(`Orchestra update result: ${JSON.stringify(updateResult)}`);
+      } catch (updateErr) {
+        // If the orchestra update fails, log it but don't fail the entire operation
+        console.error(
+          `Failed to update orchestra with rehearsal ID: ${updateErr}`
+        );
+      }
     }
 
-    return { id: result.insertedId, ...value }
+    return {
+      _id: result.insertedId,
+      id: result.insertedId,
+      ...value,
+    };
   } catch (err) {
-    console.error(`Failed to add rehearsal: ${err}`)
-    throw new Error(`Failed to add rehearsal: ${err}`)
+    console.error(`Failed to add rehearsal: ${err}`);
+    throw new Error(`Failed to add rehearsal: ${err}`);
   }
 }
 
-async function updateRehearsal(rehearsalId, rehearsalToUpdate, teacherId, isAdmin = false) {
+async function updateRehearsal(
+  rehearsalId,
+  rehearsalToUpdate,
+  teacherId,
+  isAdmin = false
+) {
   try {
-    const { error, value } = validateRehearsal(rehearsalToUpdate)
+    const { error, value } = validateRehearsal(rehearsalToUpdate);
 
-    if (error) throw error
+    if (error) throw error;
 
-    value.updatedAt = new Date()
+    value.updatedAt = new Date();
 
     if (!isAdmin) {
-      const orchestra = await getCollection('orchestra').findOne({
-        _id: ObjectId.createFromHexString(value.groupId)
-      })
+      const orchestraCollection = await getCollection('orchestra');
+      if (!orchestraCollection) {
+        throw new Error(
+          'Database error: Failed to access orchestra collection'
+        );
+      }
+
+      const orchestra = await orchestraCollection.findOne({
+        _id: ObjectId.createFromHexString(value.groupId),
+      });
 
       if (!orchestra) {
-        throw new Error(`Orchestra with id ${value.groupId} not found`)
+        throw new Error(`Orchestra with id ${value.groupId} not found`);
       }
 
       if (orchestra.conductorId !== teacherId.toString()) {
-        throw new Error(`Teacher with id ${teacherId} is not the conductor of the orchestra`)
+        throw new Error(
+          `Teacher with id ${teacherId} is not the conductor of the orchestra`
+        );
       }
     }
 
-    const collection = await getCollection('rehearsal')
+    const collection = await getCollection('rehearsal');
+    if (!collection) {
+      throw new Error('Database error: Failed to access rehearsal collection');
+    }
+
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(rehearsalId) },
       { $set: value },
       { returnDocument: 'after' }
-    )
+    );
 
-    if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`)
-    return result
+    if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`);
+    return result;
   } catch (err) {
-    console.error(`Failed to update rehearsal: ${err}`)
-    throw new Error(`Failed to update rehearsal: ${err}`)
+    console.error(`Failed to update rehearsal: ${err}`);
+    throw new Error(`Failed to update rehearsal: ${err}`);
   }
 }
 
 async function removeRehearsal(rehearsalId, teacherId, isAdmin = false) {
   try {
-    const rehearsal = await getRehearsalById(rehearsalId)
+    const rehearsal = await getRehearsalById(rehearsalId);
 
     if (!isAdmin) {
-      const orchestraCollection = await getCollection('orchestra')
+      const orchestraCollection = await getCollection('orchestra');
+      if (!orchestraCollection) {
+        throw new Error(
+          'Database error: Failed to access orchestra collection'
+        );
+      }
+
       const orchestra = await orchestraCollection.findOne({
         _id: ObjectId.createFromHexString(rehearsal.groupId),
-      })
+      });
 
       if (!orchestra)
         throw new Error(`Orchestra with id ${rehearsal.groupId} not found`);
@@ -153,18 +235,24 @@ async function removeRehearsal(rehearsalId, teacherId, isAdmin = false) {
       if (orchestra.conductorId !== teacherId.toString())
         throw new Error(
           `Teacher with id ${teacherId} is not the conductor of the orchestra`
-        )
+        );
     }
 
     if (rehearsal.type === 'תזמורת') {
       const orchestraCollection = await getCollection('orchestra');
-      await orchestraCollection.updateOne(
-        { _id: ObjectId.createFromHexString(rehearsal.groupId) },
-        { $pull: { rehearsalIds: rehearsalId } }
-      )
+      if (orchestraCollection) {
+        await orchestraCollection.updateOne(
+          { _id: ObjectId.createFromHexString(rehearsal.groupId) },
+          { $pull: { rehearsalIds: rehearsalId } }
+        );
+      }
     }
 
     const collection = await getCollection('rehearsal');
+    if (!collection) {
+      throw new Error('Database error: Failed to access rehearsal collection');
+    }
+
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(rehearsalId) },
       {
@@ -187,20 +275,43 @@ async function removeRehearsal(rehearsalId, teacherId, isAdmin = false) {
 
 async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
   try {
+    console.log(
+      'Bulk creating rehearsals with data:',
+      JSON.stringify(data, null, 2)
+    );
+
     const { error, value } = validateBulkCreate(data);
-    if (error) throw error;
+    if (error) {
+      console.error(`Bulk validation error:`, error.details);
+      throw error;
+    }
 
+    // Check authorization if not admin
     if (!isAdmin) {
-      const orchestraCollection = await getCollection('orchestra');
-      const orchestra = await orchestraCollection.findOne({
-        _id: ObjectId.createFromHexString(value.orchestraId),
-        conductorId: teacherId.toString(),
-      });
+      try {
+        const orchestraCollection = await getCollection('orchestra');
+        if (!orchestraCollection) {
+          throw new Error(
+            'Database error: Failed to access orchestra collection'
+          );
+        }
 
-      if (!orchestra) {
-        throw new Error(
-          'Not authorized to bulk create rehearsals for this orchestra'
-        );
+        const teacherIdStr = teacherId ? teacherId.toString() : '';
+        console.log(`Checking orchestra access for teacher: ${teacherIdStr}`);
+
+        const orchestra = await orchestraCollection.findOne({
+          _id: ObjectId.createFromHexString(value.orchestraId),
+          conductorId: teacherIdStr,
+        });
+
+        if (!orchestra) {
+          throw new Error(
+            'Not authorized to bulk create rehearsals for this orchestra'
+          );
+        }
+      } catch (authErr) {
+        console.error(`Authorization error: ${authErr.message}`);
+        throw new Error(`Authorization failed: ${authErr.message}`);
       }
     }
 
@@ -212,18 +323,18 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
       startTime,
       endTime,
       location,
-      excludeDates = [], // Changed from excludesDates to excludeDates
+      excludeDates = [],
       notes,
+      schoolYearId,
     } = value;
 
-    // Get current school year
-    const schoolYearServiceModule = await import(
-      '../school-year/school-year.service.js'
-    );
-    const schoolYearService = schoolYearServiceModule.schoolYearService;
-    const currentSchoolYear = await schoolYearService.getCurrentSchoolYear();
-    const schoolYearId = currentSchoolYear._id.toString();
+    // Verify school year ID
+    if (!schoolYearId) {
+      console.error('Missing schoolYearId in bulk rehearsal data');
+      throw new Error('School year ID is required for bulk creation');
+    }
 
+    // Generate dates for rehearsals
     const dates = _generateDatesForDayOfWeek(
       new Date(startDate),
       new Date(endDate),
@@ -231,6 +342,9 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
       (excludeDates || []).map((day) => new Date(day))
     );
 
+    console.log(`Generated ${dates.length} dates for rehearsals`);
+
+    // Create rehearsal documents
     const rehearsals = dates.map((date) => ({
       groupId: orchestraId,
       type: 'תזמורת',
@@ -241,39 +355,87 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
       location,
       attendance: { present: [], absent: [] },
       notes: notes || '',
-      schoolYearId, // Add school year ID
+      schoolYearId: schoolYearId,
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }));
 
     if (rehearsals.length === 0) {
+      console.log('No rehearsal dates generated, returning empty result');
       return { insertedCount: 0, rehearsalIds: [] };
     }
 
-    const rehearsalCollection = await getCollection('rehearsal');
+    // Get rehearsal collection
+    let rehearsalCollection;
+    try {
+      rehearsalCollection = await getCollection('rehearsal');
+      if (!rehearsalCollection) {
+        throw new Error('Rehearsal collection is undefined');
+      }
+    } catch (dbErr) {
+      console.error(`Failed to get rehearsal collection: ${dbErr}`);
+      throw new Error(
+        `Database error: Failed to access rehearsal collection - ${dbErr.message}`
+      );
+    }
+
     const result = { insertedCount: 0, rehearsalIds: [] };
 
+    // Insert rehearsals in batches
     const batchSize = 100;
     for (let i = 0; i < rehearsals.length; i += batchSize) {
-      const batch = rehearsals.slice(i, i + batchSize);
-      const batchResult = await rehearsalCollection.insertMany(batch);
+      try {
+        const batch = rehearsals.slice(i, i + batchSize);
+        console.log(
+          `Inserting batch ${i / batchSize + 1} with ${batch.length} rehearsals`
+        );
 
-      result.insertedCount += batchResult.insertedCount;
-      const batchIds = Object.values(batchResult.insertedIds).map((id) =>
-        id.toString()
-      );
-      result.rehearsalIds = [...result.rehearsalIds, ...batchIds];
+        const batchResult = await rehearsalCollection.insertMany(batch);
+        console.log(`Batch inserted with result:`, batchResult);
+
+        result.insertedCount += batchResult.insertedCount;
+        const batchIds = Object.values(batchResult.insertedIds).map((id) =>
+          id.toString()
+        );
+        result.rehearsalIds = [...result.rehearsalIds, ...batchIds];
+      } catch (batchErr) {
+        console.error(`Error inserting batch: ${batchErr}`);
+        throw new Error(
+          `Failed to insert rehearsal batch: ${batchErr.message}`
+        );
+      }
     }
 
+    // Update orchestra with new rehearsal IDs
     if (result.rehearsalIds.length > 0) {
-      const orchestraCollection = await getCollection('orchestra');
-      await orchestraCollection.updateOne(
-        { _id: ObjectId.createFromHexString(orchestraId) },
-        { $push: { rehearsalIds: { $each: result.rehearsalIds } } }
-      );
+      try {
+        const orchestraCollection = await getCollection('orchestra');
+        if (orchestraCollection) {
+          console.log(
+            `Updating orchestra ${orchestraId} with ${result.rehearsalIds.length} new rehearsal IDs`
+          );
+
+          const updateResult = await orchestraCollection.updateOne(
+            { _id: ObjectId.createFromHexString(orchestraId) },
+            { $push: { rehearsalIds: { $each: result.rehearsalIds } } }
+          );
+
+          console.log(`Orchestra update result:`, updateResult);
+        } else {
+          console.warn(
+            'Orchestra collection not available, skipping orchestra update'
+          );
+        }
+      } catch (updateErr) {
+        // Log the error but don't fail the entire operation
+        console.error(
+          `Failed to update orchestra with rehearsal IDs: ${updateErr}`
+        );
+      }
     }
 
+    console.log(`Successfully created ${result.insertedCount} rehearsals`);
     return result;
   } catch (err) {
     console.error(`Failed to bulk create rehearsals: ${err}`);
@@ -283,41 +445,53 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
 
 async function updateAttendance(rehearsalId, attendanceData, isAdmin = false) {
   try {
-    const { error, value } = validateAttendance(attendanceData)
-    if (error) throw error
+    const { error, value } = validateAttendance(attendanceData);
+    if (error) throw error;
 
-    const { present, absent } = value
+    const { present, absent } = value;
 
     if (!isAdmin) {
-      throw new Error('Not authorized to update attendance')
+      throw new Error('Not authorized to update attendance');
     }
 
-    const rehearsal = await getRehearsalById(rehearsalId)
+    const rehearsal = await getRehearsalById(rehearsalId);
 
-    const collection = await getCollection('rehearsal')
+    const collection = await getCollection('rehearsal');
+    if (!collection) {
+      throw new Error('Database error: Failed to access rehearsal collection');
+    }
+
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(rehearsalId) },
       {
         $set: {
           attendance: {
             present,
-            absent
+            absent,
           },
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       },
       { returnDocument: 'after' }
-    )
+    );
 
-    if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`)
-    
-    const activityCollection = await getCollection('activity_attendance')
+    if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`);
 
+    const activityCollection = await getCollection('activity_attendance');
+    if (!activityCollection) {
+      console.warn(
+        'Activity attendance collection not available, skipping attendance records'
+      );
+      return result;
+    }
+
+    // Delete existing attendance records
     await activityCollection.deleteMany({
       sessionId: rehearsalId,
-      activityType: 'תזמורת'
-    })
+      activityType: 'תזמורת',
+    });
 
+    // Create new attendance records
     const presentPromises = present.map((studentId) =>
       activityCollection.insertOne({
         studentId,
@@ -327,11 +501,11 @@ async function updateAttendance(rehearsalId, attendanceData, isAdmin = false) {
         date: rehearsal.date,
         status: 'הגיע/ה',
         notes: '',
-        createdAt: new Date()
+        createdAt: new Date(),
       })
-    )
+    );
 
-    const absentPromises = absent.map(studentId => 
+    const absentPromises = absent.map((studentId) =>
       activityCollection.insertOne({
         studentId,
         activityType: 'תזמורת',
@@ -340,53 +514,63 @@ async function updateAttendance(rehearsalId, attendanceData, isAdmin = false) {
         date: rehearsal.date,
         status: 'לא הגיע/ה',
         notes: '',
-        createdAt: new Date()
+        createdAt: new Date(),
       })
-    )
+    );
 
-    await Promise.all([...presentPromises, ...absentPromises])
+    await Promise.all([...presentPromises, ...absentPromises]);
 
-    return result
+    return result;
   } catch (err) {
-    console.error(`Error updating attendance ${rehearsalId}: ${err.message}`)
-    throw new Error(`Error updating attendance ${rehearsalId}: ${err.message}`)
+    console.error(`Error updating attendance ${rehearsalId}: ${err.message}`);
+    throw new Error(`Error updating attendance ${rehearsalId}: ${err.message}`);
   }
 }
 
-function _generateDatesForDayOfWeek(startDate, endDate, dayOfWeek, excludesDates = []) {
-    const dates = []
-    const currentDate = new Date(startDate)
+function _generateDatesForDayOfWeek(
+  startDate,
+  endDate,
+  dayOfWeek,
+  excludesDates = []
+) {
+  const dates = [];
+  const currentDate = new Date(startDate);
 
-    currentDate.setDate(currentDate.getDate() + (dayOfWeek - currentDate.getDay() + 7) % 7)
+  // Calculate first occurrence of the specified day of week
+  currentDate.setDate(
+    currentDate.getDate() + ((dayOfWeek - currentDate.getDay() + 7) % 7)
+  );
 
-    if (currentDate < startDate) {
-      currentDate.setDate(currentDate.getDate() + 7)
+  // If the first occurrence is before the start date, move to next week
+  if (currentDate < startDate) {
+    currentDate.setDate(currentDate.getDate() + 7);
+  }
+
+  // Generate all dates until end date
+  while (currentDate <= endDate) {
+    const shouldExclude = excludesDates.some(
+      (excludeDate) => excludeDate.toDateString() === currentDate.toDateString()
+    );
+
+    if (!shouldExclude) {
+      dates.push(new Date(currentDate));
     }
 
-    while (currentDate <= endDate) {
-      const shouldExclude = excludesDates.some(excludeDate => 
-        excludeDate.toDateString() === currentDate.toDateString()
-      )
-
-      if (!shouldExclude) {
-        dates.push(new Date(currentDate))
-      }
-
-      currentDate.setDate(currentDate.getDate() + 7)
+    currentDate.setDate(currentDate.getDate() + 7);
   }
-  
-    return dates
+
+  return dates;
 }
 
 function _buildCriteria(filterBy) {
-  const criteria = {}
+  const criteria = {};
 
   if (filterBy.groupId) {
-    criteria.groupId = filterBy.groupId
+    criteria.groupId = filterBy.groupId;
   }
 
   if (filterBy.type) {
-    criteria.type = filterBy.type
+    criteria.type = filterBy.type;
   }
 
   if (filterBy.fromDate) {
@@ -399,17 +583,17 @@ function _buildCriteria(filterBy) {
   }
 
   if (filterBy.toDate) {
-    criteria.date = criteria.date || {}
-    criteria.date.$lte = new Date(filterBy.toDate)
+    criteria.date = criteria.date || {};
+    criteria.date.$lte = new Date(filterBy.toDate);
   }
 
   if (filterBy.showInactive) {
     if (filterBy.isActive !== undefined) {
-      criteria.isActive = filterBy.isActive
+      criteria.isActive = filterBy.isActive;
     }
   } else {
-    criteria.isActive = true
+    criteria.isActive = true;
   }
 
-  return criteria
+  return criteria;
 }

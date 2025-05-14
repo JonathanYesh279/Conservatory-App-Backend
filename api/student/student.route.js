@@ -9,6 +9,7 @@ router.get('/:id', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', '
 
 router.post('/', requireAuth(['מנהל', 'מורה']), studentController.addStudent);
 router.put('/:id', requireAuth(['מורה', 'מנהל']), studentController.updateStudent)
+router.put('/:id/test', requireAuth(['מורה', 'מנהל']), studentController.updateStudentTest)
 router.delete('/:id', requireAuth(['מנהל', 'מורה']), studentController.removeStudent)
 
 export default router

@@ -125,24 +125,45 @@ async function removeRehearsal(req, res, next) {
   }
 }
 
-async function bulkCreateRehearsals(req, res, next) {
+async function bulkCreateRehearsals(req, res) {
   try {
-    const data = req.body
-    const teacherId = req.teacher._id
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const bulkData = req.body;
 
-    const result = await rehearsalService.bulkCreateRehearsals(
-      data,
-      teacherId,
-      isAdmin
-    )
-    res.status(201).json(result)
-  } catch (err) {
-    if (err.message.includes('Not authorized')) {
-      return res.status(403).json({ error: err.message })
+    // Add schoolYearId from request if not in body
+    if (!bulkData.schoolYearId && req.schoolYear && req.schoolYear._id) {
+      bulkData.schoolYearId = req.schoolYear._id.toString();
+      console.log(
+        'Setting schoolYearId in bulk data from middleware:',
+        bulkData.schoolYearId
+      );
     }
 
-    next(err)
+    console.log(
+      'Bulk create data received:',
+      JSON.stringify(bulkData, null, 2)
+    );
+
+    if (!bulkData.schoolYearId) {
+      console.error('Missing schoolYearId in bulk rehearsal data');
+      return res.status(400).json({
+        error: 'Missing schoolYearId in bulk rehearsal data',
+        bulkData,
+        schoolYear: req.schoolYear || null,
+      });
+    }
+
+    const result = await rehearsalService.bulkCreateRehearsals(
+      bulkData,
+      req.loggedinUser._id,
+      req.loggedinUser.roles.includes('מנהל')
+    );
+
+    res.json(result);
+  } catch (err) {
+    console.error(`Error in bulk create rehearsals: ${err}`);
+    res
+      .status(500)
+      .json({ error: err.message || 'Failed to create rehearsals in bulk' });
   }
 }
 

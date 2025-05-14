@@ -52,17 +52,17 @@ const instrumentProgressSchema = Joi.object({
       status: Joi.string()
         .valid(...TEST_STATUSES)
         .default('לא נבחן'),
-      lastTestDate: Joi.date().allow(null),
-      nextTestDate: Joi.date().allow(null),
-      notes: Joi.string().allow(''),
+      lastTestDate: Joi.date().allow(null, ''),
+      nextTestDate: Joi.date().allow(null, ''),
+      notes: Joi.string().allow(null, ''),
     }),
     technicalTest: Joi.object({
       status: Joi.string()
-        .valid('לא נבחן', 'עבר/ה', 'לא עבר/ה')
+        .valid(...TEST_STATUSES)
         .default('לא נבחן'),
-      lastTestDate: Joi.date().allow(null),
-      nextTestDate: Joi.date().allow(null),
-      notes: Joi.string().allow(''),
+      lastTestDate: Joi.date().allow(null, ''),
+      nextTestDate: Joi.date().allow(null, ''),
+      notes: Joi.string().allow(null, ''),
     }),
   }).default({}),
 });
@@ -73,15 +73,15 @@ export const studentSchema = Joi.object({
     fullName: Joi.string().required(),
     phone: Joi.string()
       .pattern(/^05\d{8}$/)
-      .allow(null),
+      .allow(null, ''),
     age: Joi.number().min(0).max(99).allow(null),
-    address: Joi.string().allow(null),
-    parentName: Joi.string().allow(null),
+    address: Joi.string().allow(null, ''),
+    parentName: Joi.string().allow(null, ''),
     parentPhone: Joi.string()
       .pattern(/^05\d{8}$/)
-      .allow(null),
-    parentEmail: Joi.string().email().allow(null),
-    studentEmail: Joi.string().email().allow(null),
+      .allow(null, ''),
+    parentEmail: Joi.string().email().allow(null, ''),
+    studentEmail: Joi.string().email().allow(null, ''),
   }).required(),
 
   academicInfo: Joi.object({
@@ -121,15 +121,15 @@ export const studentUpdateSchema = Joi.object({
     fullName: Joi.string(),
     phone: Joi.string()
       .pattern(/^05\d{8}$/)
-      .allow(null),
+      .allow(null, ''),
     age: Joi.number().min(0).max(99).allow(null),
-    address: Joi.string().allow(null),
-    parentName: Joi.string().allow(null),
+    address: Joi.string().allow(null, ''),
+    parentName: Joi.string().allow(null, ''),
     parentPhone: Joi.string()
       .pattern(/^05\d{8}$/)
-      .allow(null),
-    parentEmail: Joi.string().email().allow(null),
-    studentEmail: Joi.string().email().allow(null),
+      .allow(null, ''),
+    parentEmail: Joi.string().email().allow(null, ''),
+    studentEmail: Joi.string().email().allow(null, ''),
   }),
 
   academicInfo: Joi.object({

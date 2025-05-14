@@ -7,6 +7,7 @@ export const studentService = {
   getStudentById,
   addStudent,
   updateStudent,
+  updateStudentTest,
   removeStudent,
   checkTeacherHasAccessToStudent,
   associateStudentWithTeacher,
@@ -150,10 +151,107 @@ async function updateStudent(
   }
 }
 
+async function updateStudentTest(
+  studentId,
+  instrumentName,
+  testType,
+  status,
+  teacherId = null,
+  isAdmin = false
+) {
+  try {
+    // First, get the current student to find the instrument
+    const student = await getStudentById(studentId);
+
+    if (!student) {
+      throw new Error(`Student with id ${studentId} not found`);
+    }
+
+    // Find the instrument index
+    const instrumentIndex = student.academicInfo.instrumentProgress.findIndex(
+      (i) => i.instrumentName === instrumentName
+    );
+
+    if (instrumentIndex === -1) {
+      throw new Error(
+        `Instrument ${instrumentName} not found for student ${studentId}`
+      );
+    }
+
+    // Get previous status before any changes
+    const previousStatus =
+      student.academicInfo.instrumentProgress[instrumentIndex]?.tests?.[
+        testType
+      ]?.status || 'לא נבחן';
+
+    // Create update object with only the necessary changes
+    const updateData = {
+      academicInfo: {
+        instrumentProgress: [...student.academicInfo.instrumentProgress],
+      },
+    };
+
+    // Ensure the tests object structure exists
+    if (!updateData.academicInfo.instrumentProgress[instrumentIndex].tests) {
+      updateData.academicInfo.instrumentProgress[instrumentIndex].tests = {};
+    }
+
+    if (
+      !updateData.academicInfo.instrumentProgress[instrumentIndex].tests[
+        testType
+      ]
+    ) {
+      updateData.academicInfo.instrumentProgress[instrumentIndex].tests[
+        testType
+      ] = {};
+    }
+
+    // Update the test status
+    updateData.academicInfo.instrumentProgress[instrumentIndex].tests[
+      testType
+    ].status = status;
+    updateData.academicInfo.instrumentProgress[instrumentIndex].tests[
+      testType
+    ].lastTestDate = new Date();
+
+    // Auto-increment stage if needed
+    const passingStatuses = [
+      'עבר/ה',
+      'עבר/ה בהצטיינות',
+      'עבר/ה בהצטיינות יתרה',
+    ];
+    const failingStatuses = ['לא נבחן', 'לא עבר/ה'];
+
+    if (
+      testType === 'stageTest' &&
+      passingStatuses.includes(status) &&
+      failingStatuses.includes(previousStatus) &&
+      updateData.academicInfo.instrumentProgress[instrumentIndex].currentStage <
+        8
+    ) {
+      console.log(
+        `Incrementing stage for student ${studentId}, instrument ${instrumentName}`
+      );
+      updateData.academicInfo.instrumentProgress[instrumentIndex].currentStage =
+        student.academicInfo.instrumentProgress[instrumentIndex].currentStage +
+        1;
+    }
+
+    // Use the existing updateStudent method for the actual update
+    return await updateStudent(studentId, updateData, teacherId, isAdmin);
+  } catch (err) {
+    console.error(`Error updating student test: ${err.message}`);
+    throw new Error(`Error updating student test: ${err.message}`);
+  }
+}
+
 async function removeStudent(studentId, teacherId = null, isAdmin = false) {
   try {
     if (teacherId && !isAdmin) {
-      const hasAccess = await checkTeacherHasAccessToStudent(teacherId, studentId);
+      const hasAccess = await checkTeacherHasAccessToStudent(
+        teacherId,
+        studentId
+      );
       if (!hasAccess) {
         throw new Error('Not authorized to remove student');
       }
@@ -167,8 +265,8 @@ async function removeStudent(studentId, teacherId = null, isAdmin = false) {
       {
         $set: {
           isActive: false,
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
       },
       { returnDocument: 'after' }
     );
@@ -187,17 +285,17 @@ async function checkTeacherHasAccessToStudent(teacherId, studentId) {
     const teacher = await teacherCollection.findOne({
       _id: ObjectId.createFromHexString(teacherId),
       'teaching.studentIds': studentId,
-      isActive: true
+      isActive: true,
     });
 
     return !!teacher;
-  } catch(err) {
+  } catch (err) {
     console.error(`Error checking teacher access to student: ${err.message}`);
     throw new Error(`Error checking teacher access to student: ${err.message}`);
   }
 }
 
-async function associateStudentWithTeacher(studentId, teacherId) { 
+async function associateStudentWithTeacher(studentId, teacherId) {
   try {
     const teacherCollection = await getCollection('teacher');
     await teacherCollection.updateOne(
@@ -205,10 +303,10 @@ async function associateStudentWithTeacher(studentId, teacherId) {
       { $addToSet: { 'teaching.studentIds': studentId } }
     );
 
-    return { 
+    return {
       success: true,
       studentId,
-      teacherId
+      teacherId,
     };
   } catch (err) {
     console.error(`Error associating student with teacher: ${err.message}`);
@@ -216,7 +314,7 @@ async function associateStudentWithTeacher(studentId, teacherId) {
   }
 }
 
-async function removeStudentTeacherAssociation(studentId, teacherId) { 
+async function removeStudentTeacherAssociation(studentId, teacherId) {
   try {
     const teacherCollection = await getCollection('teacher');
     await teacherCollection.updateOne(
@@ -231,8 +329,8 @@ async function removeStudentTeacherAssociation(studentId, teacherId) {
 
     return {
       message: 'Student removed from teacher successfully',
-      studentId, 
-      teacherId
+      studentId,
+      teacherId,
     };
   } catch (err) {
     console.error(`Error removing student from teacher: ${err.message}`);

@@ -5,6 +5,7 @@ export const studentController = {
   getStudentById,
   addStudent,
   updateStudent,
+  updateStudentTest,
   removeStudent
 }
 
@@ -58,6 +59,40 @@ async function updateStudent(req, res, next) {
     res.json(updatedStudent)
   } catch (err) {
     next(err)
+  }
+}
+
+async function updateStudentTest(req, res) {
+  try {
+    const { id } = req.params;
+    const { instrumentName, testType, status } = req.body;
+
+    // Validate test-specific fields
+    if (!instrumentName || !testType || !status) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    if (!['stageTest', 'technicalTest'].includes(testType)) {
+      return res.status(400).json({ error: 'Invalid test type' });
+    }
+
+    // Forward to the service
+    const { _id: teacherId, roles } = req.user;
+    const isAdmin = roles.includes('מנהל');
+
+    const updatedStudent = await studentService.updateStudentTest(
+      id,
+      instrumentName,
+      testType,
+      status,
+      teacherId,
+      isAdmin
+    );
+
+    res.json(updatedStudent);
+  } catch (err) {
+    console.error(`Error updating student test: ${err.message}`);
+    res.status(500).json({ error: err.message });
   }
 }
 
