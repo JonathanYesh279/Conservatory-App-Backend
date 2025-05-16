@@ -1,3 +1,4 @@
+// api/student/student.service.js
 import { ObjectId } from 'bson';
 import { getCollection } from '../../services/mongoDB.service.js';
 import { validateStudent } from './student.validation.js';
@@ -160,6 +161,14 @@ async function updateStudentTest(
   isAdmin = false
 ) {
   try {
+    console.log(`Processing test update for student ${studentId}`, {
+      instrumentName,
+      testType,
+      status,
+      teacherId,
+      isAdmin
+    });
+
     // First, get the current student to find the instrument
     const student = await getStudentById(studentId);
 
@@ -184,11 +193,14 @@ async function updateStudentTest(
         testType
       ]?.status || 'לא נבחן';
 
+    console.log(`Previous test status: ${previousStatus}, New status: ${status}`);
+
     // Create update object with only the necessary changes
     const updateData = {
       academicInfo: {
         instrumentProgress: [...student.academicInfo.instrumentProgress],
       },
+      updatedAt: new Date(),
     };
 
     // Ensure the tests object structure exists
@@ -226,19 +238,44 @@ async function updateStudentTest(
       testType === 'stageTest' &&
       passingStatuses.includes(status) &&
       failingStatuses.includes(previousStatus) &&
-      updateData.academicInfo.instrumentProgress[instrumentIndex].currentStage <
-        8
+      updateData.academicInfo.instrumentProgress[instrumentIndex].currentStage 
     ) {
       console.log(
-        `Incrementing stage for student ${studentId}, instrument ${instrumentName}`
+        `Incrementing stage for student ${studentId}, instrument ${instrumentName}` +
+        ` from ${updateData.academicInfo.instrumentProgress[instrumentIndex].currentStage}` +
+        ` to ${updateData.academicInfo.instrumentProgress[instrumentIndex].currentStage + 1}`
       );
+      
       updateData.academicInfo.instrumentProgress[instrumentIndex].currentStage =
         student.academicInfo.instrumentProgress[instrumentIndex].currentStage +
         1;
     }
 
-    // Use the existing updateStudent method for the actual update
-    return await updateStudent(studentId, updateData, teacherId, isAdmin);
+    // Check authorization if needed
+    if (teacherId && !isAdmin) {
+      const hasAccess = await checkTeacherHasAccessToStudent(
+        teacherId,
+        studentId
+      );
+      if (!hasAccess) {
+        throw new Error('Not authorized to update student test');
+      }
+    }
+
+    // Apply the update
+    const collection = await getCollection('student');
+    const result = await collection.findOneAndUpdate(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    );
+
+    if (!result) {
+      throw new Error(`Student with id ${studentId} not found after update attempt`);
+    }
+
+    console.log(`Successfully updated test for student ${studentId}`);
+    return result;
   } catch (err) {
     console.error(`Error updating student test: ${err.message}`);
     throw new Error(`Error updating student test: ${err.message}`);

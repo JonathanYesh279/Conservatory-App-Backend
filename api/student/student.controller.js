@@ -1,4 +1,5 @@
-import { studentService } from './student.service.js'
+// api/student/student.controller.js
+import { studentService } from './student.service.js';
 
 export const studentController = {
   getStudents,
@@ -6,59 +7,68 @@ export const studentController = {
   addStudent,
   updateStudent,
   updateStudentTest,
-  removeStudent
-}
+  removeStudent,
+};
 
-async function getStudents(req, res, next) { 
+async function getStudents(req, res, next) {
   try {
     const filterBy = {
       name: req.query.name,
       instrument: req.query.instrument,
       stage: req.query.stage,
       isActive: req.query.isActive,
-      showInactive: req.query.showInActive === 'true'
-    }
-    const students = await studentService.getStudents(filterBy)
-    res.json(students)
+      showInactive: req.query.showInActive === 'true',
+    };
+    const students = await studentService.getStudents(filterBy);
+    res.json(students);
   } catch (err) {
-    next(err)
+    next(err);
   }
 }
 
 async function getStudentById(req, res, next) {
   try {
-    const { id } = req.params
-    const student = await studentService.getStudentById(id)
-    res.json(student)
+    const { id } = req.params;
+    const student = await studentService.getStudentById(id);
+    res.json(student);
   } catch (err) {
-    next(err)
+    next(err);
   }
 }
 
 async function addStudent(req, res, next) {
   try {
-    const studentToAdd = req.body
-    const teacherId = req.teacher?._id?.toString()
-    const isAdmin = req.teacher?.roles?.includes('מנהל') || false
+    const studentToAdd = req.body;
+    const teacherId = req.teacher?._id?.toString();
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false;
 
-    const addedStudent = await studentService.addStudent(studentToAdd, teacherId, isAdmin)
-    res.status(201).json(addedStudent)
+    const addedStudent = await studentService.addStudent(
+      studentToAdd,
+      teacherId,
+      isAdmin
+    );
+    res.status(201).json(addedStudent);
   } catch (err) {
-    next(err)
+    next(err);
   }
 }
 
 async function updateStudent(req, res, next) {
   try {
-    const { id } = req.params 
-    const studentToUpdate = req.body
-    const teacherId = req.teacher?._id?.toString()
-    const isAdmin = req.teacher?.roles?.includes('מנהל') || false
+    const { id } = req.params;
+    const studentToUpdate = req.body;
+    const teacherId = req.teacher?._id?.toString();
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false;
 
-    const updatedStudent = await studentService.updateStudent(id, studentToUpdate, teacherId, isAdmin)
-    res.json(updatedStudent)
+    const updatedStudent = await studentService.updateStudent(
+      id,
+      studentToUpdate,
+      teacherId,
+      isAdmin
+    );
+    res.json(updatedStudent);
   } catch (err) {
-    next(err)
+    next(err);
   }
 }
 
@@ -67,19 +77,51 @@ async function updateStudentTest(req, res) {
     const { id } = req.params;
     const { instrumentName, testType, status } = req.body;
 
-    // Validate test-specific fields
+    console.log(`Received test update request for student ${id}:`, {
+      instrumentName,
+      testType,
+      status,
+    });
+
+    // Validate required fields
     if (!instrumentName || !testType || !status) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      return res.status(400).json({
+        error: 'Missing required fields',
+        details: { instrumentName, testType, status },
+      });
     }
 
+    // Validate test type
     if (!['stageTest', 'technicalTest'].includes(testType)) {
-      return res.status(400).json({ error: 'Invalid test type' });
+      return res.status(400).json({
+        error: 'Invalid test type',
+        validOptions: ['stageTest', 'technicalTest'],
+        received: testType,
+      });
     }
 
-    // Forward to the service
-    const { _id: teacherId, roles } = req.user;
-    const isAdmin = roles.includes('מנהל');
+    // Validate test status
+    const validStatuses = [
+      'לא נבחן',
+      'עבר/ה',
+      'לא עבר/ה',
+      'עבר/ה בהצטיינות',
+      'עבר/ה בהצטיינות יתרה',
+    ];
 
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        error: 'Invalid test status',
+        validOptions: validStatuses,
+        received: status,
+      });
+    }
+
+    // Extract teacher info from request
+    const teacherId = req.teacher?._id?.toString();
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false;
+
+    // Update the test status
     const updatedStudent = await studentService.updateStudentTest(
       id,
       instrumentName,
@@ -89,22 +131,28 @@ async function updateStudentTest(req, res) {
       isAdmin
     );
 
+    console.log(`Successfully updated test for student ${id}`);
+
+    // Return the updated student
     res.json(updatedStudent);
   } catch (err) {
     console.error(`Error updating student test: ${err.message}`);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      error: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+    });
   }
 }
 
 async function removeStudent(req, res, next) {
   try {
-    const { id } = req.params
-    const teacherId = req.teacher?._id?.toString()
-    const isAdmin = req.teacher?.roles?.includes('מנהל') || false
+    const { id } = req.params;
+    const teacherId = req.teacher?._id?.toString();
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false;
 
-    const result = await studentService.removeStudent(id, teacherId, isAdmin)
-    res.json(result)
+    const result = await studentService.removeStudent(id, teacherId, isAdmin);
+    res.json(result);
   } catch (err) {
-    next(err)
+    next(err);
   }
 }
