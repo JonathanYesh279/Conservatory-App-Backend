@@ -12,28 +12,48 @@ export const authService = {
   validateToken,
   refreshAccessToken,
   encryptPassword,
+  generateTokens,
   logout
 }
 
 async function login(email, password) {
   try {
     console.log('Login attempt with email:', email);
+    console.log(
+      'ACCESS_TOKEN_SECRET exists:',
+      !!process.env.ACCESS_TOKEN_SECRET
+    );
+    console.log(
+      'REFRESH_TOKEN_SECRET exists:',
+      !!process.env.REFRESH_TOKEN_SECRET
+    );
+
     const collection = await getCollection('teacher');
     const teacher = await collection.findOne({
       'credentials.email': email,
       isActive: true,
-    })
+    });
 
     if (!teacher) {
+      console.log('No teacher found with email:', email);
       throw new Error('Invalid email or password');
     }
+
+    console.log('Found teacher:', teacher._id);
+    console.log('Comparing passwords...');
 
     const match = await bcrypt.compare(password, teacher.credentials.password);
+    console.log('Password match result:', match);
+
     if (!match) {
+      console.log('Password comparison failed');
       throw new Error('Invalid email or password');
     }
 
+    console.log('Password verified, generating tokens...');
     const { accessToken, refreshToken } = await generateTokens(teacher);
+
+    console.log('Tokens generated, updating teacher record...');
 
     await collection.updateOne(
       { _id: teacher._id },
@@ -44,7 +64,9 @@ async function login(email, password) {
           updatedAt: new Date(),
         },
       }
-    )
+    );
+
+    console.log('Login successful for teacher:', teacher._id);
 
     return {
       accessToken,
@@ -54,10 +76,10 @@ async function login(email, password) {
         fullName: teacher.personalInfo.fullName,
         email: teacher.credentials.email,
         roles: teacher.roles,
-      }
-    }
+      },
+    };
   } catch (err) {
-    console.error(`Error in login: ${err.message}`)
+    console.error(`Error in login: ${err.message}`);
     throw err;
   }
 }
@@ -120,9 +142,23 @@ async function validateToken(token) {
 }
 
 async function generateTokens(teacher) {
-  const accessToken = generateAccessToken(teacher)
-  const refreshToken = generateRefreshToken(teacher)
-  return { accessToken, refreshToken }
+  console.log('generateTokens called with teacher:', teacher._id);
+
+  try {
+    const accessToken = generateAccessToken(teacher);
+    console.log('Generated accessToken:', !!accessToken);
+
+    const refreshToken = generateRefreshToken(teacher);
+    console.log('Generated refreshToken:', !!refreshToken);
+
+    const result = { accessToken, refreshToken };
+    console.log('generateTokens returning:', result);
+
+    return result;
+  } catch (error) {
+    console.error('Error in generateTokens:', error);
+    throw error;
+  }
 }
 
 function generateAccessToken(teacher) {
@@ -158,3 +194,12 @@ function generateRefreshToken(teacher) {
 async function encryptPassword(password) {
     return bcrypt.hash(password, SALT_ROUNDS)
 }
+
+async function generateNewHash() {
+  const newHash = await bcrypt.hash('123456', 10);
+  console.log('New hash for 123456:', newHash);
+  return newHash;
+}
+
+// Call it once to get the new hash
+generateNewHash();
