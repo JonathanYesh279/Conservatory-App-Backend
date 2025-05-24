@@ -200,6 +200,3 @@ async function generateNewHash() {
   console.log('New hash for 123456:', newHash);
   return newHash;
 }
-
-// Call it once to get the new hash
-generateNewHash();

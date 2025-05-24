@@ -16,6 +16,7 @@ import { addSchoolYearToRequest } from './middleware/school-year.middleware.js';
 import schoolYearRoutes from './api/school-year/school-year.route.js';
 import studentRoutes from './api/student/student.route.js';
 import teacherRoutes from './api/teacher/teacher.route.js';
+import theoryRoutes from './api/theory/theory.route.js';
 import authRoutes from './api/auth/auth.route.js';
 import orchestraRoutes from './api/orchestra/orchestra.route.js';
 import rehearsalRoutes from './api/rehearsal/rehearsal.route.js';
@@ -84,6 +85,7 @@ app.use(
   addSchoolYearToRequest,
   rehearsalRoutes
 );
+app.use('/api/theory', authenticateToken, addSchoolYearToRequest, theoryRoutes);
 app.use('/api/bagrut', authenticateToken, addSchoolYearToRequest, bagrutRoutes);
 app.use(
   '/api/school-year',
