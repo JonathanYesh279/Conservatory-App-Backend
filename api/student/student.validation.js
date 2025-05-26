@@ -97,6 +97,7 @@ export const studentSchema = Joi.object({
   enrollments: Joi.object({
     orchestraIds: Joi.array().items(Joi.string()).default([]),
     ensembleIds: Joi.array().items(Joi.string()).default([]),
+    theoryLessonIds: Joi.array().items(Joi.string()).default([]),
 
     schoolYears: Joi.array()
       .items(
@@ -106,7 +107,7 @@ export const studentSchema = Joi.object({
         })
       )
       .default([]),
-  }).default({ orchestraIds: [], ensembleIds: [], schoolYears: [] }),
+  }).default({ orchestraIds: [], ensembleIds: [], theoryLessonIds: [], schoolYears: [] }),
 
   teacherIds: Joi.array().items(Joi.string()).default([]),
 
@@ -140,6 +141,7 @@ export const studentUpdateSchema = Joi.object({
   enrollments: Joi.object({
     orchestraIds: Joi.array().items(Joi.string()),
     ensembleIds: Joi.array().items(Joi.string()),
+    theoryLessonIds: Joi.array().items(Joi.string()),
 
     schoolYears: Joi.array().items(
       Joi.object({

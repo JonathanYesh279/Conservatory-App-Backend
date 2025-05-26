@@ -351,6 +351,35 @@ async function bulkCreateTheoryLessons(bulkData) {
           `Failed to update teacher with theory lesson IDs: ${updateErr}`
         );
       }
+
+      // Update student records with theory lesson IDs if students were assigned
+      if (studentIds && studentIds.length > 0) {
+        try {
+          const studentCollection = await getCollection('student');
+          
+          // Update each student with all theory lesson IDs
+          for (const studentId of studentIds) {
+            await studentCollection.updateOne(
+              { _id: ObjectId.createFromHexString(studentId) },
+              {
+                $addToSet: { 
+                  'enrollments.theoryLessonIds': { $each: result.theoryLessonIds } 
+                },
+                $set: { updatedAt: new Date() }
+              }
+            );
+          }
+          
+          console.log(
+            `Updated ${studentIds.length} students with ${result.theoryLessonIds.length} theory lesson IDs`
+          );
+        } catch (studentUpdateErr) {
+          // Log the error but don't fail the entire operation
+          console.error(
+            `Failed to update students with theory lesson IDs: ${studentUpdateErr}`
+          );
+        }
+      }
     }
 
     console.log(`Successfully created ${result.insertedCount} theory lessons`);
@@ -453,8 +482,9 @@ async function getTheoryAttendance(theoryLessonId) {
 
 async function addStudentToTheory(theoryLessonId, studentId) {
   try {
-    const collection = await getCollection('theory_lesson');
-    const result = await collection.findOneAndUpdate(
+    // Update the theory lesson to add the student
+    const theoryCollection = await getCollection('theory_lesson');
+    const result = await theoryCollection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(theoryLessonId) },
       {
         $addToSet: { studentIds: studentId },
@@ -466,6 +496,22 @@ async function addStudentToTheory(theoryLessonId, studentId) {
     if (!result) {
       throw new Error(`Theory lesson with id ${theoryLessonId} not found`);
     }
+
+    // Also update the student to add the theory lesson ID
+    try {
+      const studentCollection = await getCollection('student');
+      await studentCollection.updateOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        {
+          $addToSet: { 'enrollments.theoryLessonIds': theoryLessonId },
+          $set: { updatedAt: new Date() }
+        }
+      );
+    } catch (studentUpdateErr) {
+      // Log warning but don't fail the entire operation
+      console.warn(`Failed to update student record with theory lesson: ${studentUpdateErr.message}`);
+    }
+
     return result;
   } catch (err) {
     console.error(`Error in theoryService.addStudentToTheory: ${err}`);
@@ -475,8 +521,9 @@ async function addStudentToTheory(theoryLessonId, studentId) {
 
 async function removeStudentFromTheory(theoryLessonId, studentId) {
   try {
-    const collection = await getCollection('theory_lesson');
-    const result = await collection.findOneAndUpdate(
+    // Update the theory lesson to remove the student
+    const theoryCollection = await getCollection('theory_lesson');
+    const result = await theoryCollection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(theoryLessonId) },
       {
         $pull: { studentIds: studentId },
@@ -488,6 +535,22 @@ async function removeStudentFromTheory(theoryLessonId, studentId) {
     if (!result) {
       throw new Error(`Theory lesson with id ${theoryLessonId} not found`);
     }
+
+    // Also update the student to remove the theory lesson ID
+    try {
+      const studentCollection = await getCollection('student');
+      await studentCollection.updateOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        {
+          $pull: { 'enrollments.theoryLessonIds': theoryLessonId },
+          $set: { updatedAt: new Date() }
+        }
+      );
+    } catch (studentUpdateErr) {
+      // Log warning but don't fail the entire operation
+      console.warn(`Failed to update student record when removing theory lesson: ${studentUpdateErr.message}`);
+    }
+
     return result;
   } catch (err) {
     console.error(`Error in theoryService.removeStudentFromTheory: ${err}`);

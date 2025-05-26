@@ -19,7 +19,11 @@ export const teacherSchema = Joi.object({
     .required(),
 
   professionalInfo: Joi.object({
-    instrument: Joi.string().required(),
+    instrument: Joi.string().when('..roles', {
+      is: Joi.array().items().has('מורה תאוריה').length(1),
+      then: Joi.string().allow('', null).optional(),
+      otherwise: Joi.string().required()
+    }),
     isActive: Joi.boolean().default(true),
   }).required(),
 
@@ -85,7 +89,11 @@ export const teacherUpdateSchema = Joi.object({
     .optional(),
 
   professionalInfo: Joi.object({
-    instrument: Joi.string().optional(),
+    instrument: Joi.string().when('..roles', {
+      is: Joi.array().items().has('מורה תאוריה').length(1),
+      then: Joi.string().allow('', null).optional(),
+      otherwise: Joi.string().optional()
+    }),
     isActive: Joi.boolean().optional(),
   }).optional(),
 
