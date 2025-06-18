@@ -332,13 +332,65 @@ async function checkTeacherHasAccessToStudent(teacherId, studentId) {
   }
 }
 
-async function associateStudentWithTeacher(studentId, teacherId) {
+async function associateStudentWithTeacher(studentId, teacherId, scheduleSlotId = null) {
   try {
     const teacherCollection = await getCollection('teacher');
+    const studentCollection = await getCollection('student');
+    
+    // Always update the teacher's studentIds array for backward compatibility
     await teacherCollection.updateOne(
       { _id: ObjectId.createFromHexString(teacherId) },
       { $addToSet: { 'teaching.studentIds': studentId } }
     );
+    
+    // Update the student's teacherIds array for backward compatibility
+    await studentCollection.updateOne(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { $addToSet: { teacherIds: teacherId } }
+    );
+    
+    // If a schedule slot is provided, create a proper teacher assignment
+    if (scheduleSlotId) {
+      const assignment = {
+        teacherId,
+        scheduleSlotId,
+        startDate: new Date(),
+        endDate: null,
+        isActive: true,
+        notes: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      // Add the assignment to the student's record
+      await studentCollection.updateOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        { $push: { teacherAssignments: assignment } }
+      );
+      
+      // Update the schedule slot to mark it as assigned
+      await teacherCollection.updateOne(
+        { 
+          _id: ObjectId.createFromHexString(teacherId),
+          'teaching.schedule._id': ObjectId.createFromHexString(scheduleSlotId)
+        },
+        { 
+          $set: { 
+            'teaching.schedule.$.studentId': studentId,
+            'teaching.schedule.$.isAvailable': false,
+            'teaching.schedule.$.updatedAt': new Date()
+          }
+        }
+      );
+      
+      return {
+        success: true,
+        studentId,
+        teacherId,
+        scheduleSlotId,
+        assignment
+      };
+    }
 
     return {
       success: true,
@@ -354,14 +406,55 @@ async function associateStudentWithTeacher(studentId, teacherId) {
 async function removeStudentTeacherAssociation(studentId, teacherId) {
   try {
     const teacherCollection = await getCollection('teacher');
+    const studentCollection = await getCollection('student');
+    
+    // For backward compatibility, remove student from teacher's studentIds array
     await teacherCollection.updateOne(
       { _id: ObjectId.createFromHexString(teacherId) },
       { $pull: { 'teaching.studentIds': studentId } }
     );
 
-    await teacherCollection.updateOne(
-      { _id: ObjectId.createFromHexString(teacherId) },
-      { $pull: { 'teaching.schedule': { studentId: studentId } } }
+    // Update all schedule slots for this student to be available again
+    await teacherCollection.updateMany(
+      { 
+        _id: ObjectId.createFromHexString(teacherId),
+        'teaching.schedule.studentId': studentId
+      },
+      { 
+        $set: { 
+          'teaching.schedule.$[elem].studentId': null,
+          'teaching.schedule.$[elem].isAvailable': true,
+          'teaching.schedule.$[elem].updatedAt': new Date()
+        }
+      },
+      {
+        arrayFilters: [{ 'elem.studentId': studentId }]
+      }
+    );
+    
+    // Mark all teacher assignments for this student as inactive
+    await studentCollection.updateMany(
+      { 
+        _id: ObjectId.createFromHexString(studentId),
+        'teacherAssignments.teacherId': teacherId,
+        'teacherAssignments.isActive': true
+      },
+      { 
+        $set: { 
+          'teacherAssignments.$[elem].isActive': false,
+          'teacherAssignments.$[elem].endDate': new Date(),
+          'teacherAssignments.$[elem].updatedAt': new Date()
+        }
+      },
+      {
+        arrayFilters: [{ 'elem.teacherId': teacherId, 'elem.isActive': true }]
+      }
+    );
+    
+    // For backward compatibility, remove teacher from student's teacherIds array
+    await studentCollection.updateOne(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { $pull: { teacherIds: teacherId } }
     );
 
     return {

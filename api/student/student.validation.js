@@ -67,6 +67,18 @@ const instrumentProgressSchema = Joi.object({
   }).default({}),
 });
 
+// Schema for teacher assignment
+const teacherAssignmentSchema = Joi.object({
+  teacherId: Joi.string().required(),
+  scheduleSlotId: Joi.string().required(),
+  startDate: Joi.date().default(() => new Date()),
+  endDate: Joi.date().allow(null).default(null),
+  isActive: Joi.boolean().default(true),
+  notes: Joi.string().allow('', null).default(null),
+  createdAt: Joi.date().default(() => new Date()),
+  updatedAt: Joi.date().default(() => new Date()),
+});
+
 // Schema for creating a new student (all required fields)
 export const studentSchema = Joi.object({
   personalInfo: Joi.object({
@@ -109,11 +121,26 @@ export const studentSchema = Joi.object({
       .default([]),
   }).default({ orchestraIds: [], ensembleIds: [], theoryLessonIds: [], schoolYears: [] }),
 
+  // Legacy field, maintained for backward compatibility
   teacherIds: Joi.array().items(Joi.string()).default([]),
+  
+  // New field for comprehensive teacher assignments with schedule slots
+  teacherAssignments: Joi.array().items(teacherAssignmentSchema).default([]),
 
   isActive: Joi.boolean().default(true),
   createdAt: Joi.date().default(new Date()),
   updatedAt: Joi.date().default(new Date()),
+});
+
+// Schema for teacher assignment updates
+const teacherAssignmentUpdateSchema = Joi.object({
+  teacherId: Joi.string().optional(),
+  scheduleSlotId: Joi.string().optional(),
+  startDate: Joi.date().optional(),
+  endDate: Joi.date().allow(null).optional(),
+  isActive: Joi.boolean().optional(),
+  notes: Joi.string().allow('', null).optional(),
+  updatedAt: Joi.date().default(() => new Date()),
 });
 
 // Schema for updating a student (partial updates allowed)
@@ -150,7 +177,12 @@ export const studentUpdateSchema = Joi.object({
       })
     ),
   }),
-  teacherIds: Joi.array().items(Joi.string()).default([]),
+  
+  // Legacy field, maintained for backward compatibility
+  teacherIds: Joi.array().items(Joi.string()),
+  
+  // New field for comprehensive teacher assignments with schedule slots
+  teacherAssignments: Joi.array().items(teacherAssignmentUpdateSchema),
 
   isActive: Joi.boolean(),
   updatedAt: Joi.date().default(new Date()),

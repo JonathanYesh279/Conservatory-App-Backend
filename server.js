@@ -21,6 +21,7 @@ import authRoutes from './api/auth/auth.route.js';
 import orchestraRoutes from './api/orchestra/orchestra.route.js';
 import rehearsalRoutes from './api/rehearsal/rehearsal.route.js';
 import bagrutRoutes from './api/bagrut/bagrut.route.js';
+import scheduleRoutes from './api/schedule/schedule.route.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(_filename);
@@ -92,6 +93,12 @@ app.use(
   authenticateToken,
   addSchoolYearToRequest,
   schoolYearRoutes
+);
+app.use(
+  '/api/schedule',
+  authenticateToken,
+  addSchoolYearToRequest,
+  scheduleRoutes
 );
 app.use('/api/files', authenticateToken, fileRoutes);
 

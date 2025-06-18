@@ -136,24 +136,92 @@ async function getTeacherByRole(role) {
 
 async function updateTeacherSchedule(teacherId, scheduleData) {
   // Validate that all required fields have values
-  const { studentId, day, time, duration } = scheduleData;
+  const { studentId, day, startTime, duration } = scheduleData;
 
-  if (!studentId || !day || !time || !duration) {
+  if (!studentId || !day || !startTime || !duration) {
     throw new Error(
-      'Schedule data is incomplete: all fields (studentId, day, time, duration) are required'
+      'Schedule data is incomplete: all fields (studentId, day, startTime, duration) are required'
     );
   }
 
+  // Calculate end time based on start time and duration
+  const endTime = calculateEndTime(startTime, duration);
+  
+  // Create a slot with all required fields
+  const scheduleSlot = {
+    _id: new ObjectId(),
+    studentId,
+    day,
+    startTime,
+    endTime,
+    duration,
+    isAvailable: false,
+    location: scheduleData.location || null,
+    notes: scheduleData.notes || null,
+    recurring: scheduleData.recurring || { isRecurring: true, excludeDates: [] },
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
   const collection = await getCollection('teacher');
+  
+  // First check for time conflicts
+  const teacher = await collection.findOne({
+    _id: ObjectId.createFromHexString(teacherId),
+  });
+  
+  if (teacher) {
+    const hasConflict = checkScheduleConflict(teacher.teaching?.schedule || [], scheduleSlot);
+    if (hasConflict) {
+      throw new Error('Time slot conflicts with an existing slot');
+    }
+  }
+  
+  // Update the teacher's schedule
   return await collection.updateOne(
     { _id: ObjectId.createFromHexString(teacherId) },
     {
       $addToSet: { 'teaching.studentIds': studentId },
       $push: {
-        'teaching.schedule': { studentId, day, time, duration },
+        'teaching.schedule': scheduleSlot,
       },
     }
   );
+}
+
+// Helper function to check for time conflicts
+function checkScheduleConflict(existingSlots, newSlot) {
+  return existingSlots.some(slot => {
+    // Only check slots on the same day
+    if (slot.day !== newSlot.day) return false;
+    
+    // Convert times to minutes for easier comparison
+    const slotStart = timeToMinutes(slot.startTime || slot.time); // support both old and new format
+    const slotEnd = slotStart + slot.duration;
+    
+    const newStart = timeToMinutes(newSlot.startTime);
+    const newEnd = newStart + newSlot.duration;
+    
+    // Check for overlap
+    return (newStart < slotEnd) && (slotStart < newEnd);
+  });
+}
+
+// Helper function to convert HH:MM time to minutes
+function timeToMinutes(timeString) {
+  const [hours, minutes] = timeString.split(':').map(Number);
+  return hours * 60 + minutes;
+}
+
+// Helper function to calculate end time based on start time and duration
+function calculateEndTime(startTime, durationMinutes) {
+  const [hours, minutes] = startTime.split(':').map(Number);
+  
+  let totalMinutes = hours * 60 + minutes + durationMinutes;
+  const endHours = Math.floor(totalMinutes / 60);
+  const endMinutes = totalMinutes % 60;
+  
+  return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
 }
 
 function _buildCriteria(filterBy) {
