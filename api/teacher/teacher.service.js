@@ -14,6 +14,9 @@ export const teacherService = {
   removeTeacher,
   getTeacherByRole,
   updateTeacherSchedule,
+  addStudentToTeacher,
+  removeStudentFromTeacher,
+  initializeTeachingStructure,
 };
 
 async function getTeachers(filterBy) {
@@ -52,6 +55,20 @@ async function addTeacher(teacherToAdd) {
     value.credentials.password = await authService.encryptPassword(
       value.credentials.password
     );
+
+    // Initialize teaching structure if not present
+    if (!value.teaching) {
+      value.teaching = {
+        studentIds: [],
+        schedule: [], // Legacy slot-based schedule
+        timeBlocks: [] // New time block system
+      };
+    } else {
+      // Ensure arrays are initialized
+      if (!value.teaching.studentIds) value.teaching.studentIds = [];
+      if (!value.teaching.schedule) value.teaching.schedule = [];
+      if (!value.teaching.timeBlocks) value.teaching.timeBlocks = [];
+    }
 
     value.createdAt = new Date();
     value.updatedAt = new Date();
@@ -135,58 +152,125 @@ async function getTeacherByRole(role) {
 }
 
 async function updateTeacherSchedule(teacherId, scheduleData) {
-  // Validate that all required fields have values
-  const { studentId, day, startTime, duration } = scheduleData;
+  try {
+    // Validate that all required fields have values
+    const { studentId, day, startTime, duration } = scheduleData;
 
-  if (!studentId || !day || !startTime || !duration) {
-    throw new Error(
-      'Schedule data is incomplete: all fields (studentId, day, startTime, duration) are required'
-    );
-  }
+    if (!studentId || !day || !startTime || !duration) {
+      throw new Error(
+        'Schedule data is incomplete: all fields (studentId, day, startTime, duration) are required'
+      );
+    }
 
-  // Calculate end time based on start time and duration
-  const endTime = calculateEndTime(startTime, duration);
-  
-  // Create a slot with all required fields
-  const scheduleSlot = {
-    _id: new ObjectId(),
-    studentId,
-    day,
-    startTime,
-    endTime,
-    duration,
-    isAvailable: false,
-    location: scheduleData.location || null,
-    notes: scheduleData.notes || null,
-    recurring: scheduleData.recurring || { isRecurring: true, excludeDates: [] },
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+    const teacherCollection = await getCollection('teacher');
+    const studentCollection = await getCollection('student');
+    
+    // First verify the teacher exists
+    const teacher = await teacherCollection.findOne({
+      _id: ObjectId.createFromHexString(teacherId),
+    });
+    
+    if (!teacher) {
+      throw new Error(`Teacher with id ${teacherId} not found`);
+    }
 
-  const collection = await getCollection('teacher');
-  
-  // First check for time conflicts
-  const teacher = await collection.findOne({
-    _id: ObjectId.createFromHexString(teacherId),
-  });
-  
-  if (teacher) {
-    const hasConflict = checkScheduleConflict(teacher.teaching?.schedule || [], scheduleSlot);
+    // Verify the student exists
+    const student = await studentCollection.findOne({
+      _id: ObjectId.createFromHexString(studentId)
+    });
+
+    if (!student) {
+      throw new Error(`Student with id ${studentId} not found`);
+    }
+
+    // Check for time conflicts
+    const hasConflict = checkScheduleConflict(teacher.teaching?.schedule || [], {
+      day,
+      startTime,
+      duration
+    });
     if (hasConflict) {
       throw new Error('Time slot conflicts with an existing slot');
     }
-  }
-  
-  // Update the teacher's schedule
-  return await collection.updateOne(
-    { _id: ObjectId.createFromHexString(teacherId) },
-    {
-      $addToSet: { 'teaching.studentIds': studentId },
-      $push: {
-        'teaching.schedule': scheduleSlot,
-      },
+
+    // Check for student schedule conflicts
+    const hasStudentConflict = await checkStudentScheduleConflict(
+      studentId,
+      teacherId,
+      day,
+      startTime,
+      duration
+    );
+
+    if (hasStudentConflict) {
+      throw new Error('Student already has another lesson at this time');
     }
-  );
+
+    // Calculate end time based on start time and duration
+    const endTime = calculateEndTime(startTime, duration);
+    
+    // Create a slot with all required fields
+    const scheduleSlot = {
+      _id: new ObjectId(),
+      studentId,
+      day,
+      startTime,
+      endTime,
+      duration,
+      isAvailable: false,
+      location: scheduleData.location || null,
+      notes: scheduleData.notes || null,
+      recurring: scheduleData.recurring || { isRecurring: true, excludeDates: [] },
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    // Update the teacher's schedule and student list
+    await teacherCollection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      {
+        $addToSet: { 'teaching.studentIds': studentId },
+        $push: {
+          'teaching.schedule': scheduleSlot,
+        },
+        $set: { updatedAt: new Date() }
+      }
+    );
+
+    // Create the teacher assignment for the student
+    const assignment = {
+      teacherId,
+      scheduleSlotId: scheduleSlot._id.toString(),
+      startDate: scheduleData.startDate || new Date(),
+      endDate: null,
+      isActive: true,
+      notes: scheduleData.notes || null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    // Update the student's teacher assignments and teacherIds (for backward compatibility)
+    await studentCollection.updateOne(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { 
+        $push: { teacherAssignments: assignment },
+        $addToSet: { teacherIds: teacherId },
+        $set: { updatedAt: new Date() }
+      }
+    );
+
+    return {
+      success: true,
+      message: 'Schedule slot created and student assigned successfully',
+      teacherId,
+      studentId,
+      scheduleSlot,
+      assignment
+    };
+  } catch (err) {
+    console.error(`Error updating teacher schedule: ${err.message}`);
+    throw new Error(`Error updating teacher schedule: ${err.message}`);
+  }
 }
 
 // Helper function to check for time conflicts
@@ -213,6 +297,47 @@ function timeToMinutes(timeString) {
   return hours * 60 + minutes;
 }
 
+// Helper function to check for student schedule conflicts
+async function checkStudentScheduleConflict(studentId, excludeTeacherId, day, startTime, duration, excludeSlotId = null) {
+  const teacherCollection = await getCollection('teacher');
+  
+  // Find all teachers who have this student assigned
+  const teachers = await teacherCollection
+    .find({ 'teaching.schedule.studentId': studentId })
+    .toArray();
+  
+  // Check each teacher's schedule
+  for (const teacher of teachers) {
+    // Skip the excluded teacher
+    if (teacher._id.toString() === excludeTeacherId) continue;
+    
+    const conflictingSlots = teacher.teaching.schedule.filter(slot => {
+      // Skip if not assigned to this student or if it's the excluded slot
+      if (slot.studentId !== studentId || 
+         (excludeSlotId && slot._id.toString() === excludeSlotId)) {
+        return false;
+      }
+      
+      // Skip if not on the same day
+      if (slot.day !== day) return false;
+      
+      // Convert times to minutes for easier comparison
+      const slotStart = timeToMinutes(slot.startTime);
+      const slotEnd = slotStart + slot.duration;
+      
+      const newStart = timeToMinutes(startTime);
+      const newEnd = newStart + duration;
+      
+      // Check for overlap
+      return (newStart < slotEnd) && (slotStart < newEnd);
+    });
+    
+    if (conflictingSlots.length > 0) return true;
+  }
+  
+  return false;
+}
+
 // Helper function to calculate end time based on start time and duration
 function calculateEndTime(startTime, durationMinutes) {
   const [hours, minutes] = startTime.split(':').map(Number);
@@ -222,6 +347,126 @@ function calculateEndTime(startTime, durationMinutes) {
   const endMinutes = totalMinutes % 60;
   
   return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+}
+
+async function addStudentToTeacher(teacherId, studentId) {
+  try {
+    const teacherCollection = await getCollection('teacher');
+    const studentCollection = await getCollection('student');
+    
+    // Verify both teacher and student exist
+    const teacher = await teacherCollection.findOne({
+      _id: ObjectId.createFromHexString(teacherId)
+    });
+    
+    if (!teacher) {
+      throw new Error(`Teacher with id ${teacherId} not found`);
+    }
+    
+    const student = await studentCollection.findOne({
+      _id: ObjectId.createFromHexString(studentId)
+    });
+    
+    if (!student) {
+      throw new Error(`Student with id ${studentId} not found`);
+    }
+    
+    // Add student to teacher's studentIds (for backward compatibility)
+    await teacherCollection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      { 
+        $addToSet: { 'teaching.studentIds': studentId },
+        $set: { updatedAt: new Date() }
+      }
+    );
+    
+    // Add teacher to student's teacherIds (for backward compatibility)
+    await studentCollection.updateOne(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { 
+        $addToSet: { teacherIds: teacherId },
+        $set: { updatedAt: new Date() }
+      }
+    );
+    
+    return {
+      success: true,
+      message: 'Student added to teacher successfully',
+      teacherId,
+      studentId
+    };
+  } catch (err) {
+    console.error(`Error adding student to teacher: ${err.message}`);
+    throw new Error(`Error adding student to teacher: ${err.message}`);
+  }
+}
+
+async function removeStudentFromTeacher(teacherId, studentId) {
+  try {
+    const teacherCollection = await getCollection('teacher');
+    const studentCollection = await getCollection('student');
+    
+    // Remove all schedule slots for this student from this teacher
+    await teacherCollection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      { 
+        $pull: { 
+          'teaching.studentIds': studentId,
+          'teaching.schedule': { studentId: studentId }
+        },
+        $set: { updatedAt: new Date() }
+      }
+    );
+    
+    // Mark all teacher assignments as inactive and remove from teacherIds
+    await studentCollection.updateOne(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { 
+        $pull: { teacherIds: teacherId },
+        $set: { 
+          'teacherAssignments.$[elem].isActive': false,
+          'teacherAssignments.$[elem].endDate': new Date(),
+          updatedAt: new Date()
+        }
+      },
+      {
+        arrayFilters: [{ 'elem.teacherId': teacherId, 'elem.isActive': true }]
+      }
+    );
+    
+    return {
+      success: true,
+      message: 'Student removed from teacher successfully',
+      teacherId,
+      studentId
+    };
+  } catch (err) {
+    console.error(`Error removing student from teacher: ${err.message}`);
+    throw new Error(`Error removing student from teacher: ${err.message}`);
+  }
+}
+
+async function initializeTeachingStructure(teacherId) {
+  try {
+    const collection = await getCollection('teacher');
+    
+    const result = await collection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      { 
+        $set: {
+          'teaching.studentIds': [],
+          'teaching.schedule': [], // Legacy slot-based schedule
+          'teaching.timeBlocks': [], // New time block system
+          updatedAt: new Date()
+        }
+      }
+    );
+    
+    return result;
+  } catch (err) {
+    console.error(`Error initializing teaching structure: ${err.message}`);
+    throw new Error(`Error initializing teaching structure: ${err.message}`);
+  }
 }
 
 function _buildCriteria(filterBy) {

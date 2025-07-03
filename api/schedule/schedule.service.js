@@ -340,13 +340,22 @@ async function assignStudentToSlot(assignmentData) {
       updatedAt: new Date()
     };
 
-    // Update the student's teacher assignments
+    // Initialize teacherAssignments array if it doesn't exist, then update the student
     await studentCollection.updateOne(
       { _id: ObjectId.createFromHexString(studentId) },
       { 
-        $push: { teacherAssignments: assignment },
-        $addToSet: { teacherIds: teacherId }, // For backward compatibility
+        $addToSet: { 
+          teacherIds: teacherId, // For backward compatibility
+        },
         $set: { updatedAt: new Date() }
+      }
+    );
+
+    // Ensure teacherAssignments array exists and push the assignment
+    await studentCollection.updateOne(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { 
+        $push: { teacherAssignments: assignment }
       }
     );
 

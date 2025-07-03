@@ -82,6 +82,10 @@ async function addStudent(studentToAdd, teacherId = null, isAdmin = false) {
       });
     }
 
+    // Initialize relationship arrays if not present
+    if (!value.teacherIds) value.teacherIds = [];
+    if (!value.teacherAssignments) value.teacherAssignments = [];
+
     value.createdAt = new Date();
     value.updatedAt = new Date();
 

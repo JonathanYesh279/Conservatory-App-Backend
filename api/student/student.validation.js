@@ -25,7 +25,11 @@ const VALID_INSTRUMENTS = [
   'טרומבון',
   'סקסופון',
   'אבוב',
+  'פסנתר', // Added piano
 ];
+
+const VALID_DAYS = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי'];
+const VALID_DURATIONS = [30, 45, 60];
 // Update the test statuses to include the new options
 const TEST_STATUSES = [
   'לא נבחן',
@@ -67,10 +71,36 @@ const instrumentProgressSchema = Joi.object({
   }).default({}),
 });
 
-// Schema for teacher assignment
+// Schema for teacher assignment (frontend format)
 const teacherAssignmentSchema = Joi.object({
-  teacherId: Joi.string().required(),
-  scheduleSlotId: Joi.string().required(),
+  teacherId: Joi.string().required().messages({
+    'any.required': 'מזהה המורה הוא שדה חובה',
+  }),
+  scheduleSlotId: Joi.string().required().messages({
+    'any.required': 'מזהה השיבוץ הוא שדה חובה',
+  }),
+  day: Joi.string()
+    .valid(...VALID_DAYS)
+    .required()
+    .messages({
+      'any.required': 'יום הוא שדה חובה',
+      'any.only': 'יום חייב להיות אחד מהימים הבאים: ' + VALID_DAYS.join(', '),
+    }),
+  time: Joi.string()
+    .pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
+    .required()
+    .messages({
+      'any.required': 'שעה היא שדה חובה',
+      'string.pattern.base': 'שעה חייבת להיות בפורמט HH:MM',
+    }),
+  duration: Joi.number()
+    .valid(...VALID_DURATIONS)
+    .required()
+    .messages({
+      'any.required': 'משך השיעור הוא שדה חובה',
+      'any.only': 'משך השיעור חייב להיות אחד מהערכים הבאים: ' + VALID_DURATIONS.join(', '),
+    }),
+  // Optional fields for extended functionality
   startDate: Joi.date().default(() => new Date()),
   endDate: Joi.date().allow(null).default(null),
   isActive: Joi.boolean().default(true),
@@ -136,6 +166,25 @@ export const studentSchema = Joi.object({
 const teacherAssignmentUpdateSchema = Joi.object({
   teacherId: Joi.string().optional(),
   scheduleSlotId: Joi.string().optional(),
+  day: Joi.string()
+    .valid(...VALID_DAYS)
+    .optional()
+    .messages({
+      'any.only': 'יום חייב להיות אחד מהימים הבאים: ' + VALID_DAYS.join(', '),
+    }),
+  time: Joi.string()
+    .pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
+    .optional()
+    .messages({
+      'string.pattern.base': 'שעה חייבת להיות בפורמט HH:MM',
+    }),
+  duration: Joi.number()
+    .valid(...VALID_DURATIONS)
+    .optional()
+    .messages({
+      'any.only': 'משך השיעור חייב להיות אחד מהערכים הבאים: ' + VALID_DURATIONS.join(', '),
+    }),
+  // Optional fields for extended functionality
   startDate: Joi.date().optional(),
   endDate: Joi.date().allow(null).optional(),
   isActive: Joi.boolean().optional(),
@@ -196,5 +245,8 @@ export function validateStudent(student, isUpdate = false) {
 export const STUDENT_CONSTANTS = {
   VALID_CLASSES,
   VALID_STAGES,
+  VALID_INSTRUMENTS,
+  VALID_DAYS,
+  VALID_DURATIONS,
   TEST_STATUSES,
 };
