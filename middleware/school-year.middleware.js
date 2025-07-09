@@ -2,8 +2,8 @@ import { getCollection } from '../services/mongoDB.service.js'
 import { ObjectId } from 'mongodb'
 
 export async function addSchoolYearToRequest(req, res, next) {
-  // Skip for certain paths
-  if (req.path === '/current' || req.path === '/list') {
+  // Skip for certain paths and time-block routes
+  if (req.path === '/current' || req.path === '/list' || req.path.includes('/time-blocks')) {
     return next()
   }
 
