@@ -1,6 +1,7 @@
 # Create and open .gitignore file
 echo "# Dependency directories
 node_modules/
+.claude/
 
 # Environment variables
 .env

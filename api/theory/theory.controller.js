@@ -27,8 +27,6 @@ async function getTheoryLessons(req, res, next) {
       dayOfWeek: req.query.dayOfWeek,
       location: req.query.location,
       schoolYearId: req.query.schoolYearId,
-      isActive: req.query.isActive,
-      showInactive: req.query.showInactive === 'true',
     };
 
     const theoryLessons = await theoryService.getTheoryLessons(filterBy);
@@ -78,8 +76,6 @@ async function getTheoryLessonsByCategory(req, res, next) {
       dayOfWeek: req.query.dayOfWeek,
       location: req.query.location,
       schoolYearId: req.query.schoolYearId,
-      isActive: req.query.isActive,
-      showInactive: req.query.showInactive === 'true',
     };
 
     const theoryLessons = await theoryService.getTheoryLessonsByCategory(
@@ -111,8 +107,6 @@ async function getTheoryLessonsByTeacher(req, res, next) {
       dayOfWeek: req.query.dayOfWeek,
       location: req.query.location,
       schoolYearId: req.query.schoolYearId,
-      isActive: req.query.isActive,
-      showInactive: req.query.showInactive === 'true',
     };
 
     const theoryLessons = await theoryService.getTheoryLessonsByTeacher(

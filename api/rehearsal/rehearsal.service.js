@@ -238,6 +238,7 @@ async function removeRehearsal(rehearsalId, teacherId, isAdmin = false) {
         );
     }
 
+    // Remove from orchestra record
     if (rehearsal.type === 'תזמורת') {
       const orchestraCollection = await getCollection('orchestra');
       if (orchestraCollection) {
@@ -248,20 +249,29 @@ async function removeRehearsal(rehearsalId, teacherId, isAdmin = false) {
       }
     }
 
+    // Delete associated attendance records
+    try {
+      const activityCollection = await getCollection('activity_attendance');
+      if (activityCollection) {
+        await activityCollection.deleteMany({
+          sessionId: rehearsalId,
+          activityType: 'תזמורת',
+        });
+      }
+    } catch (attendanceErr) {
+      console.warn(
+        `Failed to delete attendance records: ${attendanceErr.message}`
+      );
+    }
+
+    // Hard delete - actually remove the document
     const collection = await getCollection('rehearsal');
     if (!collection) {
       throw new Error('Database error: Failed to access rehearsal collection');
     }
 
-    const result = await collection.findOneAndUpdate(
-      { _id: ObjectId.createFromHexString(rehearsalId) },
-      {
-        $set: {
-          isActive: false,
-          updatedAt: new Date(),
-        },
-      },
-      { returnDocument: 'after' }
+    const result = await collection.findOneAndDelete(
+      { _id: ObjectId.createFromHexString(rehearsalId) }
     );
 
     if (!result) throw new Error(`Rehearsal with id ${rehearsalId} not found`);
@@ -356,7 +366,6 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
       attendance: { present: [], absent: [] },
       notes: notes || '',
       schoolYearId: schoolYearId,
-      isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }));
@@ -612,13 +621,7 @@ function _buildCriteria(filterBy) {
     criteria.date.$lte = new Date(filterBy.toDate);
   }
 
-  if (filterBy.showInactive) {
-    if (filterBy.isActive !== undefined) {
-      criteria.isActive = filterBy.isActive;
-    }
-  } else {
-    criteria.isActive = true;
-  }
+  // isActive filtering removed - all records are now active (hard delete implementation)
 
   return criteria;
 }

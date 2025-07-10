@@ -199,17 +199,39 @@ async function removeTheoryLesson(theoryLessonId) {
       );
     }
 
-    // Soft delete - set isActive to false
+    // Remove from student records
+    try {
+      const studentCollection = await getCollection('student');
+      await studentCollection.updateMany(
+        { 'enrollments.theoryLessonIds': theoryLessonId },
+        {
+          $pull: { 'enrollments.theoryLessonIds': theoryLessonId },
+          $set: { updatedAt: new Date() }
+        }
+      );
+    } catch (studentUpdateErr) {
+      console.warn(
+        `Failed to update student records: ${studentUpdateErr.message}`
+      );
+    }
+
+    // Delete associated attendance records
+    try {
+      const activityCollection = await getCollection('activity_attendance');
+      await activityCollection.deleteMany({
+        sessionId: theoryLessonId,
+        activityType: 'תאוריה',
+      });
+    } catch (attendanceErr) {
+      console.warn(
+        `Failed to delete attendance records: ${attendanceErr.message}`
+      );
+    }
+
+    // Hard delete - actually remove the document
     const collection = await getCollection('theory_lesson');
-    const result = await collection.findOneAndUpdate(
-      { _id: ObjectId.createFromHexString(theoryLessonId) },
-      {
-        $set: {
-          isActive: false,
-          updatedAt: new Date(),
-        },
-      },
-      { returnDocument: 'after' }
+    const result = await collection.findOneAndDelete(
+      { _id: ObjectId.createFromHexString(theoryLessonId) }
     );
 
     if (!result) {
@@ -282,7 +304,6 @@ async function bulkCreateTheoryLessons(bulkData) {
       syllabus: syllabus || '',
       homework: '',
       schoolYearId: schoolYearId,
-      isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
     }));
@@ -689,13 +710,7 @@ function _buildCriteria(filterBy) {
     criteria.schoolYearId = filterBy.schoolYearId;
   }
 
-  if (filterBy.showInactive) {
-    if (filterBy.isActive !== undefined) {
-      criteria.isActive = filterBy.isActive;
-    }
-  } else {
-    criteria.isActive = true;
-  }
+  // isActive filtering removed - all records are now active (hard delete implementation)
 
   return criteria;
 }

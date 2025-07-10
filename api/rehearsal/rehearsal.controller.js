@@ -18,8 +18,6 @@ async function getRehearsals(req, res, next) {
       type: req.query.type,
       fromDate: req.query.fromDate,
       toDate: req.query.toDate,
-      isActive: req.query.isActive,
-      showInactive: req.query.showInactive === 'true'
     }
 
     const rehearsals = await rehearsalService.getRehearsals(filterBy)
@@ -47,8 +45,6 @@ async function getOrchestraRehearsals(req, res, next) {
       type: req.query.type,
       fromDate: req.query.fromDate,
       toDate: req.query.toDate,
-      isActive: req.query.isActive,
-      showInactive: req.query.showInactive === 'true'
     }
 
     const rehearsals = await rehearsalService.getOrchestraRehearsals(orchestraId, filterBy)
