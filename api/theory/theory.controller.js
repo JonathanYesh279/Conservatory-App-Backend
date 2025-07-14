@@ -1,4 +1,7 @@
 import { theoryService } from './theory.service.js';
+import ConflictDetectionService from '../../services/conflictDetectionService.js';
+import { sendErrorResponse, sendSuccessResponse, formatConflictResponse } from '../../utils/errorResponses.js';
+import { isValidTimeFormat, isValidTimeRange } from '../../utils/timeUtils.js';
 
 export const theoryController = {
   getTheoryLessons,
@@ -127,7 +130,25 @@ async function addTheoryLesson(req, res, next) {
     const theoryLessonToAdd = req.body;
 
     if (!theoryLessonToAdd || Object.keys(theoryLessonToAdd).length === 0) {
-      return res.status(400).json({ error: 'Theory lesson data is required' });
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: 'Theory lesson data is required' }]);
+    }
+
+    // Validate required fields
+    const requiredFields = ['category', 'teacherId', 'date', 'startTime', 'endTime', 'location'];
+    const missingFields = requiredFields.filter(field => !theoryLessonToAdd[field]);
+    
+    if (missingFields.length > 0) {
+      return sendErrorResponse(res, 'MISSING_REQUIRED_FIELDS', missingFields);
+    }
+
+    // Validate time format
+    if (!isValidTimeFormat(theoryLessonToAdd.startTime) || !isValidTimeFormat(theoryLessonToAdd.endTime)) {
+      return sendErrorResponse(res, 'INVALID_TIME_FORMAT');
+    }
+
+    // Validate time range
+    if (!isValidTimeRange(theoryLessonToAdd.startTime, theoryLessonToAdd.endTime)) {
+      return sendErrorResponse(res, 'INVALID_TIME_RANGE');
     }
 
     // Add schoolYearId from middleware if not provided
@@ -139,18 +160,33 @@ async function addTheoryLesson(req, res, next) {
       theoryLessonToAdd.schoolYearId = req.schoolYear._id.toString();
     }
 
+    // Check for conflicts
+    const conflictValidation = await ConflictDetectionService.validateSingleLesson(theoryLessonToAdd);
+    
+    if (conflictValidation.hasConflicts && !theoryLessonToAdd.forceCreate) {
+      const conflictResponse = formatConflictResponse(conflictValidation.roomConflicts, conflictValidation.teacherConflicts);
+      conflictResponse.message = 'Use forceCreate=true to override these conflicts';
+      return res.status(409).json(conflictResponse);
+    }
+
     const addedTheoryLesson = await theoryService.addTheoryLesson(
       theoryLessonToAdd
     );
-    res.status(201).json(addedTheoryLesson);
+    
+    // Return success response with or without conflict override info
+    if (conflictValidation.hasConflicts) {
+      return sendSuccessResponse(res, 'CREATE_SUCCESS_WITH_CONFLICTS', addedTheoryLesson, conflictValidation);
+    } else {
+      return sendSuccessResponse(res, 'CREATE_SUCCESS', addedTheoryLesson);
+    }
   } catch (err) {
     console.error(`Error in addTheoryLesson controller: ${err.message}`);
 
     if (err.message.includes('Validation error')) {
-      return res.status(400).json({ error: err.message });
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: err.message }]);
     }
 
-    next(err);
+    return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
   }
 }
 
@@ -160,33 +196,80 @@ async function updateTheoryLesson(req, res, next) {
     const theoryLessonToUpdate = req.body;
 
     if (!id) {
-      return res.status(400).json({ error: 'Theory lesson ID is required' });
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: 'Theory lesson ID is required' }]);
     }
 
     if (
       !theoryLessonToUpdate ||
       Object.keys(theoryLessonToUpdate).length === 0
     ) {
-      return res.status(400).json({ error: 'Theory lesson data is required' });
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: 'Theory lesson data is required' }]);
+    }
+
+    // Validate time format if provided
+    if (theoryLessonToUpdate.startTime && !isValidTimeFormat(theoryLessonToUpdate.startTime)) {
+      return sendErrorResponse(res, 'INVALID_TIME_FORMAT');
+    }
+    if (theoryLessonToUpdate.endTime && !isValidTimeFormat(theoryLessonToUpdate.endTime)) {
+      return sendErrorResponse(res, 'INVALID_TIME_FORMAT');
+    }
+
+    // Check if scheduling fields are being modified
+    const schedulingFields = ['date', 'startTime', 'endTime', 'location', 'teacherId'];
+    const isScheduleModified = schedulingFields.some(field => 
+      theoryLessonToUpdate[field] !== undefined
+    );
+
+    let conflictValidation = null;
+    
+    if (isScheduleModified) {
+      // Get existing lesson to merge with updates
+      const existingLesson = await theoryService.getTheoryLessonById(id);
+      const mergedLessonData = { ...existingLesson, ...theoryLessonToUpdate };
+      
+      // Validate time range if both times are provided
+      if (mergedLessonData.startTime && mergedLessonData.endTime) {
+        if (!isValidTimeRange(mergedLessonData.startTime, mergedLessonData.endTime)) {
+          return sendErrorResponse(res, 'INVALID_TIME_RANGE');
+        }
+      }
+      
+      // Validate conflicts (excluding current lesson)
+      conflictValidation = await ConflictDetectionService.validateSingleLesson(
+        mergedLessonData, 
+        id
+      );
+      
+      if (conflictValidation.hasConflicts && !theoryLessonToUpdate.forceUpdate) {
+        const conflictResponse = formatConflictResponse(conflictValidation.roomConflicts, conflictValidation.teacherConflicts);
+        conflictResponse.message = 'Use forceUpdate=true to override these conflicts';
+        return res.status(409).json(conflictResponse);
+      }
     }
 
     const updatedTheoryLesson = await theoryService.updateTheoryLesson(
       id,
       theoryLessonToUpdate
     );
-    res.json(updatedTheoryLesson);
+    
+    // Return success response with or without conflict override info
+    if (conflictValidation && conflictValidation.hasConflicts) {
+      return sendSuccessResponse(res, 'UPDATE_SUCCESS_WITH_CONFLICTS', updatedTheoryLesson, conflictValidation);
+    } else {
+      return sendSuccessResponse(res, 'UPDATE_SUCCESS', updatedTheoryLesson);
+    }
   } catch (err) {
     console.error(`Error in updateTheoryLesson controller: ${err.message}`);
 
     if (err.message.includes('not found')) {
-      return res.status(404).json({ error: err.message });
+      return sendErrorResponse(res, 'LESSON_NOT_FOUND', id);
     }
 
     if (err.message.includes('Validation error')) {
-      return res.status(400).json({ error: err.message });
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: err.message }]);
     }
 
-    next(err);
+    return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
   }
 }
 
@@ -216,7 +299,7 @@ async function bulkCreateTheoryLessons(req, res, next) {
     const bulkData = req.body;
 
     if (!bulkData || Object.keys(bulkData).length === 0) {
-      return res.status(400).json({ error: 'Bulk creation data is required' });
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: 'Bulk creation data is required' }]);
     }
 
     // Add schoolYearId from request if not in body
@@ -236,11 +319,7 @@ async function bulkCreateTheoryLessons(req, res, next) {
     // Validate that we have schoolYearId
     if (!bulkData.schoolYearId) {
       console.error('Missing schoolYearId in bulk theory lesson data');
-      return res.status(400).json({
-        error: 'Missing schoolYearId in bulk theory lesson data',
-        bulkData,
-        schoolYear: req.schoolYear || null,
-      });
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: 'Missing schoolYearId in bulk theory lesson data' }]);
     }
 
     // Ensure all required fields are present
@@ -255,30 +334,61 @@ async function bulkCreateTheoryLessons(req, res, next) {
       'location',
     ];
 
-    for (const field of requiredFields) {
-      if (!bulkData[field] && bulkData[field] !== 0) {
-        // Allow 0 for dayOfWeek
-        console.error(
-          `Missing required field: ${field} in bulk theory lesson data`
-        );
-        return res.status(400).json({
-          error: `Missing required field: ${field} in bulk theory lesson data`,
-        });
-      }
+    const missingFields = requiredFields.filter(field => 
+      !bulkData[field] && bulkData[field] !== 0 // Allow 0 for dayOfWeek
+    );
+
+    if (missingFields.length > 0) {
+      return sendErrorResponse(res, 'MISSING_REQUIRED_FIELDS', missingFields);
+    }
+
+    // Validate time format
+    if (!isValidTimeFormat(bulkData.startTime) || !isValidTimeFormat(bulkData.endTime)) {
+      return sendErrorResponse(res, 'INVALID_TIME_FORMAT');
+    }
+
+    // Validate time range
+    if (!isValidTimeRange(bulkData.startTime, bulkData.endTime)) {
+      return sendErrorResponse(res, 'INVALID_TIME_RANGE');
+    }
+
+    // Validate date range
+    if (new Date(bulkData.endDate) <= new Date(bulkData.startDate)) {
+      return sendErrorResponse(res, 'INVALID_DATE_RANGE');
+    }
+
+    // Validate day of week
+    if (bulkData.dayOfWeek < 0 || bulkData.dayOfWeek > 6) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: 'Day of week must be between 0 (Sunday) and 6 (Saturday)' }]);
+    }
+
+    // Check for conflicts
+    const conflictValidation = await ConflictDetectionService.validateBulkLessons(bulkData);
+    
+    // If conflicts exist and not forced, return conflict information
+    if (conflictValidation.hasConflicts && !bulkData.forceCreate) {
+      const conflictResponse = formatConflictResponse(conflictValidation.roomConflicts, conflictValidation.teacherConflicts);
+      conflictResponse.affectedDates = conflictValidation.affectedDates;
+      conflictResponse.message = 'Use forceCreate=true to override these conflicts';
+      return res.status(409).json(conflictResponse);
     }
 
     const result = await theoryService.bulkCreateTheoryLessons(bulkData);
-    res.status(201).json(result);
+    
+    // Return success response with or without conflict override info
+    if (conflictValidation.hasConflicts) {
+      return sendSuccessResponse(res, 'BULK_CREATE_SUCCESS_WITH_CONFLICTS', result, conflictValidation);
+    } else {
+      return sendSuccessResponse(res, 'BULK_CREATE_SUCCESS', result);
+    }
   } catch (err) {
     console.error(`Error in bulk create theory lessons: ${err.message}`);
 
     if (err.message.includes('Validation error')) {
-      return res.status(400).json({ error: err.message });
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: err.message }]);
     }
 
-    res.status(500).json({
-      error: err.message || 'Failed to create theory lessons in bulk',
-    });
+    return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
   }
 }
 

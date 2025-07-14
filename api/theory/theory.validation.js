@@ -57,6 +57,8 @@ export const VALID_THEORY_LOCATIONS = [
   'חדר 24',
   'חדר 25',
   'חדר 26',
+  'חדר תאוריה א',
+  'חדר תאוריה ב',
 ];
 
 // Schema for individual theory lesson

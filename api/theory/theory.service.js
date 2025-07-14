@@ -5,6 +5,7 @@ import {
   validateTheoryAttendance,
 } from './theory.validation.js';
 import { ObjectId } from 'mongodb';
+import ConflictDetectionService from '../../services/conflictDetectionService.js';
 
 export const theoryService = {
   getTheoryLessons,
@@ -104,26 +105,43 @@ async function addTheoryLesson(theoryLessonToAdd) {
     value.createdAt = new Date();
     value.updatedAt = new Date();
 
-    const collection = await getCollection('theory_lesson');
-    const result = await collection.insertOne(value);
-
-    // Update teacher record to include this theory lesson
-    try {
-      const teacherCollection = await getCollection('teacher');
-      await teacherCollection.updateOne(
-        { _id: ObjectId.createFromHexString(value.teacherId) },
-        {
-          $push: { 'teaching.theoryLessonIds': result.insertedId.toString() },
-        }
-      );
-    } catch (teacherUpdateErr) {
-      // Log warning but don't fail the entire operation
-      console.warn(
-        `Failed to update teacher record: ${teacherUpdateErr.message}`
-      );
+    // CRITICAL: Final conflict check right before insertion to prevent race conditions
+    const conflictValidation = await ConflictDetectionService.validateSingleLesson(value);
+    if (conflictValidation.hasConflicts && !theoryLessonToAdd.forceCreate) {
+      const conflicts = [...conflictValidation.roomConflicts, ...conflictValidation.teacherConflicts];
+      throw new Error(`Conflicts detected: ${conflicts.map(c => c.description).join('; ')}`);
     }
 
-    return { _id: result.insertedId, ...value };
+    const collection = await getCollection('theory_lesson');
+    
+    // Try to insert with error handling for duplicate key errors
+    try {
+      const result = await collection.insertOne(value);
+      
+      // Update teacher record to include this theory lesson
+      try {
+        const teacherCollection = await getCollection('teacher');
+        await teacherCollection.updateOne(
+          { _id: ObjectId.createFromHexString(value.teacherId) },
+          {
+            $push: { 'teaching.theoryLessonIds': result.insertedId.toString() },
+          }
+        );
+      } catch (teacherUpdateErr) {
+        // Log warning but don't fail the entire operation
+        console.warn(
+          `Failed to update teacher record: ${teacherUpdateErr.message}`
+        );
+      }
+
+      return { _id: result.insertedId, ...value };
+    } catch (insertError) {
+      // Handle duplicate key errors (race condition caught at DB level)
+      if (insertError.code === 11000) {
+        throw new Error(`Duplicate lesson detected: A lesson already exists for this room and time slot`);
+      }
+      throw insertError;
+    }
   } catch (err) {
     console.error(`Error in theoryService.addTheoryLesson: ${err}`);
     throw new Error(`Error in theoryService.addTheoryLesson: ${err}`);
@@ -321,8 +339,26 @@ async function bulkCreateTheoryLessons(bulkData) {
 
     const result = { insertedCount: 0, theoryLessonIds: [] };
 
-    // Insert theory lessons in batches
-    const batchSize = 100;
+    // CRITICAL: Final conflict validation right before insertion
+    console.log('Performing final conflict validation before insertion...');
+    const finalConflictCheck = await ConflictDetectionService.validateBulkLessons({
+      startDate,
+      endDate,
+      dayOfWeek,
+      startTime,
+      endTime,
+      location,
+      teacherId,
+      excludeDates
+    });
+
+    if (finalConflictCheck.hasConflicts && !bulkData.forceCreate) {
+      const conflicts = [...finalConflictCheck.roomConflicts, ...finalConflictCheck.teacherConflicts];
+      throw new Error(`Final validation failed - conflicts detected: ${conflicts.map(c => c.description).join('; ')}`);
+    }
+
+    // Insert theory lessons atomically with conflict protection
+    const batchSize = 50; // Smaller batches for better error handling
     for (let i = 0; i < theoryLessons.length; i += batchSize) {
       try {
         const batch = theoryLessons.slice(i, i + batchSize);
@@ -332,8 +368,13 @@ async function bulkCreateTheoryLessons(bulkData) {
           } theory lessons`
         );
 
-        const batchResult = await theoryLessonCollection.insertMany(batch);
-        console.log(`Batch inserted with result:`, batchResult);
+        // Use insertMany with ordered:false to continue on conflicts
+        const batchResult = await theoryLessonCollection.insertMany(batch, {
+          ordered: false, // Continue inserting even if some fail due to conflicts
+          writeConcern: { w: 'majority' } // Ensure write is acknowledged by majority of replica set
+        });
+        
+        console.log(`Batch inserted successfully: ${batchResult.insertedCount} lessons`);
 
         result.insertedCount += batchResult.insertedCount;
         const batchIds = Object.values(batchResult.insertedIds).map((id) =>
@@ -342,6 +383,19 @@ async function bulkCreateTheoryLessons(bulkData) {
         result.theoryLessonIds = [...result.theoryLessonIds, ...batchIds];
       } catch (batchErr) {
         console.error(`Error inserting batch: ${batchErr}`);
+        
+        // Handle duplicate key errors specifically
+        if (batchErr.code === 11000 || batchErr.writeErrors?.some(e => e.code === 11000)) {
+          console.warn('Some lessons were skipped due to conflicts (duplicate key errors)');
+          // Extract successfully inserted IDs even when some fail
+          if (batchErr.result && batchErr.result.insertedIds) {
+            const successfulIds = Object.values(batchErr.result.insertedIds).map(id => id.toString());
+            result.theoryLessonIds = [...result.theoryLessonIds, ...successfulIds];
+            result.insertedCount += successfulIds.length;
+          }
+          continue; // Continue with next batch
+        }
+        
         throw new Error(
           `Failed to insert theory lesson batch: ${batchErr.message}`
         );

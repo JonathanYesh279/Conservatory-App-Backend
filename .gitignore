@@ -1,5 +1,4 @@
-# Create and open .gitignore file
-echo "# Dependency directories
+# Dependency directories
 node_modules/
 .claude/
 
@@ -10,10 +9,45 @@ node_modules/
 logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # IDE files
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS generated files
-.DS_Store" > .gitignore
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+
+# Coverage reports
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# Uploads (user uploaded files)
+uploads/
+
+# Database
+*.db
+*.sqlite
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
