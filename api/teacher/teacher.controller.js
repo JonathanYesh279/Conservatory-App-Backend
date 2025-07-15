@@ -42,8 +42,37 @@ async function addTeacher(req, res, next) {
   try {
     const teacherToAdd = req.body
     const addedTeacher = await teacherService.addTeacher(teacherToAdd)
-    res.json(addedTeacher)
+    
+    // Check if there are warnings (non-blocking duplicates)
+    if (addedTeacher.warnings) {
+      return res.status(201).json({
+        success: true,
+        data: addedTeacher,
+        warnings: addedTeacher.warnings
+      });
+    }
+    
+    res.status(201).json({ success: true, data: addedTeacher })
   } catch (err) {
+    console.error(`Error adding teacher: ${err.message}`);
+    
+    // Handle duplicate detection errors
+    if (err.code === 'DUPLICATE_TEACHER_DETECTED') {
+      return res.status(409).json({
+        error: 'Duplicate teacher detected',
+        code: 'DUPLICATE_TEACHER_DETECTED',
+        details: err.duplicateInfo
+      });
+    }
+    
+    // Handle email duplicate errors
+    if (err.code === 'EMAIL_DUPLICATE') {
+      return res.status(409).json({
+        error: err.message,
+        code: 'EMAIL_DUPLICATE'
+      });
+    }
+    
     next(err)
   }
 }
@@ -53,8 +82,27 @@ async function updateTeacher(req, res, next) {
     const { id } = req.params
     const teacherToUpdate = req.body
     const updatedTeacher = await teacherService.updateTeacher(id, teacherToUpdate)
-    res.json(updatedTeacher)
+    res.json({ success: true, data: updatedTeacher })
   } catch (err) {
+    console.error(`Error updating teacher: ${err.message}`);
+    
+    // Handle duplicate detection errors
+    if (err.code === 'DUPLICATE_TEACHER_DETECTED') {
+      return res.status(409).json({
+        error: 'Duplicate teacher detected',
+        code: 'DUPLICATE_TEACHER_DETECTED',
+        details: err.duplicateInfo
+      });
+    }
+    
+    // Handle email duplicate errors
+    if (err.code === 'EMAIL_DUPLICATE') {
+      return res.status(409).json({
+        error: err.message,
+        code: 'EMAIL_DUPLICATE'
+      });
+    }
+    
     next(err) 
   }
 }

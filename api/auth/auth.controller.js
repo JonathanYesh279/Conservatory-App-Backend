@@ -80,11 +80,24 @@ async function initAdmin(req, res) {
   try {
     const collection = await getCollection('teacher');
 
-    // Check if admin already exists
+    // Check if admin already exists by role
     const adminExists = await collection.findOne({ roles: { $in: ['מנהל'] } });
     if (adminExists) {
       console.log('Found existing admin:', adminExists._id.toString())
       return res.status(400).json({ error: 'Admin already exists' });
+    }
+
+    // Additional check: ensure admin email is not already taken
+    const emailExists = await collection.findOne({
+      $or: [
+        { 'credentials.email': 'admin@example.com' },
+        { 'personalInfo.email': 'admin@example.com' }
+      ]
+    });
+    
+    if (emailExists) {
+      console.log('Admin email already in use by user:', emailExists._id.toString());
+      return res.status(400).json({ error: 'Admin email already in use' });
     }
 
     // Create admin

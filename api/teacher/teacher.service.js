@@ -5,6 +5,7 @@ import {
 } from './teacher.validation.js';
 import { ObjectId } from 'mongodb';
 import { authService } from '../auth/auth.service.js';
+import { DuplicateDetectionService } from '../../services/duplicateDetectionService.js';
 
 export const teacherService = {
   getTeachers,
@@ -52,6 +53,34 @@ async function addTeacher(teacherToAdd) {
     const { error, value } = validateTeacher(teacherToAdd);
     if (error) throw new Error(`Invalid teacher data: ${error.message}`);
 
+    // Comprehensive duplicate detection
+    const duplicateResult = await DuplicateDetectionService.detectTeacherDuplicates(value);
+    
+    if (duplicateResult.hasDuplicates) {
+      // Check if creation should be blocked based on severity
+      if (DuplicateDetectionService.shouldBlockCreation(duplicateResult)) {
+        const criticalDuplicates = duplicateResult.duplicates.filter(d => 
+          d.severity === 'CRITICAL' || 
+          (d.severity === 'HIGH' && ['EMAIL_DUPLICATE', 'PHONE_DUPLICATE', 'FULL_PROFILE_DUPLICATE'].includes(d.type))
+        );
+        
+        const error = new Error('Duplicate teacher detected');
+        error.code = 'DUPLICATE_TEACHER_DETECTED';
+        error.duplicateInfo = {
+          blocked: true,
+          reason: duplicateResult.recommendation,
+          duplicates: criticalDuplicates,
+          totalDuplicatesFound: duplicateResult.duplicateCount
+        };
+        throw error;
+      } else {
+        // Non-blocking duplicates - log warning but allow creation
+        console.warn('Potential duplicates detected but allowing creation:', duplicateResult);
+      }
+    }
+
+    const collection = await getCollection('teacher');
+
     value.credentials.password = await authService.encryptPassword(
       value.credentials.password
     );
@@ -73,11 +102,35 @@ async function addTeacher(teacherToAdd) {
     value.createdAt = new Date();
     value.updatedAt = new Date();
 
-    const collection = await getCollection('teacher');
     const result = await collection.insertOne(value);
-    return { _id: result.insertedId, ...value };
+    
+    // Return success with potential duplicate warnings
+    const response = { _id: result.insertedId, ...value };
+    
+    if (duplicateResult.hasDuplicates && !DuplicateDetectionService.shouldBlockCreation(duplicateResult)) {
+      response.warnings = {
+        potentialDuplicates: duplicateResult.duplicates,
+        message: 'Teacher created successfully, but potential duplicates were found'
+      };
+    }
+    
+    return response;
   } catch (err) {
     console.error(`Error adding teacher: ${err.message}`);
+    
+    // Handle duplicate detection errors specially
+    if (err.code === 'DUPLICATE_TEACHER_DETECTED') {
+      throw err; // Re-throw with full duplicate info
+    }
+    
+    // Handle MongoDB duplicate key errors (email unique constraint)
+    if (err.code === 11000) {
+      const field = err.message.includes('credentials.email') ? 'credentials email' : 'personal email';
+      const duplicateError = new Error(`Teacher with this ${field} already exists`);
+      duplicateError.code = 'EMAIL_DUPLICATE';
+      throw duplicateError;
+    }
+    
     throw new Error(`Error adding teacher: ${err.message}`);
   }
 }
@@ -90,6 +143,58 @@ async function updateTeacher(teacherId, teacherToUpdate) {
     const { error, value } = validateTeacherUpdate(teacherToUpdate);
     if (error) throw new Error(`Invalid teacher data: ${error.message}`);
 
+    const collection = await getCollection('teacher');
+
+    // Get current teacher data to merge for duplicate detection
+    const currentTeacher = await collection.findOne({
+      _id: ObjectId.createFromHexString(teacherId)
+    });
+    
+    if (!currentTeacher) {
+      throw new Error(`Teacher with id ${teacherId} not found`);
+    }
+
+    // Merge current data with updates for comprehensive duplicate detection
+    const mergedTeacherData = {
+      personalInfo: {
+        ...currentTeacher.personalInfo,
+        ...value.personalInfo
+      },
+      credentials: {
+        ...currentTeacher.credentials,
+        ...value.credentials
+      }
+    };
+
+    // Run duplicate detection excluding current teacher
+    if (value.personalInfo || value.credentials) {
+      const duplicateResult = await DuplicateDetectionService.detectTeacherDuplicates(
+        mergedTeacherData, 
+        teacherId
+      );
+      
+      if (duplicateResult.hasDuplicates) {
+        if (DuplicateDetectionService.shouldBlockCreation(duplicateResult)) {
+          const criticalDuplicates = duplicateResult.duplicates.filter(d => 
+            d.severity === 'CRITICAL' || 
+            (d.severity === 'HIGH' && ['EMAIL_DUPLICATE', 'PHONE_DUPLICATE', 'FULL_PROFILE_DUPLICATE'].includes(d.type))
+          );
+          
+          const error = new Error('Duplicate teacher detected');
+          error.code = 'DUPLICATE_TEACHER_DETECTED';
+          error.duplicateInfo = {
+            blocked: true,
+            reason: duplicateResult.recommendation,
+            duplicates: criticalDuplicates,
+            totalDuplicatesFound: duplicateResult.duplicateCount
+          };
+          throw error;
+        } else {
+          console.warn('Potential duplicates detected but allowing update:', duplicateResult);
+        }
+      }
+    }
+
     // If password is provided, encrypt it
     if (value.credentials && value.credentials.password) {
       value.credentials.password = await authService.encryptPassword(
@@ -99,7 +204,6 @@ async function updateTeacher(teacherId, teacherToUpdate) {
 
     value.updatedAt = new Date();
 
-    const collection = await getCollection('teacher');
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(teacherId) },
       { $set: value },
@@ -110,6 +214,20 @@ async function updateTeacher(teacherId, teacherToUpdate) {
     return result;
   } catch (err) {
     console.error(`Error updating teacher: ${err.message}`);
+    
+    // Handle duplicate detection errors specially
+    if (err.code === 'DUPLICATE_TEACHER_DETECTED') {
+      throw err;
+    }
+    
+    // Handle MongoDB duplicate key errors
+    if (err.code === 11000) {
+      const field = err.message.includes('credentials.email') ? 'credentials email' : 'personal email';
+      const duplicateError = new Error(`Teacher with this ${field} already exists`);
+      duplicateError.code = 'EMAIL_DUPLICATE';
+      throw duplicateError;
+    }
+    
     throw new Error(`Error updating teacher: ${err.message}`);
   }
 }
