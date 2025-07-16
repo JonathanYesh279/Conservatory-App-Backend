@@ -29,9 +29,13 @@ async function getStudents(req, res, next) {
 async function getStudentById(req, res, next) {
   try {
     const { id } = req.params;
+    console.log(`🔍 Getting student by ID: ${id}`);
     const student = await studentService.getStudentById(id);
+    console.log(`✅ Successfully retrieved student: ${student.personalInfo?.fullName || 'Unknown'}`);
     res.json(student);
   } catch (err) {
+    console.error(`❌ Error getting student by ID ${req.params.id}:`, err.message);
+    console.error('Stack trace:', err.stack);
     next(err);
   }
 }

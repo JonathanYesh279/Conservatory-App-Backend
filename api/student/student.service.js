@@ -30,15 +30,27 @@ async function getStudents(filterBy = {}) {
 
 async function getStudentById(studentId) {
   try {
+    console.log(`🔍 Student service: Getting student by ID: ${studentId}`);
+    
+    // Validate ObjectId format
+    if (!ObjectId.isValid(studentId)) {
+      throw new Error(`Invalid student ID format: ${studentId}`);
+    }
+    
     const collection = await getCollection('student');
     const student = await collection.findOne({
       _id: ObjectId.createFromHexString(studentId),
     });
 
-    if (!student) throw new Error(`Student with id ${studentId} not found`);
+    if (!student) {
+      throw new Error(`Student with id ${studentId} not found`);
+    }
+    
+    console.log(`✅ Student service: Found student: ${student.personalInfo?.fullName || 'Unknown'}`);
     return student;
   } catch (err) {
-    console.error(`Error getting student by id: ${err.message}`);
+    console.error(`❌ Student service error for ID ${studentId}:`, err.message);
+    console.error('Stack trace:', err.stack);
     throw new Error(`Error getting student by id: ${err.message}`);
   }
 }

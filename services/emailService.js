@@ -85,13 +85,6 @@ async function sendInvitationEmail(email, token, teacherName) {
   console.log('Teacher Name:', teacherName);
   console.log('========================');
 
-  // Debug: Check environment variables
-  console.log('🔍 Email Environment Variables Debug:');
-  console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'SET' : 'NOT SET');
-  console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'SET' : 'NOT SET');
-  console.log('SENDGRID_API_KEY:', process.env.SENDGRID_API_KEY ? 'SET' : 'NOT SET');
-  console.log('FRONTEND_URL:', process.env.FRONTEND_URL || 'NOT SET');
-
   // Send actual email if configured
   if (process.env.SENDGRID_API_KEY) {
     // Use SendGrid (easier setup)
