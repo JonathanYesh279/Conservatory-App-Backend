@@ -41,7 +41,8 @@ async function getTeacherById(req, res, next) {
 async function addTeacher(req, res, next) { 
   try {
     const teacherToAdd = req.body
-    const addedTeacher = await teacherService.addTeacher(teacherToAdd)
+    const adminId = req.teacher?._id // Get admin ID from authenticated user
+    const addedTeacher = await teacherService.addTeacher(teacherToAdd, adminId)
     
     // Check if there are warnings (non-blocking duplicates)
     if (addedTeacher.warnings) {
@@ -69,7 +70,8 @@ async function addTeacher(req, res, next) {
     if (err.code === 'EMAIL_DUPLICATE') {
       return res.status(409).json({
         error: err.message,
-        code: 'EMAIL_DUPLICATE'
+        code: 'EMAIL_DUPLICATE',
+        suggestion: 'A teacher with this email already exists. Please check if you need to resend invitation or update existing teacher.'
       });
     }
     
@@ -99,7 +101,8 @@ async function updateTeacher(req, res, next) {
     if (err.code === 'EMAIL_DUPLICATE') {
       return res.status(409).json({
         error: err.message,
-        code: 'EMAIL_DUPLICATE'
+        code: 'EMAIL_DUPLICATE',
+        suggestion: 'A teacher with this email already exists. Please check if you need to resend invitation or update existing teacher.'
       });
     }
     

@@ -6,6 +6,8 @@ import {
 import { ObjectId } from 'mongodb';
 import { authService } from '../auth/auth.service.js';
 import { DuplicateDetectionService } from '../../services/duplicateDetectionService.js';
+import { emailService } from '../../services/emailService.js';
+import crypto from 'crypto';
 
 export const teacherService = {
   getTeachers,
@@ -48,7 +50,7 @@ async function getTeacherById(teacherId) {
   }
 }
 
-async function addTeacher(teacherToAdd) {
+async function addTeacher(teacherToAdd, adminId) {
   try {
     const { error, value } = validateTeacher(teacherToAdd);
     if (error) throw new Error(`Invalid teacher data: ${error.message}`);
@@ -81,9 +83,19 @@ async function addTeacher(teacherToAdd) {
 
     const collection = await getCollection('teacher');
 
-    value.credentials.password = await authService.encryptPassword(
-      value.credentials.password
-    );
+    // Generate invitation token instead of setting password
+    const invitationToken = crypto.randomBytes(32).toString('hex');
+    const invitationExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+
+    // Remove password from teacher data and set invitation data
+    // Always remove password for invitation system (handle null, empty string, or any value)
+    delete value.credentials.password;
+    
+    value.credentials.invitationToken = invitationToken;
+    value.credentials.invitationExpiry = invitationExpiry;
+    value.credentials.isInvitationAccepted = false;
+    value.credentials.invitedAt = new Date();
+    value.credentials.invitedBy = adminId;
 
     // Initialize teaching structure if not present
     if (!value.teaching) {
@@ -103,6 +115,9 @@ async function addTeacher(teacherToAdd) {
     value.updatedAt = new Date();
 
     const result = await collection.insertOne(value);
+    
+    // Send invitation email
+    await emailService.sendInvitationEmail(value.credentials.email, invitationToken, value.personalInfo.fullName);
     
     // Return success with potential duplicate warnings
     const response = { _id: result.insertedId, ...value };
@@ -134,6 +149,7 @@ async function addTeacher(teacherToAdd) {
     throw new Error(`Error adding teacher: ${err.message}`);
   }
 }
+
 
 async function updateTeacher(teacherId, teacherToUpdate) {
   try {

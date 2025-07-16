@@ -39,6 +39,24 @@ async function login(email, password) {
       throw new Error('Invalid email or password');
     }
 
+    // Handle existing accounts (created before invitation system)
+    // If isInvitationAccepted field doesn't exist, treat as legacy account
+    const isLegacyAccount = teacher.credentials.isInvitationAccepted === undefined;
+    
+    if (!isLegacyAccount) {
+      // Check if teacher hasn't accepted invitation yet (for new invitation-based accounts)
+      if (!teacher.credentials.isInvitationAccepted) {
+        console.log('Teacher has not accepted invitation yet:', teacher._id);
+        throw new Error('Please accept your invitation first');
+      }
+    }
+
+    // Check if password is set (should be set for all accounts)
+    if (!teacher.credentials.password) {
+      console.log('Teacher has no password set:', teacher._id);
+      throw new Error('Please accept your invitation first');
+    }
+
     console.log('Found teacher:', teacher._id);
     console.log('Comparing passwords...');
 

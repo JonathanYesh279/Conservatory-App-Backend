@@ -74,7 +74,13 @@ export const teacherSchema = Joi.object({
 
   credentials: Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    password: Joi.string().optional().allow(null, ''), // Allow empty string and null for invitation system
+    invitationToken: Joi.string().optional(),
+    invitationExpiry: Joi.date().optional(),
+    isInvitationAccepted: Joi.boolean().default(false),
+    invitedAt: Joi.date().optional(),
+    invitedBy: Joi.string().optional(),
+    passwordSetAt: Joi.date().optional(),
   }).required(),
 
   isActive: Joi.boolean().default(true),
@@ -157,6 +163,12 @@ export const teacherUpdateSchema = Joi.object({
   credentials: Joi.object({
     email: Joi.string().email().optional(),
     password: Joi.string().allow('', null).optional(),
+    invitationToken: Joi.string().optional(),
+    invitationExpiry: Joi.date().optional(),
+    isInvitationAccepted: Joi.boolean().optional(),
+    invitedAt: Joi.date().optional(),
+    invitedBy: Joi.string().optional(),
+    passwordSetAt: Joi.date().optional(),
   }).optional(),
 
   isActive: Joi.boolean().optional(),

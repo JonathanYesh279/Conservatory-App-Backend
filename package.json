@@ -17,6 +17,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.758.0",
     "@aws-sdk/lib-storage": "^3.758.0",
+    "@sendgrid/mail": "^8.1.5",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.0",
     "cookie-parser": "^1.4.7",
@@ -29,7 +30,8 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.13.0",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^7.0.5"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.0.8",

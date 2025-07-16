@@ -6,7 +6,10 @@ export const authController = {
   login,
   refresh,
   logout,
-  initAdmin
+  initAdmin,
+  migrateExistingUsers,
+  checkTeacherByEmail,
+  removeTeacherByEmail
 }
 
 async function login(req, res) {
@@ -120,6 +123,8 @@ async function initAdmin(req, res) {
       credentials: {
         email: 'admin@example.com',
         password: await authService.encryptPassword('123456'), // Hash the password
+        isInvitationAccepted: true, // Admin account is pre-approved
+        passwordSetAt: new Date(),
       },
       isActive: true,
       createdAt: new Date(),
@@ -131,5 +136,150 @@ async function initAdmin(req, res) {
   } catch (err) {
     console.error('Error creating admin:', err);
     res.status(500).json({ error: 'Failed to create admin' });
+  }
+}
+
+async function migrateExistingUsers(req, res) {
+  try {
+    console.log('Starting migration of existing users...');
+    
+    const collection = await getCollection('teacher');
+    
+    // Find all teachers that don't have invitation fields
+    const teachersToUpdate = await collection.find({
+      'credentials.isInvitationAccepted': { $exists: false }
+    }).toArray();
+    
+    console.log(`Found ${teachersToUpdate.length} teachers to migrate`);
+    
+    if (teachersToUpdate.length === 0) {
+      return res.json({ 
+        message: 'No teachers need migration',
+        migratedCount: 0 
+      });
+    }
+    
+    let migratedCount = 0;
+    const errors = [];
+    
+    // Update each teacher
+    for (const teacher of teachersToUpdate) {
+      try {
+        const updateResult = await collection.updateOne(
+          { _id: teacher._id },
+          {
+            $set: {
+              'credentials.isInvitationAccepted': true, // Mark as accepted (legacy accounts)
+              'credentials.passwordSetAt': teacher.createdAt || new Date(),
+              updatedAt: new Date()
+            }
+          }
+        );
+        
+        if (updateResult.modifiedCount === 1) {
+          migratedCount++;
+          console.log(`✅ Updated teacher: ${teacher.personalInfo.fullName} (${teacher._id})`);
+        } else {
+          errors.push(`Failed to update teacher: ${teacher.personalInfo.fullName} (${teacher._id})`);
+        }
+      } catch (error) {
+        errors.push(`Error updating teacher ${teacher.personalInfo.fullName}: ${error.message}`);
+      }
+    }
+    
+    console.log(`Migration completed. ${migratedCount} teachers migrated.`);
+    
+    res.json({
+      message: 'Migration completed successfully',
+      migratedCount,
+      totalFound: teachersToUpdate.length,
+      errors: errors.length > 0 ? errors : undefined
+    });
+    
+  } catch (error) {
+    console.error('Migration failed:', error);
+    res.status(500).json({ error: 'Migration failed: ' + error.message });
+  }
+}
+
+async function checkTeacherByEmail(req, res) {
+  try {
+    const { email } = req.params;
+    
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+    
+    const collection = await getCollection('teacher');
+    const teacher = await collection.findOne({
+      'credentials.email': email
+    });
+    
+    if (teacher) {
+      res.json({
+        exists: true,
+        teacher: {
+          id: teacher._id,
+          name: teacher.personalInfo.fullName,
+          email: teacher.credentials.email,
+          isActive: teacher.isActive,
+          invitationAccepted: teacher.credentials.isInvitationAccepted,
+          hasPassword: !!teacher.credentials.password,
+          hasInvitationToken: !!teacher.credentials.invitationToken,
+          invitationExpiry: teacher.credentials.invitationExpiry,
+          createdAt: teacher.createdAt,
+          updatedAt: teacher.updatedAt
+        }
+      });
+    } else {
+      res.json({ exists: false });
+    }
+  } catch (error) {
+    console.error('Error checking teacher by email:', error);
+    res.status(500).json({ error: 'Failed to check teacher' });
+  }
+}
+
+async function removeTeacherByEmail(req, res) {
+  try {
+    const { email } = req.params;
+    
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+    
+    const collection = await getCollection('teacher');
+    
+    // First check if teacher exists
+    const teacher = await collection.findOne({
+      'credentials.email': email
+    });
+    
+    if (!teacher) {
+      return res.status(404).json({ error: 'Teacher not found' });
+    }
+    
+    // Remove the teacher completely
+    const result = await collection.deleteOne({
+      'credentials.email': email
+    });
+    
+    if (result.deletedCount === 1) {
+      console.log(`✅ Removed teacher: ${teacher.personalInfo.fullName} (${email})`);
+      res.json({
+        success: true,
+        message: 'Teacher removed successfully',
+        removedTeacher: {
+          id: teacher._id,
+          name: teacher.personalInfo.fullName,
+          email: teacher.credentials.email
+        }
+      });
+    } else {
+      res.status(500).json({ error: 'Failed to remove teacher' });
+    }
+  } catch (error) {
+    console.error('Error removing teacher by email:', error);
+    res.status(500).json({ error: 'Failed to remove teacher' });
   }
 }

@@ -1,5 +1,6 @@
 import express from 'express'
 import { teacherController } from './teacher.controller.js'
+import { invitationController } from './invitation.controller.js'
 import { requireAuth } from '../../middleware/auth.middleware.js'
 
 const router = express.Router()
@@ -12,5 +13,10 @@ router.post('/', requireAuth(['מנהל']), teacherController.addTeacher)
 router.post('/:id/schedule', requireAuth(['מנהל, מורה']), teacherController.updateTeacherSchedule)
 router.put('/:id', requireAuth(['מנהל']), teacherController.updateTeacher)
 router.delete('/:id', requireAuth(['מנהל']), teacherController.removeTeacher)
+
+// Invitation routes
+router.get('/invitation/validate/:token', invitationController.validateInvitation)
+router.post('/invitation/accept/:token', invitationController.acceptInvitation)
+router.post('/invitation/resend/:teacherId', requireAuth(['מנהל']), invitationController.resendInvitation)
 
 export default router
