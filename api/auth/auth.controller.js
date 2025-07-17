@@ -34,14 +34,26 @@ async function login(req, res) {
       maxAge: 30 * 24 * 60 * 60 * 1000
     })
 
-    res.json({
+    // Try both formats to see which one works
+    const newResponse = {
       success: true,
       data: {
         accessToken,
         teacher
       },
       message: 'Login successful'
-    })
+    };
+    
+    const oldResponse = {
+      accessToken,
+      teacher
+    };
+    
+    console.log('🔍 NEW FORMAT RESPONSE:', JSON.stringify(newResponse, null, 2));
+    console.log('🔍 OLD FORMAT RESPONSE:', JSON.stringify(oldResponse, null, 2));
+    
+    // Send the old format first to test
+    res.json(oldResponse);
   } catch (err) {
     if (err.message === 'Invalid Credentials' || err.message === 'Invalid email or password') {
       res.status(401).json({ 
