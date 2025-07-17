@@ -29,6 +29,11 @@ const __dirname = path.dirname(_filename);
 
 const app = express();
 
+// Enable trust proxy for production (fixes rate limiting behind proxy)
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const MONGO_URI = process.env.MONGO_URI;
 const FRONTEND_URL =
@@ -222,14 +227,19 @@ app.get('/accept-invitation/:token', (req, res) => {
               messageDiv.innerHTML = '<div class="message success">הסיסמה הוגדרה בהצלחה! מעביר אותך לדף הכניסה...</div>';
               
               // Store tokens and user data (matching frontend expectations)
-              if (result.data.accessToken) {
-                localStorage.setItem('accessToken', result.data.accessToken);
-              }
-              if (result.data.refreshToken) {
-                localStorage.setItem('refreshToken', result.data.refreshToken);
-              }
-              if (result.data.teacher) {
-                localStorage.setItem('user', JSON.stringify(result.data.teacher));
+              try {
+                if (result.data.accessToken) {
+                  localStorage.setItem('accessToken', result.data.accessToken);
+                }
+                if (result.data.refreshToken) {
+                  localStorage.setItem('refreshToken', result.data.refreshToken);
+                }
+                if (result.data.teacher) {
+                  localStorage.setItem('user', JSON.stringify(result.data.teacher));
+                }
+              } catch (storageError) {
+                console.log('Storage error:', storageError);
+                // Continue without storage
               }
               
               // Redirect to login page after 2 seconds
@@ -299,11 +309,16 @@ app.use('/api/files', authenticateToken, fileRoutes);
 app.get('/api/test', (req, res) => {
   console.log('API test route hit');
   res.status(200).json({
-    status: 'OK',
-    message: 'API Server is running',
-    time: new Date().toISOString(),
-    path: req.originalUrl,
-    headers: req.headers,
+    success: true,
+    data: {
+      status: 'OK',
+      message: 'API Server is running',
+      time: new Date().toISOString(),
+      path: req.originalUrl,
+      environment: process.env.NODE_ENV,
+      trustProxy: app.get('trust proxy')
+    },
+    message: 'Server is running properly'
   });
 });
 

@@ -8,7 +8,20 @@ export async function authenticateToken(req, res, next) {
     const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
     if (!token) {
-      return res.status(401).json({ error: 'Authentication required' });
+      console.log('No auth token found for request to:', req.path);
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Authentication required' 
+      });
+    }
+
+    // Validate token format
+    if (!token || token === 'undefined' || token === 'null') {
+      console.log('Invalid token format:', token);
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Invalid token format' 
+      });
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -23,7 +36,10 @@ export async function authenticateToken(req, res, next) {
     console.log('Query result:', teacher);
 
     if (!teacher) {
-      return res.status(401).json({ error: 'Teacher was not found' });
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Teacher was not found' 
+      });
     }
 
     // Add the decoded token data to req.loggedinUser as well
@@ -44,9 +60,15 @@ export async function authenticateToken(req, res, next) {
       currentTime: new Date(),
     });
     if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({ error: 'Token has expired' });
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Token has expired' 
+      });
     }
-    res.status(401).json({ error: 'Invalid token' });
+    res.status(401).json({ 
+      success: false, 
+      error: 'Invalid token' 
+    });
   }
 }
 
