@@ -22,6 +22,7 @@ import orchestraRoutes from './api/orchestra/orchestra.route.js';
 import rehearsalRoutes from './api/rehearsal/rehearsal.route.js';
 import bagrutRoutes from './api/bagrut/bagrut.route.js';
 import scheduleRoutes from './api/schedule/schedule.route.js';
+import { invitationController } from './api/teacher/invitation.controller.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(_filename);
@@ -59,6 +60,198 @@ app.use(mongoSanitize());
 
 // Initialize MongoDB
 await initializeMongoDB(MONGO_URI).catch(console.error);
+
+// Direct invitation routes (no auth required)
+app.get('/accept-invitation/:token', (req, res) => {
+  const { token } = req.params;
+  
+  // Serve a simple HTML form for password setting
+  res.send(`
+    <!DOCTYPE html>
+    <html dir="rtl" lang="he">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>הגדרת סיסמה - מערכת הקונסרבטוריון</title>
+      <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #f5f5f5;
+          margin: 0;
+          padding: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+        }
+        .container {
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          max-width: 400px;
+          width: 100%;
+        }
+        h1 {
+          color: #333;
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .form-group {
+          margin-bottom: 20px;
+        }
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+          color: #555;
+        }
+        input[type="password"] {
+          width: 100%;
+          padding: 12px;
+          border: 2px solid #ddd;
+          border-radius: 5px;
+          font-size: 16px;
+          box-sizing: border-box;
+        }
+        input[type="password"]:focus {
+          outline: none;
+          border-color: #007bff;
+        }
+        button {
+          width: 100%;
+          padding: 15px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        button:hover {
+          background-color: #0056b3;
+        }
+        button:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+        .message {
+          margin-top: 20px;
+          padding: 10px;
+          border-radius: 5px;
+          text-align: center;
+        }
+        .success {
+          background-color: #d4edda;
+          color: #155724;
+          border: 1px solid #c3e6cb;
+        }
+        .error {
+          background-color: #f8d7da;
+          color: #721c24;
+          border: 1px solid #f5c6cb;
+        }
+        .loading {
+          display: none;
+          text-align: center;
+          margin-top: 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>הגדרת סיסמה</h1>
+        <form id="passwordForm">
+          <div class="form-group">
+            <label for="password">סיסמה חדשה:</label>
+            <input type="password" id="password" name="password" required minlength="6" 
+                   placeholder="הכנס סיסמה באורך 6 תווים לפחות">
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">אימות סיסמה:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6" 
+                   placeholder="הכנס את הסיסמה שוב">
+          </div>
+          <button type="submit" id="submitBtn">הגדר סיסמה</button>
+        </form>
+        
+        <div class="loading" id="loading">
+          <p>מגדיר סיסמה...</p>
+        </div>
+        
+        <div id="message"></div>
+      </div>
+
+      <script>
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const password = document.getElementById('password').value;
+          const confirmPassword = document.getElementById('confirmPassword').value;
+          const submitBtn = document.getElementById('submitBtn');
+          const loading = document.getElementById('loading');
+          const messageDiv = document.getElementById('message');
+          
+          // Clear previous messages
+          messageDiv.innerHTML = '';
+          
+          // Validate passwords match
+          if (password !== confirmPassword) {
+            messageDiv.innerHTML = '<div class="message error">הסיסמאות אינן זהות</div>';
+            return;
+          }
+          
+          // Show loading
+          submitBtn.disabled = true;
+          loading.style.display = 'block';
+          
+          try {
+            const response = await fetch('/api/teacher/invitation/accept/${token}', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ password })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
+              messageDiv.innerHTML = '<div class="message success">הסיסמה הוגדרה בהצלחה! מעביר אותך לדף הכניסה...</div>';
+              
+              // Store tokens and user data (matching frontend expectations)
+              if (result.data.accessToken) {
+                localStorage.setItem('accessToken', result.data.accessToken);
+              }
+              if (result.data.refreshToken) {
+                localStorage.setItem('refreshToken', result.data.refreshToken);
+              }
+              if (result.data.teacher) {
+                localStorage.setItem('user', JSON.stringify(result.data.teacher));
+              }
+              
+              // Redirect to login page after 2 seconds
+              setTimeout(() => {
+                window.location.href = '${process.env.FRONTEND_URL || 'http://localhost:5173'}/login';
+              }, 2000);
+              
+            } else {
+              messageDiv.innerHTML = '<div class="message error">' + (result.error || 'שגיאה לא ידועה') + '</div>';
+            }
+          } catch (error) {
+            messageDiv.innerHTML = '<div class="message error">שגיאה בחיבור לשרת</div>';
+          } finally {
+            submitBtn.disabled = false;
+            loading.style.display = 'none';
+          }
+        });
+      </script>
+    </body>
+    </html>
+  `);
+});
 
 // API Routes
 app.use('/api/auth', authRoutes);

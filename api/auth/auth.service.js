@@ -91,8 +91,10 @@ async function login(email, password) {
       refreshToken,
       teacher: {
         _id: teacher._id.toString(),
-        fullName: teacher.personalInfo.fullName,
-        email: teacher.credentials.email,
+        personalInfo: {
+          fullName: teacher.personalInfo.fullName,
+          email: teacher.credentials.email,
+        },
         roles: teacher.roles,
       },
     };

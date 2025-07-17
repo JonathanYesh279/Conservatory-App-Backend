@@ -28,8 +28,10 @@ async function validateInvitation(token) {
       isValid: true,
       teacher: {
         _id: teacher._id.toString(),
-        fullName: teacher.personalInfo.fullName,
-        email: teacher.credentials.email,
+        personalInfo: {
+          fullName: teacher.personalInfo.fullName,
+          email: teacher.credentials.email
+        },
         roles: teacher.roles
       }
     };
@@ -106,8 +108,10 @@ async function acceptInvitation(token, password) {
       refreshToken,
       teacher: {
         _id: updatedTeacher._id.toString(),
-        fullName: updatedTeacher.personalInfo.fullName,
-        email: updatedTeacher.credentials.email,
+        personalInfo: {
+          fullName: updatedTeacher.personalInfo.fullName,
+          email: updatedTeacher.credentials.email
+        },
         roles: updatedTeacher.roles,
       }
     };

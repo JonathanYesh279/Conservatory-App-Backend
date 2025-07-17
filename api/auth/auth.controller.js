@@ -19,7 +19,10 @@ async function login(req, res) {
     console.log('Controller received:', { email, password });
 
     if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' })
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Email and password are required' 
+      })
     }
 
     const { accessToken, refreshToken, teacher } = await authService.login(email, password)
@@ -32,15 +35,30 @@ async function login(req, res) {
     })
 
     res.json({
-      accessToken,
-      teacher
+      success: true,
+      data: {
+        accessToken,
+        teacher
+      },
+      message: 'Login successful'
     })
   } catch (err) {
-    if (err.message === 'Invalid Credentials') {
-      res.status(401).json({ error: 'Invalid email or password' });
+    if (err.message === 'Invalid Credentials' || err.message === 'Invalid email or password') {
+      res.status(401).json({ 
+        success: false, 
+        error: 'Invalid email or password' 
+      });
+    } else if (err.message === 'Please accept your invitation first') {
+      res.status(400).json({ 
+        success: false, 
+        error: 'Please accept your invitation first' 
+      });
     } else {
       console.error(`Error in login: ${err.message}`);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ 
+        success: false, 
+        error: 'Internal Server Error' 
+      });
     }
   }
 }
@@ -50,13 +68,23 @@ async function refresh(req, res) {
     const refreshToken = req.cookies.refreshToken
 
     if (!refreshToken) {
-      return res.status(401).json({ error: 'Refresh token is required' })
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Refresh token is required' 
+      })
     }
 
     const { accessToken } = await authService.refreshAccessToken(refreshToken)
-    res.json({ accessToken })
+    res.json({ 
+      success: true, 
+      data: { accessToken },
+      message: 'Token refreshed successfully'
+    })
   } catch (err) {
-    res.status(401).json({ error: 'Invalid refresh token' })
+    res.status(401).json({ 
+      success: false, 
+      error: 'Invalid refresh token' 
+    })
   }
 }
 
@@ -72,10 +100,16 @@ async function logout(req, res) {
     await authService.logout(req.teacher._id)
 
     res.clearCookie('refreshToken')
-    res.json({ message: 'Logged out successfully' })
+    res.json({ 
+      success: true, 
+      message: 'Logged out successfully' 
+    })
   } catch (err) {
     console.error(`Error in logout: ${err.message}`)
-    res.status(500).json({ error: 'Logout failed'})
+    res.status(500).json({ 
+      success: false, 
+      error: 'Logout failed'
+    })
  }
 }
 
