@@ -87,7 +87,7 @@ async function addOrchestra(orchestraToAdd) {
   }
 }
 
-async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmin = false) {
+async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmin = false, userRoles = []) {
   try {
     const { error, value } = validateOrchestra(orchestraToUpdate)
     if (error) throw new Error(`Validation error: ${error.message}`)
@@ -95,7 +95,13 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
     const collection = await getCollection('orchestra')
     const existingOrchestra = await getOrchestraById(orchestraId)
 
-    if (!isAdmin && existingOrchestra.conductorId !== teacherId.toString()) {
+    // Check authorization: admin can always edit, conductor can edit only if they conduct this orchestra
+    const isConductor = userRoles.includes('מנצח')
+    const isEnsembleInstructor = userRoles.includes('מדריך הרכב')
+    const canEditBasedOnRole = isConductor || isEnsembleInstructor
+    const isAssignedConductor = existingOrchestra.conductorId === teacherId.toString()
+    
+    if (!isAdmin && !(canEditBasedOnRole && isAssignedConductor)) {
       throw new Error('Not authorized to modify this orchestra')
     }
 
@@ -131,12 +137,13 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
   }
 }
 
-async function removeOrchestra(orchestraId, teacherId, isAdmin = false) {
+async function removeOrchestra(orchestraId, teacherId, isAdmin = false, userRoles = []) {
   try {
     const collection = await getCollection('orchestra');
     const orchestra = await getOrchestraById(orchestraId);
 
-    if (!isAdmin && orchestra.conductorId !== teacherId.toString()) {
+    // Only admin can delete orchestras
+    if (!isAdmin) {
       throw new Error('Not authorized to modify this orchestra');
     }
 
@@ -188,11 +195,17 @@ async function removeOrchestra(orchestraId, teacherId, isAdmin = false) {
   }
 }
 
-async function addMember(orchestraId, studentId, teacherId, isAdmin = false) {
+async function addMember(orchestraId, studentId, teacherId, isAdmin = false, userRoles = []) {
   try {
     const orchestra = await getOrchestraById(orchestraId)
 
-    if (!isAdmin && orchestra.conductorId !== teacherId.toString()) {
+    // Check authorization: admin can always edit, conductor can edit only if they conduct this orchestra
+    const isConductor = userRoles.includes('מנצח')
+    const isEnsembleInstructor = userRoles.includes('מדריך הרכב')
+    const canEditBasedOnRole = isConductor || isEnsembleInstructor
+    const isAssignedConductor = orchestra.conductorId === teacherId.toString()
+    
+    if (!isAdmin && !(canEditBasedOnRole && isAssignedConductor)) {
       throw new Error('Not authorized to modify this orchestra')
     }
 
@@ -216,11 +229,17 @@ async function addMember(orchestraId, studentId, teacherId, isAdmin = false) {
   }
 }
 
-async function removeMember(orchestraId, studentId, teacherId, isAdmin = false) {
+async function removeMember(orchestraId, studentId, teacherId, isAdmin = false, userRoles = []) {
   try {
     const orchestra = await getOrchestraById(orchestraId)
 
-    if (!isAdmin && orchestra.conductorId !== teacherId.toString()) {
+    // Check authorization: admin can always edit, conductor can edit only if they conduct this orchestra
+    const isConductor = userRoles.includes('מנצח')
+    const isEnsembleInstructor = userRoles.includes('מדריך הרכב')
+    const canEditBasedOnRole = isConductor || isEnsembleInstructor
+    const isAssignedConductor = orchestra.conductorId === teacherId.toString()
+    
+    if (!isAdmin && !(canEditBasedOnRole && isAssignedConductor)) {
       throw new Error('Not authorized to modify this orchestra')
     }
     
@@ -244,7 +263,7 @@ async function removeMember(orchestraId, studentId, teacherId, isAdmin = false) 
   }
 }
 
-async function updateRehearsalAttendance(rehearsalId, attendance, teacherId, isAdmin = false) {
+async function updateRehearsalAttendance(rehearsalId, attendance, teacherId, isAdmin = false, userRoles = []) {
   try {
     const rehearsalCollection = await getCollection('rehearsal')
     const rehearsal = await rehearsalCollection.findOne({
@@ -253,9 +272,16 @@ async function updateRehearsalAttendance(rehearsalId, attendance, teacherId, isA
 
     if (!rehearsal) throw new Error(`Rehearsal with id ${rehearsalId} not found`)
     
-     const orchestra = await getOrchestraById(rehearsal.groupId)
-     if (!isAdmin && orchestra.conductorId !== teacherId.toString()) {
-       throw new Error('Not authorized to modify this orchestra')
+    const orchestra = await getOrchestraById(rehearsal.groupId)
+    
+    // Check authorization: admin can always edit, conductor can edit only if they conduct this orchestra
+    const isConductor = userRoles.includes('מנצח')
+    const isEnsembleInstructor = userRoles.includes('מדריך הרכב')
+    const canEditBasedOnRole = isConductor || isEnsembleInstructor
+    const isAssignedConductor = orchestra.conductorId === teacherId.toString()
+    
+    if (!isAdmin && !(canEditBasedOnRole && isAssignedConductor)) {
+      throw new Error('Not authorized to modify this orchestra')
     }
     
     const updatedRehearsal = await rehearsalCollection.findOneAndUpdate(

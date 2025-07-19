@@ -56,12 +56,14 @@ async function updateOrchestra(req, res, next) {
     const orchestraToUpdate = req.body
     const teacherId = req.teacher._id
     const isAdmin = req.teacher.roles.includes('מנהל')
+    const userRoles = req.teacher.roles || []
 
     const updatedOrchestra = await orchestraService.updateOrchestra(
       id,
       orchestraToUpdate,
       teacherId,
-      isAdmin
+      isAdmin,
+      userRoles
     )
     res.json(updatedOrchestra)
   } catch (err) {
@@ -78,11 +80,13 @@ async function removeOrchestra(req, res, next) {
     const { id } = req.params 
     const teacherId = req.teacher._id
     const isAdmin = req.teacher.roles.includes('מנהל')
+    const userRoles = req.teacher.roles || []
 
     const removedOrchestra = await orchestraService.removeOrchestra(
       id,
       teacherId,
-      isAdmin
+      isAdmin,
+      userRoles
     )
     res.json(removedOrchestra)
   } catch (err) {
@@ -100,12 +104,14 @@ async function addMember(req, res, next) {
     const { studentId } = req.body
     const teacherId = req.teacher._id
     const isAdmin = req.teacher.roles.includes('מנהל')
+    const userRoles = req.teacher.roles || []
 
     const updatedOrchestra = await orchestraService.addMember(
       orchestraId,
       studentId,
       teacherId,
-      isAdmin
+      isAdmin,
+      userRoles
     )
     res.json(updatedOrchestra)
   } catch (err) {
@@ -122,12 +128,14 @@ async function removeMember(req, res, next) {
     const { id: orchestraId, studentId } = req.params
     const teacherId = req.teacher._id
     const isAdmin = req.teacher.roles.includes('מנהל')
+    const userRoles = req.teacher.roles || []
 
     const updatedOrchestra = await orchestraService.removeMember(
       orchestraId,
       studentId,
       teacherId,
-      isAdmin
+      isAdmin,
+      userRoles
     )
     res.json(updatedOrchestra)
   } catch (err) {
@@ -145,12 +153,14 @@ async function updateRehearsalAttendance(req, res, next) {
     const attendance = req.body
     const teacherId = req.teacher._id
     const isAdmin = req.teacher.roles.includes('מנהל')
+    const userRoles = req.teacher.roles || []
 
     const updatedRehearsal = await orchestraService.updateRehearsalAttendance(
       rehearsalId,
       attendance,
       teacherId,
-      isAdmin
+      isAdmin,
+      userRoles
     )
     res.json(updatedRehearsal)
   } catch (err) {
