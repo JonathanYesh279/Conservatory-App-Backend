@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>הגדרת סיסמה - מערכת הקונסרבטוריון</title>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         :root {
             --primary-color: #4D55CC;
@@ -397,12 +396,16 @@
             <div id="errorMessage" class="error-message"></div>
             <div id="successMessage" class="success-message"></div>
 
-            <form id="passwordForm" class="form-section" onsubmit="console.log('Form onsubmit triggered')">
+            <form id="passwordForm" class="form-section">
                 <div class="input-container">
                     <input type="password" id="password" name="password" required>
                     <label for="password">סיסמה חדשה</label>
                     <div class="input-icon">
-                        <i data-lucide="lock"></i>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
                     </div>
                 </div>
                 <div class="password-requirements" id="passwordRequirements">
@@ -413,7 +416,11 @@
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
                     <label for="confirmPassword">אימות סיסמה</label>
                     <div class="input-icon">
-                        <i data-lucide="lock"></i>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
                     </div>
                 </div>
 
@@ -426,7 +433,7 @@
             </form>
 
             <div class="forgot-password">
-                <p>כבר יש לך סיסמה? <a href="#" onclick="redirectToLogin()">התחבר כאן</a></p>
+                <p>כבר יש לך סיסמה? <a href="#" id="loginLink">התחבר כאן</a></p>
             </div>
         </div>
     </div>
@@ -658,14 +665,18 @@
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             initFloatingLabels();
-            
-            // Initialize Lucide icons
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
 
             // Test API connection
             testAPIConnection();
+
+            // Add login link click handler
+            const loginLink = document.getElementById('loginLink');
+            if (loginLink) {
+                loginLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    redirectToLogin();
+                });
+            }
         });
     </script>
 </body>

@@ -56,7 +56,14 @@ if (STORAGE_MODE === 'local') {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      "script-src": ["'self'", "'unsafe-inline'"],
+    },
+  },
+}));
 app.use(mongoSanitize());
 
 // Initialize MongoDB
