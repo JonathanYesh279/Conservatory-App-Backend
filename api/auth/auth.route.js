@@ -22,6 +22,7 @@ router.post('/login', loginLimiter, authController.login)
 router.post('/refresh', authController.refresh)
 router.post('/forgot-password', authController.forgotPassword)
 router.post('/reset-password', authController.resetPassword)
+router.post('/accept-invitation', authController.acceptInvitation)
 
 // Protected routes
 router.get('/validate', authenticateToken, authController.validateToken)

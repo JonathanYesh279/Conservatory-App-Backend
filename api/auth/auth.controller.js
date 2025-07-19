@@ -10,6 +10,7 @@ export const authController = {
   changePassword,
   forgotPassword,
   resetPassword,
+  acceptInvitation,
   initAdmin,
   migrateExistingUsers,
   checkTeacherByEmail,
@@ -291,6 +292,49 @@ async function resetPassword(req, res) {
       status = 401;
     } else if (err.message.includes('Invalid reset token')) {
       errorCode = 'INVALID_RESET_TOKEN';
+      status = 401;
+    } else if (err.message.includes('must be at least 6 characters')) {
+      errorCode = 'WEAK_PASSWORD';
+    }
+    
+    res.status(status).json({
+      success: false,
+      error: err.message,
+      code: errorCode
+    });
+  }
+}
+
+async function acceptInvitation(req, res) {
+  try {
+    const { token, newPassword } = req.body;
+    
+    if (!token || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invitation token and new password are required',
+        code: 'MISSING_INVITATION_DATA'
+      });
+    }
+
+    const result = await authService.acceptInvitation(token, newPassword);
+    
+    res.json({
+      success: true,
+      message: result.message,
+      data: { tokenVersion: result.tokenVersion }
+    });
+  } catch (err) {
+    console.error('Accept invitation error:', err.message);
+    
+    let errorCode = 'ACCEPT_INVITATION_FAILED';
+    let status = 400;
+    
+    if (err.message.includes('expired')) {
+      errorCode = 'INVITATION_TOKEN_EXPIRED';
+      status = 401;
+    } else if (err.message.includes('Invalid invitation token')) {
+      errorCode = 'INVALID_INVITATION_TOKEN';
       status = 401;
     } else if (err.message.includes('must be at least 6 characters')) {
       errorCode = 'WEAK_PASSWORD';

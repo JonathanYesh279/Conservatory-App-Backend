@@ -17,7 +17,8 @@ export const authService = {
   revokeTokens,
   changePassword,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  acceptInvitation
 }
 
 async function login(email, password) {
@@ -480,6 +481,71 @@ async function resetPassword(resetToken, newPassword) {
       throw new Error('Invalid reset token')
     }
     console.error(`Error resetting password: ${err.message}`)
+    throw err
+  }
+}
+
+async function acceptInvitation(invitationToken, newPassword) {
+  try {
+    if (!invitationToken || !newPassword) {
+      throw new Error('Invitation token and new password are required')
+    }
+
+    // Password validation
+    if (newPassword.length < 6) {
+      throw new Error('New password must be at least 6 characters long')
+    }
+
+    const collection = await getCollection('teacher')
+    const teacher = await collection.findOne({
+      'credentials.invitationToken': invitationToken,
+      'credentials.invitationExpiry': { $gt: new Date() },
+      'credentials.isInvitationAccepted': false,
+      isActive: true
+    })
+
+    if (!teacher) {
+      throw new Error('Invalid or expired invitation token')
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS)
+
+    // Update teacher with password and mark invitation as accepted
+    const newTokenVersion = (teacher.credentials?.tokenVersion || 0) + 1
+    
+    await collection.updateOne(
+      { _id: teacher._id },
+      {
+        $set: {
+          'credentials.password': hashedPassword,
+          'credentials.isInvitationAccepted': true,
+          'credentials.passwordSetAt': new Date(),
+          'credentials.tokenVersion': newTokenVersion,
+          updatedAt: new Date()
+        },
+        $unset: {
+          'credentials.invitationToken': '',
+          'credentials.invitationExpiry': ''
+        }
+      }
+    )
+
+    // Send welcome email
+    const { emailService } = await import('../../services/emailService.js')
+    await emailService.sendWelcomeEmail(
+      teacher.credentials.email,
+      teacher.personalInfo.fullName
+    )
+
+    console.log(`Invitation accepted for teacher ${teacher._id}`)
+    return { 
+      success: true, 
+      message: 'Invitation accepted successfully, password set',
+      tokenVersion: newTokenVersion 
+    }
+  } catch (err) {
+    console.error(`Error accepting invitation: ${err.message}`)
     throw err
   }
 }
