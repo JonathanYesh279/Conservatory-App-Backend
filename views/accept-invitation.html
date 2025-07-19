@@ -212,14 +212,16 @@
         }
 
         .password-requirements {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.85rem;
             margin-top: 0.5rem;
-            padding: 0.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            backdrop-filter: blur(5px);
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
             text-align: right;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 500;
         }
 
         button[type="submit"] {
@@ -623,10 +625,14 @@
             const requirements = document.getElementById('passwordRequirements');
             
             if (password.length >= 6) {
-                requirements.style.color = 'rgba(40, 167, 69, 0.9)';
+                requirements.style.color = '#00E676';
+                requirements.style.background = 'rgba(0, 230, 118, 0.15)';
+                requirements.style.borderColor = 'rgba(0, 230, 118, 0.3)';
                 requirements.textContent = '✓ הסיסמה עומדת בדרישות';
             } else {
-                requirements.style.color = 'rgba(255, 255, 255, 0.8)';
+                requirements.style.color = 'rgba(255, 255, 255, 0.9)';
+                requirements.style.background = 'rgba(0, 0, 0, 0.4)';
+                requirements.style.borderColor = 'rgba(255, 255, 255, 0.2)';
                 requirements.textContent = 'הסיסמה חייבת להכיל לפחות 6 תווים';
             }
         });

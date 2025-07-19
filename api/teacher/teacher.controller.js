@@ -157,6 +157,14 @@ async function getTeacherIds(req, res, next) {
 
 async function addTeacher(req, res, next) { 
   try {
+    console.log('=== ADD TEACHER CONTROLLER ===');
+    console.log('Request method:', req.method);
+    console.log('Request path:', req.path);
+    console.log('Request body keys:', Object.keys(req.body));
+    console.log('Admin user:', req.teacher?._id);
+    console.log('Is admin flag:', req.isAdmin);
+    console.log('=================================');
+    
     const teacherToAdd = req.body
     const adminId = req.teacher?._id // Get admin ID from authenticated user
     const addedTeacher = await teacherService.addTeacher(teacherToAdd, adminId)

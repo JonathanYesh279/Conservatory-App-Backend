@@ -95,8 +95,17 @@ export async function authenticateToken(req, res, next) {
 export function requireAuth(roles) {
   return async (req, res, next) => {
     try {
+      console.log('=== REQUIRE AUTH DEBUG ===');
+      console.log('Required roles:', roles);
+      console.log('Request path:', req.path);
+      console.log('Request method:', req.method);
+      
       const teacher = req.teacher;
+      console.log('Teacher from req:', teacher ? 'exists' : 'missing');
+      console.log('Teacher roles:', teacher?.roles);
+      
       if (!teacher) {
+        console.log('AUTH FAILED: No teacher in request');
         return res.status(401).json({ 
           success: false, 
           error: 'Authentication required',
@@ -104,15 +113,28 @@ export function requireAuth(roles) {
         });
       }
 
-      if (teacher.roles.includes('מנהל')) {
+      console.log('Checking if teacher has מנהל role...');
+      if (teacher.roles && teacher.roles.includes('מנהל')) {
+        console.log('✅ User is admin, granting access');
         req.isAdmin = true;
         return next();
       }
 
-      const hasRequiredRole = teacher.roles.some((role) =>
+      console.log('User is not admin, checking required roles...');
+      console.log('Teacher roles array:', teacher.roles);
+      console.log('Required roles array:', roles);
+      
+      const hasRequiredRole = teacher.roles && teacher.roles.some((role) =>
         roles.includes(role)
       );
+      console.log('Has required role:', hasRequiredRole);
+      
       if (!hasRequiredRole) {
+        console.log('❌ INSUFFICIENT PERMISSIONS');
+        console.log('Required:', roles);
+        console.log('Current:', teacher.roles);
+        console.log('Teacher roles type:', typeof teacher.roles);
+        console.log('Roles array type:', typeof roles);
         return res.status(403).json({ 
           success: false, 
           error: 'Insufficient permissions',
@@ -122,6 +144,7 @@ export function requireAuth(roles) {
         });
       }
 
+      console.log('✅ Permission granted');
       next();
     } catch (err) {
       console.error('Role authorization error:', err);
