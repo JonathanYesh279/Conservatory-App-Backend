@@ -538,11 +538,45 @@ async function acceptInvitation(invitationToken, newPassword) {
       teacher.personalInfo.fullName
     )
 
+    // Generate tokens for automatic login after password creation
+    const { accessToken, refreshToken } = await generateTokens({
+      ...teacher,
+      credentials: {
+        ...teacher.credentials,
+        password: hashedPassword,
+        tokenVersion: newTokenVersion
+      }
+    })
+
+    // Update with refresh token
+    await collection.updateOne(
+      { _id: teacher._id },
+      {
+        $set: {
+          'credentials.refreshToken': refreshToken,
+          'credentials.lastLogin': new Date()
+        }
+      }
+    )
+
     console.log(`Invitation accepted for teacher ${teacher._id}`)
     return { 
       success: true, 
       message: 'Invitation accepted successfully, password set',
-      tokenVersion: newTokenVersion 
+      tokenVersion: newTokenVersion,
+      accessToken,
+      refreshToken,
+      teacher: {
+        _id: teacher._id.toString(),
+        personalInfo: {
+          fullName: teacher.personalInfo.fullName,
+          email: teacher.personalInfo.email || teacher.credentials.email,
+          phone: teacher.personalInfo.phone,
+          address: teacher.personalInfo.address,
+        },
+        professionalInfo: teacher.professionalInfo,
+        roles: teacher.roles,
+      }
     }
   } catch (err) {
     console.error(`Error accepting invitation: ${err.message}`)

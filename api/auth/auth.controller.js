@@ -319,10 +319,22 @@ async function acceptInvitation(req, res) {
 
     const result = await authService.acceptInvitation(token, newPassword);
     
+    // If we got tokens, set the refresh token as a cookie
+    if (result.refreshToken) {
+      res.cookie('refreshToken', result.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+      });
+    }
+    
     res.json({
       success: true,
       message: result.message,
-      data: { tokenVersion: result.tokenVersion }
+      data: { tokenVersion: result.tokenVersion },
+      accessToken: result.accessToken,
+      teacher: result.teacher
     });
   } catch (err) {
     console.error('Accept invitation error:', err.message);

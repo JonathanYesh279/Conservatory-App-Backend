@@ -26,11 +26,18 @@ function getEmailTransporter() {
 
 async function sendInvitationEmail(email, token, teacherName) {
   // Use the backend route for invitation acceptance - this bypasses frontend routing issues
-  const invitationUrl = `${process.env.FRONTEND_URL || 'http://localhost:3001'}/accept-invitation/${token}`;
+  // For production, this will be the same domain. For development, we need the backend port.
+  const backendUrl = process.env.NODE_ENV === 'production' 
+    ? (process.env.FRONTEND_URL || 'https://conservatory-app-backend.onrender.com')
+    : 'http://localhost:3001';
+  
+  const invitationUrl = `${backendUrl}/accept-invitation/${token}`;
   
   // Log the actual URL being sent for debugging
   console.log('=== INVITATION URL DEBUG ===');
+  console.log('NODE_ENV:', process.env.NODE_ENV);
   console.log('FRONTEND_URL env var:', process.env.FRONTEND_URL);
+  console.log('Backend URL used:', backendUrl);
   console.log('Generated invitation URL:', invitationUrl);
   console.log('Token provided:', token);
   console.log('Teacher name:', teacherName);

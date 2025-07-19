@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>הגדרת סיסמה - מערכת הקונסרבטוריון</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         :root {
             --primary-color: #4D55CC;
@@ -203,7 +204,8 @@
         .input-icon svg {
             width: 100%;
             height: 100%;
-            fill: currentColor;
+            stroke: currentColor;
+            fill: none;
         }
 
         .input-container input:focus ~ .input-icon {
@@ -400,11 +402,7 @@
                     <input type="password" id="password" name="password" required>
                     <label for="password">סיסמה חדשה</label>
                     <div class="input-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                            <circle cx="12" cy="16" r="1"/>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        </svg>
+                        <i data-lucide="lock"></i>
                     </div>
                 </div>
                 <div class="password-requirements" id="passwordRequirements">
@@ -415,12 +413,7 @@
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
                     <label for="confirmPassword">אימות סיסמה</label>
                     <div class="input-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 12l2 2 4-4"/>
-                            <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-                            <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-                            <path d="M3 12h6m6 0h6"/>
-                        </svg>
+                        <i data-lucide="lock"></i>
                     </div>
                 </div>
 
@@ -433,7 +426,7 @@
             </form>
 
             <div class="forgot-password">
-                <p>כבר יש לך סיסמה? <a href="/login">התחבר כאן</a></p>
+                <p>כבר יש לך סיסמה? <a href="#" onclick="redirectToLogin()">התחבר כאן</a></p>
             </div>
         </div>
     </div>
@@ -539,10 +532,29 @@
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    showSuccess('הסיסמה הוגדרה בהצלחה! מעביר אותך לדף ההתחברות...');
-                    setTimeout(() => {
-                        window.location.href = '/login';
-                    }, 2000);
+                    // If we got tokens back, auto-login the user
+                    if (data.accessToken && data.teacher) {
+                        showSuccess('הסיסמה הוגדרה בהצלחה! מחבר אותך למערכת...');
+                        
+                        // Store the token and user data for automatic login
+                        localStorage.setItem('accessToken', data.accessToken);
+                        localStorage.setItem('teacher', JSON.stringify(data.teacher));
+                        
+                        // Set refresh token as cookie if available
+                        if (data.refreshToken) {
+                            document.cookie = `refreshToken=${data.refreshToken}; path=/; httpOnly=false; secure=${window.location.protocol === 'https:'}; sameSite=strict; max-age=${30 * 24 * 60 * 60}`;
+                        }
+                        
+                        setTimeout(() => {
+                            // Redirect to the main application dashboard
+                            window.location.href = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/`.replace(':3001', ':5173');
+                        }, 2000);
+                    } else {
+                        showSuccess('הסיסמה הוגדרה בהצלחה! מעביר אותך לדף ההתחברות...');
+                        setTimeout(() => {
+                            window.location.href = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/login`.replace(':3001', ':5173');
+                        }, 2000);
+                    }
                 } else {
                     let errorMsg = 'אירעה שגיאה בהגדרת הסיסמה';
                     
@@ -592,9 +604,20 @@
             }
         });
 
+        // Redirect to frontend login page
+        function redirectToLogin() {
+            const frontendUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/login`.replace(':3001', ':5173');
+            window.location.href = frontendUrl;
+        }
+
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             initFloatingLabels();
+            
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         });
     </script>
 </body>
