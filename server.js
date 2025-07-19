@@ -36,14 +36,10 @@ if (process.env.NODE_ENV === 'production') {
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const MONGO_URI = process.env.MONGO_URI;
-const FRONTEND_URL =
-  process.env.FRONTEND_URL === 'production'
-    ? process.env.FRONTEND_URL
-    : 'http://localhost:5173';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 const corsOptions = {
-  origin:
-    NODE_ENV === 'production' ? [FRONTEND_URL] : ['http://localhost:5173'],
+  origin: NODE_ENV === 'production' ? [FRONTEND_URL] : ['http://localhost:5173'],
   credentials: true,
   optionsSuccessStatus: 200,
 };

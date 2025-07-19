@@ -27,6 +27,12 @@ function getEmailTransporter() {
 async function sendInvitationEmail(email, token, teacherName) {
   const invitationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/accept-invitation/${token}`;
   
+  // Log the actual URL being sent for debugging
+  console.log('=== INVITATION URL DEBUG ===');
+  console.log('FRONTEND_URL env var:', process.env.FRONTEND_URL);
+  console.log('Generated invitation URL:', invitationUrl);
+  console.log('============================');
+  
   // Email template for invitation
   const emailContent = {
     to: email,
