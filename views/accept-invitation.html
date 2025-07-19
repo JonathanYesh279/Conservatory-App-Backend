@@ -397,7 +397,7 @@
             <div id="errorMessage" class="error-message"></div>
             <div id="successMessage" class="success-message"></div>
 
-            <form id="passwordForm" class="form-section">
+            <form id="passwordForm" class="form-section" onsubmit="console.log('Form onsubmit triggered')">
                 <div class="input-container">
                     <input type="password" id="password" name="password" required>
                     <label for="password">סיסמה חדשה</label>
@@ -458,6 +458,15 @@
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token') || window.location.pathname.split('/').pop();
 
+        // Debug token extraction
+        console.log('=== TOKEN DEBUG ===');
+        console.log('Full URL:', window.location.href);
+        console.log('Pathname:', window.location.pathname);
+        console.log('Search params:', window.location.search);
+        console.log('Extracted token:', token);
+        console.log('Token length:', token ? token.length : 'null');
+        console.log('==================');
+
         const form = document.getElementById('passwordForm');
         const errorMessage = document.getElementById('errorMessage');
         const successMessage = document.getElementById('successMessage');
@@ -493,31 +502,45 @@
 
         // Validate token exists
         if (!token || token === 'accept-invitation') {
+            console.log('Token validation failed');
             showError('קישור לא תקין. אנא בקש קישור חדש ממנהל המערכת.');
             submitBtn.disabled = true;
+        } else {
+            console.log('Token validation passed');
         }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             hideMessages();
 
+            console.log('=== FORM SUBMIT DEBUG ===');
+            console.log('Form submission started');
+            console.log('Token for API call:', token);
+
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
+            console.log('Password length:', password.length);
+            console.log('Passwords match:', password === confirmPassword);
+
             // Validation
             if (password.length < 6) {
+                console.log('Validation failed: password too short');
                 showError('הסיסמה חייבת להכיל לפחות 6 תווים');
                 return;
             }
 
             if (password !== confirmPassword) {
+                console.log('Validation failed: passwords dont match');
                 showError('הסיסמאות אינן זהות');
                 return;
             }
 
+            console.log('Validation passed, starting API call');
             setLoading(true);
 
             try {
+                console.log('Making API call to /api/auth/accept-invitation');
                 const response = await fetch('/api/auth/accept-invitation', {
                     method: 'POST',
                     headers: {
@@ -529,7 +552,11 @@
                     })
                 });
 
+                console.log('API Response status:', response.status);
+                console.log('API Response ok:', response.ok);
+
                 const data = await response.json();
+                console.log('API Response data:', data);
 
                 if (response.ok && data.success) {
                     // If we got tokens back, auto-login the user
@@ -571,9 +598,14 @@
                     showError(errorMsg);
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('=== API CALL ERROR ===');
+                console.error('Error details:', error);
+                console.error('Error message:', error.message);
+                console.error('Error stack:', error.stack);
+                console.error('=====================');
                 showError('שגיאה בחיבור לשרת. אנא נסה שוב.');
             } finally {
+                console.log('API call finished, setting loading to false');
                 setLoading(false);
             }
         });
@@ -610,6 +642,19 @@
             window.location.href = frontendUrl;
         }
 
+        // Test API connectivity
+        async function testAPIConnection() {
+            try {
+                console.log('Testing API connectivity...');
+                const response = await fetch('/api/test', { method: 'GET' });
+                console.log('API test response status:', response.status);
+                const data = await response.json();
+                console.log('API test response data:', data);
+            } catch (error) {
+                console.error('API test failed:', error);
+            }
+        }
+
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             initFloatingLabels();
@@ -618,6 +663,9 @@
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
+
+            // Test API connection
+            testAPIConnection();
         });
     </script>
 </body>
