@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הגדרת סיסמה - מערכת הקונסרבטוריון</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4D55CC;
+            --primary-dark: #211C84;
+            --primary-light: #7A73D1;
+            --primary-lightest: #B5A8D5;
+            --text-primary: #212529;
+            --text-secondary: #6C757D;
+            --bg-color: #FFFFFF;
+        }
+
+        [data-theme="dark"] {
+            --text-primary: #F8F9FA;
+            --text-secondary: #CED4DA;
+            --bg-color: #111827;
+        }
+
+        body {
+            font-family: 'Reisinger Michals', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            direction: rtl;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><radialGradient id="bg" cx="50%" cy="50%"><stop offset="0%" stop-color="%234D55CC"/><stop offset="100%" stop-color="%23211C84"/></radialGradient></defs><rect width="1200" height="800" fill="url(%23bg)"/><circle cx="300" cy="200" r="150" fill="rgba(255,255,255,0.1)"/><circle cx="900" cy="600" r="200" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
+        [data-theme="dark"] body::before {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><radialGradient id="bg" cx="50%" cy="50%"><stop offset="0%" stop-color="%23211C84"/><stop offset="100%" stop-color="%23111827"/></radialGradient></defs><rect width="1200" height="800" fill="url(%23bg)"/><circle cx="300" cy="200" r="150" fill="rgba(255,255,255,0.05)"/><circle cx="900" cy="600" r="200" fill="rgba(255,255,255,0.02)"/></svg>');
+        }
+
+        .login-container {
+            max-width: 380px;
+            width: 100%;
+            padding: 3.5rem 2.5rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+
+        [data-theme="dark"] .login-container {
+            background-color: rgba(17, 24, 39, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(180deg);
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: right;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+            font-size: 1.1rem;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: white;
+            direction: ltr;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        input[type="password"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            direction: rtl;
+            text-align: right;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(77, 85, 204, 0.2);
+        }
+
+        .floating-label {
+            position: absolute;
+            right: 3rem;
+            top: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: transparent;
+        }
+
+        .floating-label.active {
+            top: -0.5rem;
+            right: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--primary-light);
+            background: rgba(77, 85, 204, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .password-requirements {
+            text-align: right;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            backdrop-filter: blur(5px);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(77, 85, 204, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn:disabled::before {
+            display: none;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #363;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .login-link {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                top: 1rem;
+                left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="themeIcon">🌙</span>
+    </div>
+
+    <div class="login-container">
+        <div class="logo">🎵 מערכת הקונסרבטוריון</div>
+        <div class="subtitle">הגדרת סיסמה למורה חדש</div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+        
+        <form id="passwordForm">
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" name="password" placeholder="הזן סיסמה חדשה" required>
+                    <label class="floating-label" for="password">סיסמה חדשה</label>
+                </div>
+                <div class="password-requirements" id="passwordRequirements">
+                    הסיסמה חייבת להכיל לפחות 6 תווים
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="input-icon">🔐</span>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="אמת את הסיסמה" required>
+                    <label class="floating-label" for="confirmPassword">אימות סיסמה</label>
+                </div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div>מגדיר סיסמה...</div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                הגדר סיסמה והתחבר למערכת
+            </button>
+        </form>
+
+        <div class="login-link">
+            <div>כבר יש לך סיסמה? <a href="/login">התחבר כאן</a></div>
+        </div>
+    </div>
+
+    <script>
+        // Theme management
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const currentTheme = html.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const themeIcon = document.getElementById('themeIcon');
+            
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Floating label functionality
+        function initFloatingLabels() {
+            const inputs = document.querySelectorAll('input[type="password"]');
+            
+            inputs.forEach(input => {
+                const label = input.parentElement.querySelector('.floating-label');
+                
+                function updateLabel() {
+                    if (input.value.trim() !== '' || input === document.activeElement) {
+                        label.classList.add('active');
+                    } else {
+                        label.classList.remove('active');
+                    }
+                }
+                
+                input.addEventListener('focus', updateLabel);
+                input.addEventListener('blur', updateLabel);
+                input.addEventListener('input', updateLabel);
+                
+                // Initial check
+                updateLabel();
+            });
+        }
+
+        // Get token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token') || window.location.pathname.split('/').pop();
+
+        const form = document.getElementById('passwordForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const loading = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        function hideMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+        }
+
+        function setLoading(isLoading) {
+            loading.style.display = isLoading ? 'block' : 'none';
+            submitBtn.disabled = isLoading;
+            if (isLoading) {
+                submitBtn.textContent = 'מגדיר סיסמה...';
+            } else {
+                submitBtn.textContent = 'הגדר סיסמה והתחבר למערכת';
+            }
+        }
+
+        // Validate token exists
+        if (!token || token === 'accept-invitation') {
+            showError('קישור לא תקין. אנא בקש קישור חדש ממנהל המערכת.');
+            submitBtn.disabled = true;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessages();
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validation
+            if (password.length < 6) {
+                showError('הסיסמה חייבת להכיל לפחות 6 תווים');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('הסיסמאות אינן זהות');
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                const response = await fetch('/api/auth/accept-invitation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: token,
+                        newPassword: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showSuccess('הסיסמה הוגדרה בהצלחה! מעביר אותך לדף ההתחברות...');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    let errorMsg = 'אירעה שגיאה בהגדרת הסיסמה';
+                    
+                    if (data.code === 'INVITATION_TOKEN_EXPIRED') {
+                        errorMsg = 'פג תוקף ההזמנה. אנא בקש הזמנה חדשה ממנהל המערכת.';
+                    } else if (data.code === 'INVALID_INVITATION_TOKEN') {
+                        errorMsg = 'קישור ההזמנה לא תקין. אנא בקש קישור חדש ממנהל המערכת.';
+                    } else if (data.code === 'WEAK_PASSWORD') {
+                        errorMsg = 'הסיסמה חייבת להכיל לפחות 6 תווים';
+                    } else if (data.error) {
+                        errorMsg = data.error;
+                    }
+                    
+                    showError(errorMsg);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('שגיאה בחיבור לשרת. אנא נסה שוב.');
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Real-time password validation
+        document.getElementById('password').addEventListener('input', (e) => {
+            const password = e.target.value;
+            const requirements = document.querySelector('.password-requirements');
+            
+            if (password.length >= 6) {
+                requirements.style.color = '#28a745';
+                requirements.textContent = '✓ הסיסמה עומדת בדרישות';
+            } else {
+                requirements.style.color = '#666';
+                requirements.textContent = 'הסיסמה חייבת להכיל לפחות 6 תווים';
+            }
+        });
+
+        // Real-time confirm password validation
+        document.getElementById('confirmPassword').addEventListener('input', (e) => {
+            const password = document.getElementById('password').value;
+            const confirmPassword = e.target.value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                e.target.style.borderColor = 'rgba(220, 53, 69, 0.8)';
+            } else {
+                e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            }
+        });
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initFloatingLabels();
+        });
+    </script>
+</body>
+</html>

@@ -153,6 +153,15 @@ app.get('/api/test-invitation-url', (req, res) => {
   });
 });
 
+// Serve invitation acceptance page
+app.get('/accept-invitation/:token', (req, res) => {
+  const token = req.params.token;
+  console.log('Serving invitation acceptance page for token:', token);
+  
+  // Serve the HTML file
+  res.sendFile(path.join(__dirname, 'views/accept-invitation.html'));
+});
+
 // Static files and catch-all route for production (AFTER API routes)
 if (NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'public')));
