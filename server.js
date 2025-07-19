@@ -82,6 +82,13 @@ app.use(
   addSchoolYearToRequest,
   teacherRoutes
 );
+// Add plural route for frontend compatibility
+app.use(
+  '/api/teachers',
+  authenticateToken,
+  addSchoolYearToRequest,
+  teacherRoutes
+);
 app.use(
   '/api/orchestra',
   authenticateToken,

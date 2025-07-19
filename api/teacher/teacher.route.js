@@ -6,6 +6,9 @@ import { requireAuth } from '../../middleware/auth.middleware.js'
 const router = express.Router()
 
 router.get('/', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getTeachers)
+router.get('/profile/me', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getMyProfile)
+router.put('/profile/me', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.updateMyProfile)
+router.get('/debug/ids', requireAuth(['מנהל']), teacherController.getTeacherIds)
 router.get('/:id', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getTeacherById)
 router.get('/role/:role', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getTeacherByRole)
 

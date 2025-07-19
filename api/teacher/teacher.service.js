@@ -12,6 +12,7 @@ import crypto from 'crypto';
 export const teacherService = {
   getTeachers,
   getTeacherById,
+  getTeacherIds,
   addTeacher,
   updateTeacher,
   removeTeacher,
@@ -37,16 +38,63 @@ async function getTeachers(filterBy) {
 
 async function getTeacherById(teacherId) {
   try {
+    console.log(`Getting teacher by ID: ${teacherId}`);
+    
+    // Validate ObjectId format
+    if (!teacherId || !ObjectId.isValid(teacherId)) {
+      console.error(`Invalid teacher ID format: ${teacherId}`);
+      throw new Error(`Invalid teacher ID format: ${teacherId}`);
+    }
+
     const collection = await getCollection('teacher');
     const teacher = await collection.findOne({
       _id: ObjectId.createFromHexString(teacherId),
     });
 
-    if (!teacher) throw new Error(`Teacher with id ${teacherId} not found`);
+    console.log(`Teacher found: ${teacher ? 'Yes' : 'No'}`);
+    if (!teacher) {
+      console.error(`Teacher with id ${teacherId} not found in database`);
+      throw new Error(`Teacher with id ${teacherId} not found`);
+    }
+    
     return teacher;
   } catch (err) {
     console.error(`Error getting teacher by id: ${err.message}`);
+    if (err.message.includes('Invalid teacher ID format')) {
+      throw err; // Re-throw validation errors as-is
+    }
     throw new Error(`Error getting teacher by id: ${err.message}`);
+  }
+}
+
+async function getTeacherIds() {
+  try {
+    const collection = await getCollection('teacher');
+    const teachers = await collection.find(
+      { isActive: true },
+      { 
+        projection: { 
+          _id: 1, 
+          'personalInfo.fullName': 1, 
+          'credentials.email': 1, 
+          roles: 1,
+          isActive: 1,
+          createdAt: 1
+        } 
+      }
+    ).toArray();
+    
+    return teachers.map(teacher => ({
+      _id: teacher._id.toString(),
+      fullName: teacher.personalInfo?.fullName || 'Unknown',
+      email: teacher.credentials?.email || 'No email',
+      roles: teacher.roles || [],
+      isActive: teacher.isActive,
+      createdAt: teacher.createdAt
+    }));
+  } catch (err) {
+    console.error(`Error getting teacher IDs: ${err.message}`);
+    throw new Error(`Error getting teacher IDs: ${err.message}`);
   }
 }
 
@@ -220,9 +268,12 @@ async function updateTeacher(teacherId, teacherToUpdate) {
 
     value.updatedAt = new Date();
 
+    // Remove fields that cannot be updated
+    const { _id, ...updateData } = value;
+
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(teacherId) },
-      { $set: value },
+      { $set: updateData },
       { returnDocument: 'after' }
     );
 

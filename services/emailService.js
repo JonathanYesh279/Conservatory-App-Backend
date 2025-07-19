@@ -199,12 +199,71 @@ async function sendPasswordResetEmail(email, token, teacherName) {
   console.log('Reset URL:', resetUrl);
   console.log('=============================');
 
-  // TODO: Implement actual email sending
-  return {
-    success: true,
-    message: 'Password reset email queued for sending',
-    recipient: email
-  };
+  // Send actual email if configured
+  if (process.env.SENDGRID_API_KEY) {
+    // Use SendGrid
+    try {
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      
+      const msg = {
+        to: email,
+        from: process.env.FROM_EMAIL || 'noreply@conservatory.com',
+        subject: emailContent.subject,
+        html: emailContent.html
+      };
+      
+      await sgMail.send(msg);
+      console.log('✅ Password reset email sent successfully via SendGrid');
+      
+      return {
+        success: true,
+        message: 'Password reset email sent successfully',
+        recipient: email
+      };
+    } catch (error) {
+      console.error('❌ SendGrid password reset email failed:', error);
+      return {
+        success: false,
+        message: 'Failed to send password reset email',
+        error: error.message
+      };
+    }
+  } else if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    // Use Gmail/Nodemailer
+    try {
+      const transporter = getEmailTransporter();
+      const mailOptions = {
+        from: `"מערכת הקונסרבטוריון" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: emailContent.subject,
+        html: emailContent.html
+      };
+      
+      const info = await transporter.sendMail(mailOptions);
+      console.log('✅ Password reset email sent successfully:', info.messageId);
+      
+      return {
+        success: true,
+        message: 'Password reset email sent successfully',
+        recipient: email,
+        messageId: info.messageId
+      };
+    } catch (error) {
+      console.error('❌ Password reset email sending failed:', error);
+      return {
+        success: false,
+        message: 'Failed to send password reset email',
+        error: error.message
+      };
+    }
+  } else {
+    console.log('📧 Email service not configured - password reset email logging only');
+    return {
+      success: true,
+      message: 'Password reset email logged (no email service configured)',
+      recipient: email
+    };
+  }
 }
 
 async function sendWelcomeEmail(email, teacherName) {

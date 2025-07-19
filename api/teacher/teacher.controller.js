@@ -3,6 +3,9 @@ import { teacherService } from './teacher.service.js'
 export const teacherController = {
   getTeachers,
   getTeacherById,
+  getMyProfile,
+  updateMyProfile,
+  getTeacherIds,
   addTeacher,
   updateTeacher,
   removeTeacher,
@@ -30,11 +33,125 @@ async function getTeachers(req, res, next) {
 
 async function getTeacherById(req, res, next) {
   try {
-    const { id } = req.params 
-    const teacher = await teacherService.getTeacherById(id)
-    res.json(teacher)
+    const { id } = req.params;
+    console.log(`Controller: Getting teacher by ID: ${id}`);
+    
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        error: 'Teacher ID is required',
+        code: 'MISSING_TEACHER_ID'
+      });
+    }
+    
+    const teacher = await teacherService.getTeacherById(id);
+    
+    res.json({
+      success: true,
+      data: teacher
+    });
   } catch (err) {
-    next(err)
+    console.error(`Controller error getting teacher by ID: ${err.message}`);
+    
+    if (err.message.includes('Invalid teacher ID format')) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid teacher ID format',
+        code: 'INVALID_TEACHER_ID'
+      });
+    }
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher not found',
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+    
+    next(err);
+  }
+}
+
+async function getMyProfile(req, res, next) {
+  try {
+    // Get the authenticated user's ID from the token
+    const teacherId = req.teacher._id.toString();
+    console.log(`Getting profile for authenticated teacher: ${teacherId}`);
+    
+    const teacher = await teacherService.getTeacherById(teacherId);
+    
+    res.json({
+      success: true,
+      data: teacher
+    });
+  } catch (err) {
+    console.error(`Error getting teacher profile: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher profile not found',
+        code: 'PROFILE_NOT_FOUND'
+      });
+    }
+    
+    next(err);
+  }
+}
+
+async function updateMyProfile(req, res, next) {
+  try {
+    // Get the authenticated user's ID from the token
+    const teacherId = req.teacher._id.toString();
+    console.log(`Updating profile for authenticated teacher: ${teacherId}`);
+    console.log('Request body received:', JSON.stringify(req.body, null, 2));
+    
+    const updatedTeacher = await teacherService.updateTeacher(teacherId, req.body);
+    
+    res.json({
+      success: true,
+      data: updatedTeacher,
+      message: 'Profile updated successfully'
+    });
+  } catch (err) {
+    console.error(`Error updating teacher profile: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher profile not found',
+        code: 'PROFILE_NOT_FOUND'
+      });
+    }
+    
+    if (err.message.includes('validation')) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid profile data',
+        code: 'VALIDATION_ERROR',
+        details: err.message
+      });
+    }
+    
+    next(err);
+  }
+}
+
+async function getTeacherIds(req, res, next) {
+  try {
+    const teachers = await teacherService.getTeacherIds();
+    
+    res.json({
+      success: true,
+      data: {
+        count: teachers.length,
+        teachers: teachers
+      }
+    });
+  } catch (err) {
+    console.error(`Error getting teacher IDs: ${err.message}`);
+    next(err);
   }
 }
 

@@ -20,8 +20,12 @@ router.get('/check-teacher/:email', authController.checkTeacherByEmail); // Chec
 router.delete('/remove-teacher/:email', authController.removeTeacherByEmail); // Remove teacher by email
 router.post('/login', loginLimiter, authController.login)
 router.post('/refresh', authController.refresh)
+router.post('/forgot-password', authController.forgotPassword)
+router.post('/reset-password', authController.resetPassword)
 
 // Protected routes
+router.get('/validate', authenticateToken, authController.validateToken)
 router.post('/logout', authenticateToken, authController.logout)
+router.post('/change-password', authenticateToken, authController.changePassword)
 
 export default router

@@ -11,7 +11,8 @@ export async function authenticateToken(req, res, next) {
       console.log('No auth token found for request to:', req.path);
       return res.status(401).json({ 
         success: false, 
-        error: 'Authentication required' 
+        error: 'Authentication required',
+        code: 'MISSING_TOKEN'
       });
     }
 
@@ -20,7 +21,8 @@ export async function authenticateToken(req, res, next) {
       console.log('Invalid token format:', token);
       return res.status(401).json({ 
         success: false, 
-        error: 'Invalid token format' 
+        error: 'Invalid token format',
+        code: 'INVALID_TOKEN_FORMAT'
       });
     }
 
@@ -38,7 +40,18 @@ export async function authenticateToken(req, res, next) {
     if (!teacher) {
       return res.status(401).json({ 
         success: false, 
-        error: 'Teacher was not found' 
+        error: 'Teacher was not found',
+        code: 'USER_NOT_FOUND'
+      });
+    }
+
+    // Check token version for revocation support
+    const tokenVersion = teacher.credentials?.tokenVersion || 0;
+    if (decoded.version !== undefined && decoded.version < tokenVersion) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Token has been revoked',
+        code: 'TOKEN_REVOKED'
       });
     }
 
@@ -59,15 +72,22 @@ export async function authenticateToken(req, res, next) {
       expiredAt: err.expiredAt, // This will show when TokenExpiredError
       currentTime: new Date(),
     });
+    
+    let errorCode = 'INVALID_TOKEN';
+    let errorMessage = 'Invalid token';
+    
     if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({ 
-        success: false, 
-        error: 'Token has expired' 
-      });
+      errorCode = 'TOKEN_EXPIRED';
+      errorMessage = 'Token has expired';
+    } else if (err.name === 'JsonWebTokenError') {
+      errorCode = 'MALFORMED_TOKEN';
+      errorMessage = 'Malformed token';
     }
-    res.status(401).json({ 
+    
+    return res.status(401).json({ 
       success: false, 
-      error: 'Invalid token' 
+      error: errorMessage,
+      code: errorCode
     });
   }
 }
@@ -77,7 +97,11 @@ export function requireAuth(roles) {
     try {
       const teacher = req.teacher;
       if (!teacher) {
-        return res.status(401).json({ error: 'Authentication required' });
+        return res.status(401).json({ 
+          success: false, 
+          error: 'Authentication required',
+          code: 'AUTH_REQUIRED'
+        });
       }
 
       if (teacher.roles.includes('מנהל')) {
@@ -89,12 +113,23 @@ export function requireAuth(roles) {
         roles.includes(role)
       );
       if (!hasRequiredRole) {
-        return res.status(403).json({ error: 'Insufficient permissions' });
+        return res.status(403).json({ 
+          success: false, 
+          error: 'Insufficient permissions',
+          code: 'INSUFFICIENT_PERMISSIONS',
+          required: roles,
+          current: teacher.roles
+        });
       }
 
       next();
     } catch (err) {
-      next(err);
+      console.error('Role authorization error:', err);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Authorization failed',
+        code: 'AUTH_FAILED'
+      });
     }
   };
 }

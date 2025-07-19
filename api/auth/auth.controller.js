@@ -6,6 +6,10 @@ export const authController = {
   login,
   refresh,
   logout,
+  validateToken,
+  changePassword,
+  forgotPassword,
+  resetPassword,
   initAdmin,
   migrateExistingUsers,
   checkTeacherByEmail,
@@ -55,21 +59,25 @@ async function login(req, res) {
     // Send the old format first to test
     res.json(oldResponse);
   } catch (err) {
+    console.error(`Error in login: ${err.message}`);
+    
     if (err.message === 'Invalid Credentials' || err.message === 'Invalid email or password') {
       res.status(401).json({ 
         success: false, 
-        error: 'Invalid email or password' 
+        error: 'Invalid email or password',
+        code: 'INVALID_CREDENTIALS'
       });
     } else if (err.message === 'Please accept your invitation first') {
       res.status(400).json({ 
         success: false, 
-        error: 'Please accept your invitation first' 
+        error: 'Please accept your invitation first',
+        code: 'INVITATION_REQUIRED'
       });
     } else {
-      console.error(`Error in login: ${err.message}`);
       res.status(500).json({ 
         success: false, 
-        error: 'Internal Server Error' 
+        error: 'Internal Server Error',
+        code: 'INTERNAL_ERROR'
       });
     }
   }
@@ -82,7 +90,8 @@ async function refresh(req, res) {
     if (!refreshToken) {
       return res.status(401).json({ 
         success: false, 
-        error: 'Refresh token is required' 
+        error: 'Refresh token is required',
+        code: 'MISSING_REFRESH_TOKEN'
       })
     }
 
@@ -93,9 +102,26 @@ async function refresh(req, res) {
       message: 'Token refreshed successfully'
     })
   } catch (err) {
+    console.error('Refresh token error:', err.message);
+    
+    let errorCode = 'INVALID_REFRESH_TOKEN';
+    let errorMessage = 'Invalid refresh token';
+    
+    if (err.message.includes('expired')) {
+      errorCode = 'REFRESH_TOKEN_EXPIRED';
+      errorMessage = 'Refresh token has expired';
+    } else if (err.message.includes('revoked')) {
+      errorCode = 'REFRESH_TOKEN_REVOKED';
+      errorMessage = 'Refresh token has been revoked';
+    } else if (err.message.includes('malformed')) {
+      errorCode = 'MALFORMED_REFRESH_TOKEN';
+      errorMessage = 'Malformed refresh token';
+    }
+    
     res.status(401).json({ 
       success: false, 
-      error: 'Invalid refresh token' 
+      error: errorMessage,
+      code: errorCode
     })
   }
 }
@@ -120,9 +146,162 @@ async function logout(req, res) {
     console.error(`Error in logout: ${err.message}`)
     res.status(500).json({ 
       success: false, 
-      error: 'Logout failed'
+      error: 'Logout failed',
+      code: 'LOGOUT_FAILED'
     })
  }
+}
+
+async function validateToken(req, res) {
+  try {
+    // This endpoint uses authenticateToken middleware, so if we reach here, token is valid
+    const user = req.loggedinUser || req.user;
+    
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid authentication state',
+        code: 'AUTH_STATE_ERROR'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        valid: true,
+        user: {
+          _id: user._id,
+          fullName: user.fullName,
+          email: user.email,
+          roles: user.roles
+        }
+      },
+      message: 'Token is valid'
+    });
+  } catch (err) {
+    console.error(`Error in validateToken: ${err.message}`);
+    res.status(500).json({
+      success: false,
+      error: 'Token validation failed',
+      code: 'VALIDATION_ERROR'
+    });
+  }
+}
+
+async function changePassword(req, res) {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'Current password and new password are required',
+        code: 'MISSING_PASSWORDS'
+      });
+    }
+
+    const teacherId = req.teacher._id.toString();
+    const result = await authService.changePassword(teacherId, currentPassword, newPassword);
+    
+    res.json({
+      success: true,
+      message: result.message,
+      data: { tokenVersion: result.tokenVersion }
+    });
+  } catch (err) {
+    console.error('Change password error:', err.message);
+    
+    let errorCode = 'CHANGE_PASSWORD_FAILED';
+    let status = 400;
+    
+    if (err.message.includes('Current password is incorrect')) {
+      errorCode = 'INCORRECT_CURRENT_PASSWORD';
+      status = 401;
+    } else if (err.message.includes('must be at least 6 characters')) {
+      errorCode = 'WEAK_PASSWORD';
+    } else if (err.message.includes('must be different')) {
+      errorCode = 'SAME_PASSWORD';
+    }
+    
+    res.status(status).json({
+      success: false,
+      error: err.message,
+      code: errorCode
+    });
+  }
+}
+
+async function forgotPassword(req, res) {
+  try {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email is required',
+        code: 'MISSING_EMAIL'
+      });
+    }
+
+    const result = await authService.forgotPassword(email);
+    
+    // Always return success for security (don't reveal if user exists)
+    res.json({
+      success: true,
+      message: result.message
+    });
+  } catch (err) {
+    console.error('Forgot password error:', err.message);
+    
+    // Always return generic success message for security
+    res.json({
+      success: true,
+      message: 'If an account with this email exists, a password reset link has been sent'
+    });
+  }
+}
+
+async function resetPassword(req, res) {
+  try {
+    const { token, newPassword } = req.body;
+    
+    if (!token || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'Reset token and new password are required',
+        code: 'MISSING_RESET_DATA'
+      });
+    }
+
+    const result = await authService.resetPassword(token, newPassword);
+    
+    res.json({
+      success: true,
+      message: result.message,
+      data: { tokenVersion: result.tokenVersion }
+    });
+  } catch (err) {
+    console.error('Reset password error:', err.message);
+    
+    let errorCode = 'RESET_PASSWORD_FAILED';
+    let status = 400;
+    
+    if (err.message.includes('expired')) {
+      errorCode = 'RESET_TOKEN_EXPIRED';
+      status = 401;
+    } else if (err.message.includes('Invalid reset token')) {
+      errorCode = 'INVALID_RESET_TOKEN';
+      status = 401;
+    } else if (err.message.includes('must be at least 6 characters')) {
+      errorCode = 'WEAK_PASSWORD';
+    }
+    
+    res.status(status).json({
+      success: false,
+      error: err.message,
+      code: errorCode
+    });
+  }
 }
 
 async function initAdmin(req, res) {
