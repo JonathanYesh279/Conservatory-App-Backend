@@ -130,6 +130,29 @@ app.get('/api/test', (req, res) => {
   });
 });
 
+// Test invitation URL generation
+app.get('/api/test-invitation-url', (req, res) => {
+  const testToken = 'test-token-123';
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const invitationUrl = `${frontendUrl}/accept-invitation/${testToken}`;
+  
+  console.log('=== TEST INVITATION URL ===');
+  console.log('FRONTEND_URL env var:', process.env.FRONTEND_URL);
+  console.log('Generated invitation URL:', invitationUrl);
+  console.log('===========================');
+  
+  res.status(200).json({
+    success: true,
+    data: {
+      frontendUrl,
+      invitationUrl,
+      testToken,
+      environment: process.env.NODE_ENV
+    },
+    message: 'Invitation URL test'
+  });
+});
+
 // Static files and catch-all route for production (AFTER API routes)
 if (NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'public')));

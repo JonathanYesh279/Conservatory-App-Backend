@@ -31,6 +31,8 @@ async function sendInvitationEmail(email, token, teacherName) {
   console.log('=== INVITATION URL DEBUG ===');
   console.log('FRONTEND_URL env var:', process.env.FRONTEND_URL);
   console.log('Generated invitation URL:', invitationUrl);
+  console.log('Token provided:', token);
+  console.log('Teacher name:', teacherName);
   console.log('============================');
   
   // Email template for invitation
