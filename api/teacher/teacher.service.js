@@ -100,7 +100,26 @@ async function getTeacherIds() {
 
 async function addTeacher(teacherToAdd, adminId) {
   try {
-    const { error, value } = validateTeacher(teacherToAdd);
+    // When admin creates a teacher, ensure required fields are present with defaults
+    const teacherData = {
+      ...teacherToAdd,
+      // Ensure teaching structure exists
+      teaching: teacherToAdd.teaching || {
+        studentIds: [],
+        schedule: []
+      },
+      // Ensure credentials exist - will be populated with invitation data
+      credentials: teacherToAdd.credentials || {
+        email: teacherToAdd.personalInfo?.email || '',
+        password: null // Will be set via invitation system
+      },
+      // Default other fields if missing
+      conducting: teacherToAdd.conducting || { orchestraIds: [] },
+      ensemblesIds: teacherToAdd.ensemblesIds || [],
+      schoolYears: teacherToAdd.schoolYears || []
+    };
+
+    const { error, value } = validateTeacher(teacherData);
     if (error) throw new Error(`Invalid teacher data: ${error.message}`);
 
     // Comprehensive duplicate detection
