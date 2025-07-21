@@ -20,10 +20,28 @@
     <meta name="format-detection" content="telephone=no">
     
     <title>Vite + React + TS</title>
-    <script type="module" crossorigin src="/assets/index-jhCkLfIc.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-B2-vG4X2.css">
+    <script type="module" crossorigin src="/assets/index-BANCYPvl.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Cahvntzn.css">
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Simple mobile browser UI hiding - minimal approach
+      function hideMobileBrowserUI() {
+        if (window.matchMedia('(max-width: 768px)').matches) {
+          // Simple scroll to encourage address bar hiding
+          setTimeout(() => window.scrollTo(0, 1), 100);
+          setTimeout(() => window.scrollTo(0, 0), 200);
+        }
+      }
+      
+      // Run on load
+      window.addEventListener('load', hideMobileBrowserUI);
+      
+      // Run on orientation change
+      window.addEventListener('orientationchange', function() {
+        setTimeout(hideMobileBrowserUI, 500);
+      });
+    </script>
   </body>
 </html>
