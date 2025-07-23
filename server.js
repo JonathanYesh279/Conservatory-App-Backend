@@ -169,6 +169,12 @@ app.get('/accept-invitation/:token', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/accept-invitation.html'));
 });
 
+// Serve force password change page (for default password users)
+app.get('/force-password-change', (req, res) => {
+  console.log('Serving force password change page');
+  res.sendFile(path.join(__dirname, 'views/force-password-change.html'));
+});
+
 // Static files and catch-all route for production (AFTER API routes)
 if (NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'public')));

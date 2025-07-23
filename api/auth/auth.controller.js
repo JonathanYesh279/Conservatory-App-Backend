@@ -1,5 +1,6 @@
 import { authService } from './auth.service.js'
 import { getCollection } from '../../services/mongoDB.service.js'
+import { invitationMigration } from '../../services/invitationMigration.js'
 import { ObjectId } from 'mongodb'
 
 export const authController = {
@@ -8,13 +9,16 @@ export const authController = {
   logout,
   validateToken,
   changePassword,
+  forcePasswordChange,
   forgotPassword,
   resetPassword,
   acceptInvitation,
   initAdmin,
   migrateExistingUsers,
   checkTeacherByEmail,
-  removeTeacherByEmail
+  removeTeacherByEmail,
+  migratePendingInvitations,
+  getInvitationModeStats
 }
 
 async function login(req, res) {
@@ -204,10 +208,32 @@ async function changePassword(req, res) {
     const teacherId = req.teacher._id.toString();
     const result = await authService.changePassword(teacherId, currentPassword, newPassword);
     
+    // Set refresh token cookie if provided
+    if (result.refreshToken) {
+      res.cookie('refreshToken', result.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+      });
+    }
+    
+    console.log('🔍 Password change result:', {
+      hasAccessToken: !!result.accessToken,
+      hasRefreshToken: !!result.refreshToken,
+      accessTokenLength: result.accessToken?.length,
+      refreshTokenLength: result.refreshToken?.length
+    });
+    
     res.json({
       success: true,
       message: result.message,
-      data: { tokenVersion: result.tokenVersion }
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+      data: { 
+        tokenVersion: result.tokenVersion,
+        teacher: result.teacher
+      }
     });
   } catch (err) {
     console.error('Change password error:', err.message);
@@ -222,6 +248,64 @@ async function changePassword(req, res) {
       errorCode = 'WEAK_PASSWORD';
     } else if (err.message.includes('must be different')) {
       errorCode = 'SAME_PASSWORD';
+    }
+    
+    res.status(status).json({
+      success: false,
+      error: err.message,
+      code: errorCode
+    });
+  }
+}
+
+async function forcePasswordChange(req, res) {
+  try {
+    const { newPassword } = req.body;
+    
+    if (!newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'New password is required',
+        code: 'MISSING_PASSWORD'
+      });
+    }
+
+    const teacherId = req.teacher._id.toString();
+    const result = await authService.forcePasswordChange(teacherId, newPassword);
+    
+    // Set refresh token cookie if provided
+    if (result.refreshToken) {
+      res.cookie('refreshToken', result.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+      });
+    }
+    
+    res.json({
+      success: true,
+      message: result.message,
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+      data: { 
+        tokenVersion: result.tokenVersion,
+        requiresPasswordChange: false,
+        teacher: result.teacher
+      }
+    });
+  } catch (err) {
+    console.error('Force password change error:', err.message);
+    
+    let errorCode = 'FORCE_PASSWORD_CHANGE_FAILED';
+    let status = 400;
+    
+    if (err.message.includes('must be at least 6 characters')) {
+      errorCode = 'WEAK_PASSWORD';
+    } else if (err.message.includes('must be different')) {
+      errorCode = 'SAME_PASSWORD';
+    } else if (err.message.includes('not required')) {
+      errorCode = 'PASSWORD_CHANGE_NOT_REQUIRED';
     }
     
     res.status(status).json({
@@ -562,5 +646,37 @@ async function removeTeacherByEmail(req, res) {
   } catch (error) {
     console.error('Error removing teacher by email:', error);
     res.status(500).json({ error: 'Failed to remove teacher' });
+  }
+}
+
+async function migratePendingInvitations(req, res) {
+  try {
+    const result = await invitationMigration.migratePendingInvitations();
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    console.error('Migration error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Migration failed: ' + error.message 
+    });
+  }
+}
+
+async function getInvitationModeStats(req, res) {
+  try {
+    const stats = await invitationMigration.getInvitationModeStats();
+    res.json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    console.error('Stats retrieval error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to retrieve stats: ' + error.message 
+    });
   }
 }

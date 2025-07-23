@@ -63,6 +63,7 @@ export async function authenticateToken(req, res, next) {
       roles: teacher.roles,
       fullName: teacher.personalInfo?.fullName || 'Unknown',
       email: teacher.credentials?.email,
+      requiresPasswordChange: teacher.credentials?.requiresPasswordChange || false,
     };
     next();
   } catch (err) {
@@ -155,4 +156,54 @@ export function requireAuth(roles) {
       });
     }
   };
+}
+
+export function checkPasswordChangeRequired(req, res, next) {
+  try {
+    const teacher = req.teacher;
+    
+    // Allow these specific routes even if password change is required
+    const allowedPaths = [
+      '/api/auth/force-password-change',
+      '/api/auth/logout',
+      '/api/auth/validate',
+      '/force-password-change'  // Allow access to the password change page
+    ];
+    
+    if (allowedPaths.includes(req.path)) {
+      return next();
+    }
+    
+    // For API routes, return JSON error
+    if (req.path.startsWith('/api/')) {
+      if (teacher && teacher.credentials && teacher.credentials.requiresPasswordChange) {
+        return res.status(403).json({
+          success: false,
+          error: 'Password change required',
+          code: 'PASSWORD_CHANGE_REQUIRED',
+          requiresPasswordChange: true,
+          redirectUrl: '/force-password-change'
+        });
+      }
+    } else {
+      // For non-API routes (web pages), redirect to password change page
+      if (teacher && teacher.credentials && teacher.credentials.requiresPasswordChange) {
+        return res.redirect('/force-password-change');
+      }
+    }
+    
+    next();
+  } catch (err) {
+    console.error('Password change check error:', err);
+    
+    if (req.path.startsWith('/api/')) {
+      res.status(500).json({
+        success: false,
+        error: 'Authorization check failed',
+        code: 'AUTH_CHECK_FAILED'
+      });
+    } else {
+      res.status(500).send('Authorization check failed');
+    }
+  }
 }

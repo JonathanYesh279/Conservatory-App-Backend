@@ -16,6 +16,7 @@ export const authService = {
   logout,
   revokeTokens,
   changePassword,
+  forcePasswordChange,
   forgotPassword,
   resetPassword,
   acceptInvitation
@@ -115,6 +116,7 @@ async function login(email, password) {
         },
         professionalInfo: teacher.professionalInfo,
         roles: teacher.roles,
+        requiresPasswordChange: teacher.credentials.requiresPasswordChange || false,
       },
     };
     
@@ -326,27 +328,150 @@ async function changePassword(teacherId, currentPassword, newPassword) {
     // Update password and increment token version to revoke all existing tokens
     const newTokenVersion = (teacher.credentials?.tokenVersion || 0) + 1
     
+    // Generate new tokens for continued session
+    const updatedTeacher = {
+      ...teacher,
+      credentials: {
+        ...teacher.credentials,
+        password: hashedNewPassword,
+        tokenVersion: newTokenVersion,
+        requiresPasswordChange: false
+      }
+    }
+    
+    const { accessToken, refreshToken } = await generateTokens(updatedTeacher)
+    
     await collection.updateOne(
       { _id: ObjectId.createFromHexString(teacherId) },
       {
         $set: {
           'credentials.password': hashedNewPassword,
           'credentials.tokenVersion': newTokenVersion,
-          'credentials.refreshToken': null,
+          'credentials.refreshToken': refreshToken,
           'credentials.passwordSetAt': new Date(),
+          'credentials.requiresPasswordChange': false,
+          'credentials.lastLogin': new Date(),
           updatedAt: new Date()
         }
       }
     )
 
-    console.log(`Password changed for teacher ${teacherId}, tokens revoked`)
+    console.log(`Password changed for teacher ${teacherId}, new tokens generated`)
     return { 
       success: true, 
       message: 'Password changed successfully',
-      tokenVersion: newTokenVersion 
+      tokenVersion: newTokenVersion,
+      accessToken,
+      refreshToken,
+      teacher: {
+        _id: updatedTeacher._id.toString(),
+        personalInfo: {
+          fullName: updatedTeacher.personalInfo.fullName,
+          email: updatedTeacher.personalInfo.email || updatedTeacher.credentials.email,
+          phone: updatedTeacher.personalInfo.phone,
+          address: updatedTeacher.personalInfo.address,
+        },
+        professionalInfo: updatedTeacher.professionalInfo,
+        roles: updatedTeacher.roles,
+        requiresPasswordChange: false,
+      }
     }
   } catch (err) {
     console.error(`Error changing password: ${err.message}`)
+    throw err
+  }
+}
+
+async function forcePasswordChange(teacherId, newPassword) {
+  try {
+    if (!teacherId || !newPassword) {
+      throw new Error('Teacher ID and new password are required')
+    }
+
+    // Password validation
+    if (newPassword.length < 6) {
+      throw new Error('New password must be at least 6 characters long')
+    }
+
+    const collection = await getCollection('teacher')
+    const teacher = await collection.findOne({ 
+      _id: ObjectId.createFromHexString(teacherId),
+      isActive: true
+    })
+
+    if (!teacher) {
+      throw new Error('Teacher not found')
+    }
+
+    // Check if password change is required
+    if (!teacher.credentials.requiresPasswordChange) {
+      throw new Error('Password change is not required for this user')
+    }
+
+    // Ensure new password is different from current (if current exists)
+    if (teacher.credentials.password) {
+      const isSamePassword = await bcrypt.compare(newPassword, teacher.credentials.password)
+      if (isSamePassword) {
+        throw new Error('New password must be different from current password')
+      }
+    }
+
+    // Hash new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, SALT_ROUNDS)
+
+    // Update password and clear the force change flag
+    const newTokenVersion = (teacher.credentials?.tokenVersion || 0) + 1
+    
+    // Generate new tokens for continued session
+    const updatedTeacher = {
+      ...teacher,
+      credentials: {
+        ...teacher.credentials,
+        password: hashedNewPassword,
+        tokenVersion: newTokenVersion,
+        requiresPasswordChange: false
+      }
+    }
+    
+    const { accessToken, refreshToken } = await generateTokens(updatedTeacher)
+    
+    await collection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      {
+        $set: {
+          'credentials.password': hashedNewPassword,
+          'credentials.tokenVersion': newTokenVersion,
+          'credentials.refreshToken': refreshToken,
+          'credentials.passwordSetAt': new Date(),
+          'credentials.requiresPasswordChange': false,
+          'credentials.lastLogin': new Date(),
+          updatedAt: new Date()
+        }
+      }
+    )
+
+    console.log(`Force password change completed for teacher ${teacherId}`)
+    return { 
+      success: true, 
+      message: 'Password set successfully',
+      tokenVersion: newTokenVersion,
+      accessToken,
+      refreshToken,
+      teacher: {
+        _id: updatedTeacher._id.toString(),
+        personalInfo: {
+          fullName: updatedTeacher.personalInfo.fullName,
+          email: updatedTeacher.personalInfo.email || updatedTeacher.credentials.email,
+          phone: updatedTeacher.personalInfo.phone,
+          address: updatedTeacher.personalInfo.address,
+        },
+        professionalInfo: updatedTeacher.professionalInfo,
+        roles: updatedTeacher.roles,
+        requiresPasswordChange: false,
+      }
+    }
+  } catch (err) {
+    console.error(`Error in force password change: ${err.message}`)
     throw err
   }
 }

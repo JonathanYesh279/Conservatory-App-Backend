@@ -7,6 +7,7 @@ import { ObjectId } from 'mongodb';
 import { authService } from '../auth/auth.service.js';
 import { DuplicateDetectionService } from '../../services/duplicateDetectionService.js';
 import { emailService } from '../../services/emailService.js';
+import { invitationConfig } from '../../services/invitationConfig.js';
 import crypto from 'crypto';
 
 export const teacherService = {
@@ -150,19 +151,34 @@ async function addTeacher(teacherToAdd, adminId) {
 
     const collection = await getCollection('teacher');
 
-    // Generate invitation token instead of setting password
-    const invitationToken = crypto.randomBytes(32).toString('hex');
-    const invitationExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    // Handle invitation based on current mode
+    if (invitationConfig.isEmailMode()) {
+      // Legacy EMAIL mode - generate invitation token
+      const invitationToken = crypto.randomBytes(32).toString('hex');
+      const invitationExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
-    // Remove password from teacher data and set invitation data
-    // Always remove password for invitation system (handle null, empty string, or any value)
-    delete value.credentials.password;
-    
-    value.credentials.invitationToken = invitationToken;
-    value.credentials.invitationExpiry = invitationExpiry;
-    value.credentials.isInvitationAccepted = false;
-    value.credentials.invitedAt = new Date();
-    value.credentials.invitedBy = adminId;
+      // Remove password and set invitation data
+      delete value.credentials.password;
+      
+      value.credentials.invitationToken = invitationToken;
+      value.credentials.invitationExpiry = invitationExpiry;
+      value.credentials.isInvitationAccepted = false;
+      value.credentials.invitedAt = new Date();
+      value.credentials.invitedBy = adminId;
+      value.credentials.invitationMode = 'EMAIL';
+    } else {
+      // DEFAULT_PASSWORD mode - set default password directly
+      const defaultPassword = invitationConfig.getDefaultPassword();
+      const hashedPassword = await authService.encryptPassword(defaultPassword);
+      
+      value.credentials.password = hashedPassword;
+      value.credentials.isInvitationAccepted = true; // Consider as accepted
+      value.credentials.requiresPasswordChange = true; // Force password change
+      value.credentials.passwordSetAt = new Date();
+      value.credentials.invitedAt = new Date();
+      value.credentials.invitedBy = adminId;
+      value.credentials.invitationMode = 'DEFAULT_PASSWORD';
+    }
 
     // Initialize teaching structure if not present
     if (!value.teaching) {
@@ -183,11 +199,22 @@ async function addTeacher(teacherToAdd, adminId) {
 
     const result = await collection.insertOne(value);
     
-    // Send invitation email
-    await emailService.sendInvitationEmail(value.credentials.email, invitationToken, value.personalInfo.fullName);
+    // Send invitation email only in EMAIL mode
+    if (invitationConfig.isEmailMode()) {
+      await emailService.sendInvitationEmail(value.credentials.email, value.credentials.invitationToken, value.personalInfo.fullName);
+    }
     
     // Return success with potential duplicate warnings
-    const response = { _id: result.insertedId, ...value };
+    const response = { 
+      _id: result.insertedId, 
+      ...value,
+      // Include invitation mode and default password info for frontend
+      invitationInfo: {
+        mode: value.credentials.invitationMode,
+        requiresPasswordChange: value.credentials.requiresPasswordChange || false,
+        defaultPassword: invitationConfig.isDefaultPasswordMode() ? invitationConfig.getDefaultPassword() : null
+      }
+    };
     
     if (duplicateResult.hasDuplicates && !DuplicateDetectionService.shouldBlockCreation(duplicateResult)) {
       response.warnings = {

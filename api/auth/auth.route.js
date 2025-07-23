@@ -16,6 +16,8 @@ const loginLimiter = rateLimit({
 // Public routes
 router.post('/init-admin', authController.initAdmin);
 router.post('/migrate-users', authController.migrateExistingUsers); // Migration endpoint
+router.post('/migrate-invitations', authController.migratePendingInvitations); // Invitation migration
+router.get('/invitation-stats', authController.getInvitationModeStats); // Invitation mode stats
 router.get('/check-teacher/:email', authController.checkTeacherByEmail); // Check teacher by email
 router.delete('/remove-teacher/:email', authController.removeTeacherByEmail); // Remove teacher by email
 router.post('/login', loginLimiter, authController.login)
@@ -28,5 +30,6 @@ router.post('/accept-invitation', authController.acceptInvitation)
 router.get('/validate', authenticateToken, authController.validateToken)
 router.post('/logout', authenticateToken, authController.logout)
 router.post('/change-password', authenticateToken, authController.changePassword)
+router.post('/force-password-change', authenticateToken, authController.forcePasswordChange)
 
 export default router
