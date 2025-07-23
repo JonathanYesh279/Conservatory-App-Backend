@@ -274,25 +274,77 @@ describe('Student Validation', () => {
       expect(error.message).toContain('Current stage must be a number between 1 and 8')
     })
 
-    it('should require class in academicInfo', () => {
+    it('should require class in academicInfo for regular users', () => {
       // Setup
       const invalidStudent = {
         personalInfo: {
           fullName: 'Test Student'
         },
         academicInfo: {
-          instrument: 'חצוצרה',
-          currentStage: 1
+          instrumentProgress: [
+            {
+              instrumentName: 'חצוצרה',
+              currentStage: 1
+            }
+          ]
           // Missing class
         }
       }
 
       // Execute
-      const { error } = validateStudent(invalidStudent)
+      const { error } = validateStudent(invalidStudent, false, false)
 
       // Assert
       expect(error).toBeDefined()
       expect(error.message).toContain('"academicInfo.class" is required')
+    })
+
+    it('should NOT require class in academicInfo for admin users', () => {
+      // Setup
+      const studentWithoutClass = {
+        personalInfo: {
+          fullName: 'Test Student'
+        },
+        academicInfo: {
+          instrumentProgress: [
+            {
+              instrumentName: 'חצוצרה',
+              currentStage: 1
+            }
+          ]
+          // Missing class - should be OK for admin
+        }
+      }
+
+      // Execute
+      const { error } = validateStudent(studentWithoutClass, false, true)
+
+      // Assert
+      expect(error).toBeUndefined()
+    })
+
+    it('should NOT require class in academicInfo for update operations', () => {
+      // Setup
+      const studentWithoutClass = {
+        personalInfo: {
+          fullName: 'Test Student Updated'
+        },
+        academicInfo: {
+          instrumentProgress: [
+            {
+              instrumentName: 'קלרינט',
+              currentStage: 2
+            }
+          ]
+          // Missing class - should be OK for updates
+        }
+      }
+
+      // Execute
+      const { error } = validateStudent(studentWithoutClass, true, false)
+
+      // Assert
+      expect(error).toBeUndefined()
     })
 
     it('should validate class is in allowed list', () => {

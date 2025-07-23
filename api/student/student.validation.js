@@ -237,8 +237,14 @@ export const studentUpdateSchema = Joi.object({
   updatedAt: Joi.date().default(new Date()),
 });
 
-export function validateStudent(student, isUpdate = false) {
-  const schema = isUpdate ? studentUpdateSchema : studentSchema;
+export function validateStudent(student, isUpdate = false, isAdmin = false) {
+  let schema = isUpdate ? studentUpdateSchema : studentSchema;
+  
+  // If it's an admin or update operation, make the class field optional
+  if (isAdmin || isUpdate) {
+    schema = schema.fork(['academicInfo.class'], (classSchema) => classSchema.optional());
+  }
+  
   return schema.validate(student, { abortEarly: false });
 }
 
