@@ -39,7 +39,16 @@ const MONGO_URI = process.env.MONGO_URI;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 const corsOptions = {
-  origin: NODE_ENV === 'production' ? [FRONTEND_URL] : ['http://localhost:5173'],
+  origin: NODE_ENV === 'production' 
+    ? [FRONTEND_URL] 
+    : [
+        'http://localhost:5173',
+        'http://172.29.139.184:5173',
+        'http://10.0.2.2:5173', // Android emulator
+        /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}:5173$/, // Local network IPs
+        /^http:\/\/10\.\d{1,3}\.\d{1,3}\.\d{1,3}:5173$/, // Private network IPs
+        /^http:\/\/172\.\d{1,3}\.\d{1,3}\.\d{1,3}:5173$/ // Private network IPs
+      ],
   credentials: true,
   optionsSuccessStatus: 200,
 };
@@ -199,12 +208,15 @@ app.use((req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
+const HOST = process.env.HOST || '0.0.0.0';
 
 // Improved server startup with error handling
 const startServer = () => {
   // Create the server instance separately from starting it
-  const server = app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  const server = app.listen(PORT, HOST, () => {
+    console.log(`🚀 Server is running on http://${HOST}:${PORT}`);
+    console.log(`📱 External devices can access via: http://172.29.139.184:${PORT}`);
+    console.log(`💻 Local access still works via: http://localhost:${PORT}`);
   });
 
   // Handle port in use errors
