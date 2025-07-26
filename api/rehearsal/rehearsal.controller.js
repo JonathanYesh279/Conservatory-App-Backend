@@ -8,6 +8,8 @@ export const rehearsalController = {
   updateRehearsal,
   removeRehearsal,
   bulkCreateRehearsals,
+  bulkDeleteRehearsalsByOrchestra,
+  bulkUpdateRehearsalsByOrchestra,
   updateAttendance,
 }
 
@@ -215,5 +217,157 @@ async function updateAttendance(req, res, next) {
     }
 
     next(err)
+  }
+}
+
+async function bulkDeleteRehearsalsByOrchestra(req, res, next) {
+  try {
+    const { orchestraId } = req.params
+    const userId = req.teacher._id
+    const isAdmin = req.teacher.roles.includes('מנהל')
+
+    // Input validation
+    if (!orchestraId) {
+      return res.status(400).json({
+        error: "Invalid orchestra ID",
+        message: "Orchestra ID is required and must be a valid ObjectId"
+      })
+    }
+
+    // Authorization check
+    if (!isAdmin && !req.teacher.roles.includes('מנצח')) {
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "Insufficient permissions to delete rehearsals"
+      })
+    }
+
+    const result = await rehearsalService.bulkDeleteRehearsalsByOrchestra(
+      orchestraId,
+      userId,
+      isAdmin
+    )
+
+    res.status(200).json({
+      deletedCount: result.deletedCount,
+      message: `Successfully deleted ${result.deletedCount} rehearsals for orchestra`
+    })
+  } catch (err) {
+    if (err.message.includes('Orchestra not found')) {
+      return res.status(404).json({
+        error: "Orchestra not found",
+        message: "No orchestra found with the specified ID"
+      })
+    }
+
+    if (err.message.includes('Not authorized')) {
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "Insufficient permissions to delete rehearsals"
+      })
+    }
+
+    if (err.message.includes('Invalid orchestra ID')) {
+      return res.status(400).json({
+        error: "Invalid orchestra ID",
+        message: "Orchestra ID is required and must be a valid ObjectId"
+      })
+    }
+
+    console.error('Error deleting rehearsals by orchestra:', err)
+    res.status(500).json({
+      error: "Internal server error",
+      message: "Failed to delete rehearsals"
+    })
+  }
+}
+
+async function bulkUpdateRehearsalsByOrchestra(req, res, next) {
+  try {
+    const { orchestraId } = req.params
+    const updateData = req.body
+    const userId = req.teacher._id
+    const isAdmin = req.teacher.roles.includes('מנהל')
+
+    // Input validation
+    if (!orchestraId) {
+      return res.status(400).json({
+        error: "Invalid orchestra ID",
+        message: "Orchestra ID is required and must be a valid ObjectId"
+      })
+    }
+
+    // Authorization check
+    if (!isAdmin && !req.teacher.roles.includes('מנצח')) {
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "Insufficient permissions to update rehearsals"
+      })
+    }
+
+    // Validate update fields
+    const forbiddenFields = ['_id', 'createdAt', 'updatedAt', 'groupId', 'date', 'schoolYearId'];
+    const updateKeys = Object.keys(updateData);
+    const hasForbiddenField = updateKeys.some(key => forbiddenFields.includes(key));
+
+    if (hasForbiddenField) {
+      return res.status(400).json({
+        error: "Invalid update data",
+        message: `Cannot update these fields: ${forbiddenFields.join(', ')}`
+      })
+    }
+
+    const result = await rehearsalService.bulkUpdateRehearsalsByOrchestra(
+      orchestraId,
+      updateData,
+      userId,
+      isAdmin
+    )
+
+    res.status(200).json({
+      updatedCount: result.updatedCount,
+      message: `Successfully updated ${result.updatedCount} rehearsals for orchestra`
+    })
+  } catch (err) {
+    if (err.message.includes('Orchestra not found')) {
+      return res.status(404).json({
+        error: "Orchestra not found",
+        message: "No orchestra found with the specified ID"
+      })
+    }
+
+    if (err.message.includes('Not authorized')) {
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "You can only update rehearsals for orchestras you conduct"
+      })
+    }
+
+    if (err.message.includes('Invalid orchestra ID')) {
+      return res.status(400).json({
+        error: "Invalid orchestra ID",
+        message: "Orchestra ID is required and must be a valid ObjectId"
+      })
+    }
+
+    if (err.message.includes('Cannot update these fields')) {
+      return res.status(400).json({
+        error: "Invalid update data",
+        message: err.message
+      })
+    }
+
+    if (err.message.includes('time format')) {
+      return res.status(400).json({
+        error: "Invalid time format",
+        message: err.message
+      })
+    }
+
+    console.error('Error updating rehearsals by orchestra:', err)
+    res.status(500).json({
+      error: "Internal server error",
+      message: "Failed to update rehearsals"
+    })
   }
 }

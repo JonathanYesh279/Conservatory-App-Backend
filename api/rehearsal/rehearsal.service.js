@@ -15,6 +15,8 @@ export const rehearsalService = {
   updateRehearsal,
   removeRehearsal,
   bulkCreateRehearsals,
+  bulkDeleteRehearsalsByOrchestra,
+  bulkUpdateRehearsalsByOrchestra,
   updateAttendance,
 };
 
@@ -449,6 +451,243 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
   } catch (err) {
     console.error(`Failed to bulk create rehearsals: ${err}`);
     throw new Error(`Failed to bulk create rehearsals: ${err}`);
+  }
+}
+
+async function bulkDeleteRehearsalsByOrchestra(orchestraId, userId, isAdmin = false) {
+  try {
+    // Input validation
+    if (!orchestraId || !ObjectId.isValid(orchestraId)) {
+      throw new Error('Invalid orchestra ID');
+    }
+
+    // Get collections
+    const orchestraCollection = await getCollection('orchestra');
+    const rehearsalCollection = await getCollection('rehearsal');
+    const activityCollection = await getCollection('activity_attendance');
+
+    if (!orchestraCollection || !rehearsalCollection) {
+      throw new Error('Database error: Failed to access required collections');
+    }
+
+    // Verify orchestra exists
+    const orchestra = await orchestraCollection.findOne({
+      _id: ObjectId.createFromHexString(orchestraId)
+    });
+
+    if (!orchestra) {
+      throw new Error('Orchestra not found');
+    }
+
+    // Authorization check - only admin or conductor of this orchestra can delete
+    if (!isAdmin) {
+      if (orchestra.conductorId !== userId.toString()) {
+        throw new Error('Not authorized to delete rehearsals for this orchestra');
+      }
+    }
+
+    // Get all rehearsals for this orchestra to collect IDs for cleanup
+    const rehearsals = await rehearsalCollection.find({ 
+      groupId: orchestraId 
+    }).toArray();
+
+    const rehearsalIds = rehearsals.map(r => r._id.toString());
+
+    let deletedCount = 0;
+
+    // Use transaction for data consistency
+    const client = rehearsalCollection.client || rehearsalCollection.s?.client;
+    if (client) {
+      const session = client.startSession();
+      
+      try {
+        await session.withTransaction(async () => {
+          // Delete all rehearsals for this orchestra
+          const deleteResult = await rehearsalCollection.deleteMany(
+            { groupId: orchestraId },
+            { session }
+          );
+          
+          deletedCount = deleteResult.deletedCount;
+
+          // Clean up attendance records if collection exists
+          if (activityCollection && rehearsalIds.length > 0) {
+            await activityCollection.deleteMany(
+              { 
+                sessionId: { $in: rehearsalIds },
+                activityType: 'תזמורת'
+              },
+              { session }
+            );
+          }
+
+          // Update orchestra to remove rehearsal IDs
+          await orchestraCollection.updateOne(
+            { _id: ObjectId.createFromHexString(orchestraId) },
+            { $set: { rehearsalIds: [] } },
+            { session }
+          );
+        });
+      } finally {
+        await session.endSession();
+      }
+    } else {
+      // Fallback without transaction if session not available
+      const deleteResult = await rehearsalCollection.deleteMany({
+        groupId: orchestraId
+      });
+      
+      deletedCount = deleteResult.deletedCount;
+
+      // Clean up attendance records
+      if (activityCollection && rehearsalIds.length > 0) {
+        try {
+          await activityCollection.deleteMany({
+            sessionId: { $in: rehearsalIds },
+            activityType: 'תזמורת'
+          });
+        } catch (attendanceErr) {
+          console.warn(`Failed to delete attendance records: ${attendanceErr.message}`);
+        }
+      }
+
+      // Update orchestra
+      try {
+        await orchestraCollection.updateOne(
+          { _id: ObjectId.createFromHexString(orchestraId) },
+          { $set: { rehearsalIds: [] } }
+        );
+      } catch (orchestraErr) {
+        console.warn(`Failed to update orchestra: ${orchestraErr.message}`);
+      }
+    }
+
+    // Logging
+    console.log(`User ${userId} deleted ${deletedCount} rehearsals for orchestra ${orchestraId}`);
+
+    return {
+      deletedCount,
+      message: `Successfully deleted ${deletedCount} rehearsals for orchestra`
+    };
+  } catch (err) {
+    console.error(`Failed to bulk delete rehearsals by orchestra: ${err}`);
+    throw new Error(`Failed to bulk delete rehearsals by orchestra: ${err.message}`);
+  }
+}
+
+async function bulkUpdateRehearsalsByOrchestra(orchestraId, updateData, userId, isAdmin = false) {
+  try {
+    // Input validation
+    if (!orchestraId || !ObjectId.isValid(orchestraId)) {
+      throw new Error('Invalid orchestra ID');
+    }
+
+    // Validate update data - check for forbidden fields
+    const forbiddenFields = ['_id', 'createdAt', 'updatedAt', 'groupId', 'date', 'schoolYearId'];
+    const updateKeys = Object.keys(updateData);
+    const hasForbiddenField = updateKeys.some(key => forbiddenFields.includes(key));
+
+    if (hasForbiddenField) {
+      throw new Error(`Cannot update these fields in bulk operations: ${forbiddenFields.join(', ')}`);
+    }
+
+    // Validate time format if provided
+    if (updateData.startTime && !/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(updateData.startTime)) {
+      throw new Error('Start time must be in HH:MM format');
+    }
+
+    if (updateData.endTime && !/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(updateData.endTime)) {
+      throw new Error('End time must be in HH:MM format');
+    }
+
+    // Get collections
+    const orchestraCollection = await getCollection('orchestra');
+    const rehearsalCollection = await getCollection('rehearsal');
+
+    if (!orchestraCollection || !rehearsalCollection) {
+      throw new Error('Database error: Failed to access required collections');
+    }
+
+    // Verify orchestra exists
+    const orchestra = await orchestraCollection.findOne({
+      _id: ObjectId.createFromHexString(orchestraId)
+    });
+
+    if (!orchestra) {
+      throw new Error('Orchestra not found');
+    }
+
+    // Authorization check - only admin or conductor of this orchestra can update
+    if (!isAdmin) {
+      if (orchestra.conductorId !== userId.toString()) {
+        throw new Error('Not authorized to update rehearsals for this orchestra');
+      }
+    }
+
+    // Prepare update object with metadata
+    const updateObject = {
+      ...updateData,
+      updatedAt: new Date()
+    };
+
+    let updatedCount = 0;
+
+    // Use transaction for data consistency
+    const client = rehearsalCollection.client || rehearsalCollection.s?.client;
+    if (client) {
+      const session = client.startSession();
+      
+      try {
+        await session.withTransaction(async () => {
+          // Update all rehearsals for this orchestra
+          const updateResult = await rehearsalCollection.updateMany(
+            { groupId: orchestraId },
+            { $set: updateObject },
+            { session }
+          );
+          
+          updatedCount = updateResult.modifiedCount;
+
+          // Update orchestra's last modified timestamp
+          await orchestraCollection.updateOne(
+            { _id: ObjectId.createFromHexString(orchestraId) },
+            { $set: { lastModified: new Date() } },
+            { session }
+          );
+        });
+      } finally {
+        await session.endSession();
+      }
+    } else {
+      // Fallback without transaction if session not available
+      const updateResult = await rehearsalCollection.updateMany(
+        { groupId: orchestraId },
+        { $set: updateObject }
+      );
+      
+      updatedCount = updateResult.modifiedCount;
+
+      // Update orchestra
+      try {
+        await orchestraCollection.updateOne(
+          { _id: ObjectId.createFromHexString(orchestraId) },
+          { $set: { lastModified: new Date() } }
+        );
+      } catch (orchestraErr) {
+        console.warn(`Failed to update orchestra: ${orchestraErr.message}`);
+      }
+    }
+
+    // Logging
+    console.log(`User ${userId} updated ${updatedCount} rehearsals for orchestra ${orchestraId}`);
+
+    return {
+      updatedCount,
+      message: `Successfully updated ${updatedCount} rehearsals for orchestra`
+    };
+  } catch (err) {
+    console.error(`Failed to bulk update rehearsals by orchestra: ${err}`);
+    throw new Error(`Failed to bulk update rehearsals by orchestra: ${err.message}`);
   }
 }
 
