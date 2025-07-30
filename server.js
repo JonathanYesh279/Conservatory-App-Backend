@@ -22,6 +22,9 @@ import orchestraRoutes from './api/orchestra/orchestra.route.js';
 import rehearsalRoutes from './api/rehearsal/rehearsal.route.js';
 import bagrutRoutes from './api/bagrut/bagrut.route.js';
 import scheduleRoutes from './api/schedule/schedule.route.js';
+import attendanceRoutes from './api/schedule/attendance.routes.js';
+import analyticsRoutes from './api/analytics/attendance.routes.js';
+import adminValidationRoutes from './api/admin/consistency-validation.route.js';
 import { invitationController } from './api/teacher/invitation.controller.js';
 
 const _filename = fileURLToPath(import.meta.url);
@@ -126,6 +129,23 @@ app.use(
   authenticateToken,
   addSchoolYearToRequest,
   scheduleRoutes
+);
+app.use(
+  '/api/attendance',
+  authenticateToken,
+  addSchoolYearToRequest,
+  attendanceRoutes
+);
+app.use(
+  '/api/analytics',
+  authenticateToken,
+  addSchoolYearToRequest,
+  analyticsRoutes
+);
+app.use(
+  '/api/admin',
+  authenticateToken,
+  adminValidationRoutes
 );
 app.use('/api/files', authenticateToken, fileRoutes);
 

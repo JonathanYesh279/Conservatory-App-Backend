@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { ObjectId } from 'mongodb';
 
-const VALID_RULES = ['מורה', 'מנצח', 'מדריך הרכב', 'מנהל', 'מורה תאוריה'];
+const VALID_RULES = ['מורה', 'מנצח', 'מדריך הרכב', 'מנהל', 'מורה תאוריה', 'מגמה'];
 const VALID_DURATION = [30, 45, 60];
 const VALID_DAYS = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי'];
 

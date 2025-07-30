@@ -16,6 +16,10 @@ export const scheduleService = {
   updateScheduleSlot,
   getStudentSchedule,
   getScheduleSlotById,
+  // New attendance-aware functions
+  getTeacherWeeklyScheduleWithAttendance,
+  getStudentScheduleWithAttendance,
+  getScheduleSlotWithAttendance,
 };
 
 /**
@@ -817,4 +821,156 @@ function calculateEndTime(startTime, durationMinutes) {
   const endMinutes = totalMinutes % 60;
   
   return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+}
+
+/**
+ * Get teacher's weekly schedule with attendance data included
+ * @param {string} teacherId - Teacher's ID
+ * @param {object} options - Filter options
+ * @returns {Promise<object>} - Schedule data with attendance information
+ */
+async function getTeacherWeeklyScheduleWithAttendance(teacherId, options = {}) {
+  try {
+    // Get the base schedule (non-breaking - uses existing function)
+    const baseSchedule = await getTeacherWeeklySchedule(teacherId, options);
+    
+    // For each slot with a student, include attendance summary if available
+    Object.keys(baseSchedule).forEach(day => {
+      baseSchedule[day] = baseSchedule[day].map(slot => {
+        const enrichedSlot = { ...slot };
+        
+        // Add attendance summary if attendance data exists
+        if (slot.attendance) {
+          enrichedSlot.attendanceSummary = {
+            hasAttendanceData: true,
+            status: slot.attendance.status,
+            markedAt: slot.attendance.markedAt,
+            markedBy: slot.attendance.markedBy,
+            notes: slot.attendance.notes
+          };
+        } else {
+          enrichedSlot.attendanceSummary = {
+            hasAttendanceData: false,
+            status: 'pending'
+          };
+        }
+        
+        return enrichedSlot;
+      });
+    });
+    
+    return baseSchedule;
+  } catch (err) {
+    console.error(`Error getting teacher weekly schedule with attendance: ${err.message}`);
+    throw err;
+  }
+}
+
+/**
+ * Get student's schedule with attendance data included
+ * @param {string} studentId - Student's ID
+ * @param {object} options - Options including attendance details
+ * @returns {Promise<object>} - Student schedule with attendance information
+ */
+async function getStudentScheduleWithAttendance(studentId, options = {}) {
+  try {
+    // Get the base schedule (non-breaking - uses existing function)
+    const baseSchedule = await getStudentSchedule(studentId);
+    
+    // Add attendance information to each slot
+    Object.keys(baseSchedule.schedule).forEach(day => {
+      baseSchedule.schedule[day] = baseSchedule.schedule[day].map(slot => {
+        const enrichedSlot = { ...slot };
+        
+        // Add attendance summary if available
+        if (slot.attendance) {
+          enrichedSlot.attendanceSummary = {
+            hasAttendanceData: true,
+            status: slot.attendance.status,
+            markedAt: slot.attendance.markedAt,
+            lessonCompleted: slot.attendance.lessonCompleted,
+            notes: slot.attendance.notes
+          };
+        } else {
+          enrichedSlot.attendanceSummary = {
+            hasAttendanceData: false,
+            status: 'pending',
+            lessonCompleted: null
+          };
+        }
+        
+        return enrichedSlot;
+      });
+    });
+    
+    // Optionally add attendance statistics
+    if (options.includeStats) {
+      try {
+        const { attendanceService } = await import('./attendance.service.js');
+        baseSchedule.attendanceStats = await attendanceService.getStudentPrivateLessonStats(studentId);
+      } catch (importErr) {
+        // Gracefully handle if attendance service is not available
+        console.warn('Attendance service not available for stats:', importErr.message);
+        baseSchedule.attendanceStats = null;
+      }
+    }
+    
+    return baseSchedule;
+  } catch (err) {
+    console.error(`Error getting student schedule with attendance: ${err.message}`);
+    throw err;
+  }
+}
+
+/**
+ * Get a specific schedule slot with attendance data
+ * @param {string} scheduleSlotId - Schedule slot ID
+ * @param {object} options - Options for attendance details
+ * @returns {Promise<object>} - Schedule slot with attendance information
+ */
+async function getScheduleSlotWithAttendance(scheduleSlotId, options = {}) {
+  try {
+    // Get the base slot (non-breaking - uses existing function)
+    const baseSlot = await getScheduleSlotById(scheduleSlotId);
+    
+    // Enrich with attendance data
+    const enrichedSlot = { ...baseSlot };
+    
+    if (baseSlot.attendance) {
+      enrichedSlot.attendanceData = {
+        hasAttendanceData: true,
+        status: baseSlot.attendance.status,
+        markedAt: baseSlot.attendance.markedAt,
+        markedBy: baseSlot.attendance.markedBy,
+        lessonCompleted: baseSlot.attendance.lessonCompleted,
+        notes: baseSlot.attendance.notes,
+        lessonDate: baseSlot.attendance.lessonDate
+      };
+    } else {
+      enrichedSlot.attendanceData = {
+        hasAttendanceData: false,
+        status: 'pending',
+        lessonCompleted: null
+      };
+    }
+    
+    // Optionally include attendance history
+    if (options.includeHistory && baseSlot.studentId) {
+      try {
+        const { attendanceService } = await import('./attendance.service.js');
+        enrichedSlot.attendanceHistory = await attendanceService.getStudentAttendanceHistory(
+          baseSlot.studentId,
+          { teacherId: baseSlot.teacherId, limit: 10 }
+        );
+      } catch (importErr) {
+        console.warn('Attendance service not available for history:', importErr.message);
+        enrichedSlot.attendanceHistory = [];
+      }
+    }
+    
+    return enrichedSlot;
+  } catch (err) {
+    console.error(`Error getting schedule slot with attendance: ${err.message}`);
+    throw err;
+  }
 }

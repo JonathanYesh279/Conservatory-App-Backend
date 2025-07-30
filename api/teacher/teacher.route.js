@@ -9,6 +9,15 @@ router.get('/', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מ�
 router.get('/profile/me', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getMyProfile)
 router.put('/profile/me', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.updateMyProfile)
 router.get('/debug/ids', requireAuth(['מנהל']), teacherController.getTeacherIds)
+
+// New lesson endpoints (single source of truth approach)
+router.get('/:teacherId/lessons', requireAuth(['מורה', 'מנהל']), teacherController.getTeacherLessons)
+router.get('/:teacherId/weekly-schedule', requireAuth(['מורה', 'מנהל']), teacherController.getTeacherWeeklySchedule)
+router.get('/:teacherId/day-schedule/:day', requireAuth(['מורה', 'מנהל']), teacherController.getTeacherDaySchedule)
+router.get('/:teacherId/lesson-stats', requireAuth(['מורה', 'מנהל']), teacherController.getTeacherLessonStats)
+router.get('/:teacherId/students-with-lessons', requireAuth(['מורה', 'מנהל']), teacherController.getTeacherStudentsWithLessons)
+router.get('/:teacherId/validate-lessons', requireAuth(['מורה', 'מנהל']), teacherController.validateTeacherLessonData)
+
 router.get('/:id', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getTeacherById)
 router.get('/role/:role', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getTeacherByRole)
 

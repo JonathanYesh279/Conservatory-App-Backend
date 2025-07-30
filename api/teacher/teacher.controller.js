@@ -1,4 +1,5 @@
-import { teacherService } from './teacher.service.js'
+import { teacherService } from './teacher.service.js';
+import { teacherLessonsService } from './teacher-lessons.service.js';
 
 export const teacherController = {
   getTeachers,
@@ -11,6 +12,13 @@ export const teacherController = {
   removeTeacher,
   getTeacherByRole,
   updateTeacherSchedule,
+  // New lesson-focused endpoints
+  getTeacherLessons,
+  getTeacherWeeklySchedule,
+  getTeacherDaySchedule,
+  getTeacherLessonStats,
+  getTeacherStudentsWithLessons,
+  validateTeacherLessonData,
 }
 
 async function getTeachers(req, res, next) {
@@ -264,5 +272,296 @@ async function updateTeacherSchedule(req, res, next) {
     res.json(result)
   } catch (err) {
     next(err)
+  }
+}
+
+// ===== NEW LESSON-FOCUSED ENDPOINTS =====
+// These implement the single source of truth approach using student teacherAssignments
+
+/**
+ * Get all lessons for a teacher (from student records)
+ * @route GET /api/teachers/:teacherId/lessons
+ */
+async function getTeacherLessons(req, res, next) {
+  try {
+    const { teacherId } = req.params;
+    const options = {
+      day: req.query.day,
+      studentId: req.query.studentId,
+      includeInactive: req.query.includeInactive === 'true'
+    };
+
+    // Verify permission (teachers can only view their own lessons unless admin)
+    if (!req.isAdmin && req.teacher._id.toString() !== teacherId) {
+      return res.status(403).json({
+        success: false,
+        error: 'You are not authorized to view lessons for this teacher',
+        code: 'UNAUTHORIZED_ACCESS'
+      });
+    }
+
+    console.log(`🔍 Getting lessons for teacher ${teacherId} using new single source approach`);
+    
+    const lessons = await teacherLessonsService.getTeacherLessons(teacherId, options);
+
+    res.json({
+      success: true,
+      data: {
+        teacherId,
+        lessons,
+        count: lessons.length,
+        source: 'student_teacherAssignments' // Indicate data source
+      }
+    });
+
+  } catch (err) {
+    console.error(`❌ Error getting teacher lessons: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher not found',
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+    
+    if (err.message.includes('Invalid teacher ID')) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid teacher ID format',
+        code: 'INVALID_TEACHER_ID'
+      });
+    }
+
+    next(err);
+  }
+}
+
+/**
+ * Get teacher's weekly schedule organized by days
+ * @route GET /api/teachers/:teacherId/weekly-schedule
+ */
+async function getTeacherWeeklySchedule(req, res, next) {
+  try {
+    const { teacherId } = req.params;
+    const options = {
+      includeStudentInfo: req.query.includeStudentInfo !== 'false',
+      includeInactive: req.query.includeInactive === 'true'
+    };
+
+    // Verify permission
+    if (!req.isAdmin && req.teacher._id.toString() !== teacherId) {
+      return res.status(403).json({
+        success: false,
+        error: 'You are not authorized to view this teacher\'s schedule',
+        code: 'UNAUTHORIZED_ACCESS'
+      });
+    }
+
+    console.log(`📅 Getting weekly schedule for teacher ${teacherId}`);
+    
+    const weeklySchedule = await teacherLessonsService.getTeacherWeeklySchedule(teacherId, options);
+
+    res.json({
+      success: true,
+      data: weeklySchedule,
+      message: 'Schedule retrieved from student assignments (single source of truth)'
+    });
+
+  } catch (err) {
+    console.error(`❌ Error getting weekly schedule: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher not found',
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+
+    next(err);
+  }
+}
+
+/**
+ * Get teacher's schedule for a specific day
+ * @route GET /api/teachers/:teacherId/day-schedule/:day
+ */
+async function getTeacherDaySchedule(req, res, next) {
+  try {
+    const { teacherId, day } = req.params;
+
+    // Verify permission
+    if (!req.isAdmin && req.teacher._id.toString() !== teacherId) {
+      return res.status(403).json({
+        success: false,
+        error: 'You are not authorized to view this teacher\'s schedule',
+        code: 'UNAUTHORIZED_ACCESS'
+      });
+    }
+
+    console.log(`📅 Getting ${day} schedule for teacher ${teacherId}`);
+    
+    const daySchedule = await teacherLessonsService.getTeacherDaySchedule(teacherId, day);
+
+    res.json({
+      success: true,
+      data: {
+        teacherId,
+        day,
+        lessons: daySchedule,
+        count: daySchedule.length
+      }
+    });
+
+  } catch (err) {
+    console.error(`❌ Error getting day schedule: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher not found',
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+
+    next(err);
+  }
+}
+
+/**
+ * Get lesson statistics for a teacher
+ * @route GET /api/teachers/:teacherId/lesson-stats
+ */
+async function getTeacherLessonStats(req, res, next) {
+  try {
+    const { teacherId } = req.params;
+
+    // Verify permission
+    if (!req.isAdmin && req.teacher._id.toString() !== teacherId) {
+      return res.status(403).json({
+        success: false,
+        error: 'You are not authorized to view this teacher\'s statistics',
+        code: 'UNAUTHORIZED_ACCESS'
+      });
+    }
+
+    console.log(`📊 Getting lesson statistics for teacher ${teacherId}`);
+    
+    const stats = await teacherLessonsService.getTeacherLessonStats(teacherId);
+
+    res.json({
+      success: true,
+      data: {
+        teacherId,
+        statistics: stats,
+        generatedAt: new Date()
+      }
+    });
+
+  } catch (err) {
+    console.error(`❌ Error getting lesson stats: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher not found',
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+
+    next(err);
+  }
+}
+
+/**
+ * Get all students with their lesson details for a teacher
+ * @route GET /api/teachers/:teacherId/students-with-lessons
+ */
+async function getTeacherStudentsWithLessons(req, res, next) {
+  try {
+    const { teacherId } = req.params;
+
+    // Verify permission
+    if (!req.isAdmin && req.teacher._id.toString() !== teacherId) {
+      return res.status(403).json({
+        success: false,
+        error: 'You are not authorized to view this teacher\'s students',
+        code: 'UNAUTHORIZED_ACCESS'
+      });
+    }
+
+    console.log(`👥 Getting students with lessons for teacher ${teacherId}`);
+    
+    const students = await teacherLessonsService.getTeacherStudentsWithLessons(teacherId);
+
+    res.json({
+      success: true,
+      data: {
+        teacherId,
+        students,
+        totalStudents: students.length,
+        totalLessons: students.reduce((sum, student) => sum + student.lessons.length, 0)
+      }
+    });
+
+  } catch (err) {
+    console.error(`❌ Error getting students with lessons: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher not found',
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+
+    next(err);
+  }
+}
+
+/**
+ * Validate teacher lesson data consistency
+ * @route GET /api/teachers/:teacherId/validate-lessons
+ */
+async function validateTeacherLessonData(req, res, next) {
+  try {
+    const { teacherId } = req.params;
+
+    // Only allow admin or the teacher themselves to validate
+    if (!req.isAdmin && req.teacher._id.toString() !== teacherId) {
+      return res.status(403).json({
+        success: false,
+        error: 'You are not authorized to validate this teacher\'s lesson data',
+        code: 'UNAUTHORIZED_ACCESS'
+      });
+    }
+
+    console.log(`🔍 Validating lesson data for teacher ${teacherId}`);
+    
+    const validation = await teacherLessonsService.validateTeacherLessonData(teacherId);
+
+    const statusCode = validation.isValid ? 200 : 400;
+    
+    res.status(statusCode).json({
+      success: validation.isValid,
+      data: validation,
+      message: validation.isValid ? 
+        'All lesson data is consistent' : 
+        `Found ${validation.issues.length} consistency issues`
+    });
+
+  } catch (err) {
+    console.error(`❌ Error validating lesson data: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Teacher not found',
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+
+    next(err);
   }
 }
