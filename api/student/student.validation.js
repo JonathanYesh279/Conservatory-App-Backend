@@ -115,6 +115,8 @@ const teacherAssignmentSchema = Joi.object({
   endDate: Joi.date().allow(null).default(null),
   isActive: Joi.boolean().default(true),
   notes: Joi.string().allow('', null).default(null),
+  isRecurring: Joi.boolean().default(false),
+  scheduleInfo: Joi.object().unknown(true).allow(null).default(null),
   createdAt: Joi.date().default(() => new Date()),
   updatedAt: Joi.date().default(() => new Date()),
 });
@@ -199,6 +201,9 @@ const teacherAssignmentUpdateSchema = Joi.object({
   endDate: Joi.date().allow(null).optional(),
   isActive: Joi.boolean().optional(),
   notes: Joi.string().allow('', null).optional(),
+  isRecurring: Joi.boolean().optional(),
+  scheduleInfo: Joi.object().unknown(true).allow(null).optional(),
+  createdAt: Joi.date().optional(),
   updatedAt: Joi.date().default(() => new Date()),
 });
 

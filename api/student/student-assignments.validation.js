@@ -476,13 +476,13 @@ export async function validateTeacherAssignmentsMiddleware(req, res, next) {
 
     if (validation.warnings.length > 0) {
       console.warn(`⚠️  TeacherAssignments validation warnings:`, validation.warnings);
-      // Add warnings to response headers for frontend to handle
-      res.set('X-Validation-Warnings', JSON.stringify(validation.warnings));
+      // Add warnings to response headers for frontend to handle (Base64 encoded)
+      res.set('X-Validation-Warnings', Buffer.from(JSON.stringify(validation.warnings)).toString('base64'));
     }
 
     if (validation.fixes.length > 0) {
       console.log(`🔧 Applied ${validation.fixes.length} automatic fixes to teacherAssignments`);
-      res.set('X-Validation-Fixes', JSON.stringify(validation.fixes));
+      res.set('X-Validation-Fixes', Buffer.from(JSON.stringify(validation.fixes)).toString('base64'));
     }
 
     next();

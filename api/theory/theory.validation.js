@@ -12,15 +12,19 @@ export const VALID_DAYS_OF_WEEK = {
 
 // Theory lesson categories based on the schedule image
 export const VALID_THEORY_CATEGORIES = [
-  'מתקדמים', // Advanced
-  'אמצעיים', // Intermediate
-  'מתחילים', // Beginners
-  'תלמידים חדשים בגדול', // New students (older)
-  'תלמידים חדשים (צ-ח)', // New students (grades 6-8)
-  'תלמידים חדשים נוגאממרים', // New students (specific group)
-  'שעת שאלות', // Question hour
-  'שרות', // Service
-  "בג'ע-ק בע", // Specific group codes
+  'תלמידים חדשים ב-ד',
+  'מתחילים',
+  'מתחילים ב',
+  'מתחילים ד',
+  'מתקדמים ב',
+  'מתקדמים א',
+  'מתקדמים ג',
+  'תלמידים חדשים בוגרים (ה - ט)',
+  'תלמידים חדשים צעירים',
+  'הכנה לרסיטל קלאסי יא',
+  "הכנה לרסיטל רוק\\פופ\\ג'אז יא",
+  "הכנה לרסיטל רוק\\פופ\\ג'אז יב",
+  'מגמה',
 ];
 
 // Valid locations for theory lessons
