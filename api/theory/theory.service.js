@@ -6,6 +6,24 @@ import {
 } from './theory.validation.js';
 import { ObjectId } from 'mongodb';
 import ConflictDetectionService from '../../services/conflictDetectionService.js';
+import { 
+  toUTC, 
+  createAppDate, 
+  getDayOfWeek,
+  generateDatesForDayOfWeek,
+  formatDate,
+  getStartOfDay,
+  getEndOfDay,
+  isValidDate,
+  now,
+  isSameDay
+} from '../../utils/dateHelpers.js';
+import { 
+  createLessonFilterQuery,
+  createPaginationQuery,
+  estimateQueryComplexity 
+} from '../../utils/queryOptimization.js';
+import queryCacheService from '../../services/queryCacheService.js';
 
 export const theoryService = {
   getTheoryLessons,
@@ -25,13 +43,27 @@ export const theoryService = {
 
 async function getTheoryLessons(filterBy = {}) {
   try {
-    const collection = await getCollection('theory_lesson');
-    const criteria = _buildCriteria(filterBy);
+    // Check cache first
+    const cacheKey = 'theory_lessons';
+    const cachedResult = queryCacheService.get(cacheKey, filterBy);
+    if (cachedResult) {
+      return cachedResult;
+    }
 
+    const collection = await getCollection('theory_lesson');
+    const criteria = createLessonFilterQuery(filterBy);
+
+    // Estimate query complexity for monitoring
+    const complexity = estimateQueryComplexity(criteria);
+    
     const theoryLessons = await collection
       .find(criteria)
       .sort({ date: 1, startTime: 1 })
       .toArray();
+
+    // Cache the result with TTL based on query type
+    const ttl = _calculateCacheTTL(filterBy, complexity);
+    queryCacheService.set(cacheKey, filterBy, theoryLessons, { ttl });
 
     return theoryLessons;
   } catch (err) {
@@ -95,15 +127,23 @@ async function addTheoryLesson(theoryLessonToAdd) {
       value.schoolYearId = currentSchoolYear._id.toString();
     }
 
-    // Calculate day of week if not provided
+    // Convert date to UTC for storage and calculate day of week
+    if (!isValidDate(value.date)) {
+      throw new Error('Invalid lesson date provided');
+    }
+    
+    const lessonDate = createAppDate(value.date);
+    value.date = toUTC(lessonDate);
+    
+    // Calculate day of week if not provided (using timezone-aware calculation)
     if (value.dayOfWeek === undefined) {
-      const lessonDate = new Date(value.date);
-      value.dayOfWeek = lessonDate.getDay();
+      value.dayOfWeek = getDayOfWeek(lessonDate);
     }
 
-    // Set timestamps
-    value.createdAt = new Date();
-    value.updatedAt = new Date();
+    // Set timestamps using timezone-aware current time
+    const currentTime = now();
+    value.createdAt = toUTC(currentTime);
+    value.updatedAt = toUTC(currentTime);
 
     // CRITICAL: Final conflict check right before insertion to prevent race conditions
     const conflictValidation = await ConflictDetectionService.validateSingleLesson(value);
@@ -134,6 +174,10 @@ async function addTheoryLesson(theoryLessonToAdd) {
         );
       }
 
+      // Invalidate relevant cache entries
+      queryCacheService.invalidateByDate(lessonDate.format('YYYY-MM-DD'));
+      queryCacheService.invalidate('theory_lessons', { teacherId: value.teacherId });
+
       return { _id: result.insertedId, ...value };
     } catch (insertError) {
       // Handle duplicate key errors (race condition caught at DB level)
@@ -155,7 +199,20 @@ async function updateTheoryLesson(theoryLessonId, theoryLessonToUpdate) {
       throw new Error(`Validation error: ${error.message}`);
     }
 
-    value.updatedAt = new Date();
+    // Handle date conversion for updates
+    if (value.date && !isValidDate(value.date)) {
+      throw new Error('Invalid lesson date provided for update');
+    }
+    
+    if (value.date) {
+      const lessonDate = createAppDate(value.date);
+      value.date = toUTC(lessonDate);
+      
+      // Recalculate day of week if date changed
+      value.dayOfWeek = getDayOfWeek(lessonDate);
+    }
+    
+    value.updatedAt = toUTC(now());
 
     // Get existing lesson to check for teacher changes
     const existingLesson = await getTheoryLessonById(theoryLessonId);
@@ -224,7 +281,7 @@ async function removeTheoryLesson(theoryLessonId) {
         { 'enrollments.theoryLessonIds': theoryLessonId },
         {
           $pull: { 'enrollments.theoryLessonIds': theoryLessonId },
-          $set: { updatedAt: new Date() }
+          $set: { updatedAt: toUTC(now()) }
         }
       );
     } catch (studentUpdateErr) {
@@ -297,21 +354,22 @@ async function bulkCreateTheoryLessons(bulkData) {
       throw new Error('School year ID is required for bulk creation');
     }
 
-    // Generate dates for theory lessons
-    const dates = _generateDatesForDayOfWeek(
-      new Date(startDate),
-      new Date(endDate),
-      dayOfWeek,
-      (excludeDates || []).map((day) => new Date(day))
-    );
+    // Validate input dates
+    if (!isValidDate(startDate) || !isValidDate(endDate)) {
+      throw new Error('Invalid start or end date provided for bulk creation');
+    }
+    
+    // Generate dates for theory lessons using timezone-aware helper
+    const utcDates = generateDatesForDayOfWeek(startDate, endDate, dayOfWeek, excludeDates || []);
 
-    console.log(`Generated ${dates.length} dates for theory lessons`);
+    console.log(`Generated ${utcDates.length} dates for theory lessons`);
 
-    // Create theory lesson documents
-    const theoryLessons = dates.map((date) => ({
+    // Create theory lesson documents with proper timezone handling
+    const currentTime = now();
+    const theoryLessons = utcDates.map((utcDate) => ({
       category,
       teacherId,
-      date,
+      date: utcDate, // Already in UTC from generateDatesForDayOfWeek
       dayOfWeek,
       startTime,
       endTime,
@@ -322,8 +380,8 @@ async function bulkCreateTheoryLessons(bulkData) {
       syllabus: syllabus || '',
       homework: '',
       schoolYearId: schoolYearId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: toUTC(currentTime),
+      updatedAt: toUTC(currentTime),
     }));
 
     if (theoryLessons.length === 0) {
@@ -440,7 +498,7 @@ async function bulkCreateTheoryLessons(bulkData) {
                 $addToSet: { 
                   'enrollments.theoryLessonIds': { $each: result.theoryLessonIds } 
                 },
-                $set: { updatedAt: new Date() }
+                $set: { updatedAt: toUTC(now()) }
               }
             );
           }
@@ -484,7 +542,7 @@ async function updateTheoryAttendance(theoryLessonId, attendanceData) {
             present,
             absent,
           },
-          updatedAt: new Date(),
+          updatedAt: toUTC(now()),
         },
       },
       { returnDocument: 'after' }
@@ -514,7 +572,7 @@ async function updateTheoryAttendance(theoryLessonId, attendanceData) {
             date: theoryLesson.date,
             status: 'הגיע/ה',
             notes: '',
-            createdAt: new Date(),
+            createdAt: toUTC(now()),
           })
         );
 
@@ -527,7 +585,7 @@ async function updateTheoryAttendance(theoryLessonId, attendanceData) {
             date: theoryLesson.date,
             status: 'לא הגיע/ה',
             notes: '',
-            createdAt: new Date(),
+            createdAt: toUTC(now()),
           })
         );
 
@@ -563,7 +621,7 @@ async function addStudentToTheory(theoryLessonId, studentId) {
       { _id: ObjectId.createFromHexString(theoryLessonId) },
       {
         $addToSet: { studentIds: studentId },
-        $set: { updatedAt: new Date() },
+        $set: { updatedAt: toUTC(now()) },
       },
       { returnDocument: 'after' }
     );
@@ -579,7 +637,7 @@ async function addStudentToTheory(theoryLessonId, studentId) {
         { _id: ObjectId.createFromHexString(studentId) },
         {
           $addToSet: { 'enrollments.theoryLessonIds': theoryLessonId },
-          $set: { updatedAt: new Date() }
+          $set: { updatedAt: toUTC(now()) }
         }
       );
     } catch (studentUpdateErr) {
@@ -602,7 +660,7 @@ async function removeStudentFromTheory(theoryLessonId, studentId) {
       { _id: ObjectId.createFromHexString(theoryLessonId) },
       {
         $pull: { studentIds: studentId },
-        $set: { updatedAt: new Date() },
+        $set: { updatedAt: toUTC(now()) },
       },
       { returnDocument: 'after' }
     );
@@ -618,7 +676,7 @@ async function removeStudentFromTheory(theoryLessonId, studentId) {
         { _id: ObjectId.createFromHexString(studentId) },
         {
           $pull: { 'enrollments.theoryLessonIds': theoryLessonId },
-          $set: { updatedAt: new Date() }
+          $set: { updatedAt: toUTC(now()) }
         }
       );
     } catch (studentUpdateErr) {
@@ -657,10 +715,10 @@ async function getStudentTheoryAttendanceStats(studentId, category = null) {
     const attendanceRate = totalLessons ? (attended / totalLessons) * 100 : 0;
 
     const recentHistory = attendanceRecords
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .sort((a, b) => createAppDate(b.date).valueOf() - createAppDate(a.date).valueOf())
       .slice(0, 10)
       .map((record) => ({
-        date: record.date,
+        date: formatDate(record.date, 'DD/MM/YYYY'),
         status: record.status,
         category: record.groupId,
         sessionId: record.sessionId,
@@ -691,39 +749,15 @@ async function getStudentTheoryAttendanceStats(studentId, category = null) {
 }
 
 // Helper function to generate dates for a specific day of the week
+// @deprecated Use generateDatesForDayOfWeek from dateHelpers instead
 function _generateDatesForDayOfWeek(
   startDate,
   endDate,
   dayOfWeek,
   excludeDates = []
 ) {
-  const dates = [];
-  const currentDate = new Date(startDate);
-
-  // Calculate first occurrence of the specified day of week
-  currentDate.setDate(
-    currentDate.getDate() + ((dayOfWeek - currentDate.getDay() + 7) % 7)
-  );
-
-  // If the first occurrence is before the start date, move to next week
-  if (currentDate < startDate) {
-    currentDate.setDate(currentDate.getDate() + 7);
-  }
-
-  // Generate all dates until end date
-  while (currentDate <= endDate) {
-    const shouldExclude = excludeDates.some(
-      (excludeDate) => excludeDate.toDateString() === currentDate.toDateString()
-    );
-
-    if (!shouldExclude) {
-      dates.push(new Date(currentDate));
-    }
-
-    currentDate.setDate(currentDate.getDate() + 7);
-  }
-
-  return dates;
+  // Use the new timezone-aware date generation
+  return generateDatesForDayOfWeek(startDate, endDate, dayOfWeek, excludeDates);
 }
 
 // Helper function to build query criteria
@@ -743,13 +777,19 @@ function _buildCriteria(filterBy) {
   }
 
   if (filterBy.fromDate) {
+    if (!isValidDate(filterBy.fromDate)) {
+      throw new Error('Invalid fromDate provided in filter');
+    }
     criteria.date = criteria.date || {};
-    criteria.date.$gte = new Date(filterBy.fromDate);
+    criteria.date.$gte = getStartOfDay(filterBy.fromDate);
   }
 
   if (filterBy.toDate) {
+    if (!isValidDate(filterBy.toDate)) {
+      throw new Error('Invalid toDate provided in filter');
+    }
     criteria.date = criteria.date || {};
-    criteria.date.$lte = new Date(filterBy.toDate);
+    criteria.date.$lte = getEndOfDay(filterBy.toDate);
   }
 
   if (filterBy.dayOfWeek !== undefined) {
@@ -767,4 +807,27 @@ function _buildCriteria(filterBy) {
   // isActive filtering removed - all records are now active (hard delete implementation)
 
   return criteria;
+}
+
+// Helper function to calculate cache TTL based on query characteristics
+function _calculateCacheTTL(filterBy, complexity = 1) {
+  let baseTTL = 5 * 60 * 1000; // 5 minutes base TTL
+  
+  // Longer TTL for historical data
+  if (filterBy.toDate && createAppDate(filterBy.toDate).isBefore(now().subtract(1, 'day'))) {
+    baseTTL *= 4; // 20 minutes for historical data
+  }
+  
+  // Longer TTL for complex queries
+  if (complexity > 5) {
+    baseTTL *= 2;
+  }
+  
+  // Shorter TTL for current day queries
+  if (filterBy.fromDate && isSameDay(createAppDate(filterBy.fromDate), now())) {
+    baseTTL = Math.min(baseTTL, 2 * 60 * 1000); // Max 2 minutes for current day
+  }
+  
+  // Maximum TTL cap
+  return Math.min(baseTTL, 60 * 60 * 1000); // 1 hour max
 }

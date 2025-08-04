@@ -2,6 +2,10 @@ import express from 'express';
 import { requireAuth } from '../../middleware/auth.middleware.js';
 import { scheduleController } from './schedule.controller.js';
 import timeBlockRoutes from './time-block.route.js';
+import { 
+  formatScheduleResponse, 
+  formatAttendanceResponse 
+} from '../../middleware/responseFormatterMiddleware.js';
 
 const router = express.Router();
 
@@ -13,6 +17,7 @@ const adminAuthMiddleware = requireAuth(['מנהל']);
 router.get(
   '/teacher/:teacherId/weekly',
   teacherAuthMiddleware,
+  formatScheduleResponse(),
   scheduleController.getTeacherWeeklySchedule
 );
 
@@ -20,6 +25,7 @@ router.get(
 router.get(
   '/teacher/:teacherId/available',
   teacherAuthMiddleware,
+  formatScheduleResponse(),
   scheduleController.getAvailableSlots
 );
 
@@ -55,6 +61,7 @@ router.put(
 router.get(
   '/student/:studentId',
   teacherAuthMiddleware,
+  formatScheduleResponse(),
   scheduleController.getStudentSchedule
 );
 

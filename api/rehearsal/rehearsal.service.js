@@ -6,6 +6,17 @@ import {
   validateAttendance,
 } from './rehearsal.validation.js';
 import { ObjectId } from 'mongodb';
+import { 
+  toUTC, 
+  createAppDate, 
+  getDayOfWeek,
+  generateDatesForDayOfWeek,
+  formatDate,
+  getStartOfDay,
+  getEndOfDay,
+  isValidDate,
+  now
+} from '../../utils/dateHelpers.js';
 
 export const rehearsalService = {
   getRehearsals,
@@ -102,15 +113,23 @@ async function addRehearsal(rehearsalToAdd, teacherId, isAdmin = false) {
       }
     }
 
-    // Set creation timestamps
-    value.createdAt = new Date();
-    value.updatedAt = new Date();
-
-    // Calculate day of week if not provided
-    if (value.dayOfWeek === undefined) {
-      const rehearsalDate = new Date(value.date);
-      value.dayOfWeek = rehearsalDate.getDay();
+    // Validate and convert date to UTC for storage
+    if (!isValidDate(value.date)) {
+      throw new Error('Invalid rehearsal date provided');
     }
+    
+    const rehearsalDate = createAppDate(value.date);
+    value.date = toUTC(rehearsalDate);
+    
+    // Calculate day of week if not provided (using timezone-aware calculation)
+    if (value.dayOfWeek === undefined) {
+      value.dayOfWeek = getDayOfWeek(rehearsalDate);
+    }
+
+    // Set creation timestamps using timezone-aware current time
+    const currentTime = now();
+    value.createdAt = toUTC(currentTime);
+    value.updatedAt = toUTC(currentTime);
 
     // Insert rehearsal
     const rehearsalCollection = await getCollection('rehearsal');
@@ -171,7 +190,20 @@ async function updateRehearsal(
 
     if (error) throw error;
 
-    value.updatedAt = new Date();
+    // Handle date conversion for updates
+    if (value.date) {
+      if (!isValidDate(value.date)) {
+        throw new Error('Invalid rehearsal date provided for update');
+      }
+      
+      const rehearsalDate = createAppDate(value.date);
+      value.date = toUTC(rehearsalDate);
+      
+      // Recalculate day of week if date changed
+      value.dayOfWeek = getDayOfWeek(rehearsalDate);
+    }
+    
+    value.updatedAt = toUTC(now());
 
     if (!isAdmin) {
       const orchestraCollection = await getCollection('orchestra');
@@ -346,21 +378,22 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
       throw new Error('School year ID is required for bulk creation');
     }
 
-    // Generate dates for rehearsals
-    const dates = _generateDatesForDayOfWeek(
-      new Date(startDate),
-      new Date(endDate),
-      dayOfWeek,
-      (excludeDates || []).map((day) => new Date(day))
-    );
+    // Validate input dates
+    if (!isValidDate(startDate) || !isValidDate(endDate)) {
+      throw new Error('Invalid start or end date provided for bulk rehearsal creation');
+    }
+    
+    // Generate dates for rehearsals using timezone-aware helper
+    const utcDates = generateDatesForDayOfWeek(startDate, endDate, dayOfWeek, excludeDates || []);
 
-    console.log(`Generated ${dates.length} dates for rehearsals`);
+    console.log(`Generated ${utcDates.length} dates for rehearsals`);
 
-    // Create rehearsal documents
-    const rehearsals = dates.map((date) => ({
+    // Create rehearsal documents with proper timezone handling
+    const currentTime = now();
+    const rehearsals = utcDates.map((utcDate) => ({
       groupId: orchestraId,
       type: 'תזמורת',
-      date,
+      date: utcDate, // Already in UTC from generateDatesForDayOfWeek
       dayOfWeek,
       startTime,
       endTime,
@@ -368,8 +401,8 @@ async function bulkCreateRehearsals(data, teacherId, isAdmin = false) {
       attendance: { present: [], absent: [] },
       notes: notes || '',
       schoolYearId: schoolYearId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: toUTC(currentTime),
+      updatedAt: toUTC(currentTime),
     }));
 
     if (rehearsals.length === 0) {
@@ -627,7 +660,7 @@ async function bulkUpdateRehearsalsByOrchestra(orchestraId, updateData, userId, 
     // Prepare update object with metadata
     const updateObject = {
       ...updateData,
-      updatedAt: new Date()
+      updatedAt: toUTC(now())
     };
 
     let updatedCount = 0;
@@ -651,7 +684,7 @@ async function bulkUpdateRehearsalsByOrchestra(orchestraId, updateData, userId, 
           // Update orchestra's last modified timestamp
           await orchestraCollection.updateOne(
             { _id: ObjectId.createFromHexString(orchestraId) },
-            { $set: { lastModified: new Date() } },
+            { $set: { lastModified: toUTC(now()) } },
             { session }
           );
         });
@@ -671,7 +704,7 @@ async function bulkUpdateRehearsalsByOrchestra(orchestraId, updateData, userId, 
       try {
         await orchestraCollection.updateOne(
           { _id: ObjectId.createFromHexString(orchestraId) },
-          { $set: { lastModified: new Date() } }
+          { $set: { lastModified: toUTC(now()) } }
         );
       } catch (orchestraErr) {
         console.warn(`Failed to update orchestra: ${orchestraErr.message}`);
@@ -740,7 +773,7 @@ async function updateAttendance(
             present,
             absent,
           },
-          updatedAt: new Date(),
+          updatedAt: toUTC(now()),
         },
       },
       { returnDocument: 'after' }
@@ -767,7 +800,7 @@ async function updateAttendance(
             date: rehearsal.date,
             status: 'הגיע/ה',
             notes: '',
-            createdAt: new Date(),
+            createdAt: toUTC(now()),
           })
         );
 
@@ -780,7 +813,7 @@ async function updateAttendance(
             date: rehearsal.date,
             status: 'לא הגיע/ה',
             notes: '',
-            createdAt: new Date(),
+            createdAt: toUTC(now()),
           })
         );
 
@@ -799,39 +832,15 @@ async function updateAttendance(
 }
 
 // Helper function to generate dates for a specific day of the week
+// @deprecated Use generateDatesForDayOfWeek from dateHelpers instead
 function _generateDatesForDayOfWeek(
   startDate,
   endDate,
   dayOfWeek,
   excludesDates = []
 ) {
-  const dates = [];
-  const currentDate = new Date(startDate);
-
-  // Calculate first occurrence of the specified day of week
-  currentDate.setDate(
-    currentDate.getDate() + ((dayOfWeek - currentDate.getDay() + 7) % 7)
-  );
-
-  // If the first occurrence is before the start date, move to next week
-  if (currentDate < startDate) {
-    currentDate.setDate(currentDate.getDate() + 7);
-  }
-
-  // Generate all dates until end date
-  while (currentDate <= endDate) {
-    const shouldExclude = excludesDates.some(
-      (excludeDate) => excludeDate.toDateString() === currentDate.toDateString()
-    );
-
-    if (!shouldExclude) {
-      dates.push(new Date(currentDate));
-    }
-
-    currentDate.setDate(currentDate.getDate() + 7);
-  }
-
-  return dates;
+  // Use the new timezone-aware date generation
+  return generateDatesForDayOfWeek(startDate, endDate, dayOfWeek, excludesDates);
 }
 
 // Helper function to build query criteria from filter
@@ -847,17 +856,23 @@ function _buildCriteria(filterBy) {
   }
 
   if (filterBy.fromDate) {
+    if (!isValidDate(filterBy.fromDate)) {
+      throw new Error('Invalid fromDate provided in rehearsal filter');
+    }
     criteria.date = criteria.date || {};
-    criteria.date.$gte = new Date(filterBy.fromDate);
+    criteria.date.$gte = getStartOfDay(filterBy.fromDate);
     console.log('Date filter applied:', {
       fromDate: filterBy.fromDate,
-      converted: new Date(filterBy.fromDate),
+      converted: getStartOfDay(filterBy.fromDate),
     });
   }
 
   if (filterBy.toDate) {
+    if (!isValidDate(filterBy.toDate)) {
+      throw new Error('Invalid toDate provided in rehearsal filter');
+    }
     criteria.date = criteria.date || {};
-    criteria.date.$lte = new Date(filterBy.toDate);
+    criteria.date.$lte = getEndOfDay(filterBy.toDate);
   }
 
   // isActive filtering removed - all records are now active (hard delete implementation)

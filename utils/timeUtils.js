@@ -1,6 +1,9 @@
 /**
  * Time utilities for theory lesson scheduling
+ * Works alongside dateHelpers.js for complete date/time handling
  */
+
+import { createAppDate, createDateWithTime } from './dateHelpers.js';
 
 /**
  * Convert time string to minutes from midnight
@@ -70,11 +73,79 @@ const getTimeRangeDescription = (startTime, endTime) => {
   return `${formatTime(startTime)}-${formatTime(endTime)}`;
 };
 
+/**
+ * Create a timezone-aware datetime by combining a date and time
+ * @param {string|Date|dayjs} date - Date part
+ * @param {string} time - Time in HH:MM format
+ * @returns {Date} UTC Date for database storage
+ */
+const combineDateTime = (date, time) => {
+  if (!isValidTimeFormat(time)) {
+    throw new Error('Invalid time format. Expected HH:MM');
+  }
+  return createDateWithTime(date, time);
+};
+
+/**
+ * Check if a time falls within a time range
+ * @param {string} time - Time to check (HH:MM)
+ * @param {string} rangeStart - Range start time (HH:MM)
+ * @param {string} rangeEnd - Range end time (HH:MM)
+ * @returns {boolean} True if time is within range
+ */
+const isTimeInRange = (time, rangeStart, rangeEnd) => {
+  const timeMinutes = timeToMinutes(time);
+  const startMinutes = timeToMinutes(rangeStart);
+  const endMinutes = timeToMinutes(rangeEnd);
+  
+  return timeMinutes >= startMinutes && timeMinutes <= endMinutes;
+};
+
+/**
+ * Calculate duration between two times in minutes
+ * @param {string} startTime - Start time (HH:MM)
+ * @param {string} endTime - End time (HH:MM)
+ * @returns {number} Duration in minutes
+ */
+const getTimeDuration = (startTime, endTime) => {
+  return timeToMinutes(endTime) - timeToMinutes(startTime);
+};
+
+/**
+ * Add minutes to a time string
+ * @param {string} time - Base time (HH:MM)
+ * @param {number} minutes - Minutes to add
+ * @returns {string} New time (HH:MM)
+ */
+const addMinutesToTime = (time, minutes) => {
+  const totalMinutes = timeToMinutes(time) + minutes;
+  const hours = Math.floor(totalMinutes / 60) % 24;
+  const mins = totalMinutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+};
+
+/**
+ * Validate that lesson times are during business hours
+ * @param {string} startTime - Start time (HH:MM)
+ * @param {string} endTime - End time (HH:MM)
+ * @param {Object} businessHours - Business hours config
+ * @returns {boolean} True if within business hours
+ */
+const isWithinBusinessHours = (startTime, endTime, businessHours = { start: '08:00', end: '22:00' }) => {
+  return isTimeInRange(startTime, businessHours.start, businessHours.end) &&
+         isTimeInRange(endTime, businessHours.start, businessHours.end);
+};
+
 export {
   timeToMinutes,
   doTimesOverlap,
   isValidTimeFormat,
   isValidTimeRange,
   formatTime,
-  getTimeRangeDescription
+  getTimeRangeDescription,
+  combineDateTime,
+  isTimeInRange,
+  getTimeDuration,
+  addMinutesToTime,
+  isWithinBusinessHours
 };

@@ -1,5 +1,12 @@
 import { getCollection } from '../../services/mongoDB.service.js';
 import { ObjectId } from 'mongodb';
+import { 
+  toUTC, 
+  createAppDate, 
+  formatDate,
+  isValidDate,
+  now
+} from '../../utils/dateHelpers.js';
 
 export const attendanceService = {
   markLessonAttendance,
@@ -44,15 +51,22 @@ async function markLessonAttendance(scheduleSlotId, attendanceData) {
       throw new Error(`No student assigned to this schedule slot`);
     }
 
-    // Prepare attendance update
+    // Validate lesson date if provided
+    let lessonDate = attendanceData.lessonDate;
+    if (lessonDate && !isValidDate(lessonDate)) {
+      throw new Error('Invalid lesson date provided for attendance');
+    }
+    
+    // Prepare attendance update with timezone-aware dates
+    const currentTime = now();
     const attendanceUpdate = {
       status: attendanceData.status, // 'הגיע/ה' or 'לא הגיע/ה' or 'cancelled'
-      markedAt: new Date(),
+      markedAt: toUTC(currentTime),
       markedBy: attendanceData.markedBy,
       notes: attendanceData.notes || null,
       lessonCompleted: attendanceData.status === 'הגיע/ה' ? true : 
                       attendanceData.status === 'cancelled' ? false : null,
-      lessonDate: attendanceData.lessonDate || new Date()
+      lessonDate: lessonDate ? toUTC(createAppDate(lessonDate)) : toUTC(currentTime)
     };
 
     // Update the schedule slot with attendance data
@@ -64,7 +78,7 @@ async function markLessonAttendance(scheduleSlotId, attendanceData) {
       { 
         $set: { 
           'teaching.schedule.$.attendance': attendanceUpdate,
-          'teaching.schedule.$.updatedAt': new Date()
+          'teaching.schedule.$.updatedAt': toUTC(now())
         }
       }
     );
@@ -280,7 +294,7 @@ async function syncToActivityAttendance(scheduleSlotId, teacher, scheduleSlot, a
       activityType: 'שיעור פרטי',
       groupId: teacher._id.toString(), // Use teacher ID as group for private lessons
       sessionId: scheduleSlotId,
-      date: attendanceData.lessonDate || new Date(),
+      date: attendanceData.lessonDate ? toUTC(createAppDate(attendanceData.lessonDate)) : toUTC(now()),
       status: attendanceData.status,
       notes: attendanceData.notes || null,
       markedBy: attendanceData.markedBy,
@@ -293,8 +307,8 @@ async function syncToActivityAttendance(scheduleSlotId, teacher, scheduleSlot, a
         location: scheduleSlot.location,
         instrument: teacher.professionalInfo?.instrument
       },
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt: toUTC(now()),
+      updatedAt: toUTC(now())
     };
 
     // Check if record already exists (prevent duplicates)
@@ -314,7 +328,7 @@ async function syncToActivityAttendance(scheduleSlotId, teacher, scheduleSlot, a
             notes: attendanceData.notes,
             markedBy: attendanceData.markedBy,
             markedAt: attendanceData.markedAt,
-            updatedAt: new Date()
+            updatedAt: toUTC(now())
           }
         }
       );

@@ -196,35 +196,10 @@ export const isValidObjectId = (id) => {
 
 /**
  * Helper function to validate date range
+ * @deprecated Use validateDateRange from dateHelpers instead
  */
-export const validateDateRange = (startDate, endDate) => {
-  if (!startDate && !endDate) return { valid: true };
-  
-  if (startDate && !endDate) return { valid: true };
-  
-  if (!startDate && endDate) {
-    return { 
-      valid: false, 
-      error: 'Start date is required when end date is provided' 
-    };
-  }
-  
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-    return { 
-      valid: false, 
-      error: 'Invalid date format' 
-    };
-  }
-  
-  if (start > end) {
-    return { 
-      valid: false, 
-      error: 'Start date must be before end date' 
-    };
-  }
-  
-  return { valid: true };
+export const validateDateRange = async (startDate, endDate) => {
+  // Import here to avoid circular dependencies
+  const { validateDateRange: centralValidation } = await import('../../utils/dateHelpers.js');
+  return centralValidation(startDate, endDate);
 };

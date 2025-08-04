@@ -1,6 +1,7 @@
 import express from 'express'
 import { teacherController } from './teacher.controller.js'
 import { invitationController } from './invitation.controller.js'
+import { attendanceController } from '../schedule/attendance.controller.js'
 import { requireAuth } from '../../middleware/auth.middleware.js'
 
 const router = express.Router()
@@ -17,6 +18,7 @@ router.get('/:teacherId/day-schedule/:day', requireAuth(['מורה', 'מנהל']
 router.get('/:teacherId/lesson-stats', requireAuth(['מורה', 'מנהל']), teacherController.getTeacherLessonStats)
 router.get('/:teacherId/students-with-lessons', requireAuth(['מורה', 'מנהל']), teacherController.getTeacherStudentsWithLessons)
 router.get('/:teacherId/validate-lessons', requireAuth(['מורה', 'מנהל']), teacherController.validateTeacherLessonData)
+router.get('/:teacherId/lesson-attendance-summary', requireAuth(['מורה', 'מנהל']), attendanceController.getTeacherAttendanceOverview)
 
 router.get('/:id', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getTeacherById)
 router.get('/role/:role', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), teacherController.getTeacherByRole)

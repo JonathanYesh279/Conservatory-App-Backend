@@ -2,6 +2,7 @@ import { getCollection } from '../services/mongoDB.service.js';
 import { ObjectId } from 'mongodb';
 import { sendErrorResponse } from '../utils/errorResponses.js';
 import { isValidTimeFormat, isValidTimeRange } from '../utils/timeUtils.js';
+import { isValidDate, validateDateRange as centralValidateDateRange } from '../utils/dateHelpers.js';
 
 /**
  * Validate required fields for bulk theory lesson creation
@@ -79,21 +80,20 @@ const validateTimeFormat = (req, res, next) => {
 };
 
 /**
- * Validate date range for bulk creation
+ * Validate date range for bulk creation using centralized date validation
  */
 const validateDateRange = (req, res, next) => {
   const { startDate, endDate } = req.body;
 
   if (startDate && endDate) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    // Use centralized date validation
+    if (!isValidDate(startDate) || !isValidDate(endDate)) {
       return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: 'Invalid date format' }]);
     }
 
-    if (end <= start) {
-      return sendErrorResponse(res, 'INVALID_DATE_RANGE');
+    const validation = centralValidateDateRange(startDate, endDate);
+    if (!validation.valid) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: validation.error }]);
     }
   }
 
@@ -259,11 +259,8 @@ const validateExcludeDates = (req, res, next) => {
     }]);
   }
 
-  // Check if all dates are valid
-  const invalidDates = excludeDates.filter(date => {
-    const dateObj = new Date(date);
-    return isNaN(dateObj.getTime());
-  });
+  // Check if all dates are valid using centralized validation
+  const invalidDates = excludeDates.filter(date => !isValidDate(date));
 
   if (invalidDates.length > 0) {
     return sendErrorResponse(res, 'VALIDATION_ERROR', [{ 

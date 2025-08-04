@@ -25,6 +25,7 @@ import scheduleRoutes from './api/schedule/schedule.route.js';
 import attendanceRoutes from './api/schedule/attendance.routes.js';
 import analyticsRoutes from './api/analytics/attendance.routes.js';
 import adminValidationRoutes from './api/admin/consistency-validation.route.js';
+import lessonRoutes from './api/lesson/lesson.route.js';
 import { invitationController } from './api/teacher/invitation.controller.js';
 
 const _filename = fileURLToPath(import.meta.url);
@@ -148,6 +149,12 @@ app.use(
   adminValidationRoutes
 );
 app.use('/api/files', authenticateToken, fileRoutes);
+app.use(
+  '/api/lessons',
+  authenticateToken,
+  addSchoolYearToRequest,
+  lessonRoutes
+);
 
 // Test route
 app.get('/api/test', (req, res) => {
