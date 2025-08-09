@@ -25,6 +25,8 @@ import scheduleRoutes from './api/schedule/schedule.route.js';
 import attendanceRoutes from './api/schedule/attendance.routes.js';
 import analyticsRoutes from './api/analytics/attendance.routes.js';
 import adminValidationRoutes from './api/admin/consistency-validation.route.js';
+import dateMonitoringRoutes from './api/admin/date-monitoring.route.js';
+import pastActivitiesRoutes from './api/admin/past-activities.route.js';
 import lessonRoutes from './api/lesson/lesson.route.js';
 import { invitationController } from './api/teacher/invitation.controller.js';
 
@@ -144,9 +146,19 @@ app.use(
   analyticsRoutes
 );
 app.use(
-  '/api/admin',
+  '/api/admin/consistency-validation',
   authenticateToken,
   adminValidationRoutes
+);
+app.use(
+  '/api/admin/date-monitoring',
+  authenticateToken,
+  dateMonitoringRoutes
+);
+app.use(
+  '/api/admin/past-activities',
+  authenticateToken,
+  pastActivitiesRoutes
 );
 app.use('/api/files', authenticateToken, fileRoutes);
 app.use(

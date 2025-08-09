@@ -15,6 +15,9 @@ export const studentService = {
   checkTeacherHasAccessToStudent,
   associateStudentWithTeacher,
   removeStudentTeacherAssociation,
+  setBagrutId,
+  removeBagrutId,
+  getStudentBagrut,
 };
 
 async function getStudents(filterBy = {}) {
@@ -883,4 +886,79 @@ function _buildCriteria(filterBy) {
   }
 
   return criteria;
+}
+
+// Bagrut connection management functions
+
+async function setBagrutId(studentId, bagrutId) {
+  try {
+    const collection = await getCollection('student');
+    const result = await collection.updateOne(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { 
+        $set: { 
+          'academicInfo.tests.bagrutId': bagrutId,
+          updatedAt: new Date()
+        } 
+      }
+    );
+
+    if (result.matchedCount === 0) {
+      throw new Error(`Student with id ${studentId} not found`);
+    }
+
+    return result.modifiedCount > 0;
+  } catch (err) {
+    console.error(`Error setting bagrut ID for student ${studentId}: ${err.message}`);
+    throw new Error(`Error setting bagrut ID: ${err.message}`);
+  }
+}
+
+async function removeBagrutId(studentId) {
+  try {
+    const collection = await getCollection('student');
+    const result = await collection.updateOne(
+      { _id: ObjectId.createFromHexString(studentId) },
+      { 
+        $unset: { 
+          'academicInfo.tests.bagrutId': ""
+        },
+        $set: {
+          updatedAt: new Date()
+        }
+      }
+    );
+
+    if (result.matchedCount === 0) {
+      throw new Error(`Student with id ${studentId} not found`);
+    }
+
+    return result.modifiedCount > 0;
+  } catch (err) {
+    console.error(`Error removing bagrut ID for student ${studentId}: ${err.message}`);
+    throw new Error(`Error removing bagrut ID: ${err.message}`);
+  }
+}
+
+async function getStudentBagrut(studentId) {
+  try {
+    const student = await getStudentById(studentId);
+    
+    if (!student) {
+      throw new Error(`Student with id ${studentId} not found`);
+    }
+
+    const bagrutId = student.academicInfo?.tests?.bagrutId;
+    
+    if (!bagrutId) {
+      return null; // Student has no bagrut
+    }
+
+    // Import bagrutService to avoid circular dependency
+    const { bagrutService } = await import('../bagrut/bagrut.service.js');
+    return await bagrutService.getBagrutById(bagrutId);
+  } catch (err) {
+    console.error(`Error getting student bagrut: ${err.message}`);
+    throw new Error(`Error getting student bagrut: ${err.message}`);
+  }
 }

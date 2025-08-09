@@ -24,13 +24,11 @@ export function createDateRangeQuery(startDate, endDate) {
   const query = {};
   
   if (startDate && isValidDate(startDate)) {
-    const start = createAppDate(startDate);
-    query.$gte = getStartOfDay(start).toDate();
+    query.$gte = getStartOfDay(startDate);
   }
   
   if (endDate && isValidDate(endDate)) {
-    const end = createAppDate(endDate);
-    query.$lte = getEndOfDay(end).toDate();
+    query.$lte = getEndOfDay(endDate);
   }
   
   return query;
@@ -46,10 +44,9 @@ export function createSingleDateQuery(date) {
     return {};
   }
   
-  const targetDate = createAppDate(date);
   return {
-    $gte: getStartOfDay(targetDate).toDate(),
-    $lte: getEndOfDay(targetDate).toDate()
+    $gte: getStartOfDay(date),
+    $lte: getEndOfDay(date)
   };
 }
 
@@ -93,8 +90,8 @@ export function createUpcomingQuery(days = 7) {
   const futureDate = now.add(days, 'days');
   
   return {
-    $gte: getStartOfDay(now).toDate(),
-    $lte: getEndOfDay(futureDate).toDate()
+    $gte: getStartOfDay(now.toDate()),
+    $lte: getEndOfDay(futureDate.toDate())
   };
 }
 

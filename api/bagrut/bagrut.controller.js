@@ -8,11 +8,16 @@ export const bagrutController = {
   getBagrutByStudentId,
   addBagrut,
   updateBagrut,
+  removeBagrut,
   updatePresentation,
   updateMagenBagrut,
+  updateGradingDetails,
+  calculateFinalGrade,
+  completeBagrut,
   addDocument,
   removeDocument,
   addProgramPiece,
+  updateProgram,
   removeProgramPiece,
   addAccompanist,
   removeAccompanist,
@@ -83,16 +88,33 @@ async function updateBagrut(req, res, next) {
   }
 }
 
+async function removeBagrut(req, res, next) {
+  try {
+    const { id } = req.params
+
+    // No need to check authorization - middleware already did it
+    const result = await bagrutService.removeBagrut(id)
+    res.json(result)
+  } catch (err) {
+    next(err)
+  }
+}
+
 async function updatePresentation(req, res, next) {
   try {
     const { id, presentationIndex } = req.params
     const presentationData = req.body
     const teacherId = req.teacher._id.toString()
 
+    const index = parseInt(presentationIndex)
+    if (isNaN(index) || index < 0 || index > 3) {
+      return res.status(400).json({ error: 'Invalid presentation index. Must be 0-3.' })
+    }
+
     // No need to check authorization - middleware already did it
     const updatedBagrut = await bagrutService.updatePresentation(
       id,
-      parseInt(presentationIndex),
+      index,
       presentationData,
       teacherId
     )
@@ -188,6 +210,19 @@ async function addProgramPiece(req, res, next) {
   }
 }
 
+async function updateProgram(req, res, next) {
+  try {
+    const { id } = req.params
+    const { program } = req.body
+
+    // No need to check authorization - middleware already did it
+    const updatedBagrut = await bagrutService.updateProgram(id, program)
+    res.json(updatedBagrut)
+  } catch (err) {
+    next(err)
+  }
+}
+
 async function removeProgramPiece(req, res, next) {
   try {
     const { id, pieceId } = req.params
@@ -224,6 +259,64 @@ async function removeAccompanist(req, res, next) {
     const updatedBagrut = await bagrutService.removeAccompanist(
       id,
       accompanistId
+    )
+    res.json(updatedBagrut)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function updateGradingDetails(req, res, next) {
+  try {
+    const { id } = req.params
+    const gradingDetails = req.body
+    const teacherId = req.teacher._id.toString()
+
+    // Validate grading details structure
+    const requiredFields = ['technique', 'interpretation', 'musicality', 'overall']
+    const missingFields = requiredFields.filter(field => !gradingDetails[field])
+    
+    if (missingFields.length > 0) {
+      return res.status(400).json({ 
+        error: `Missing required grading fields: ${missingFields.join(', ')}` 
+      })
+    }
+
+    // No need to check authorization - middleware already did it
+    const updatedBagrut = await bagrutService.updateGradingDetails(
+      id,
+      gradingDetails,
+      teacherId
+    )
+    res.json(updatedBagrut)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function calculateFinalGrade(req, res, next) {
+  try {
+    const { id } = req.params
+
+    // No need to check authorization - middleware already did it
+    const updatedBagrut = await bagrutService.calculateAndUpdateFinalGrade(id)
+    res.json(updatedBagrut)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function completeBagrut(req, res, next) {
+  try {
+    const { id } = req.params
+    const { teacherSignature } = req.body
+    const teacherId = req.teacher._id.toString()
+
+    // No need to check authorization - middleware already did it
+    const updatedBagrut = await bagrutService.completeBagrut(
+      id,
+      teacherId,
+      teacherSignature
     )
     res.json(updatedBagrut)
   } catch (err) {

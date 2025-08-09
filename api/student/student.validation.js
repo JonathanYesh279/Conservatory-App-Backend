@@ -146,6 +146,9 @@ export const studentSchema = Joi.object({
     class: Joi.string()
       .valid(...VALID_CLASSES)
       .required(),
+    tests: Joi.object({
+      bagrutId: Joi.string().allow(null).default(null),
+    }).default({ bagrutId: null }),
   }).required(),
 
   enrollments: Joi.object({
@@ -227,6 +230,9 @@ export const studentUpdateSchema = Joi.object({
   academicInfo: Joi.object({
     instrumentProgress: Joi.array().items(instrumentProgressSchema),
     class: Joi.string().valid(...VALID_CLASSES),
+    tests: Joi.object({
+      bagrutId: Joi.string().allow(null),
+    }),
   }),
 
   enrollments: Joi.object({

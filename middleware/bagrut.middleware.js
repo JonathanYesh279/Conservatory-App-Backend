@@ -15,7 +15,7 @@ export async function authorizeBagrutAccess(req, res, next) {
       return res.status(404).json({ error: `Bagrut with id ${bagrutId} not found` })
     }
 
-    const teacherId = req.teacherId._id.toString()
+    const teacherId = req.teacher._id.toString()
     const isAdmin = req.teacher.roles.includes('מנהל')
 
     if (!isAdmin && bagrut.teacherId !== teacherId) {
