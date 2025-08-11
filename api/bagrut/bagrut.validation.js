@@ -12,14 +12,66 @@ const GRADE_LEVELS = {
 }
 const GRADE_LEVEL_NAMES = Object.keys(GRADE_LEVELS)
 
-const presentationSchema = Joi.object({
+const magenBagrutGradingSchema = Joi.object({
+  playingSkills: Joi.object({
+    grade: Joi.string().valid('לא הוערך', 'מעולה', 'טוב מאוד', 'טוב', 'מספיק', 'מספיק בקושי', 'לא עבר/ה').default('לא הוערך'),
+    points: Joi.number().min(0).max(20).allow(null).default(null),
+    maxPoints: Joi.number().default(20),
+    comments: Joi.string().allow('').default('אין הערות')
+  }).default({ grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' }),
+  
+  musicalUnderstanding: Joi.object({
+    grade: Joi.string().valid('לא הוערך', 'מעולה', 'טוב מאוד', 'טוב', 'מספיק', 'מספיק בקושי', 'לא עבר/ה').default('לא הוערך'),
+    points: Joi.number().min(0).max(40).allow(null).default(null),
+    maxPoints: Joi.number().default(40),
+    comments: Joi.string().allow('').default('אין הערות')
+  }).default({ grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' }),
+  
+  textKnowledge: Joi.object({
+    grade: Joi.string().valid('לא הוערך', 'מעולה', 'טוב מאוד', 'טוב', 'מספיק', 'מספיק בקושי', 'לא עבר/ה').default('לא הוערך'),
+    points: Joi.number().min(0).max(30).allow(null).default(null),
+    maxPoints: Joi.number().default(30),
+    comments: Joi.string().allow('').default('אין הערות')
+  }).default({ grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' }),
+  
+  playingByHeart: Joi.object({
+    grade: Joi.string().valid('לא הוערך', 'מעולה', 'טוב מאוד', 'טוב', 'מספיק', 'מספיק בקושי', 'לא עבר/ה').default('לא הוערך'),
+    points: Joi.number().min(0).max(10).allow(null).default(null),
+    maxPoints: Joi.number().default(10),
+    comments: Joi.string().allow('').default('אין הערות')
+  }).default({ grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' })
+}).default({
+  playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+  musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+  textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+  playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+})
+
+const presentationSchemaWithNotes = Joi.object({
   completed: Joi.boolean().default(false),
   status: Joi.string().valid(...PRESENTATION_STATUSES).default('לא נבחן'),
   date: Joi.date().allow(null).default(null),
-  review: Joi.string().allow('').default(null),
+  review: Joi.string().allow('', null).default(null),
+  reviewedBy: Joi.string().allow(null).default(null),
+  notes: Joi.string().allow('').default(''),
+  recordingLinks: Joi.array().items(Joi.string().uri()).default([]),
+})
+
+const presentationSchemaWithGrade = Joi.object({
+  completed: Joi.boolean().default(false),
+  status: Joi.string().valid(...PRESENTATION_STATUSES).default('לא נבחן'),
+  date: Joi.date().allow(null).default(null),
+  review: Joi.string().allow('', null).default(null),
   reviewedBy: Joi.string().allow(null).default(null),
   grade: Joi.number().min(0).max(100).allow(null).default(null),
   gradeLevel: Joi.string().valid(...GRADE_LEVEL_NAMES).allow(null).default(null),
+  recordingLinks: Joi.array().items(Joi.string().uri()).default([]),
+  detailedGrading: magenBagrutGradingSchema.default({
+    playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+    musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+    textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+    playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+  })
 })
 
 const pieceSchema = Joi.object({
@@ -82,17 +134,32 @@ export const bagrutSchema = Joi.object({
     accompanists: Joi.array().items(accompanistSchema).default([]),
   }).default({ type: 'נגן מלווה', accompanists: [] }),
 
-  presentations: Joi.array().items(presentationSchema).length(4)
+  presentations: Joi.array().length(4)
     .default([
-      { completed: false, status: 'לא נבחן', date: null, review: null, reviewedBy: null, grade: null, gradeLevel: null },
-      { completed: false, status: 'לא נבחן', date: null, review: null, reviewedBy: null, grade: null, gradeLevel: null },
-      { completed: false, status: 'לא נבחן', date: null, review: null, reviewedBy: null, grade: null, gradeLevel: null },
-      { completed: false, status: 'לא נבחן', date: null, review: null, reviewedBy: null, grade: null, gradeLevel: null },
+      { completed: false, status: 'לא נבחן', date: null, review: null, reviewedBy: null, notes: '', recordingLinks: [] },
+      { completed: false, status: 'לא נבחן', date: null, review: null, reviewedBy: null, notes: '', recordingLinks: [] },
+      { completed: false, status: 'לא נבחן', date: null, review: null, reviewedBy: null, notes: '', recordingLinks: [] },
+      { 
+        completed: false, 
+        status: 'לא נבחן', 
+        date: null, 
+        review: null, 
+        reviewedBy: null, 
+        grade: null, 
+        gradeLevel: null,
+        recordingLinks: [],
+        detailedGrading: {
+          playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+          musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+          textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+          playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+        }
+      },
     ]),
 
   gradingDetails: gradingDetailSchema,
 
-  magenBagrut: presentationSchema.default({
+  magenBagrut: presentationSchemaWithGrade.default({
     completed: false,
     status: 'לא נבחן',
     date: null,
@@ -100,6 +167,13 @@ export const bagrutSchema = Joi.object({
     reviewedBy: null,
     grade: null,
     gradeLevel: null,
+    recordingLinks: [],
+    detailedGrading: {
+      playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+      musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+      textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+      playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+    }
   }),
 
   documents: Joi.array().items(documentSchema).default([]),
@@ -118,7 +192,35 @@ export const bagrutSchema = Joi.object({
 })
 
 export function validateBagrut(bagrut) {
-  return bagrutSchema.validate(bagrut, { abortEarly: false })
+  const result = bagrutSchema.validate(bagrut, { abortEarly: false })
+  
+  if (result.error) return result
+  
+  if (result.value.presentations && result.value.presentations.length === 4) {
+    const presentationErrors = []
+    
+    for (let i = 0; i < 3; i++) {
+      const presentationResult = presentationSchemaWithNotes.validate(result.value.presentations[i])
+      if (presentationResult.error) {
+        presentationErrors.push(`Presentation ${i}: ${presentationResult.error.message}`)
+      } else {
+        result.value.presentations[i] = presentationResult.value
+      }
+    }
+    
+    const magenBagrutResult = presentationSchemaWithGrade.validate(result.value.presentations[3])
+    if (magenBagrutResult.error) {
+      presentationErrors.push(`מגן בגרות (presentation 3): ${magenBagrutResult.error.message}`)
+    } else {
+      result.value.presentations[3] = magenBagrutResult.value
+    }
+    
+    if (presentationErrors.length > 0) {
+      return { error: new Error(presentationErrors.join(', ')) }
+    }
+  }
+  
+  return result
 }
 
 export function getGradeLevelFromScore(score) {
@@ -147,6 +249,25 @@ export function calculateFinalGradeFromDetails(gradingDetails) {
   }
   
   return technique.grade + interpretation.grade + musicality.grade + overall.grade
+}
+
+export function calculateTotalGradeFromDetailedGrading(detailedGrading) {
+  if (!detailedGrading) return null
+  
+  const { playingSkills, musicalUnderstanding, textKnowledge, playingByHeart } = detailedGrading
+  
+  // Check if all categories have points assigned
+  if (!playingSkills?.points && playingSkills?.points !== 0 ||
+      !musicalUnderstanding?.points && musicalUnderstanding?.points !== 0 ||
+      !textKnowledge?.points && textKnowledge?.points !== 0 ||
+      !playingByHeart?.points && playingByHeart?.points !== 0) {
+    return null
+  }
+  
+  const totalPoints = playingSkills.points + musicalUnderstanding.points + textKnowledge.points + playingByHeart.points
+  
+  // Ensure total doesn't exceed 100
+  return Math.min(totalPoints, 100)
 }
 
 export function validateBagrutCompletion(bagrut) {

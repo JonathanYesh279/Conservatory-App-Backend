@@ -31,13 +31,22 @@ async function migrateBagrut() {
     await connectToDatabase()
     const collection = await getCollection('bagrut')
     
-    // Find all bagruts that need migration (have 3 presentations)
+    // Find all bagruts that need migration
     const bagrutsToMigrate = await collection.find({
       $or: [
         { presentations: { $size: 3 } },
         { gradingDetails: { $exists: false } },
         { finalGrade: { $exists: false } },
-        { 'presentations.0.grade': { $exists: false } }
+        { 'presentations.0.grade': { $exists: true } },  // Need to migrate presentations with grades to notes
+        { 'presentations.1.grade': { $exists: true } },  // Need to migrate presentations with grades to notes
+        { 'presentations.2.grade': { $exists: true } },   // Need to migrate presentations with grades to notes
+        { 'presentations.0.recordingLinks': { $exists: false } },  // Need to add recordingLinks
+        { 'presentations.1.recordingLinks': { $exists: false } },  // Need to add recordingLinks
+        { 'presentations.2.recordingLinks': { $exists: false } },  // Need to add recordingLinks
+        { 'presentations.3.detailedGrading': { $exists: false } },  // Need to add detailed grading
+        { 'presentations.3.recordingLinks': { $exists: false } },  // Need to add recordingLinks
+        { 'magenBagrut.detailedGrading': { $exists: false } },  // Need to add detailed grading to magenBagrut
+        { 'magenBagrut.recordingLinks': { $exists: false } }  // Need to add recordingLinks to magenBagrut
       ]
     }).toArray()
     
@@ -52,12 +61,17 @@ async function migrateBagrut() {
         
         const updates = {}
         
-        // Update presentations to include grade fields and ensure 4 presentations
-        if (!bagrut.presentations || bagrut.presentations.length < 4) {
+        // Update presentations to migrate grades to notes for presentations 0-2 and ensure 4 presentations
+        if (!bagrut.presentations || bagrut.presentations.length < 4 || 
+            bagrut.presentations[0]?.grade !== undefined || 
+            bagrut.presentations[1]?.grade !== undefined || 
+            bagrut.presentations[2]?.grade !== undefined) {
           const updatedPresentations = []
           
-          // Update existing presentations with grade fields
+          // Update existing presentations with appropriate fields based on position
           const existingPresentations = bagrut.presentations || []
+          
+          // Handle presentations 0-2 (convert grade to notes)
           for (let i = 0; i < 3; i++) {
             const presentation = existingPresentations[i] || {
               completed: false,
@@ -67,15 +81,32 @@ async function migrateBagrut() {
               reviewedBy: null
             }
             
+            // For presentations 0-2, remove grade/gradeLevel and add notes + recordingLinks
+            const { grade, gradeLevel, ...presentationWithoutGrades } = presentation
             updatedPresentations.push({
-              ...presentation,
-              grade: presentation.grade || null,
-              gradeLevel: presentation.gradeLevel || (presentation.grade ? getGradeLevelFromScore(presentation.grade) : null)
+              ...presentationWithoutGrades,
+              notes: presentation.notes || '',
+              recordingLinks: presentation.recordingLinks || []
             })
           }
           
-          // Add 4th presentation if it doesn't exist
-          if (existingPresentations.length < 4) {
+          // Handle presentation 3 (מגן בגרות) - keep grades and add detailed grading + recordingLinks
+          if (existingPresentations.length >= 4) {
+            const presentation3 = existingPresentations[3]
+            updatedPresentations.push({
+              ...presentation3,
+              grade: presentation3.grade || null,
+              gradeLevel: presentation3.gradeLevel || (presentation3.grade ? getGradeLevelFromScore(presentation3.grade) : null),
+              recordingLinks: presentation3.recordingLinks || [],
+              detailedGrading: presentation3.detailedGrading || {
+                playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+                musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+                textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+                playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+              }
+            })
+          } else {
+            // Add 4th presentation if it doesn't exist
             updatedPresentations.push({
               completed: false,
               status: 'לא נבחן',
@@ -83,7 +114,14 @@ async function migrateBagrut() {
               review: null,
               reviewedBy: null,
               grade: null,
-              gradeLevel: null
+              gradeLevel: null,
+              recordingLinks: [],
+              detailedGrading: {
+                playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+                musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+                textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+                playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+              }
             })
           }
           
@@ -100,11 +138,18 @@ async function migrateBagrut() {
           }
         }
         
-        // Update magenBagrut with grade fields if missing
+        // Update magenBagrut with grade fields, detailed grading, and recordingLinks if missing
         if (bagrut.magenBagrut) {
           updates['magenBagrut.grade'] = bagrut.magenBagrut.grade || null
           updates['magenBagrut.gradeLevel'] = bagrut.magenBagrut.gradeLevel || 
             (bagrut.magenBagrut.grade ? getGradeLevelFromScore(bagrut.magenBagrut.grade) : null)
+          updates['magenBagrut.recordingLinks'] = bagrut.magenBagrut.recordingLinks || []
+          updates['magenBagrut.detailedGrading'] = bagrut.magenBagrut.detailedGrading || {
+            playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+            musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+            textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+            playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+          }
         }
         
         // Add new fields if missing

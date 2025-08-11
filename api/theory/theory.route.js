@@ -43,6 +43,9 @@ router.put('/:id', requireAuth(['מנהל', 'מורה תאוריה']), monitorVa
 router.put('/:id/attendance', requireAuth(['מנהל', 'מורה תאוריה']), monitorValidationErrors, validateObjectId('id'), validateAttendanceDate, monitorAttendanceOperations, theoryController.updateTheoryAttendance);
 
 // DELETE routes - Only admin and theory instructors can delete
+router.delete('/bulk-delete-by-date', requireAuth(['מנהל', 'מורה תאוריה']), theoryController.bulkDeleteTheoryLessonsByDate);
+router.delete('/bulk-delete-by-category/:category', requireAuth(['מנהל', 'מורה תאוריה']), theoryController.bulkDeleteTheoryLessonsByCategory);
+router.delete('/bulk-delete-by-teacher/:teacherId', requireAuth(['מנהל', 'מורה תאוריה', 'מורה']), validateObjectId('teacherId'), theoryController.bulkDeleteTheoryLessonsByTeacher);
 router.delete('/:id', requireAuth(['מנהל', 'מורה תאוריה']), validateObjectId('id'), theoryController.removeTheoryLesson);
 router.delete('/:id/student/:studentId', requireAuth(['מנהל', 'מורה תאוריה']), validateObjectId('id'), validateObjectId('studentId'), theoryController.removeStudentFromTheory);
 

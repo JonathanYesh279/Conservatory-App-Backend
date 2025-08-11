@@ -265,6 +265,42 @@ export function validateTheoryAttendance(attendance) {
   });
 }
 
+// Bulk delete validation schemas
+const theoryBulkDeleteByDateSchema = Joi.object({
+  startDate: Joi.date().required(),
+  endDate: Joi.date().min(Joi.ref('startDate')).required(),
+});
+
+const theoryBulkDeleteByCategorySchema = Joi.object({
+  category: Joi.string().valid(...VALID_THEORY_CATEGORIES).required(),
+});
+
+const theoryBulkDeleteByTeacherSchema = Joi.object({
+  teacherId: Joi.string().hex().length(24).required(),
+});
+
+// Bulk delete validation functions
+export function validateTheoryBulkDeleteByDate(deleteData) {
+  return theoryBulkDeleteByDateSchema.validate(deleteData, {
+    abortEarly: false,
+    stripUnknown: false,
+  });
+}
+
+export function validateTheoryBulkDeleteByCategory(deleteData) {
+  return theoryBulkDeleteByCategorySchema.validate(deleteData, {
+    abortEarly: false,
+    stripUnknown: false,
+  });
+}
+
+export function validateTheoryBulkDeleteByTeacher(deleteData) {
+  return theoryBulkDeleteByTeacherSchema.validate(deleteData, {
+    abortEarly: false,
+    stripUnknown: false,
+  });
+}
+
 // Export constants for use in other files
 export const THEORY_CONSTANTS = {
   VALID_DAYS_OF_WEEK,

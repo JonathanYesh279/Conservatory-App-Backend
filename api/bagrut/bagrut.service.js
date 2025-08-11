@@ -1,5 +1,5 @@
 import { getCollection } from '../../services/mongoDB.service.js'
-import { validateBagrut, getGradeLevelFromScore, validateGradeConsistency, calculateFinalGradeFromDetails, validateBagrutCompletion } from './bagrut.validation.js'
+import { validateBagrut, getGradeLevelFromScore, validateGradeConsistency, calculateFinalGradeFromDetails, calculateTotalGradeFromDetailedGrading, validateBagrutCompletion } from './bagrut.validation.js'
 import { ObjectId } from 'mongodb'
 
 // Helper function to safely create ObjectId
@@ -180,12 +180,29 @@ async function updatePresentation(bagrutId, presentationIndex, presentationData,
     const collection = await getCollection('bagrut')
     await _migrateBagrutTo4Presentations(collection, bagrutId)
 
-    if (presentationData.grade !== null && presentationData.grade !== undefined) {
-      const autoGradeLevel = getGradeLevelFromScore(presentationData.grade)
-      if (!presentationData.gradeLevel) {
-        presentationData.gradeLevel = autoGradeLevel
-      } else if (!validateGradeConsistency(presentationData.grade, presentationData.gradeLevel)) {
-        throw new Error(`Grade ${presentationData.grade} does not match grade level ${presentationData.gradeLevel}`)
+    // Only validate grades for presentation 3 (מגן בגרות)
+    if (presentationIndex === 3) {
+      // Handle detailed grading if provided
+      if (presentationData.detailedGrading) {
+        const calculatedGrade = calculateTotalGradeFromDetailedGrading(presentationData.detailedGrading)
+        if (calculatedGrade !== null) {
+          presentationData.grade = calculatedGrade
+          presentationData.gradeLevel = getGradeLevelFromScore(calculatedGrade)
+        }
+      } else if (presentationData.grade !== null && presentationData.grade !== undefined) {
+        const autoGradeLevel = getGradeLevelFromScore(presentationData.grade)
+        if (!presentationData.gradeLevel) {
+          presentationData.gradeLevel = autoGradeLevel
+        } else if (!validateGradeConsistency(presentationData.grade, presentationData.gradeLevel)) {
+          throw new Error(`Grade ${presentationData.grade} does not match grade level ${presentationData.gradeLevel}`)
+        }
+      }
+    } else {
+      // For presentations 0-2, remove any grade/gradeLevel fields and ensure notes field exists
+      delete presentationData.grade
+      delete presentationData.gradeLevel
+      if (!presentationData.notes) {
+        presentationData.notes = ''
       }
     }
 
@@ -216,7 +233,14 @@ async function updatePresentation(bagrutId, presentationIndex, presentationData,
 
 async function updateMagenBagrut(bagrutId, magenBagrutData, teacherId) {
   try {
-    if (magenBagrutData.grade !== null && magenBagrutData.grade !== undefined) {
+    // Handle detailed grading if provided
+    if (magenBagrutData.detailedGrading) {
+      const calculatedGrade = calculateTotalGradeFromDetailedGrading(magenBagrutData.detailedGrading)
+      if (calculatedGrade !== null) {
+        magenBagrutData.grade = calculatedGrade
+        magenBagrutData.gradeLevel = getGradeLevelFromScore(calculatedGrade)
+      }
+    } else if (magenBagrutData.grade !== null && magenBagrutData.grade !== undefined) {
       const autoGradeLevel = getGradeLevelFromScore(magenBagrutData.grade)
       if (!magenBagrutData.gradeLevel) {
         magenBagrutData.gradeLevel = autoGradeLevel
@@ -521,14 +545,41 @@ async function _migrateBagrutTo4Presentations(collection, bagrutId) {
         review: null,
         reviewedBy: null,
         grade: null,
-        gradeLevel: null
+        gradeLevel: null,
+        recordingLinks: [],
+        detailedGrading: {
+          playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+          musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+          textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+          playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+        }
       }
       
-      const updatedPresentations = bagrut.presentations.map(p => ({
-        ...p,
-        grade: p.grade || null,
-        gradeLevel: p.gradeLevel || null
-      }))
+      const updatedPresentations = bagrut.presentations.map((p, index) => {
+        if (index < 3) {
+          // For presentations 0-2, remove grade/gradeLevel and add notes + recordingLinks
+          const { grade, gradeLevel, ...presentationWithoutGrades } = p
+          return {
+            ...presentationWithoutGrades,
+            notes: p.notes || '',
+            recordingLinks: p.recordingLinks || []
+          }
+        } else {
+          // For presentation 3, keep grade/gradeLevel and add detailedGrading + recordingLinks if missing
+          return {
+            ...p,
+            grade: p.grade || null,
+            gradeLevel: p.gradeLevel || null,
+            recordingLinks: p.recordingLinks || [],
+            detailedGrading: p.detailedGrading || {
+              playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+              musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+              textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+              playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+            }
+          }
+        }
+      })
       updatedPresentations.push(fourthPresentation)
       
       const defaultGradingDetails = {
@@ -552,6 +603,13 @@ async function _migrateBagrutTo4Presentations(collection, bagrutId) {
             isCompleted: bagrut.isCompleted || false,
             'magenBagrut.grade': bagrut.magenBagrut.grade || null,
             'magenBagrut.gradeLevel': bagrut.magenBagrut.gradeLevel || null,
+            'magenBagrut.recordingLinks': bagrut.magenBagrut.recordingLinks || [],
+            'magenBagrut.detailedGrading': bagrut.magenBagrut.detailedGrading || {
+              playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
+              musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
+              textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
+              playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
+            },
             updatedAt: new Date()
           }
         }

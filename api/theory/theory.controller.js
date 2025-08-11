@@ -2,6 +2,11 @@ import { theoryService } from './theory.service.js';
 import ConflictDetectionService from '../../services/conflictDetectionService.js';
 import { sendErrorResponse, sendSuccessResponse, formatConflictResponse } from '../../utils/errorResponses.js';
 import { isValidTimeFormat, isValidTimeRange } from '../../utils/timeUtils.js';
+import { 
+  validateTheoryBulkDeleteByDate, 
+  validateTheoryBulkDeleteByCategory, 
+  validateTheoryBulkDeleteByTeacher 
+} from './theory.validation.js';
 
 export const theoryController = {
   getTheoryLessons,
@@ -12,6 +17,9 @@ export const theoryController = {
   updateTheoryLesson,
   removeTheoryLesson,
   bulkCreateTheoryLessons,
+  bulkDeleteTheoryLessonsByDate,
+  bulkDeleteTheoryLessonsByCategory,
+  bulkDeleteTheoryLessonsByTeacher,
   updateTheoryAttendance,
   getTheoryAttendance,
   addStudentToTheory,
@@ -21,18 +29,40 @@ export const theoryController = {
 
 async function getTheoryLessons(req, res, next) {
   try {
-    const filterBy = {
-      category: req.query.category,
-      teacherId: req.query.teacherId,
-      studentId: req.query.studentId,
-      fromDate: req.query.fromDate,
-      toDate: req.query.toDate,
-      dayOfWeek: req.query.dayOfWeek,
-      location: req.query.location,
-      schoolYearId: req.query.schoolYearId,
-    };
+    console.log('🎯 Theory Controller: GET /api/theory called');
+    console.log('📝 Theory Controller: Query parameters:', req.query);
+    console.log('🌐 Theory Controller: Original URL:', req.originalUrl);
+    console.log('👤 Theory Controller: User info:', {
+      userId: req.loggedinUser?._id || req.teacher?._id,
+      roles: req.loggedinUser?.roles || req.teacher?.roles,
+      schoolYear: req.schoolYear?._id
+    });
+    
+    // Check if schoolYearId was originally provided in the request
+    const originalSchoolYearId = req.originalUrl.includes('schoolYearId') ? req.query.schoolYearId : null;
+    console.log('🏫 Theory Controller: Original schoolYearId in request:', originalSchoolYearId);
+    
+    const filterBy = {};
+    
+    // Only add filters that have actual values
+    if (req.query.category) filterBy.category = req.query.category;
+    if (req.query.teacherId) filterBy.teacherId = req.query.teacherId;
+    if (req.query.studentId) filterBy.studentId = req.query.studentId;
+    if (req.query.fromDate) filterBy.fromDate = req.query.fromDate;
+    if (req.query.toDate) filterBy.toDate = req.query.toDate;
+    if (req.query.dayOfWeek !== undefined) filterBy.dayOfWeek = req.query.dayOfWeek;
+    if (req.query.location) filterBy.location = req.query.location;
+    
+    // Only apply school year filtering if explicitly provided by the client
+    if (originalSchoolYearId) {
+      filterBy.schoolYearId = originalSchoolYearId;
+    }
+    
+    console.log('🔧 Theory Controller: Built filter object:', JSON.stringify(filterBy, null, 2));
 
     const theoryLessons = await theoryService.getTheoryLessons(filterBy);
+    
+    console.log('📊 Theory Controller: Returning', theoryLessons.length, 'theory lessons');
     res.json(theoryLessons);
   } catch (err) {
     console.error(`Error in getTheoryLessons controller: ${err.message}`);
@@ -524,5 +554,179 @@ async function getStudentTheoryAttendanceStats(req, res, next) {
       `Error in getStudentTheoryAttendanceStats controller: ${err.message}`
     );
     next(err);
+  }
+}
+
+async function bulkDeleteTheoryLessonsByDate(req, res, next) {
+  try {
+    const { startDate, endDate } = req.body;
+
+    // Input validation with Joi schema
+    const { error } = validateTheoryBulkDeleteByDate({ startDate, endDate });
+    if (error) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', error.details);
+    }
+
+    const userId = req.loggedinUser?._id || req.teacher?._id;
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher?.roles?.includes('מנהל');
+
+    if (!userId) {
+      return res.status(401).json({
+        error: 'Authentication required for bulk delete operation'
+      });
+    }
+
+    // Authorization check - only admin and theory instructors can bulk delete
+    if (!isAdmin && !req.loggedinUser?.roles?.includes('מורה תאוריה') && !req.teacher?.roles?.includes('מורה תאוריה')) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'Insufficient permissions to bulk delete theory lessons'
+      });
+    }
+
+    const result = await theoryService.bulkDeleteTheoryLessonsByDate(
+      startDate,
+      endDate,
+      userId,
+      isAdmin
+    );
+
+    res.status(200).json({
+      deletedCount: result.deletedCount,
+      message: result.message
+    });
+  } catch (err) {
+    console.error(`Error in bulkDeleteTheoryLessonsByDate controller: ${err.message}`);
+
+    if (err.message.includes('Invalid start or end date')) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: err.message }]);
+    }
+
+    if (err.message.includes('End date must be after start date')) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: err.message }]);
+    }
+
+    if (err.message.includes('Database error')) {
+      return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
+    }
+
+    return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
+  }
+}
+
+async function bulkDeleteTheoryLessonsByCategory(req, res, next) {
+  try {
+    const { category } = req.params;
+
+    // Input validation with Joi schema
+    const { error } = validateTheoryBulkDeleteByCategory({ category });
+    if (error) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', error.details);
+    }
+
+    const userId = req.loggedinUser?._id || req.teacher?._id;
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher?.roles?.includes('מנהל');
+
+    if (!userId) {
+      return res.status(401).json({
+        error: 'Authentication required for bulk delete operation'
+      });
+    }
+
+    // Authorization check - only admin and theory instructors can bulk delete
+    if (!isAdmin && !req.loggedinUser?.roles?.includes('מורה תאוריה') && !req.teacher?.roles?.includes('מורה תאוריה')) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'Insufficient permissions to bulk delete theory lessons'
+      });
+    }
+
+    const result = await theoryService.bulkDeleteTheoryLessonsByCategory(
+      category,
+      userId,
+      isAdmin
+    );
+
+    res.status(200).json({
+      deletedCount: result.deletedCount,
+      message: result.message
+    });
+  } catch (err) {
+    console.error(`Error in bulkDeleteTheoryLessonsByCategory controller: ${err.message}`);
+
+    if (err.message.includes('Category is required')) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: err.message }]);
+    }
+
+    if (err.message.includes('Database error')) {
+      return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
+    }
+
+    return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
+  }
+}
+
+async function bulkDeleteTheoryLessonsByTeacher(req, res, next) {
+  try {
+    const { teacherId } = req.params;
+
+    // Input validation with Joi schema
+    const { error } = validateTheoryBulkDeleteByTeacher({ teacherId });
+    if (error) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', error.details);
+    }
+
+    const userId = req.loggedinUser?._id || req.teacher?._id;
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher?.roles?.includes('מנהל');
+
+    if (!userId) {
+      return res.status(401).json({
+        error: 'Authentication required for bulk delete operation'
+      });
+    }
+
+    // Authorization check - only admin and theory instructors can bulk delete
+    // Teachers can delete their own lessons
+    const canDelete = isAdmin || 
+      req.loggedinUser?.roles?.includes('מורה תאוריה') || 
+      req.teacher?.roles?.includes('מורה תאוריה') ||
+      teacherId === userId.toString();
+
+    if (!canDelete) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'Insufficient permissions to bulk delete theory lessons for this teacher'
+      });
+    }
+
+    const result = await theoryService.bulkDeleteTheoryLessonsByTeacher(
+      teacherId,
+      userId,
+      isAdmin
+    );
+
+    res.status(200).json({
+      deletedCount: result.deletedCount,
+      message: result.message
+    });
+  } catch (err) {
+    console.error(`Error in bulkDeleteTheoryLessonsByTeacher controller: ${err.message}`);
+
+    if (err.message.includes('Valid teacher ID is required')) {
+      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: err.message }]);
+    }
+
+    if (err.message.includes('Not authorized')) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: err.message
+      });
+    }
+
+    if (err.message.includes('Database error')) {
+      return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
+    }
+
+    return sendErrorResponse(res, 'INTERNAL_SERVER_ERROR', err.message);
   }
 }

@@ -34,6 +34,9 @@ export const theoryService = {
   updateTheoryLesson,
   removeTheoryLesson,
   bulkCreateTheoryLessons,
+  bulkDeleteTheoryLessonsByDate,
+  bulkDeleteTheoryLessonsByCategory,
+  bulkDeleteTheoryLessonsByTeacher,
   updateTheoryAttendance,
   getTheoryAttendance,
   addStudentToTheory,
@@ -43,15 +46,24 @@ export const theoryService = {
 
 async function getTheoryLessons(filterBy = {}) {
   try {
-    // Check cache first
-    const cacheKey = 'theory_lessons';
-    const cachedResult = queryCacheService.get(cacheKey, filterBy);
-    if (cachedResult) {
-      return cachedResult;
-    }
+    console.log('🔍 Theory Service: Getting theory lessons with filters:', JSON.stringify(filterBy, null, 2));
+    
+    // Temporarily disable cache for debugging
+    // const cacheKey = 'theory_lessons';
+    // const cachedResult = queryCacheService.get(cacheKey, filterBy);
+    // if (cachedResult) {
+    //   console.log('📦 Theory Service: Returning cached result, count:', cachedResult.length);
+    //   return cachedResult;
+    // }
 
     const collection = await getCollection('theory_lesson');
     const criteria = createLessonFilterQuery(filterBy);
+    
+    console.log('🔎 Theory Service: Built query criteria:', JSON.stringify(criteria, null, 2));
+    
+    // Debug: Count total documents in collection
+    const totalCount = await collection.countDocuments({});
+    console.log('📈 Theory Service: Total documents in theory_lesson collection:', totalCount);
 
     // Estimate query complexity for monitoring
     const complexity = estimateQueryComplexity(criteria);
@@ -60,10 +72,21 @@ async function getTheoryLessons(filterBy = {}) {
       .find(criteria)
       .sort({ date: 1, startTime: 1 })
       .toArray();
+    
+    console.log('✅ Theory Service: Query executed, found lessons:', theoryLessons.length);
+    if (theoryLessons.length > 0) {
+      console.log('📄 Theory Service: First lesson sample:', {
+        _id: theoryLessons[0]._id,
+        category: theoryLessons[0].category,
+        teacherId: theoryLessons[0].teacherId,
+        date: theoryLessons[0].date,
+        schoolYearId: theoryLessons[0].schoolYearId
+      });
+    }
 
-    // Cache the result with TTL based on query type
-    const ttl = _calculateCacheTTL(filterBy, complexity);
-    queryCacheService.set(cacheKey, filterBy, theoryLessons, { ttl });
+    // Temporarily disable cache for debugging
+    // const ttl = _calculateCacheTTL(filterBy, complexity);
+    // queryCacheService.set(cacheKey, filterBy, theoryLessons, { ttl });
 
     return theoryLessons;
   } catch (err) {
@@ -758,6 +781,276 @@ function _generateDatesForDayOfWeek(
 ) {
   // Use the new timezone-aware date generation
   return generateDatesForDayOfWeek(startDate, endDate, dayOfWeek, excludeDates);
+}
+
+async function bulkDeleteTheoryLessonsByDate(startDate, endDate, userId, isAdmin = false) {
+  try {
+    // Input validation
+    if (!startDate || !endDate) {
+      throw new Error('Start date and end date are required');
+    }
+
+    if (!isValidDate(startDate) || !isValidDate(endDate)) {
+      throw new Error('Invalid start or end date provided');
+    }
+
+    const start = getStartOfDay(startDate);
+    const end = getEndOfDay(endDate);
+
+    if (end <= start) {
+      throw new Error('End date must be after start date');
+    }
+
+    // Get collections
+    const theoryCollection = await getCollection('theory_lesson');
+    const activityCollection = await getCollection('activity_attendance');
+
+    if (!theoryCollection) {
+      throw new Error('Database error: Failed to access theory lesson collection');
+    }
+
+    // Build query criteria
+    const criteria = {
+      date: {
+        $gte: start,
+        $lte: end
+      }
+    };
+
+    // Get all theory lessons in date range to collect IDs for cleanup
+    const theoryLessons = await theoryCollection.find(criteria).toArray();
+    const lessonIds = theoryLessons.map(lesson => lesson._id.toString());
+
+    let deletedCount = 0;
+
+    // Use transaction for data consistency
+    const client = theoryCollection.client || theoryCollection.s?.client;
+    if (client) {
+      const session = client.startSession();
+      
+      try {
+        await session.withTransaction(async () => {
+          // Delete all theory lessons in date range
+          const deleteResult = await theoryCollection.deleteMany(criteria, { session });
+          deletedCount = deleteResult.deletedCount;
+
+          // Clean up attendance records if collection exists
+          if (activityCollection && lessonIds.length > 0) {
+            await activityCollection.deleteMany(
+              { 
+                sessionId: { $in: lessonIds },
+                activityType: 'תאוריה'
+              },
+              { session }
+            );
+          }
+        });
+      } finally {
+        await session.endSession();
+      }
+    } else {
+      // Fallback without transaction if session not available
+      const deleteResult = await theoryCollection.deleteMany(criteria);
+      deletedCount = deleteResult.deletedCount;
+
+      // Clean up attendance records
+      if (activityCollection && lessonIds.length > 0) {
+        try {
+          await activityCollection.deleteMany({
+            sessionId: { $in: lessonIds },
+            activityType: 'תאוריה'
+          });
+        } catch (attendanceErr) {
+          console.warn(`Failed to delete attendance records: ${attendanceErr.message}`);
+        }
+      }
+    }
+
+    // Clear cache
+    queryCacheService.invalidate('theory_lessons');
+
+    // Logging
+    console.log(`User ${userId} deleted ${deletedCount} theory lessons between ${formatDate(start)} and ${formatDate(end)}`);
+
+    return {
+      deletedCount,
+      message: `Successfully deleted ${deletedCount} theory lessons between ${formatDate(start)} and ${formatDate(end)}`
+    };
+  } catch (err) {
+    console.error(`Failed to bulk delete theory lessons by date: ${err}`);
+    throw new Error(`Failed to bulk delete theory lessons by date: ${err.message}`);
+  }
+}
+
+async function bulkDeleteTheoryLessonsByCategory(category, userId, isAdmin = false) {
+  try {
+    // Input validation
+    if (!category) {
+      throw new Error('Category is required');
+    }
+
+    // Get collections
+    const theoryCollection = await getCollection('theory_lesson');
+    const activityCollection = await getCollection('activity_attendance');
+
+    if (!theoryCollection) {
+      throw new Error('Database error: Failed to access theory lesson collection');
+    }
+
+    // Build query criteria
+    const criteria = { category };
+
+    // Get all theory lessons for this category to collect IDs for cleanup
+    const theoryLessons = await theoryCollection.find(criteria).toArray();
+    const lessonIds = theoryLessons.map(lesson => lesson._id.toString());
+
+    let deletedCount = 0;
+
+    // Use transaction for data consistency
+    const client = theoryCollection.client || theoryCollection.s?.client;
+    if (client) {
+      const session = client.startSession();
+      
+      try {
+        await session.withTransaction(async () => {
+          // Delete all theory lessons for this category
+          const deleteResult = await theoryCollection.deleteMany(criteria, { session });
+          deletedCount = deleteResult.deletedCount;
+
+          // Clean up attendance records if collection exists
+          if (activityCollection && lessonIds.length > 0) {
+            await activityCollection.deleteMany(
+              { 
+                sessionId: { $in: lessonIds },
+                activityType: 'תאוריה'
+              },
+              { session }
+            );
+          }
+        });
+      } finally {
+        await session.endSession();
+      }
+    } else {
+      // Fallback without transaction if session not available
+      const deleteResult = await theoryCollection.deleteMany(criteria);
+      deletedCount = deleteResult.deletedCount;
+
+      // Clean up attendance records
+      if (activityCollection && lessonIds.length > 0) {
+        try {
+          await activityCollection.deleteMany({
+            sessionId: { $in: lessonIds },
+            activityType: 'תאוריה'
+          });
+        } catch (attendanceErr) {
+          console.warn(`Failed to delete attendance records: ${attendanceErr.message}`);
+        }
+      }
+    }
+
+    // Clear cache
+    queryCacheService.invalidate('theory_lessons');
+
+    // Logging
+    console.log(`User ${userId} deleted ${deletedCount} theory lessons for category: ${category}`);
+
+    return {
+      deletedCount,
+      message: `Successfully deleted ${deletedCount} theory lessons for category: ${category}`
+    };
+  } catch (err) {
+    console.error(`Failed to bulk delete theory lessons by category: ${err}`);
+    throw new Error(`Failed to bulk delete theory lessons by category: ${err.message}`);
+  }
+}
+
+async function bulkDeleteTheoryLessonsByTeacher(teacherId, userId, isAdmin = false) {
+  try {
+    // Input validation
+    if (!teacherId || !ObjectId.isValid(teacherId)) {
+      throw new Error('Valid teacher ID is required');
+    }
+
+    // Authorization check - teachers can only delete their own lessons unless admin
+    if (!isAdmin && teacherId !== userId.toString()) {
+      throw new Error('Not authorized to delete lessons for this teacher');
+    }
+
+    // Get collections
+    const theoryCollection = await getCollection('theory_lesson');
+    const activityCollection = await getCollection('activity_attendance');
+
+    if (!theoryCollection) {
+      throw new Error('Database error: Failed to access theory lesson collection');
+    }
+
+    // Build query criteria
+    const criteria = { teacherId };
+
+    // Get all theory lessons for this teacher to collect IDs for cleanup
+    const theoryLessons = await theoryCollection.find(criteria).toArray();
+    const lessonIds = theoryLessons.map(lesson => lesson._id.toString());
+
+    let deletedCount = 0;
+
+    // Use transaction for data consistency
+    const client = theoryCollection.client || theoryCollection.s?.client;
+    if (client) {
+      const session = client.startSession();
+      
+      try {
+        await session.withTransaction(async () => {
+          // Delete all theory lessons for this teacher
+          const deleteResult = await theoryCollection.deleteMany(criteria, { session });
+          deletedCount = deleteResult.deletedCount;
+
+          // Clean up attendance records if collection exists
+          if (activityCollection && lessonIds.length > 0) {
+            await activityCollection.deleteMany(
+              { 
+                sessionId: { $in: lessonIds },
+                activityType: 'תאוריה'
+              },
+              { session }
+            );
+          }
+        });
+      } finally {
+        await session.endSession();
+      }
+    } else {
+      // Fallback without transaction if session not available
+      const deleteResult = await theoryCollection.deleteMany(criteria);
+      deletedCount = deleteResult.deletedCount;
+
+      // Clean up attendance records
+      if (activityCollection && lessonIds.length > 0) {
+        try {
+          await activityCollection.deleteMany({
+            sessionId: { $in: lessonIds },
+            activityType: 'תאוריה'
+          });
+        } catch (attendanceErr) {
+          console.warn(`Failed to delete attendance records: ${attendanceErr.message}`);
+        }
+      }
+    }
+
+    // Clear cache
+    queryCacheService.invalidate('theory_lessons');
+
+    // Logging
+    console.log(`User ${userId} deleted ${deletedCount} theory lessons for teacher: ${teacherId}`);
+
+    return {
+      deletedCount,
+      message: `Successfully deleted ${deletedCount} theory lessons for teacher`
+    };
+  } catch (err) {
+    console.error(`Failed to bulk delete theory lessons by teacher: ${err}`);
+    throw new Error(`Failed to bulk delete theory lessons by teacher: ${err.message}`);
+  }
 }
 
 // Helper function to build query criteria

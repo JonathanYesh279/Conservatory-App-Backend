@@ -321,9 +321,10 @@ describe('Bagrut Controller', () => {
       // Setup
       req.params = { 
         id: 'invalid-id',
-        presentationIndex: 'invalid'
+        presentationIndex: '1'  // Valid index so it reaches the service
       }
       req.body = { status: 'עבר/ה' }
+      req.teacher = { _id: new ObjectId('6579e36c83c8b3a5c2df8a8c') }
       
       const error = new Error('Failed to update presentation')
       bagrutService.updatePresentation.mockRejectedValue(error)
