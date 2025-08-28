@@ -1,6 +1,7 @@
 import { getCollection } from '../../services/mongoDB.service.js';
 import {
   validateTheoryLesson,
+  validateTheoryLessonUpdate,
   validateTheoryBulkCreate,
   validateTheoryAttendance,
 } from './theory.validation.js';
@@ -217,10 +218,15 @@ async function addTheoryLesson(theoryLessonToAdd) {
 
 async function updateTheoryLesson(theoryLessonId, theoryLessonToUpdate) {
   try {
-    const { error, value } = validateTheoryLesson(theoryLessonToUpdate);
+    console.log(`🔄 Theory Service: Updating lesson ${theoryLessonId} with data:`, JSON.stringify(theoryLessonToUpdate, null, 2));
+    
+    const { error, value } = validateTheoryLessonUpdate(theoryLessonToUpdate);
     if (error) {
+      console.error(`❌ Validation error in theory update:`, error.details);
       throw new Error(`Validation error: ${error.message}`);
     }
+
+    console.log(`✅ Validation passed. Validated data:`, JSON.stringify(value, null, 2));
 
     // Handle date conversion for updates
     if (value.date && !isValidDate(value.date)) {
@@ -241,7 +247,7 @@ async function updateTheoryLesson(theoryLessonId, theoryLessonToUpdate) {
     const existingLesson = await getTheoryLessonById(theoryLessonId);
 
     // If teacher changed, update both old and new teacher records
-    if (existingLesson.teacherId !== value.teacherId) {
+    if (value.teacherId && existingLesson.teacherId !== value.teacherId) {
       const teacherCollection = await getCollection('teacher');
 
       // Remove from old teacher
@@ -262,6 +268,12 @@ async function updateTheoryLesson(theoryLessonId, theoryLessonToUpdate) {
     }
 
     const collection = await getCollection('theory_lesson');
+    
+    // Validate theoryLessonId format before using it
+    if (!ObjectId.isValid(theoryLessonId)) {
+      throw new Error(`Invalid theory lesson ID format: ${theoryLessonId}`);
+    }
+
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(theoryLessonId) },
       { $set: value },

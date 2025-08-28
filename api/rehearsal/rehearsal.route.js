@@ -18,8 +18,9 @@ router.delete('/:id', requireAuth(['מנצח', 'מנהל']), rehearsalController
 
 router.put('/:rehearsalId/attendance', requireAuth(['מנצח', 'מנהל']), formatAttendanceResponse(), rehearsalController.updateAttendance)
 
-router.post('/bulk-create', requireAuth(['מנהל', 'מנצח']), rehearsalController.bulkCreateRehearsals)
+router.post('/bulk', requireAuth(['מנהל', 'מנצח']), rehearsalController.bulkCreateRehearsals)
 router.delete('/orchestra/:orchestraId', requireAuth(['מנהל', 'מנצח']), rehearsalController.bulkDeleteRehearsalsByOrchestra)
+router.delete('/orchestra/:orchestraId/date-range', requireAuth(['מנהל', 'מנצח']), rehearsalController.bulkDeleteRehearsalsByDateRange)
 router.put('/orchestra/:orchestraId', requireAuth(['מנהל', 'מנצח']), rehearsalController.bulkUpdateRehearsalsByOrchestra)
 
 export default router

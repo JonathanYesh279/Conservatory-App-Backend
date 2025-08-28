@@ -14,6 +14,7 @@ router.get('/:studentId/attendance-history', requireAuth(['מורה', 'מנהל'
 router.post('/', requireAuth(['מנהל', 'מורה']), validateTeacherAssignmentsMiddleware, studentController.addStudent);
 router.put('/:id', requireAuth(['מורה', 'מנהל']), validateTeacherAssignmentsMiddleware, studentController.updateStudent)
 router.put('/:id/test', requireAuth(['מורה', 'מנהל']), studentController.updateStudentTest)
+router.patch('/:id/stage-level', requireAuth(['מורה', 'מנהל']), studentController.updateStudentStageLevel)
 router.delete('/:id', requireAuth(['מנהל', 'מורה']), studentController.removeStudent)
 
 export default router

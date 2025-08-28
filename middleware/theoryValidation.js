@@ -125,10 +125,27 @@ const validateObjectId = (paramName) => {
   return (req, res, next) => {
     const id = req.params[paramName] || req.body[paramName];
     
-    if (id && !ObjectId.isValid(id)) {
-      return sendErrorResponse(res, 'VALIDATION_ERROR', [{ 
-        message: `Invalid ${paramName} format` 
-      }]);
+    if (id) {
+      try {
+        // Check basic format before calling ObjectId.isValid
+        if (typeof id !== 'string' || id.length !== 24 || !/^[0-9a-fA-F]{24}$/.test(id)) {
+          return sendErrorResponse(res, 'VALIDATION_ERROR', [{ 
+            message: `Invalid ${paramName} format - must be a 24-character hexadecimal string` 
+          }]);
+        }
+        
+        if (!ObjectId.isValid(id)) {
+          return sendErrorResponse(res, 'VALIDATION_ERROR', [{ 
+            message: `Invalid ${paramName} format` 
+          }]);
+        }
+      } catch (error) {
+        // Catch BSONError for malformed ObjectIds
+        console.warn('ObjectId validation error for', paramName + ':', error.message, 'ID:', id);
+        return sendErrorResponse(res, 'VALIDATION_ERROR', [{ 
+          message: `Invalid ${paramName} format - ${error.message}` 
+        }]);
+      }
     }
 
     next();
@@ -285,12 +302,24 @@ const validateStudentIds = (req, res, next) => {
     }]);
   }
 
-  // Check if all IDs are valid ObjectIds
-  const invalidIds = studentIds.filter(id => !ObjectId.isValid(id));
+  // Check if all IDs are valid ObjectIds - safely handle BSONError
+  const invalidIds = studentIds.filter(id => {
+    try {
+      // Also check if it's a string and has correct length before validation
+      if (typeof id !== 'string' || id.length !== 24) {
+        return true;
+      }
+      return !ObjectId.isValid(id);
+    } catch (error) {
+      // Catch BSONError for malformed hex strings
+      console.warn('ObjectId validation error:', error.message, 'for ID:', id);
+      return true; // Mark as invalid if validation throws
+    }
+  });
 
   if (invalidIds.length > 0) {
     return sendErrorResponse(res, 'VALIDATION_ERROR', [{ 
-      message: 'All student IDs must be valid MongoDB ObjectIds' 
+      message: `Invalid student IDs found: ${invalidIds.slice(0, 3).join(', ')}${invalidIds.length > 3 ? '...' : ''}. All student IDs must be valid 24-character MongoDB ObjectIds` 
     }]);
   }
 

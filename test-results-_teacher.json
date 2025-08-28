@@ -1,0 +1,6181 @@
+{
+  "endpoint": "/teacher",
+  "status": 200,
+  "contentType": "application/json; charset=utf-8",
+  "success": true,
+  "data": [
+    {
+      "_id": "68813849abdf329e8afc25e3",
+      "personalInfo": {
+        "fullName": "אבי ברק",
+        "phone": "0506908861",
+        "email": "avi@avibarak.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תופים",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "avi@avibarak.com",
+        "password": "$2b$10$PXuC.pGM3C9K/zNfLPq3Q.J4Kp2j.hsiZNIFuJBGnWUqcKNne07na",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.663Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.663Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.663Z",
+      "updatedAt": "2025-07-31T10:44:06.088Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2632",
+      "personalInfo": {
+        "fullName": "אבי ליבוביץ'",
+        "phone": "0545227077",
+        "email": "avilebovich@gmail.co",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "ג'אז",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "avilebovich@gmail.co",
+        "password": "$2b$10$ZEnsT9kNNb9MrGormoBp0ex973ELuagS/mTdMg0z8NvT053mziS0e",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.281Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.281Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.281Z",
+      "updatedAt": "2025-08-07T21:02:10.056Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2600",
+      "personalInfo": {
+        "fullName": "אולג יקרביץ'",
+        "phone": "0545251703",
+        "email": "oleg.tamar@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "oleg.tamar@gmail.com",
+        "password": "$2b$10$WXsTbtDGb4f7qNkrkHmhd.orN8b3ceSAJGthfC8iP7rVmxF.8KrDS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.357Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.357Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.357Z",
+      "updatedAt": "2025-08-07T21:02:26.651Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f9",
+      "personalInfo": {
+        "fullName": "אולגה זלמנוב",
+        "phone": "0507333583",
+        "email": "ozelmanov@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה",
+        "מורה תאוריה"
+      ],
+      "professionalInfo": {
+        "instrument": "תאוריה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": [],
+        "theoryLessonIds": [
+          "688722d569eab862f9abaffc",
+          "688722d569eab862f9abaffd",
+          "688722d569eab862f9abb000",
+          "688722d569eab862f9abb001",
+          "688722d569eab862f9abb002",
+          "688722d569eab862f9abb003",
+          "688722d569eab862f9abb004",
+          "688722d569eab862f9abb005",
+          "688722d569eab862f9abb006",
+          "688722d569eab862f9abb007",
+          "688722d569eab862f9abb008",
+          "688722d569eab862f9abb009",
+          "688722d569eab862f9abb00a",
+          "688722d569eab862f9abb00b",
+          "688722d569eab862f9abb00c",
+          "688722d569eab862f9abb00d",
+          "688722d569eab862f9abb00e",
+          "689da8535060c2d69c9c2151",
+          "689da8535060c2d69c9c2152",
+          "689da8535060c2d69c9c2153",
+          "689da8535060c2d69c9c2154",
+          "689da8535060c2d69c9c2155",
+          "689da8535060c2d69c9c2156",
+          "689da8535060c2d69c9c2157",
+          "689da8535060c2d69c9c2158",
+          "689da8535060c2d69c9c2159",
+          "689da8535060c2d69c9c215a",
+          "689da8535060c2d69c9c215b",
+          "689da8535060c2d69c9c215c",
+          "689da8535060c2d69c9c215d"
+        ]
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "ozelmanov@gmail.com",
+        "password": "$2b$10$1ee1mDSkJVlMcB41PE3fceDKJdUG.Mz.PeOfTsqpZa5F373lS99w6",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.938Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.938Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.938Z",
+      "updatedAt": "2025-07-24T23:46:04.832Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc263d",
+      "personalInfo": {
+        "fullName": "אור סויסה",
+        "phone": "0506764065",
+        "email": "orsuissa@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "orsuissa@gmail.com",
+        "password": "$2b$10$/CCHk8sywaVjcO0tvkaDLObAz9Kd5IjYnVhZoZ0eSazJ4ahlacrFu",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.908Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.908Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.908Z",
+      "updatedAt": "2025-08-07T21:02:35.459Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f2",
+      "personalInfo": {
+        "fullName": "אורי ונטורה",
+        "phone": "0506380496",
+        "email": "oriventura@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "oriventura@gmail.com",
+        "password": "$2b$10$dplObqB4Pq./g22dtfyGjuUp8JyE90YFgUC95ovJwBBWqVTwrzP42",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.527Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.527Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.527Z",
+      "updatedAt": "2025-08-07T21:02:45.446Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2605",
+      "personalInfo": {
+        "fullName": "אורלי לבן",
+        "phone": "0527429955",
+        "email": "orlylavan1@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "orlylavan1@gmail.com",
+        "password": "$2b$10$5KJ3XabSgzp5acT9ZP311OwjW2BEQ2RXieRg.L9P8MokErwDVaxFe",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.656Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.656Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.656Z",
+      "updatedAt": "2025-08-07T21:03:03.676Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc261e",
+      "personalInfo": {
+        "fullName": "אחינועם קייסר",
+        "phone": "0526571777",
+        "email": "achikeis@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "מלווה/ מורה לפסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "achikeis@gmail.com",
+        "password": "$2b$10$317BH6xLbEuOimVqiIusw.9NeM0ypIGYXNLbw/MT6YSIulrqrj4Je",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.094Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.094Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.094Z",
+      "updatedAt": "2025-08-07T21:03:15.677Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2625",
+      "personalInfo": {
+        "fullName": "אינה רובין",
+        "phone": "0528670446",
+        "email": "rubininna@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "rubininna@gmail.com",
+        "password": "$2b$10$WNUhHv8174UpuMc5OgGydu/7KvCcC0ar4TbtvusfF3x6KqHTrJjo6",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.498Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.498Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.498Z",
+      "updatedAt": "2025-08-07T21:03:28.361Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965db8",
+      "personalInfo": {
+        "fullName": "אירנה אוסטרובסקי",
+        "phone": "0523955858",
+        "email": "irinaost64@gmail.com",
+        "address": "כתובת 3"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "irinaost64@gmail.com",
+        "password": "$2b$10$C1Y8QhcNHhjNJuZUpd3C6.RyoFy.3LOgI4GCaQHOP60tsS.B84Wyu",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:23:44.839Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:23:44.839Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:44.839Z",
+      "updatedAt": "2025-07-23T21:03:48.885Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965dbb",
+      "personalInfo": {
+        "fullName": "אלה אסטחוב",
+        "phone": "0504846095",
+        "email": "alunya.7@gmail.com",
+        "address": "כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "alunya.7@gmail.com",
+        "password": "$2b$10$seHFTTx/4nHk.UVAfnFLweNyH8qvGn7cFWzMiOXfhSyMOfz9TM1R2",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:23:45.016Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:23:45.016Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:45.016Z",
+      "updatedAt": "2025-07-23T21:04:44.679Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f5",
+      "personalInfo": {
+        "fullName": "אלה ואולין",
+        "phone": "0524409312",
+        "email": "ellavaulin@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "ellavaulin@gmail.com",
+        "password": "$2b$10$Qz620opKg/GfdDXg9WWFduCmUqIuFfuTXC4UPh0Yqok1Ei5YiZNMO",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.698Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.698Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.698Z",
+      "updatedAt": "2025-08-07T21:03:53.388Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc262b",
+      "personalInfo": {
+        "fullName": "אלה תדמור",
+        "phone": "0523288884",
+        "email": "tadmorella@yahoo.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פיתוח קול ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "tadmorella@yahoo.com",
+        "password": "$2b$10$oIhHTmCVUCgtZnqDkLBSLehkyS4HMdN12yBYXDHZnaAPOS8AgBku6",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.855Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.855Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.855Z",
+      "updatedAt": "2025-08-07T21:03:45.815Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc261d",
+      "personalInfo": {
+        "fullName": "אלונה קוטליאר",
+        "phone": "0545997257",
+        "email": "alonakotlyar70@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "alonakotlyar70@gmail.com",
+        "password": "$2b$10$b//sQIwoBZR6jWODy7gemO.VrGb9sOxuHdiVrsBOV3sW10eOMSyDG",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.034Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.034Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.034Z",
+      "updatedAt": "2025-08-07T21:03:37.908Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25eb",
+      "personalInfo": {
+        "fullName": "אלכס דולוב",
+        "phone": "0527265426",
+        "email": "sasha.doulov@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "צ`לו",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "sasha.doulov@gmail.com",
+        "password": "$2b$10$aPl2Rn9qH49tn1Y6MU/zxO9D0jxwCyJugMHKGA3TeKeOoV.e3OE3u",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.120Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.120Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.120Z",
+      "updatedAt": "2025-08-07T21:04:11.593Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25fa",
+      "personalInfo": {
+        "fullName": "אלכסנדרה זנגייב",
+        "phone": "0507179753",
+        "email": "pianistka2004@walla.com",
+        "address": ""
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "pianistka2004@walla.com",
+        "password": "$2b$10$vSzaLWQbf9hNg234XzhIo.qIE5OVYp1ODFbxgSjU3/rJRN147zUmG",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.995Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.995Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.995Z",
+      "updatedAt": "2025-08-17T22:03:25.865Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2618",
+      "personalInfo": {
+        "fullName": "אלסיה פלדמן",
+        "phone": "0544790175",
+        "email": "skrabatunalesya@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "צ'לו",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "skrabatunalesya@gmail.com",
+        "password": "$2b$10$/tTYobfaDeZ.vDa4946dT.UtpeAVTp3pnBkfwjGiOa89fSNDxaVnS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.746Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.746Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.746Z",
+      "updatedAt": "2025-08-07T21:04:01.820Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25d6",
+      "personalInfo": {
+        "fullName": "אנה ארונזון",
+        "phone": "0525952650",
+        "email": "anna.aronzon1@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "anna.aronzon1@gmail.com",
+        "password": "$2b$10$b1Y4fpBB51rkOBguq0BJCus/w762GyTKORAtv0YPzXuKAKQEZ7mOG",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:10.893Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:10.893Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:10.893Z",
+      "updatedAt": "2025-08-07T21:04:23.620Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc263c",
+      "personalInfo": {
+        "fullName": "אריאל הלוי",
+        "phone": "0508619959",
+        "email": "arielhalevy@yahoo.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "arielhalevy@yahoo.com",
+        "password": "$2b$10$SHaX.VD020bLsvUPRWXyHuHxns0ukpDg2LxE7nNTCcVXcEv7IJgQe",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.851Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.851Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.851Z",
+      "updatedAt": "2025-08-07T21:04:32.196Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2613",
+      "personalInfo": {
+        "fullName": "בוריס סולומוניק",
+        "phone": "0547879719",
+        "email": "bsolomonik@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חליל צד",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "bsolomonik@gmail.com",
+        "password": "$2b$10$TTpCPanLL9eUSQ56Wc35/epCKrb6bXX5GxjKyKthyuqEWDzxGL4ru",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.459Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.459Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.459Z",
+      "updatedAt": "2025-08-07T21:04:40.565Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2631",
+      "personalInfo": {
+        "fullName": "בן לביא",
+        "phone": "0545774984",
+        "email": "labiben@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "labiben@gmail.com",
+        "password": "$2b$10$qmXCPCZ.FKxTsSqFXYexjOMeeU3RznZ2rz/QC6L4K09qrxcrmSH0a",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.221Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.221Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.221Z",
+      "updatedAt": "2025-08-07T21:07:05.420Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2627",
+      "personalInfo": {
+        "fullName": "ברק שרובסקי",
+        "phone": "0547337127",
+        "email": "baraksh12@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "baraksh12@gmail.com",
+        "password": "$2b$10$GreG5TEBKRVJrEDHNP3IkOKcbhf0VeMVcXPYkWqwmSZWxivs4hl.G",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.624Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.624Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.624Z",
+      "updatedAt": "2025-08-07T21:07:18.077Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25ee",
+      "personalInfo": {
+        "fullName": "ג'ף הוארד",
+        "phone": "0547268531",
+        "email": "jeffhowardjeffhoward@yahoo.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה",
+        "מנצח"
+      ],
+      "professionalInfo": {
+        "instrument": "קלרינט",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": [
+          "6883badc14f0fcfae92ac453"
+        ]
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "jeffhowardjeffhoward@yahoo.com",
+        "password": "$2b$10$whin/63CsRKaHAn3lGH.4.kv./F4mdakwEW8bqSRf/ZfBqMM//Gpe",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.296Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.296Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.296Z",
+      "updatedAt": "2025-07-24T23:55:58.382Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2616",
+      "personalInfo": {
+        "fullName": "גבריאל פוטז'ניק",
+        "phone": "0549543672",
+        "email": "gabrielpotaznik7@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פיתוח קול",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "gabrielpotaznik7@gmail.com",
+        "password": "$2b$10$Wne/iFcBePkH9nYnqap36uHffv.8DhExwpkLDdlCinv5Cfnlg.wLq",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.628Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.628Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.628Z",
+      "updatedAt": "2025-08-07T21:07:38.670Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2619",
+      "personalInfo": {
+        "fullName": "גיא פורת",
+        "phone": "0544697472",
+        "email": "guy@poratguy.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה",
+        "מנצח"
+      ],
+      "professionalInfo": {
+        "instrument": "אבוב",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": [
+          "6882c783070ccc694d122d7d"
+        ]
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "guy@poratguy.com",
+        "password": "$2b$10$fquwYhDT3HF93HoKFqYDTe3sYPTxNUS6QSFlT7G17W8THVlUyIuYq",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.805Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.805Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.805Z",
+      "updatedAt": "2025-07-24T23:52:55.737Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25de",
+      "personalInfo": {
+        "fullName": "גל ברגר",
+        "phone": "0502441988",
+        "email": "galgalon96@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה חשמלית",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "galgalon96@gmail.com",
+        "password": "$2b$10$TBVR/5v/EdI8otRtk/Tm1.lpeKPVSBhE0QfJZ0IcNAUPtwgfHJWQS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.371Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.371Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.371Z",
+      "updatedAt": "2025-08-07T21:08:03.731Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25d8",
+      "personalInfo": {
+        "fullName": "דבורה בוהק",
+        "phone": "0544478835",
+        "email": "dbohak@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "ספרנית",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "dbohak@gmail.com",
+        "password": "$2b$10$aizV/I3D0o9TyExnPwF5.u9yLWxUpKdrK1nGUJ0c4FHCtKSjwjkMW",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.010Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.010Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.010Z",
+      "updatedAt": "2025-08-07T21:08:12.760Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25ec",
+      "personalInfo": {
+        "fullName": "דבורה דרעי",
+        "phone": "0524227324",
+        "email": "deborahdery@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פיתוח קול",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "deborahdery@gmail.com",
+        "password": "$2b$10$Zs0m29rw82Lc2HgcMialtOzrWpRoBczcVTYPndTtfVrH.54.Boele",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.178Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.178Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.178Z",
+      "updatedAt": "2025-08-07T21:08:23.007Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25d3",
+      "personalInfo": {
+        "fullName": "דור אסף",
+        "phone": "0525774009",
+        "email": "dorasaf123@gmail.com",
+        "address": "כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "טרומבון ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "dorasaf123@gmail.com",
+        "password": "$2b$10$I6DgcHlZeRNbWvrOfVXX0evanhyeESdYGTsG7XGASb8pKCxKN5wqG",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:10.714Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:10.714Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:10.714Z",
+      "updatedAt": "2025-07-23T21:04:58.512Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc260c",
+      "personalInfo": {
+        "fullName": "דימה מזור",
+        "phone": "0545963147",
+        "email": "mazor.dmitry@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "בסון",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "mazor.dmitry@gmail.com",
+        "password": "$2b$10$zrmt.cii/2GFV3xFK1Ui5OfF/vvGeJ8R3TVroSd1.clv6Yx1zU9.i",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.055Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.055Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.055Z",
+      "updatedAt": "2025-08-07T21:08:48.803Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25da",
+      "personalInfo": {
+        "fullName": "דניאל בן חורין",
+        "phone": "0505275578",
+        "email": "danielbenhorin@yahoo.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה בס /מגמה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "danielbenhorin@yahoo.com",
+        "password": "$2b$10$kEqjKEXVpASiEDt4CaRV1e2XyiI5Xy0Qd3rcoNpJA4hPdWYP5ubLO",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.135Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.135Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.135Z",
+      "updatedAt": "2025-08-07T21:08:39.263Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc263a",
+      "personalInfo": {
+        "fullName": "דניאלה ברקוביץ",
+        "phone": "0524245770",
+        "email": "dgny7@walla.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חליל צד",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "dgny7@walla.com",
+        "password": "$2b$10$0jKThbPOahhD7hD9cR1rneQSF6Y0/Q/4bUpT4uAbyVvQpqMJ5BC2q",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.736Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.736Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.736Z",
+      "updatedAt": "2025-08-07T21:08:31.761Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2629",
+      "personalInfo": {
+        "fullName": "דרור שביד",
+        "phone": "0552223573",
+        "email": "drorsc19@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה",
+        "מורה תאוריה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "drorsc19@gmail.com",
+        "password": "$2b$10$s/WGJqilrACApr/BNk/85.k6yUWXtr0IotV8.DoQeJcrPsbjVxIGm",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.740Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.740Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.740Z",
+      "updatedAt": "2025-07-24T23:58:15.697Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc260d",
+      "personalInfo": {
+        "fullName": "הרן מלצר",
+        "phone": "0542384987",
+        "email": "haran2104@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "צ`לו",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "haran2104@gmail.com",
+        "password": "$2b$10$XGhZkgCcRaIExLS9BARhhOwlgmaM0aFKafUBlYq9Zr.hj9AFyKJ5u",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.114Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.114Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.114Z",
+      "updatedAt": "2025-08-07T21:09:03.166Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc262e",
+      "personalInfo": {
+        "fullName": "ואדים זלייב",
+        "phone": "0545370713",
+        "email": "vadim2707@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כלי הקשה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "vadim2707@gmail.com",
+        "password": "$2b$10$rDV6rfUGZvdfqe5Uf50DU.7ldR/V4H3qg5GWdQppm.Li1dhfmLF.q",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.042Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.042Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.042Z",
+      "updatedAt": "2025-08-07T21:09:16.373Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e8",
+      "personalInfo": {
+        "fullName": "ויטה גורביץ",
+        "phone": "0528463515",
+        "email": "vitagur0604@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "קול קלאסי",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "vitagur0604@gmail.com",
+        "password": "$2b$10$jlJ.USPDtLYAtb.AM918Hud8im5ozsOYHoRCL/0pfK/5Oqx86VjPS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.950Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.950Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.950Z",
+      "updatedAt": "2025-08-07T21:09:27.767Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2635",
+      "personalInfo": {
+        "fullName": "ולדימיר צ`רפובצקי",
+        "phone": "0502648741",
+        "email": "vcherepovsky@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "vcherepovsky@gmail.com",
+        "password": "$2b$10$jLQm0BlFRb7DjvqAm2K9SuqDre4w/8HEa4sWqiemBmzySyIxgtKgy",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.449Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.449Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.449Z",
+      "updatedAt": "2025-08-07T21:09:50.327Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc261f",
+      "personalInfo": {
+        "fullName": "ורד קריימן",
+        "phone": "0527569642",
+        "email": "veredk16@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "סקסופון",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "veredk16@gmail.com",
+        "password": "$2b$10$pXInXDQqx40BRi/nO6xUvevcXtfK/lYFLx77SH0R.f/uUEr5w9g7q",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.151Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.151Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.151Z",
+      "updatedAt": "2025-08-07T21:09:38.979Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2609",
+      "personalInfo": {
+        "fullName": "ורוניקה לוין",
+        "phone": "0546312877",
+        "email": "veronica71428@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "veronica71428@gmail.com",
+        "password": "$2b$10$D9h4sVA5IlUroNsW2hsk4.RSk4dubn4PCu3FoNLGNGR4iRstb0ypK",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.884Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.884Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.884Z",
+      "updatedAt": "2025-08-07T21:09:57.435Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2612",
+      "personalInfo": {
+        "fullName": "זינה סוחובוק",
+        "phone": "0544470676",
+        "email": "zina20@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "נבל",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "zina20@gmail.com",
+        "password": "$2b$10$PVMqS9lDb87U4DqXGMazwOkAtvOlwfvU3Q0bomx6/lpikUsr2cK/u",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.401Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.401Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.401Z",
+      "updatedAt": "2025-08-07T21:10:04.435Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f1",
+      "personalInfo": {
+        "fullName": "זכריאל (זכי) ודובץ",
+        "phone": "0525707536",
+        "email": "zakizak55@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "סקסופון",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "zakizak55@gmail.com",
+        "password": "$2b$10$Y9ZtsHG1Rfwh1Gb9cZjmJOtuI/CJMeLc8sPPwLzhqLVA2/xkmRk4q",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.467Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.467Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.467Z",
+      "updatedAt": "2025-08-07T21:10:09.998Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25fd",
+      "personalInfo": {
+        "fullName": "חוליאטה טולצ'ינסקי",
+        "phone": "0528572110",
+        "email": "julietatolchinsky@yahoo.com.ar",
+        "address": ""
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "julietatolchinsky@yahoo.com.ar",
+        "password": "$2b$10$pdm9hyw1qffC12sEEm7Y3efGmoVRdRe0exu8PUAYLk6N4BaWBvse6",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.174Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.174Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.174Z",
+      "updatedAt": "2025-08-17T22:03:25.935Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2601",
+      "personalInfo": {
+        "fullName": "חיים כהן",
+        "phone": "0546622983",
+        "email": "haimc@raanana.muni.il",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "אב בית",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "haimc@raanana.muni.il",
+        "password": "$2b$10$meKgFXjdd7QpkKcgLd4e5ObiJFTpIzrYwZ9vcA86aAewkV8MtpPBm",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.416Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.416Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.416Z",
+      "updatedAt": "2025-08-07T21:10:28.563Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc260e",
+      "personalInfo": {
+        "fullName": "חיים מזר",
+        "phone": "0544686977",
+        "email": "haim_mazar@hotmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "טובה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "haim_mazar@hotmail.com",
+        "password": "$2b$10$aeg.rlsU4y14bLg7nY4O2eWMKgyug5sPZu3jC9IFqrIUtVaiPBVUO",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.172Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.172Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.172Z",
+      "updatedAt": "2025-08-07T21:10:20.562Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f4",
+      "personalInfo": {
+        "fullName": "טל ורון",
+        "phone": "0525676477",
+        "email": "talvaron@gmail.com",
+        "address": ""
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "סקסופון",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "talvaron@gmail.com",
+        "password": "$2b$10$mWnuFMRoSLiKJagjgupXJuYITHvsjizVx4fz8.ZrZN8t0oWzh65NC",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.641Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.641Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.641Z",
+      "updatedAt": "2025-08-17T22:03:26.006Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2633",
+      "personalInfo": {
+        "fullName": "טל סגרון",
+        "phone": "0524304144",
+        "email": "sagrontal@gmail.com",
+        "address": ""
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תופים",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "sagrontal@gmail.com",
+        "password": "$2b$10$0OaX8WNSzQ7PEus3bpp5n.1tDdtb/nmdWDwDUst2mllkxiyPOiqjW",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.339Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.339Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.339Z",
+      "updatedAt": "2025-08-17T22:03:26.075Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc262c",
+      "personalInfo": {
+        "fullName": "יבגני בושקוב",
+        "phone": "0540000000",
+        "email": "evgbush@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה",
+        "מנצח"
+      ],
+      "professionalInfo": {
+        "instrument": "מנצח ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "evgbush@gmail.com",
+        "password": "$2b$10$BqNUY2eASRhILOuv5Tvzl.aeN79td3bfFqPTqfQpW6CDaYor0z3sW",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.922Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.922Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.922Z",
+      "updatedAt": "2025-07-24T23:50:31.230Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25df",
+      "personalInfo": {
+        "fullName": "יבגני ברכמן",
+        "phone": "0534728013",
+        "email": "ebrakhman@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "ebrakhman@gmail.com",
+        "password": "$2b$10$xTG4ip1ZKEdVJ8icZzkdse8B2kKoE3vzTrUJV/WvHGCDcY9Bhnzmu",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.431Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.431Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.431Z",
+      "updatedAt": "2025-08-07T21:10:37.433Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2608",
+      "personalInfo": {
+        "fullName": "יהושע לוי",
+        "phone": "0586739888",
+        "email": "joshualevy6390@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר ג`אז",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "joshualevy6390@gmail.com",
+        "password": "$2b$10$0FAFlTH0OL1D501JwposCukmW3thWrr4eEPigavlxXELBETnZuNMm",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.829Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.829Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.829Z",
+      "updatedAt": "2025-08-07T21:10:52.739Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc260a",
+      "personalInfo": {
+        "fullName": "יהושע לימוני",
+        "phone": "0523923278",
+        "email": "ylimony@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תופים",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "ylimony@gmail.com",
+        "password": "$2b$10$/nZ4V7URl36mq9jllrS.P.OPWANJTZ80ozsRKRcM7KnpV4bkRvxmK",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.939Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.939Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.939Z",
+      "updatedAt": "2025-08-07T21:11:01.328Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc260b",
+      "personalInfo": {
+        "fullName": "יואב ליפשיץ",
+        "phone": "0544517996",
+        "email": "yoavlif@walla.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כלי הקשה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "yoavlif@walla.com",
+        "password": "$2b$10$PJ97R.tOBkJONfoM/6ObpOtRfSdOkOyZA0Bo6GAN.3WzhjB5jUwwe",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.999Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.999Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.999Z",
+      "updatedAt": "2025-08-07T21:11:19.285Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2638",
+      "personalInfo": {
+        "fullName": "יובל אבני",
+        "phone": "0528559953",
+        "email": "yuval.avni11@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "טובה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "yuval.avni11@gmail.com",
+        "password": "$2b$10$HLLXvEcDbN29TPTMT6kvC.f.PmLIYGEkzGYhs4L2JQR7f0MZbQEaS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.624Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.624Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.624Z",
+      "updatedAt": "2025-08-07T21:11:26.184Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2602",
+      "personalInfo": {
+        "fullName": "יובל כהן",
+        "phone": "0523565277",
+        "email": "yuvalcohenmusic@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "סקסופון",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "yuvalcohenmusic@gmail.com",
+        "password": "$2b$10$lNn1IjnOf/gRLFWZccPWXecJmjf31dltAaLkn7b4sb/fLoAVMU.0y",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.476Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.476Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.476Z",
+      "updatedAt": "2025-08-07T21:11:10.861Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2622",
+      "personalInfo": {
+        "fullName": "יובל רז",
+        "phone": "0547986279",
+        "email": "yuvalraz16@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה בס /מגמה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "yuvalraz16@gmail.com",
+        "password": "$2b$10$zWIP1H0Z1XlNo6ZWp9nkWe6jpdKxh8DKMBHBPddopJ7XIE.vci1d2",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.324Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.324Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.324Z",
+      "updatedAt": "2025-08-17T22:03:26.351Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e7",
+      "personalInfo": {
+        "fullName": "יונתן גיטלמן",
+        "phone": "0548079202",
+        "email": "gitelman3@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תופים",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "gitelman3@gmail.com",
+        "password": "$2b$10$9coE1j1sw/gMNdMs1Cf5P.hO0WcEqs6Dj1FWpRS96xii/Z880yxva",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.894Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.894Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.894Z",
+      "updatedAt": "2025-08-07T21:11:42.546Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25fb",
+      "personalInfo": {
+        "fullName": "יונתן חרותי",
+        "phone": "0547797822",
+        "email": "jonatanheruti@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "jonatanheruti@gmail.com",
+        "password": "$2b$10$gHZDzXAq3glAQV5dy4Yzou/ATIMKyKw3RIU96bRRX7iiREr0aaT4W",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.058Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.058Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.058Z",
+      "updatedAt": "2025-08-07T21:11:33.050Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2607",
+      "personalInfo": {
+        "fullName": "יורי לוגצ'וב",
+        "phone": "0545813029",
+        "email": "yoray7@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "yoray7@gmail.com",
+        "password": "$2b$10$Nd5515dXvJ/Ivpt8mh5ysutqMYWmYA.nIFcJ6KVRLbzdCMLr6qXsS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.771Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.771Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.771Z",
+      "updatedAt": "2025-08-07T21:12:08.702Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25ea",
+      "personalInfo": {
+        "fullName": "יניב דאור",
+        "phone": "0523096270",
+        "email": "yanivedor@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פיתוח קול ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "yanivedor@gmail.com",
+        "password": "$2b$10$kImrhggrWXsiZpoVUZWoiepFXN0FL39sAq0NbY0uwkCQN6xiu7bMu",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.065Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.065Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.065Z",
+      "updatedAt": "2025-08-07T21:12:16.988Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2637",
+      "personalInfo": {
+        "fullName": "יעל קראוס",
+        "phone": "0508880969",
+        "email": "yaelkraus@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פיתוח קול",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "yaelkraus@gmail.com",
+        "password": "$2b$10$3EXEwi1FawRqfa4nID.Qz.Bl2oFYbs/YOx8/UWrBocjLrfmsKixli",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.566Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.566Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.566Z",
+      "updatedAt": "2025-08-07T21:12:24.468Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25fc",
+      "personalInfo": {
+        "fullName": "ירון חסון",
+        "phone": "0545911010",
+        "email": "yaronhassonguitar@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "yaronhassonguitar@gmail.com",
+        "password": "$2b$10$6s34xKRTToXRdNL70ZwsDu60S65W9hNBSJuHDh26U2lZewqs8z0eW",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.115Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.115Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.115Z",
+      "updatedAt": "2025-08-07T21:12:31.767Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25ed",
+      "personalInfo": {
+        "fullName": "כפיר הררי",
+        "phone": "0524591407",
+        "email": "pianistkfirharari@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "pianistkfirharari@gmail.com",
+        "password": "$2b$10$Yc71L4xSWxzqzJNWh/Ygd.6rywcheLVVBgv2qhg2UHBnPWMyvWVt2",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.236Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.236Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.236Z",
+      "updatedAt": "2025-08-07T21:12:42.652Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2623",
+      "personalInfo": {
+        "fullName": "לובה רבין",
+        "phone": "0547655245",
+        "email": "lubarabin@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "צלו",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "lubarabin@gmail.com",
+        "password": "$2b$10$JBctNwXhJe2yr86886Zse.CE/I6JaI2FI6O2qE4hObZunlp/Bop4a",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.381Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.381Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.381Z",
+      "updatedAt": "2025-08-07T21:12:50.158Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f0",
+      "personalInfo": {
+        "fullName": "ליאור וירוט",
+        "phone": "0503554888",
+        "email": "lmv.oboe@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "אבוב",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "lmv.oboe@gmail.com",
+        "password": "$2b$10$Qsi4kqM4oW/FnHA6oafe5e8YWAE2Ph4KNOAGvDjFhRZMPo2w1m67W",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.412Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.412Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.412Z",
+      "updatedAt": "2025-08-07T21:12:59.226Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2610",
+      "personalInfo": {
+        "fullName": "ליאת ניסן",
+        "phone": "0542881116",
+        "email": "liatnise@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "מקהלה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "liatnise@gmail.com",
+        "password": "$2b$10$8eD2vsHGdofzx2FoGAMdNeJjKu2dLYHQZZchW7k5RCGLeq2Z.Nike",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.285Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.285Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.285Z",
+      "updatedAt": "2025-08-07T21:13:08.270Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2626",
+      "personalInfo": {
+        "fullName": "ליאת רוקברגר",
+        "phone": "0502116197",
+        "email": "liatmorduch@yahoo.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פיתוח קול",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "liatmorduch@yahoo.com",
+        "password": "$2b$10$K6PrEwiGW8lKin3jlpRtAeBcPK5EWd/BzNajh6Pv95575C7wCFMPS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.561Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.561Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.561Z",
+      "updatedAt": "2025-08-07T21:13:16.591Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2606",
+      "personalInfo": {
+        "fullName": "לילה לומי",
+        "phone": "0536214809",
+        "email": "lumilaila@yandex.ru",
+        "address": ""
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "מלווה ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "lumilaila@yandex.ru",
+        "password": "$2b$10$UU2pT4fTxVY12l8Cfg4XPOkLKeH3pi/jcZbiCUXkRzHsSqy1KPO7i",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.712Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.712Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.712Z",
+      "updatedAt": "2025-08-17T22:03:26.145Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25d4",
+      "personalInfo": {
+        "fullName": "לימור אקטע",
+        "phone": "0528197173",
+        "email": "limora@raanana.muni.il",
+        "address": "דוגמא 3"
+      },
+      "roles": [
+        "מנהל"
+      ],
+      "professionalInfo": {
+        "instrument": "מנהלת",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "limora@raanana.muni.il",
+        "password": "$2b$10$t.bujZq85JhtypN8gLCDWO7P7wWe.8cnoDsgd6KxvLbIZ4bJidVMu",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:10.774Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:10.774Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:10.774Z",
+      "updatedAt": "2025-07-23T21:03:00.935Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc263e",
+      "personalInfo": {
+        "fullName": "לריסה פרידמן",
+        "phone": "0545209913",
+        "email": "umolara@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "umolara@gmail.com",
+        "password": "$2b$10$JDw0ANBUowUwhp8A0x023Oytbb8j8Ow9yk3DyY7gkmTBJM6Flivay",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.964Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.964Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.964Z",
+      "updatedAt": "2025-08-07T21:13:23.890Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25ff",
+      "personalInfo": {
+        "fullName": "מאיה יצחקוב",
+        "phone": "0546421090",
+        "email": "maushka10@walla.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חליל צד",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "maushka10@walla.com",
+        "password": "$2b$10$KheVFGVxglcBmV8nYtlWvOZIE6CnD.5rgm274XvupOnEINvhz/SYC",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.292Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.292Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.292Z",
+      "updatedAt": "2025-08-07T21:18:20.392Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2621",
+      "personalInfo": {
+        "fullName": "מאיה רגב",
+        "phone": "0522071611",
+        "email": "zoharaevenaddviolin@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור דקל ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "zoharaevenaddviolin@gmail.com",
+        "password": "$2b$10$kdggXHVloXc57cUxYd0XLOU4hgGpRUMI.6LBElibDcYUdDV8UQxVa",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.266Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.266Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.266Z",
+      "updatedAt": "2025-08-07T21:17:59.578Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e4",
+      "personalInfo": {
+        "fullName": "מארק גילנסון",
+        "phone": "0535328035",
+        "email": "markgilenson@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "קונטרבס",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "markgilenson@gmail.com",
+        "password": "$2b$10$OATNX8mi1gTLTf.fqeXDT.HZBRk71NOUioD9Gfms3AfA6.YdWqzmm",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.720Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.720Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.720Z",
+      "updatedAt": "2025-08-07T21:18:08.157Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e9",
+      "personalInfo": {
+        "fullName": "מיכאל גורפינקל",
+        "phone": "0525702531",
+        "email": "madgur2@gmail.com",
+        "address": ""
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "קלרינט",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "madgur2@gmail.com",
+        "password": "$2b$10$aSKF5c4TvIRes73Vz6108uSinNmn4rvBMyx6VSbxoeMF7dxVwQu0m",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.005Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.005Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.005Z",
+      "updatedAt": "2025-08-17T22:03:26.212Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2624",
+      "personalInfo": {
+        "fullName": "מיכל רהט",
+        "phone": "0522213983",
+        "email": "shark29@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תופים",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "shark29@gmail.com",
+        "password": "$2b$10$ZmjhIwWN7Ghj5/kAXEEA5uFgUgQmW659SaJNmXMGh3j/2SNhW.u5i",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.439Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.439Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.439Z",
+      "updatedAt": "2025-08-07T21:17:51.803Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e2",
+      "personalInfo": {
+        "fullName": "מירב ברנע",
+        "phone": "0544878641",
+        "email": "meravbarnea@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פיתוח קול",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "meravbarnea@gmail.com",
+        "password": "$2b$10$4XqtfIET2RTzumlRW.sS5..3k5OqQcnoEWYHFMrztfHYboWcwbCie",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.605Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.605Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.605Z",
+      "updatedAt": "2025-08-07T21:17:22.930Z"
+    },
+    {
+      "_id": "68813288143e758d4f0b85db",
+      "personalInfo": {
+        "fullName": "מנהל מערכת",
+        "email": "admin@example.com",
+        "phone": "0501234567",
+        "address": "כתובת המנהל"
+      },
+      "roles": [
+        "מנהל"
+      ],
+      "teaching": {
+        "studentIds": [],
+        "schedule": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensembleIds": [],
+      "credentials": {
+        "email": "admin@example.com",
+        "password": "$2b$10$FXGQUU2Tq01wjRP08YtEReiG1AaWzG1VzD47q4S3J8cZZhBFRU.Ry",
+        "passwordSetAt": "2025-07-28T09:07:42.744Z",
+        "lastLogin": "2025-08-17T22:57:35.266Z",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODgxMzI4ODE0M2U3NThkNGYwYjg1ZGIiLCJ2ZXJzaW9uIjowLCJpYXQiOjE3NTU0NzE0NTUsImV4cCI6MTc1ODA2MzQ1NX0.ZhSNr5V3DyPyxv4NuSRVNh6dqPvwJqHFpwf54P9gz7c"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:05:44.252Z",
+      "updatedAt": "2025-08-17T22:57:35.266Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e6",
+      "personalInfo": {
+        "fullName": "מעיין  גור אריה",
+        "phone": "0524865577",
+        "email": "maaynga@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חצוצרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "maaynga@gmail.com",
+        "password": "$2b$10$Y0R94UqN/1BW6lq/MpQJ8e46P3saAiGRUEScmh6Ozp/lqp3qFIt8G",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.836Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.836Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.836Z",
+      "updatedAt": "2025-08-07T21:17:30.964Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f7",
+      "personalInfo": {
+        "fullName": "מעיין זיטמן",
+        "phone": "0547444124",
+        "email": "mazeporat@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פיתוח  קול",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "mazeporat@gmail.com",
+        "password": "$2b$10$nzkt97.0gCz6whufVQbemeBMQSCAfc.dZGI/Wj9XZFoQs5Xg/VmoS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.816Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.816Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.816Z",
+      "updatedAt": "2025-08-07T21:17:38.270Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965dba",
+      "personalInfo": {
+        "fullName": "מריאנה אלטנגוף",
+        "phone": "0544302969",
+        "email": "mariannaalt1527@gmail.com",
+        "address": "כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "mariannaalt1527@gmail.com",
+        "password": "$2b$10$KIahFrrFualPtKaaKdkbPeYvjEaU3AtvIx3f6wY5EAHOH6cIaPqDe",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:23:44.955Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:23:44.955Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:44.955Z",
+      "updatedAt": "2025-07-23T21:04:14.821Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2636",
+      "personalInfo": {
+        "fullName": "מריה קובזרבה",
+        "phone": "0534258532",
+        "email": "kobzarevamaria120@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "kobzarevamaria120@gmail.com",
+        "password": "$2b$10$ezgDyk5kehUOZlw.qXIfS.tIiRCF5L4sLMgs7pSBhLzEs24DPx1tu",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.506Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.506Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.506Z",
+      "updatedAt": "2025-08-07T21:17:15.464Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f8",
+      "personalInfo": {
+        "fullName": "מרינה זיסקינד",
+        "phone": "0546665847",
+        "email": "marina.ziskind1@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "marina.ziskind1@gmail.com",
+        "password": "$2b$10$mRr0z1qf6w9P8b1NtSBL6.a200SMAF2REq9NMboeGjy41Q4W.x4le",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.879Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.879Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.879Z",
+      "updatedAt": "2025-08-07T21:17:07.650Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2614",
+      "personalInfo": {
+        "fullName": "מרינה ספקטור",
+        "phone": "0504217605",
+        "email": "spektormarina3@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "מלווה פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "spektormarina3@gmail.com",
+        "password": "$2b$10$5fjsy1cTBOfEKM7cXNieouQVilAGCPziqYFyTII8S7MW04KGQMaDO",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.515Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.515Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.515Z",
+      "updatedAt": "2025-08-07T21:16:51.114Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25dd",
+      "personalInfo": {
+        "fullName": "מרסל ברגמן",
+        "phone": "0526610884",
+        "email": "annberg11@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "צ'לו",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "annberg11@gmail.com",
+        "password": "$2b$10$uOs5fXQEmlt210uD4zlUAuttSJd3NLAIkYT/WFo.l9dY3H6AE7XQ2",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.314Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.314Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.314Z",
+      "updatedAt": "2025-08-07T21:16:59.350Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25db",
+      "personalInfo": {
+        "fullName": "משה בן יוחנה",
+        "phone": "0507595534",
+        "email": "mosheby.rmc@gmail.com",
+        "address": "רעננה"
+      },
+      "roles": [
+        "מורה",
+        "מורה תאוריה",
+        "מנהל",
+        "מגמה"
+      ],
+      "professionalInfo": {
+        "instrument": "קונטרבס",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": [],
+        "theoryLessonIds": [
+          "6899cde9799fea872d1ab1ee",
+          "6899cde9799fea872d1ab1ef",
+          "6899cde9799fea872d1ab1f0",
+          "6899cf1b799fea872d1ab1f1",
+          "6899cf1b799fea872d1ab1f2",
+          "6899cf1b799fea872d1ab1f3",
+          "6899d6434a2cd8f736fa8621",
+          "6899d6434a2cd8f736fa8622",
+          "6899d6434a2cd8f736fa8623",
+          "6899d6434a2cd8f736fa8624",
+          "6899d6434a2cd8f736fa8625",
+          "6899d6434a2cd8f736fa8626",
+          "6899d6434a2cd8f736fa8627",
+          "6899d6434a2cd8f736fa8628",
+          "6899d6434a2cd8f736fa8629",
+          "6899d6434a2cd8f736fa862a",
+          "6899d6434a2cd8f736fa862b",
+          "6899d6434a2cd8f736fa862c",
+          "6899d6434a2cd8f736fa862d",
+          "6899d6434a2cd8f736fa862e",
+          "6899d9a94a2cd8f736fa862f",
+          "6899d9a94a2cd8f736fa8630",
+          "6899d9a94a2cd8f736fa8631",
+          "6899d9a94a2cd8f736fa8632",
+          "6899d9a94a2cd8f736fa8633",
+          "6899d9a94a2cd8f736fa8634",
+          "6899d9a94a2cd8f736fa8635",
+          "6899d9a94a2cd8f736fa8636",
+          "6899d9a94a2cd8f736fa8637",
+          "6899d9a94a2cd8f736fa8638",
+          "6899d9a94a2cd8f736fa8639",
+          "6899d9a94a2cd8f736fa863a",
+          "6899d9a94a2cd8f736fa863b",
+          "6899d9a94a2cd8f736fa863c",
+          "6899db994a2cd8f736fa863d",
+          "6899db994a2cd8f736fa863e",
+          "6899db994a2cd8f736fa863f",
+          "6899db994a2cd8f736fa8640",
+          "6899db994a2cd8f736fa8641",
+          "6899db994a2cd8f736fa8642",
+          "6899db994a2cd8f736fa8643",
+          "6899db994a2cd8f736fa8644",
+          "6899db994a2cd8f736fa8645",
+          "6899db994a2cd8f736fa8646",
+          "6899db994a2cd8f736fa8647",
+          "6899db994a2cd8f736fa8648",
+          "6899db994a2cd8f736fa8649",
+          "6899db994a2cd8f736fa864a",
+          "689a3a2886cdd73ed18a12e4",
+          "689a3a2886cdd73ed18a12e5",
+          "689a3a2886cdd73ed18a12e6",
+          "689a3a2886cdd73ed18a12e7",
+          "689a3a2886cdd73ed18a12e8",
+          "689a3a2886cdd73ed18a12e9",
+          "689a3a2886cdd73ed18a12ea",
+          "689a3a2886cdd73ed18a12eb",
+          "689a3a2886cdd73ed18a12ec",
+          "689a3a2886cdd73ed18a12ed",
+          "689a3a2886cdd73ed18a12ee",
+          "689a3a2886cdd73ed18a12ef",
+          "689a3a2886cdd73ed18a12f0",
+          "689a3a2886cdd73ed18a12f1",
+          "689a3aa886cdd73ed18a12f2",
+          "689a3aa886cdd73ed18a12f3",
+          "689a3aa886cdd73ed18a12f4",
+          "689a3aa886cdd73ed18a12f5",
+          "689a3aa886cdd73ed18a12f6",
+          "689a3aa886cdd73ed18a12f7",
+          "689a3aa886cdd73ed18a12f8",
+          "689a3aa886cdd73ed18a12f9",
+          "689a3aa886cdd73ed18a12fa",
+          "689a3aa886cdd73ed18a12fb",
+          "689a3aa886cdd73ed18a12fc",
+          "689a3aa886cdd73ed18a12fd",
+          "689a3aa886cdd73ed18a12fe",
+          "689a3aa886cdd73ed18a12ff"
+        ]
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "mosheby.rmc@gmail.com",
+        "password": "$2b$10$GzVhrz/z/ZDmFLkutjs9pOkKtmmA5/iQTUTFXGmgBgAiyt0wB2I1m",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.196Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.196Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.196Z",
+      "updatedAt": "2025-08-13T09:29:49.623Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f3",
+      "personalInfo": {
+        "fullName": "מתן ורדי",
+        "phone": "0546866525",
+        "email": "lordvardi@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "סקסופון",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "lordvardi@gmail.com",
+        "password": "$2b$10$wKRXGyT4k2CSHlrVuGQ3COdDaXgOsJFTHtqf4qCrWCQ2qUhVtAyLi",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.582Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.582Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.582Z",
+      "updatedAt": "2025-08-07T21:16:41.991Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2639",
+      "personalInfo": {
+        "fullName": "נועם  בוכריס",
+        "phone": "0525952810",
+        "email": "noamboukris1@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תלמים ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "noamboukris1@gmail.com",
+        "password": "$2b$10$2XJxh.fJRcT4EHc3suxlbOmqfAy71zS5e50/1w70WRrTH/r0V/XRi",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.680Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.680Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.680Z",
+      "updatedAt": "2025-08-07T21:16:27.268Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2611",
+      "personalInfo": {
+        "fullName": "נטלי נקש",
+        "phone": "0545323052",
+        "email": "nathalie.seror@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "nathalie.seror@gmail.com",
+        "password": "$2b$10$.ZNGteb0LoZibjxXz9tK1.Y0TKTUkIm1i1pX9IV.PwlGFuxzfmjFy",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.343Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.343Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.343Z",
+      "updatedAt": "2025-08-07T21:16:34.954Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2617",
+      "personalInfo": {
+        "fullName": "נטלי פורמן",
+        "phone": "0508680018",
+        "email": "fnatalli24@gmail.com",
+        "address": ""
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כנור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "fnatalli24@gmail.com",
+        "password": "$2b$10$3gnotoIOyG0f6gd2LQgME.MlMYrZxslC/fP9E7FdHMpgRrj5tCRSa",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.685Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.685Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.685Z",
+      "updatedAt": "2025-08-17T22:03:26.282Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25d9",
+      "personalInfo": {
+        "fullName": "נטליה בלסקי",
+        "phone": "0545483308",
+        "email": "belsky1964@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "belsky1964@gmail.com",
+        "password": "$2b$10$8LbqJyZUB.CXM1CKB7uO5eBRyaGQJG4KJQiz72XZtlhP4d6/1mcG6",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.073Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.073Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.073Z",
+      "updatedAt": "2025-08-07T21:16:16.000Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc262d",
+      "personalInfo": {
+        "fullName": "נטליה גנקינה",
+        "phone": "0508840497",
+        "email": "nataliagenkina03@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "nataliagenkina03@gmail.com",
+        "password": "$2b$10$3neBSiIJMwfFG6RB8ZXcK./UZh6oI1Jsj4nLg0UaL5h74kuCCRO2e",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.985Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.985Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.985Z",
+      "updatedAt": "2025-08-07T21:16:07.341Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965db7",
+      "personalInfo": {
+        "fullName": "סבטלנה אברהם",
+        "phone": "0542192466",
+        "email": "svetlana.abram@gmail.com",
+        "address": "דוגמא 3"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "כינור",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "timeBlocks": [
+          {
+            "_id": "6889162040ee7db0fd8ae0e1",
+            "day": "ראשון",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "סטודיו קאמרי 1",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-29T18:42:40.919Z",
+            "updatedAt": "2025-07-29T18:42:40.919Z"
+          },
+          {
+            "_id": "6889162140ee7db0fd8ae0e2",
+            "day": "חמישי",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "סטודיו קאמרי 1",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-29T18:42:41.498Z",
+            "updatedAt": "2025-07-29T18:42:41.498Z"
+          }
+        ]
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [],
+      "credentials": {
+        "email": "svetlana.abram@gmail.com",
+        "password": "$2b$10$NP4QQn02gJNx4GjuiPzlYOivx1HNNlvLSHq4ZPXCRALMES4cnwGWW",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:23:44.782Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:23:44.782Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:44.782Z",
+      "updatedAt": "2025-07-29T18:42:41.498Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc263b",
+      "personalInfo": {
+        "fullName": "סי גיי גלס",
+        "phone": "0586990501",
+        "email": "cglass1@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה",
+        "מורה תאוריה"
+      ],
+      "professionalInfo": {
+        "instrument": "תאוריה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "cglass1@gmail.com",
+        "password": "$2b$10$SjcmOIv4WZdQZA9zJQGUB.Y0ODdht3KrQJao/LbmCOih10wJQufnW",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.793Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.793Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.793Z",
+      "updatedAt": "2025-07-24T23:48:57.907Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc263f",
+      "personalInfo": {
+        "fullName": "עדי ברקובסקי",
+        "phone": "0544447032",
+        "email": "adi.bercowski@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חלילית",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "adi.bercowski@gmail.com",
+        "password": "$2b$10$zxQ6ZeFL.Q8auOMBovmBruD7mWDvmB3BBsS4tbRQ0qA2croRXVMB.",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:17.023Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:17.023Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.023Z",
+      "updatedAt": "2025-08-07T21:16:00.503Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc260f",
+      "personalInfo": {
+        "fullName": "עודד מאיר",
+        "phone": "0526899189",
+        "email": "meiroded@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "טרומבון ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "meiroded@gmail.com",
+        "password": "$2b$10$SHJj7phaPa13huDGSsNInur3rEtcxuk5aJyECuSSPa1FgmASkHEJi",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.229Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.229Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.229Z",
+      "updatedAt": "2025-08-07T21:15:52.344Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2604",
+      "personalInfo": {
+        "fullName": "עומר כץ",
+        "phone": "0545735753",
+        "email": "omerke26@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "קלרינט",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "omerke26@gmail.com",
+        "password": "$2b$10$UY61FieamPescwDLq6Pz5.v9hQfFNoKzOyvUuhAqMcsAEwgYchc1q",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.597Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.597Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.597Z",
+      "updatedAt": "2025-08-07T21:15:42.170Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc261b",
+      "personalInfo": {
+        "fullName": "עמית פרידמן",
+        "phone": "0523327634",
+        "email": "amitamitf@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תלמים ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "amitamitf@gmail.com",
+        "password": "$2b$10$yQtxIno0siUAcc7Fg06YB.LJG9v9PBj8wTOXhKfS5p/DZ93JNZRbm",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.917Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.917Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.917Z",
+      "updatedAt": "2025-08-07T21:15:34.057Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2630",
+      "personalInfo": {
+        "fullName": "ענת טיברגר",
+        "phone": "0543090412",
+        "email": "anattbbu@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חליל",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "anattbbu@gmail.com",
+        "password": "$2b$10$sgHpB489JC4wRtgSF4UWJ.BiRvDU6pBk2FYPVlsqTRDrXXXnO9Zze",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.162Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.162Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.162Z",
+      "updatedAt": "2025-08-07T21:15:09.352Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc262a",
+      "personalInfo": {
+        "fullName": "ענת שפירא",
+        "phone": "0546577557",
+        "email": "anatlewy@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "anatlewy@gmail.com",
+        "password": "$2b$10$CTH.DleX5g3ID.ihlEg6Wepg6u0zvHYMdFcAOrfOSmND2xhre1bhy",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.797Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.797Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.797Z",
+      "updatedAt": "2025-08-07T21:15:17.628Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc261a",
+      "personalInfo": {
+        "fullName": "צביקה פלסר",
+        "phone": "0544274884",
+        "email": "zviplesser@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "צ'לו",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "zviplesser@gmail.com",
+        "password": "$2b$10$BOzKY/tWqNN7dWLuFtuM7eYOm.UtzfTm6jVRfzlkSaIz/HoySN6hy",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.862Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.862Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.862Z",
+      "updatedAt": "2025-08-07T21:15:25.853Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25dc",
+      "personalInfo": {
+        "fullName": "רוני בר",
+        "phone": "0548108760",
+        "email": "ronibass123@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "פסנתר",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "ronibass123@gmail.com",
+        "password": "$2b$10$pS2xAojFJabYs2tijb0Ie.eiGwN2gRDdY3lUQ6XGK/1gn/eYdFcsC",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.255Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.255Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.255Z",
+      "updatedAt": "2025-08-07T21:14:38.265Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e0",
+      "personalInfo": {
+        "fullName": "רועי ברום",
+        "phone": "0542424845",
+        "email": "rbrom36@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תופים ",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "rbrom36@gmail.com",
+        "password": "$2b$10$j9QDkFkZlscvwn8k4h/uv.MAQgPBUFl8C7Uahp/gMgXS6ompt/9GK",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.488Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.488Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.488Z",
+      "updatedAt": "2025-08-07T21:14:46.053Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2603",
+      "personalInfo": {
+        "fullName": "רועי כהן",
+        "phone": "0542226372",
+        "email": "roeico15@walla.co.il",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "קלרינט",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "roeico15@walla.co.il",
+        "password": "$2b$10$/TXMRn9zXlM6Pv/GOQtV4Om.CT3URTZQCgwenre44dds39VycpOVO",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.539Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.539Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.539Z",
+      "updatedAt": "2025-08-07T21:14:55.192Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25f6",
+      "personalInfo": {
+        "fullName": "רותי ורון",
+        "phone": "0524625200",
+        "email": "varonruty@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "קרן יער",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "varonruty@gmail.com",
+        "password": "$2b$10$mK5cTOwn33H5yWgn2uH89.VhY8SG.RNrghsamB98UxdZDOljMzVsa",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.755Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.755Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.755Z",
+      "updatedAt": "2025-08-07T21:14:32.240Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc262f",
+      "personalInfo": {
+        "fullName": "רותי חלבני",
+        "phone": "0542098228",
+        "email": "songbird0001@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "שירה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "songbird0001@gmail.com",
+        "password": "$2b$10$5Kuuf28X6roImUf57iS7WOQSFmHc0IrEUx93D64JNW2QRvd5PHO.C",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:16.102Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:16.102Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:16.102Z",
+      "updatedAt": "2025-08-07T21:14:24.606Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2620",
+      "personalInfo": {
+        "fullName": "רז קרוגמן",
+        "phone": "0528618640",
+        "email": "razkrugman@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "גיטרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "razkrugman@gmail.com",
+        "password": "$2b$10$EtzJjvtRkIY48Oe8JGHlEO2pQUr2U2jwL9ETE23Aah9VmJN6bJpB6",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.210Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.210Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.210Z",
+      "updatedAt": "2025-08-07T21:14:11.721Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e5",
+      "personalInfo": {
+        "fullName": "רני גולן",
+        "phone": "0528348404",
+        "email": "ranigolan76@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "מקהלה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "ranigolan76@gmail.com",
+        "password": "$2b$10$TladYZbF5J3roK.lq8wkzuzkdw8kef5CS30bWHgSjdRU39rgtwy4O",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.777Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.777Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.777Z",
+      "updatedAt": "2025-08-07T21:14:02.416Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc261c",
+      "personalInfo": {
+        "fullName": "רפאל פריימן",
+        "phone": "0526386235",
+        "email": "fraiman89@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "תופים",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "fraiman89@gmail.com",
+        "password": "$2b$10$QUtr521Zhc.G4.h1yDilI.2iRtZiSR26GJ70EiymBx7JgX5UZD0ai",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.975Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.975Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.975Z",
+      "updatedAt": "2025-08-07T21:13:53.451Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25ef",
+      "personalInfo": {
+        "fullName": "שני הורביץ",
+        "phone": "0547718970",
+        "email": "shanni.mail@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חליל",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "shanni.mail@gmail.com",
+        "password": "$2b$10$2kkjurucCFc0BxgnHloG9ujfEchAjbWApdtFWTk3kK1afW3ILg1s2",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:12.353Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:12.353Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:12.353Z",
+      "updatedAt": "2025-08-07T21:13:45.744Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2615",
+      "personalInfo": {
+        "fullName": "תומר עמרני",
+        "phone": "0542152420",
+        "email": "amrani.t@gmail.com",
+        "address": "עדכן כתובת"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חליל צד",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [],
+        "schedule": [],
+        "timeBlocks": []
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "amrani.t@gmail.com",
+        "password": "$2b$10$fxqU4WF0sW6Rw.HDglWXNON.VCL8p94gpv9qTOGrCgLbN0E2glPp.",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:14.572Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:14.572Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:14.572Z",
+      "updatedAt": "2025-08-07T21:13:36.169Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965db9",
+      "personalInfo": {
+        "fullName": "מאיה איצקוביץ",
+        "phone": "0547415528",
+        "email": "itzkovich3@gmail.com",
+        "address": "כתובת"
+      },
+      "roles": [
+        "מורה",
+        "מדריך הרכב"
+      ],
+      "professionalInfo": {
+        "instrument": "חצוצרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [
+          "68813849abdf329e8afc2645",
+          "68813849abdf329e8afc264a",
+          "68813849abdf329e8afc2650"
+        ],
+        "timeBlocks": [
+          {
+            "_id": "68860e9511976de8fd8cb375",
+            "day": "ראשון",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "חדר 25",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-27T11:33:41.380Z",
+            "updatedAt": "2025-07-27T11:33:41.380Z"
+          },
+          {
+            "_id": "68860e9511976de8fd8cb376",
+            "day": "שלישי",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "חדר 25",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-27T11:33:41.914Z",
+            "updatedAt": "2025-07-27T11:33:41.914Z"
+          },
+          {
+            "_id": "68860e9611976de8fd8cb377",
+            "day": "רביעי",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "חדר 25",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-27T11:33:42.439Z",
+            "updatedAt": "2025-07-27T11:33:42.439Z"
+          },
+          {
+            "_id": "68860e9611976de8fd8cb378",
+            "day": "חמישי",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "חדר 25",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-27T11:33:42.960Z",
+            "updatedAt": "2025-07-27T11:33:42.960Z"
+          },
+          {
+            "_id": "68860e9711976de8fd8cb379",
+            "day": "שני",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "חדר 25",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-27T11:33:43.485Z",
+            "updatedAt": "2025-07-27T11:33:43.485Z"
+          }
+        ]
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "itzkovich3@gmail.com",
+        "password": "$2b$10$4Zr/afiShIfBlRA7N0fYBeJkzUEKxqcxTcTML2k6L7yqPkpATEfbW",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:23:44.897Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:23:44.897Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:44.897Z",
+      "updatedAt": "2025-07-30T09:32:02.696Z"
+    },
+    {
+      "_id": "6880d12f5a3def220d8857d5",
+      "personalInfo": {
+        "fullName": "יונתן ישעיהו",
+        "phone": "0542395020",
+        "email": "yona279@gmail.com",
+        "address": "בר אילן 49 הרצליה"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חצוצרה",
+        "isActive": true
+      },
+      "isActive": true,
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "teaching": {
+        "studentIds": [
+          "68813849abdf329e8afc264c",
+          "68813849abdf329e8afc2648",
+          "68813849abdf329e8afc2654",
+          "68813849abdf329e8afc2655"
+        ],
+        "schedule": [],
+        "timeBlocks": [
+          {
+            "_id": "688bc392fb1d1bfedfa461b6",
+            "day": "שלישי",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "חדר מחשבים",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-31T19:27:14.414Z",
+            "updatedAt": "2025-07-31T19:27:14.414Z"
+          },
+          {
+            "_id": "688bc392fb1d1bfedfa461b7",
+            "day": "חמישי",
+            "startTime": "14:00",
+            "endTime": "18:00",
+            "totalDuration": 240,
+            "location": "חדר מחשבים",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-31T19:27:14.948Z",
+            "updatedAt": "2025-07-31T19:27:14.948Z"
+          }
+        ]
+      },
+      "credentials": {
+        "email": "yona279@gmail.com",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODgwZDEyZjVhM2RlZjIyMGQ4ODU3ZDUiLCJ2ZXJzaW9uIjowLCJpYXQiOjE3NTUzODI0NTIsImV4cCI6MTc1Nzk3NDQ1Mn0.lu-DQooxSRqMCJCpdmYizx68XqiZRScXDpSn6Mk-HCM",
+        "password": "$2b$10$SbkjN02OCzZgHaXfucC2cuLd09FoHsyQ5Uls3.QpQQRcyv4XSF0aq",
+        "passwordSetAt": "2025-07-31T19:30:33.291Z",
+        "lastLogin": "2025-08-16T22:14:12.141Z"
+      },
+      "createdAt": "2025-07-23T12:10:23.422Z",
+      "updatedAt": "2025-08-16T22:14:12.141Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25e1",
+      "personalInfo": {
+        "fullName": "אייל ברנד",
+        "phone": "0528347433",
+        "email": "eyalbrand@gmail.com",
+        "address": "מודיעין "
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "סקסופון",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [
+          "68813849abdf329e8afc2672"
+        ],
+        "schedule": [],
+        "timeBlocks": [
+          {
+            "_id": "68864c51f58c18f867e64c04",
+            "day": "ראשון",
+            "startTime": "14:00",
+            "endTime": "22:00",
+            "totalDuration": 480,
+            "location": "חדר 10",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-27T15:57:05.154Z",
+            "updatedAt": "2025-07-27T15:57:05.154Z"
+          },
+          {
+            "_id": "68864c51f58c18f867e64c05",
+            "day": "רביעי",
+            "startTime": "14:00",
+            "endTime": "22:00",
+            "totalDuration": 480,
+            "location": "חדר 10",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-27T15:57:05.428Z",
+            "updatedAt": "2025-07-27T15:57:05.428Z"
+          }
+        ]
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "eyalbrand@gmail.com",
+        "password": "$2b$10$rpg05h18VknY0iFcwQnsXe5CXLhmkTfq5JYr.H54ZCQ9LrIqgQPAK",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:11.547Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:11.547Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:11.547Z",
+      "updatedAt": "2025-07-30T09:32:01.525Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25d5",
+      "personalInfo": {
+        "fullName": "תמיר אקטע",
+        "phone": "0528197174",
+        "email": "tamir.akta@gmail.com",
+        "address": "כתובת"
+      },
+      "roles": [
+        "מורה",
+        "מנצח",
+        "מדריך הרכב",
+        "מנהל"
+      ],
+      "professionalInfo": {
+        "instrument": "חצוצרה",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [
+          "688724e169eab862f9abb02e",
+          "689188a47b394802929b0e73"
+        ],
+        "schedule": [],
+        "timeBlocks": [
+          {
+            "_id": "6883ba2014f0fcfae92ac44e",
+            "day": "ראשון",
+            "startTime": "11:00",
+            "endTime": "19:00",
+            "totalDuration": 480,
+            "location": null,
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-25T17:08:48.345Z",
+            "updatedAt": "2025-07-25T17:08:48.345Z"
+          },
+          {
+            "_id": "6883ba7c14f0fcfae92ac44f",
+            "day": "שלישי",
+            "startTime": "14:00",
+            "endTime": "17:00",
+            "totalDuration": 180,
+            "location": null,
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-25T17:10:20.227Z",
+            "updatedAt": "2025-07-25T17:10:20.227Z"
+          }
+        ]
+      },
+      "conducting": {
+        "orchestraIds": [
+          "6883bab314f0fcfae92ac451",
+          "6883bac814f0fcfae92ac452",
+          "6883baf814f0fcfae92ac454",
+          "6883baa014f0fcfae92ac450"
+        ]
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "tamir.akta@gmail.com",
+        "password": "$2b$10$mEzQaPguvxJKfffHNbQ/Fe0WmSTzaIvoC7cAoJsx3wISzGSBCTiFW",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:10.835Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:10.835Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:10.835Z",
+      "updatedAt": "2025-08-17T21:26:09.536Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc25fe",
+      "personalInfo": {
+        "fullName": "לריסה יומדין",
+        "phone": "0545606847",
+        "email": "lora.iomdin@gmail.com",
+        "address": "פתח תקווה"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "חליל",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [
+          "688a72ad3b8134c968b36f39"
+        ],
+        "schedule": [],
+        "timeBlocks": [
+          {
+            "_id": "68871f9669eab862f9abaff8",
+            "day": "ראשון",
+            "startTime": "14:00",
+            "endTime": "21:00",
+            "totalDuration": 420,
+            "location": "חדר 14",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-28T06:58:30.128Z",
+            "updatedAt": "2025-07-28T06:58:30.128Z"
+          },
+          {
+            "_id": "68871f9669eab862f9abaff9",
+            "day": "רביעי",
+            "startTime": "14:00",
+            "endTime": "21:00",
+            "totalDuration": 420,
+            "location": "חדר 14",
+            "notes": null,
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-07-28T06:58:30.362Z",
+            "updatedAt": "2025-07-28T06:58:30.362Z"
+          }
+        ]
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "lora.iomdin@gmail.com",
+        "password": "$2b$10$s0SZO.jYFpQOFg44pKsl6uXAzwYveqZx0NTCbibbE1kGs/4yVtFYi",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:13.232Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:13.232Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:13.232Z",
+      "updatedAt": "2025-08-17T21:26:08.765Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2628",
+      "personalInfo": {
+        "fullName": "אורית שוורצנברג",
+        "phone": "0524636356",
+        "email": "oritswrz@gmail.com",
+        "address": "רעננה"
+      },
+      "roles": [
+        "מורה"
+      ],
+      "professionalInfo": {
+        "instrument": "קלרינט",
+        "isActive": true
+      },
+      "teaching": {
+        "studentIds": [
+          "689c5430ba03fdece4450df4"
+        ],
+        "timeBlocks": [
+          {
+            "_id": "6899893ae84119011da21dc2",
+            "day": "ראשון",
+            "startTime": "14:00",
+            "endTime": "20:00",
+            "totalDuration": 240,
+            "location": "חדר 6",
+            "notes": "",
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-08-11T06:10:02.424Z",
+            "updatedAt": "2025-08-13T08:54:22.583Z"
+          },
+          {
+            "_id": "6899893be84119011da21dc4",
+            "day": "שלישי",
+            "startTime": "14:00",
+            "endTime": "20:00",
+            "totalDuration": 240,
+            "location": "חדר 6",
+            "notes": "",
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-08-11T06:10:03.092Z",
+            "updatedAt": "2025-08-13T08:54:39.080Z"
+          },
+          {
+            "_id": "6899893be84119011da21dc6",
+            "day": "חמישי",
+            "startTime": "14:00",
+            "endTime": "20:00",
+            "totalDuration": 240,
+            "location": "חדר 9",
+            "notes": "",
+            "isActive": true,
+            "assignedLessons": [],
+            "recurring": {
+              "isRecurring": true,
+              "excludeDates": []
+            },
+            "createdAt": "2025-08-11T06:10:03.596Z",
+            "updatedAt": "2025-08-13T08:54:59.854Z"
+          }
+        ]
+      },
+      "conducting": {
+        "orchestraIds": []
+      },
+      "ensemblesIds": [],
+      "schoolYears": [
+        {
+          "schoolYearId": "67e153be046a2782476d17fe",
+          "isActive": true
+        }
+      ],
+      "credentials": {
+        "email": "oritswrz@gmail.com",
+        "password": "$2b$10$pxBBdlKUVmXnEVrmrMoLmOH8PSA0cz/8HfOHDzVe3DEUGzLSG5ZXS",
+        "invitationToken": null,
+        "invitationExpiry": null,
+        "isInvitationAccepted": true,
+        "tokenVersion": 1,
+        "refreshToken": null,
+        "resetToken": null,
+        "resetTokenExpiry": null,
+        "requiresPasswordChange": true,
+        "passwordSetAt": "2025-07-23T19:30:15.682Z",
+        "lastLogin": null,
+        "invitedAt": "2025-07-23T19:30:15.682Z",
+        "invitedBy": "bulk_import",
+        "invitationMode": "DEFAULT_PASSWORD"
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:15.682Z",
+      "updatedAt": "2025-08-17T21:26:09.189Z"
+    }
+  ]
+}

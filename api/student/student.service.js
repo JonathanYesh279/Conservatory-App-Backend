@@ -11,6 +11,7 @@ export const studentService = {
   addStudent,
   updateStudent,
   updateStudentTest,
+  updateStudentStageLevel,
   removeStudent,
   checkTeacherHasAccessToStudent,
   associateStudentWithTeacher,
@@ -119,12 +120,28 @@ async function addStudent(studentToAdd, teacherId = null, isAdmin = false) {
     // 🔥 CRITICAL FIX: Sync teacher records if student created with teacherAssignments
     if (value.teacherAssignments && value.teacherAssignments.length > 0) {
       console.log(`🔥 SYNC FIX: New student created with ${value.teacherAssignments.length} teacher assignments - syncing teacher records`);
-      await syncTeacherRecordsForStudentUpdate(
-        result.insertedId.toString(), 
-        value.personalInfo?.fullName, 
-        value.teacherAssignments, 
-        []
-      );
+      try {
+        await syncTeacherRecordsForStudentUpdate(
+          result.insertedId.toString(), 
+          value.personalInfo?.fullName, 
+          value.teacherAssignments, 
+          []
+        );
+
+        // 🔥 SYNC FIX: Also sync teacher IDs from teacherAssignments for new students
+        const teacherIdsFromAssignments = value.teacherAssignments
+          .filter(assignment => assignment.isActive)
+          .map(assignment => assignment.teacherId)
+          .filter(Boolean);
+        
+        if (teacherIdsFromAssignments.length > 0) {
+          console.log(`🔥 SYNC FIX: New student has ${teacherIdsFromAssignments.length} teacher assignments - syncing to teacher.teaching.studentIds`);
+          await syncTeacherStudentRelationships(result.insertedId.toString(), teacherIdsFromAssignments, []);
+        }
+      } catch (syncError) {
+        console.error(`🔥 SYNC ERROR: Failed to sync teacher assignments for new student:`, syncError);
+        // Continue with student creation even if sync fails
+      }
     }
 
     return { _id: result.insertedId, ...value };
@@ -263,6 +280,31 @@ async function updateStudent(
     if (teacherRelationshipSyncRequired) {
       console.log(`🔥 SYNC FIX: Starting bidirectional teacherIds sync for student ${studentId}`);
       await syncTeacherStudentRelationships(studentId, teachersToAdd, teachersToRemove, session);
+    }
+
+    // 🔥 SYNC FIX: Extract teacher IDs from teacherAssignments for bidirectional sync
+    if (teacherAssignmentsSyncRequired || (value.teacherAssignments && value.teacherAssignments.length > 0)) {
+      const originalTeacherIdsFromAssignments = (originalStudent.teacherAssignments || [])
+        .filter(assignment => assignment.isActive)
+        .map(assignment => assignment.teacherId)
+        .filter(Boolean);
+        
+      const newTeacherIdsFromAssignments = (value.teacherAssignments || [])
+        .filter(assignment => assignment.isActive)
+        .map(assignment => assignment.teacherId)
+        .filter(Boolean);
+      
+      const teachersToAddFromAssignments = newTeacherIdsFromAssignments.filter(
+        id => !originalTeacherIdsFromAssignments.includes(id)
+      );
+      const teachersToRemoveFromAssignments = originalTeacherIdsFromAssignments.filter(
+        id => !newTeacherIdsFromAssignments.includes(id)
+      );
+      
+      if (teachersToAddFromAssignments.length > 0 || teachersToRemoveFromAssignments.length > 0) {
+        console.log(`🔥 SYNC FIX: TeacherAssignments sync required - Adding ${teachersToAddFromAssignments.length}, Removing ${teachersToRemoveFromAssignments.length} teacher IDs`);
+        await syncTeacherStudentRelationships(studentId, teachersToAddFromAssignments, teachersToRemoveFromAssignments, session);
+      }
     }
 
     // 🔥 CRITICAL FIX: Sync teacher assignments (time-block system)
@@ -433,6 +475,74 @@ async function updateStudentTest(
   } catch (err) {
     console.error(`Error updating student test: ${err.message}`);
     throw new Error(`Error updating student test: ${err.message}`);
+  }
+}
+
+async function updateStudentStageLevel(studentId, newStageLevel, teacherId = null, isAdmin = false) {
+  try {
+    console.log(`🎵 Service: Updating stage level for student ${studentId} to ${newStageLevel}`);
+
+    // Validate ObjectId format
+    if (!ObjectId.isValid(studentId)) {
+      throw new Error(`Invalid student ID format: ${studentId}`);
+    }
+
+    // Check authorization if needed
+    if (teacherId && !isAdmin) {
+      const hasAccess = await checkTeacherHasAccessToStudent(teacherId, studentId);
+      if (!hasAccess) {
+        throw new Error('Not authorized to update student stage level');
+      }
+    }
+
+    // First, get the current student to find the primary instrument
+    const student = await getStudentById(studentId);
+    if (!student) {
+      throw new Error(`Student with id ${studentId} not found`);
+    }
+
+    // Find the primary instrument or use the first one if no primary is set
+    const primaryInstrument = student.academicInfo?.instrumentProgress?.find(inst => inst.isPrimary) 
+      || student.academicInfo?.instrumentProgress?.[0];
+
+    if (!primaryInstrument) {
+      throw new Error(`No instrument progress found for student ${studentId}`);
+    }
+
+    // Update the stage level in the primary instrument
+    const updatedInstrumentProgress = student.academicInfo.instrumentProgress.map(instrument => {
+      if (instrument === primaryInstrument) {
+        return {
+          ...instrument,
+          currentStage: newStageLevel,
+          lastStageUpdate: new Date()
+        };
+      }
+      return instrument;
+    });
+
+    // Update the student document
+    const collection = await getCollection('student');
+    const result = await collection.findOneAndUpdate(
+      { _id: ObjectId.createFromHexString(studentId) },
+      {
+        $set: {
+          'academicInfo.instrumentProgress': updatedInstrumentProgress,
+          updatedAt: new Date()
+        }
+      },
+      { returnDocument: 'after' }
+    );
+
+    if (!result) {
+      throw new Error(`Student with id ${studentId} not found after update attempt`);
+    }
+
+    console.log(`✅ Successfully updated stage level for student ${studentId} to ${newStageLevel}`);
+    return result;
+  } catch (err) {
+    console.error(`❌ Error updating student stage level: ${err.message}`);
+    throw new Error(`Error updating student stage level: ${err.message}`);
   }
 }
 

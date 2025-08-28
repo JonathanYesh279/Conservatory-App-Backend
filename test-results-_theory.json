@@ -1,0 +1,7 @@
+{
+  "endpoint": "/theory",
+  "status": 200,
+  "contentType": "application/json; charset=utf-8",
+  "success": true,
+  "data": []
+}

@@ -317,4 +317,15 @@ const startServer = () => {
 };
 
 // Start the server using our improved startup function
-startServer();
+console.log('🚀 Starting server initialization...');
+(async () => {
+  try {
+    await initializeMongoDB();
+    console.log('✅ MongoDB initialized successfully');
+    startServer();
+    console.log('🎯 Server startup function called');
+  } catch (error) {
+    console.error('❌ Failed to initialize server:', error);
+    process.exit(1);
+  }
+})();

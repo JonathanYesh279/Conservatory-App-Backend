@@ -17,10 +17,80 @@ export const orchestraService = {
 
 async function getOrchestras(filterBy) {
   try {
+    console.log('🔍 orchestraService.getOrchestras called with filterBy:', filterBy)
     const collection = await getCollection('orchestra')
     const criteria = _buildCriteria(filterBy)
+    console.log('🔍 Built criteria:', criteria)
 
-    const orchestras = await collection.find(criteria).toArray()
+    // Use aggregation pipeline to populate members with full student data
+    console.log('🔍 Starting aggregation pipeline...')
+    const orchestras = await collection.aggregate([
+      { $match: criteria },
+      {
+        $lookup: {
+          from: 'student',
+          let: { memberIds: '$memberIds' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: [{ $toString: '$_id' }, '$$memberIds']
+                }
+              }
+            },
+            {
+              $project: {
+                _id: 1,
+                personalInfo: 1,
+                academicInfo: 1,
+                enrollments: 1,
+                contactInfo: 1
+              }
+            }
+          ],
+          as: 'members'
+        }
+      },
+      {
+        $lookup: {
+          from: 'teacher',
+          let: { conductorId: '$conductorId' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: '$_id' }, '$$conductorId']
+                }
+              }
+            },
+            {
+              $project: {
+                _id: 1,
+                personalInfo: 1,
+                roles: 1,
+                conducting: 1
+              }
+            }
+          ],
+          as: 'conductor'
+        }
+      },
+      {
+        $addFields: {
+          conductor: { $arrayElemAt: ['$conductor', 0] }
+        }
+      }
+    ]).toArray()
+
+    console.log('🔍 Aggregation completed. Found orchestras:', orchestras.length)
+    if (orchestras.length > 0) {
+      console.log('🔍 First orchestra sample:')
+      console.log('   - Name:', orchestras[0].name)
+      console.log('   - Members count:', orchestras[0].members ? orchestras[0].members.length : 'undefined')
+      console.log('   - MemberIds:', orchestras[0].memberIds)
+      console.log('   - Conductor populated:', !!orchestras[0].conductor)
+    }
+
     return orchestras
   } catch (err) {
     console.error(`Error in orchestraService.getOrchestras: ${err}`)
@@ -31,10 +101,67 @@ async function getOrchestras(filterBy) {
 async function getOrchestraById(orchestraId) {
   try {
     const collection = await getCollection('orchestra')
-    const orchestra = await collection.findOne({
-      _id: ObjectId.createFromHexString(orchestraId)
-    })
+    
+    // Use aggregation pipeline to populate members with full student data
+    const orchestras = await collection.aggregate([
+      { $match: { _id: ObjectId.createFromHexString(orchestraId) } },
+      {
+        $lookup: {
+          from: 'student',
+          let: { memberIds: '$memberIds' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: [{ $toString: '$_id' }, '$$memberIds']
+                }
+              }
+            },
+            {
+              $project: {
+                _id: 1,
+                personalInfo: 1,
+                academicInfo: 1,
+                enrollments: 1,
+                contactInfo: 1
+              }
+            }
+          ],
+          as: 'members'
+        }
+      },
+      {
+        $lookup: {
+          from: 'teacher',
+          let: { conductorId: '$conductorId' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: '$_id' }, '$$conductorId']
+                }
+              }
+            },
+            {
+              $project: {
+                _id: 1,
+                personalInfo: 1,
+                roles: 1,
+                conducting: 1
+              }
+            }
+          ],
+          as: 'conductor'
+        }
+      },
+      {
+        $addFields: {
+          conductor: { $arrayElemAt: ['$conductor', 0] }
+        }
+      }
+    ]).toArray()
 
+    const orchestra = orchestras[0]
     if (!orchestra) throw new Error(`Orchestra with id ${orchestraId} not found`)
     return orchestra
   } catch (err) {
@@ -130,7 +257,9 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
     )
 
     if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`)
-    return result
+    
+    // Return populated orchestra with full member data
+    return await getOrchestraById(orchestraId)
   } catch (err) {
     console.error(`Error in orchestraService.updateOrchestra: ${err}`)
     throw new Error(`Error in orchestraService.updateOrchestra: ${err}`)
@@ -197,7 +326,21 @@ async function removeOrchestra(orchestraId, teacherId, isAdmin = false, userRole
 
 async function addMember(orchestraId, studentId, teacherId, isAdmin = false, userRoles = []) {
   try {
+    console.log('=== ADD MEMBER SERVICE DEBUG ===')
+    console.log('Parameters received:', {
+      orchestraId,
+      studentId,
+      teacherId,
+      isAdmin,
+      userRoles
+    })
+    
     const orchestra = await getOrchestraById(orchestraId)
+    console.log('Orchestra found:', {
+      _id: orchestra._id,
+      name: orchestra.name,
+      conductorId: orchestra.conductorId
+    })
 
     // Check authorization: admin can always edit, conductor can edit only if they conduct this orchestra
     const isConductor = userRoles.includes('מנצח')
@@ -205,15 +348,39 @@ async function addMember(orchestraId, studentId, teacherId, isAdmin = false, use
     const canEditBasedOnRole = isConductor || isEnsembleInstructor
     const isAssignedConductor = orchestra.conductorId === teacherId.toString()
     
+    console.log('Authorization check:', {
+      isConductor,
+      isEnsembleInstructor,
+      canEditBasedOnRole,
+      isAssignedConductor,
+      isAdmin,
+      orchestraConductorId: orchestra.conductorId,
+      requestingTeacherId: teacherId.toString()
+    })
+    
     if (!isAdmin && !(canEditBasedOnRole && isAssignedConductor)) {
+      console.error('❌ Authorization failed in addMember service')
       throw new Error('Not authorized to modify this orchestra')
     }
-
-    await getCollection('student').updateOne(
+    
+    console.log('✅ Authorization passed, updating student enrollment')
+    console.log('🔍 Student ID to update:', studentId)
+    console.log('🔍 Orchestra ID to add:', orchestraId)
+    
+    const studentCollection = await getCollection('student')
+    const studentUpdateResult = await studentCollection.updateOne(
       { _id: ObjectId.createFromHexString(studentId) },
       { $addToSet: { 'enrollments.orchestraIds': orchestraId } }
     )
-
+    
+    console.log('🔍 Student update result:', {
+      acknowledged: studentUpdateResult.acknowledged,
+      matchedCount: studentUpdateResult.matchedCount,
+      modifiedCount: studentUpdateResult.modifiedCount,
+      upsertedCount: studentUpdateResult.upsertedCount
+    })
+    
+    console.log('✅ Student enrollment updated, updating orchestra member list')
     const collection = await getCollection('orchestra')
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(orchestraId) },
@@ -222,9 +389,18 @@ async function addMember(orchestraId, studentId, teacherId, isAdmin = false, use
     )
 
     if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`)
-    return result
+    
+    console.log('🔍 Orchestra update result:', {
+      memberCount: result.memberIds ? result.memberIds.length : 0,
+      memberIds: result.memberIds
+    })
+    
+    console.log('✅ Orchestra member list updated successfully')
+    
+    // Return populated orchestra with full member data
+    return await getOrchestraById(orchestraId)
   } catch (err) {
-    console.error(`Error in orchestraService.addMember: ${err}`)
+    console.error(`❌ Error in orchestraService.addMember: ${err}`)
     throw new Error(`Error in orchestraService.addMember: ${err}`)
   }
 }
@@ -243,7 +419,8 @@ async function removeMember(orchestraId, studentId, teacherId, isAdmin = false, 
       throw new Error('Not authorized to modify this orchestra')
     }
     
-    await getCollection('student').updateOne(
+    const studentCollection = await getCollection('student')
+    await studentCollection.updateOne(
       { _id: ObjectId.createFromHexString(studentId) },
       { $pull: { 'enrollments.orchestraIds': orchestraId } }
     )
@@ -256,7 +433,9 @@ async function removeMember(orchestraId, studentId, teacherId, isAdmin = false, 
     )
 
     if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`)
-    return result
+    
+    // Return populated orchestra with full member data
+    return await getOrchestraById(orchestraId)
   } catch (err) {
     console.error(`Error in orchestraService.removeMember: ${err}`)
     throw new Error(`Error in orchestraService.removeMember: ${err}`)
@@ -340,7 +519,8 @@ async function updateRehearsalAttendance(rehearsalId, attendance, teacherId, isA
 
 async function getRehearsalAttendance(rehearsalId) {
   try {
-    const rehearsal = await getCollection('rehearsal').findOne({
+    const rehearsalCollection = await getCollection('rehearsal')
+    const rehearsal = await rehearsalCollection.findOne({
       _id: ObjectId.createFromHexString(rehearsalId)
     })
 

@@ -61,10 +61,38 @@ export function validateBulkCreate(data) {
   return bulkCreateSchema.validate(data, { abortEarly: false });
 }
 
+// Schema for updating rehearsals (partial updates allowed)
+export const rehearsalUpdateSchema = Joi.object({
+  groupId: Joi.string().optional(),
+  type: Joi.string()
+    .valid(...VALID_REHEARSAL_TYPES)
+    .optional(),
+  date: Joi.date().optional(),
+  dayOfWeek: Joi.number().integer().min(0).max(6).optional(),
+  startTime: Joi.string()
+    .pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
+    .optional(),
+  endTime: Joi.string()
+    .pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
+    .optional(),
+  location: Joi.string().optional(),
+  attendance: Joi.object({
+    present: Joi.array().items(Joi.string()).default([]),
+    absent: Joi.array().items(Joi.string()).default([]),
+  }).optional(),
+  notes: Joi.string().allow('').optional(),
+  schoolYearId: Joi.string().optional(),
+  isActive: Joi.boolean().optional(),
+});
+
 export const attendanceSchema = Joi.object({
   present: Joi.array().items(Joi.string()).default([]),
   absent: Joi.array().items(Joi.string()).default([]),
 });
+
+export function validateRehearsalUpdate(rehearsalUpdate) {
+  return rehearsalUpdateSchema.validate(rehearsalUpdate, { abortEarly: false });
+}
 
 export function validateAttendance(attendance) {
   return attendanceSchema.validate(attendance, { abortEarly: false });

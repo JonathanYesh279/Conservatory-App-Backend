@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 
 const VALID_RULES = ['מורה', 'מנצח', 'מדריך הרכב', 'מנהל', 'מורה תאוריה', 'מגמה'];
 const VALID_DURATION = [30, 45, 60];
+const VALID_AVAILABILITY_DURATION = [15, 30, 45, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480]; // Support longer availability blocks
 const VALID_DAYS = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי'];
 
 // Schema for schedule slot
@@ -12,7 +13,24 @@ const scheduleSlotSchema = Joi.object({
   day: Joi.string().valid(...VALID_DAYS).required(),
   startTime: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).required(), // HH:MM format
   endTime: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).optional(), // Calculated from startTime + duration
-  duration: Joi.number().valid(...VALID_DURATION).required(),
+  duration: Joi.alternatives()
+    .try(
+      // Allow numbers in the extended range for availability blocks
+      Joi.number().min(15).max(480).positive().integer(),
+      // Allow string numbers that convert to valid durations  
+      Joi.string().custom((value, helpers) => {
+        const num = parseInt(value, 10);
+        if (isNaN(num) || num < 15 || num > 480) {
+          return helpers.error('any.invalid');
+        }
+        return num;
+      })
+    )
+    .required()
+    .messages({
+      'any.invalid': 'Duration must be between 15 and 480 minutes',
+      'any.required': 'Duration is required'
+    }),
   isAvailable: Joi.boolean().default(true),
   location: Joi.string().allow('', null).default(null),
   notes: Joi.string().allow('', null).default(null),
@@ -55,6 +73,10 @@ export const teacherSchema = Joi.object({
     schedule: Joi.array()
       .items(scheduleSlotSchema)
       .default([]),
+    timeBlocks: Joi.array()
+      .items(scheduleSlotSchema)
+      .optional()
+      .default([]), // Allow timeBlocks as alias for schedule
   }).required(),
 
   conducting: Joi.object({
@@ -100,7 +122,23 @@ const scheduleSlotUpdateSchema = Joi.object({
   day: Joi.string().valid(...VALID_DAYS).optional(),
   startTime: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).optional(), // HH:MM format
   endTime: Joi.string().pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).optional(),
-  duration: Joi.number().valid(...VALID_DURATION).optional(),
+  duration: Joi.alternatives()
+    .try(
+      // Allow numbers in the extended range for availability blocks
+      Joi.number().min(15).max(480).positive().integer(),
+      // Allow string numbers that convert to valid durations  
+      Joi.string().custom((value, helpers) => {
+        const num = parseInt(value, 10);
+        if (isNaN(num) || num < 15 || num > 480) {
+          return helpers.error('any.invalid');
+        }
+        return num;
+      })
+    )
+    .optional()
+    .messages({
+      'any.invalid': 'Duration must be between 15 and 480 minutes'
+    }),
   isAvailable: Joi.boolean().optional(),
   location: Joi.string().allow('', null).optional(),
   notes: Joi.string().allow('', null).optional(),
@@ -142,6 +180,9 @@ export const teacherUpdateSchema = Joi.object({
     schedule: Joi.array()
       .items(scheduleSlotUpdateSchema)
       .optional(),
+    timeBlocks: Joi.array()
+      .items(scheduleSlotUpdateSchema)
+      .optional(), // Allow timeBlocks as alias for schedule
   }).optional(),
 
   conducting: Joi.object({

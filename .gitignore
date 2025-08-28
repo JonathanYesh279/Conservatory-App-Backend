@@ -2,8 +2,12 @@
 node_modules/
 .claude/
 
-# Environment variables
+# Environment variables and secrets
 .env
+.env.*
+*.env
+!.env.example
+!.env.template
 
 # Logs
 logs
@@ -51,3 +55,173 @@ pids
 
 # Optional eslint cache
 .eslintcache
+
+# Claude AI (already included above but keeping for clarity)
+CLAUDE.md
+claude.md
+
+# Private keys, certificates, and credentials
+*.pem
+*.key
+*.crt
+*.cer
+*.pfx
+*.p12
+private/
+secrets/
+credentials/
+*.jks
+*.keystore
+*.truststore
+ssl/
+certs/
+
+# Authentication and tokens
+auth.json
+tokens.json
+serviceAccountKey.json
+firebase-adminsdk*.json
+google-credentials.json
+aws-credentials.json
+jwt-keys/
+refresh-tokens/
+
+# Database files and backups
+*.sql
+*.dump
+*.bak
+*.backup
+database/
+backups/
+migrations/*.sql
+!migrations/example.sql
+seeders/data/
+!seeders/data/example.json
+
+# Configuration files with sensitive data
+config.local.js
+config.local.json
+settings.local.json
+*.local.json
+*.local.js
+database.json
+ormconfig.json
+!example.local.*
+!config.example.*
+
+# API keys and service configs
+apikeys.js
+apikeys.json
+api_keys/
+service-account*.json
+third-party-keys/
+
+# Session data
+sessions/
+*.session
+session-store/
+
+# User uploaded files (already included above but expanding)
+public/uploads/
+media/
+files/
+documents/
+static/uploads/
+
+# Local development files
+*.local
+local-data/
+.localstack/
+docker-compose.local.yml
+docker-compose.override.yml
+
+# Test data that might contain real data
+test-data/
+fixtures/*.json
+!fixtures/example.json
+__tests__/data/
+!__tests__/data/sample.json
+
+# Build artifacts that might expose internals
+*.map
+*.js.map
+
+# Package manager local files
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnpm-store/
+package-lock.json.backup
+yarn.lock.backup
+
+# Personal notes and todos
+TODO.md
+NOTES.md
+notes.txt
+*.notes
+planning/
+
+# Archive files that might contain sensitive data
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+!public/downloads/*.zip
+
+# Backup files
+*.backup
+*.bak
+*.old
+*.orig
+*~
+*.save
+
+# Docker files that might contain secrets
+.dockerignore.local
+docker-compose.prod.yml
+!docker-compose.example.yml
+
+# Terraform/Infrastructure files
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+*.tfvars
+
+# Monitoring and profiling
+*.heap
+*.heapsnapshot
+.clinic/
+.profile/
+performance-reports/
+metrics/
+
+# Generated documentation that might expose internals
+docs/api/
+api-docs/
+!docs/api/public/
+swagger-output.json
+
+# Production files
+production.json
+prod.config.js
+deployment-scripts/
+deploy-keys/
+
+# Cache directories
+.cache/
+cache/
+redis-data/
+
+# Debugging
+.node_repl_history
+.v8flags*
+core.*
+*.core
+
+# Email templates with real data
+email-templates/compiled/
+!email-templates/compiled/example.html

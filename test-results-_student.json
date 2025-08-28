@@ -1,0 +1,5249 @@
+{
+  "endpoint": "/student",
+  "status": 200,
+  "contentType": "application/json; charset=utf-8",
+  "success": true,
+  "data": [
+    {
+      "_id": "68813849abdf329e8afc2688",
+      "personalInfo": {
+        "fullName": "FISCHEL BENJAMIN",
+        "phone": "0542299380",
+        "age": 10,
+        "address": "רחוב: הגלים בית: 5 דירה:, רעננה",
+        "parentName": "פישל מריו",
+        "parentPhone": "0542299380",
+        "parentEmail": "fischel.mario@yahoo.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "א"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-07-31T13:32:51.935Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc265e",
+      "personalInfo": {
+        "fullName": "Nevarez Gamliel",
+        "phone": "0545573159",
+        "age": 11,
+        "address": "Shai Agnon 12, רעננה",
+        "parentName": "Nevarez Ariel",
+        "parentPhone": "0545573159",
+        "parentEmail": "mishpaha.nevarez@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "currentStage": 1,
+            "isPrimary": true,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "א"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-07-30T19:41:17.472Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc264f",
+      "personalInfo": {
+        "fullName": "אביטן  טהר",
+        "phone": "0524832444",
+        "address": "לולב 13 13, עבדון",
+        "parentName": "אביטן  מיכאל",
+        "parentPhone": "0524832444",
+        "parentEmail": "Mikitek@walla.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "currentStage": 1,
+            "isPrimary": true,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "א"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-07-31T19:51:55.354Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2642",
+      "personalInfo": {
+        "fullName": "אברגל אלנקוה אלה נעמה",
+        "phone": "0549762744",
+        "age": 7,
+        "address": "החיל 32/16, רעננה",
+        "parentName": "אלנקוה  אלדד",
+        "parentPhone": "0549762744",
+        "parentEmail": "eldad.elnekave@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חלילית",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:15.539Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2661",
+      "personalInfo": {
+        "fullName": "אגמון אסף משה",
+        "phone": "0543539897",
+        "age": 10,
+        "address": "רחוב: הלבונה בית: 19 דירה:, רעננה",
+        "parentName": "אגמון נטע",
+        "parentPhone": "0543539897",
+        "parentEmail": "netagmon@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:17.051Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2647",
+      "personalInfo": {
+        "fullName": "אהרון אורי",
+        "phone": "0543300757",
+        "age": 13,
+        "address": "רחוב: יצחק שדה בית: 20 דירה:, רעננה",
+        "parentName": "אהרון קרן",
+        "parentPhone": "0543300757",
+        "parentEmail": "keren.naim@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "ז"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-07-29T20:15:59.670Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2640",
+      "personalInfo": {
+        "fullName": "אהרוני עמנואל",
+        "phone": "0508889999",
+        "age": 8,
+        "address": "חביבה רייק 1, רעננה",
+        "parentName": "אהרוני מורן",
+        "parentPhone": "0508889999",
+        "parentEmail": "gurmoran@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חלילית",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.332Z",
+      "updatedAt": "2025-08-17T22:12:15.394Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc267b",
+      "personalInfo": {
+        "fullName": "אלוורץ אריאל",
+        "phone": "0544345434",
+        "age": 12,
+        "address": "רחוב: מכבי בית: 24 דירה: 15, רעננה",
+        "parentName": "אריאס הרננדץ אולגה לוסיה",
+        "parentPhone": "0544345434",
+        "parentEmail": "Bondarias@yahoo.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.859Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2675",
+      "personalInfo": {
+        "fullName": "אלמן אריאל",
+        "phone": "0585010085",
+        "age": 13,
+        "address": "רחוב: לסקוב חיים בית: 6 דירה:, רעננה",
+        "parentName": "אלמן אושרת",
+        "parentPhone": "0585010085",
+        "parentEmail": "oshyellman18@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.429Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2676",
+      "personalInfo": {
+        "fullName": "אסרף עילאי",
+        "phone": "0507813050",
+        "age": 9,
+        "address": "רחוב: דמארי שושנה בית: 10 דירה: 18, רעננה",
+        "parentName": "אסרף גליה",
+        "parentPhone": "0507813050",
+        "parentEmail": "galiakobihome@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.500Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965dbd",
+      "personalInfo": {
+        "fullName": "בהיר עלמה",
+        "phone": "0522516282",
+        "age": 14,
+        "address": "רחוב: התחיה בית: 3 דירה: 8, רעננה",
+        "parentName": "וינברגר בהיר קלודין",
+        "parentPhone": "0522516282",
+        "parentEmail": "claudinw@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "בסון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "א"
+      },
+      "enrollments": {
+        "orchestraIds": [
+          "6883bac814f0fcfae92ac452"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:45.177Z",
+      "updatedAt": "2025-07-27T05:46:55.673Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc267c",
+      "personalInfo": {
+        "fullName": "בוחניק אייל מבורך",
+        "phone": "0502802110",
+        "age": 12,
+        "address": "רחוב: הצנחנים בית: 29 דירה:, רעננה",
+        "parentName": "בוחניק רויה",
+        "parentPhone": "0502802110",
+        "parentEmail": "Revaya18@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.932Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2659",
+      "personalInfo": {
+        "fullName": "בירן מתן",
+        "phone": "0547720960",
+        "age": 11,
+        "address": "רחוב: יהודה הלוי בית: 16 דירה:, רעננה",
+        "parentName": "בירן עדי",
+        "parentPhone": "0547720960",
+        "parentEmail": "adi.shai.biran@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.545Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2674",
+      "personalInfo": {
+        "fullName": "ביתן יונתן",
+        "phone": "0548050793",
+        "age": 14,
+        "address": "נעמי שמר 11, רעננה",
+        "parentName": "ביתן תמי",
+        "parentPhone": "0548050793",
+        "parentEmail": "tamilevin7@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.356Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc269f",
+      "personalInfo": {
+        "fullName": "בן יוחנה עברי",
+        "phone": "0545887131",
+        "age": 12,
+        "address": "רחוב: פרץ בית: 45 דירה:, רעננה",
+        "parentName": "בן יוחנה ניר",
+        "parentPhone": "0545887131",
+        "parentEmail": "nir.ben.yohana@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קרן יער",
+            "isPrimary": true,
+            "currentStage": 2,
+            "tests": {
+              "stageTest": {
+                "status": "עבר/ה בהצטיינות",
+                "lastTestDate": "2025-07-30T11:21:36.059Z",
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "עבר/ה בהצטיינות",
+                "lastTestDate": "2025-07-30T11:21:34.268Z",
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:21.390Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2660",
+      "personalInfo": {
+        "fullName": "בן ישי איתן",
+        "phone": "0543333653",
+        "age": 10,
+        "address": "רחוב: הדקל בית: 5 דירה:, רעננה",
+        "parentName": "בן ישי נטע",
+        "parentPhone": "0543333653",
+        "parentEmail": "neta.sigron@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.979Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2669",
+      "personalInfo": {
+        "fullName": "בן ציון ויקלר ליעם",
+        "phone": "0522205689",
+        "age": 15,
+        "address": "רחוב: הפעמונים בית: 16 דירה: 9, רעננה",
+        "parentName": "ויקלר דניאלה",
+        "parentPhone": "0522205689",
+        "parentEmail": "wicklerdaniela@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.632Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc266f",
+      "personalInfo": {
+        "fullName": "בן ציון ויקלר תמר",
+        "phone": "0522205689",
+        "age": 10,
+        "address": "רחוב: הפעמונים בית: 16 דירה: 9, רעננה",
+        "parentName": "ויקלר דניאלה",
+        "parentPhone": "0522205689",
+        "parentEmail": "wicklerdaniela@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.061Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2663",
+      "personalInfo": {
+        "fullName": "בנימין אלעד",
+        "phone": "0523776899",
+        "age": 50,
+        "address": "רחוב: התור בית: 12 דירה:, רעננה",
+        "parentName": "בנימין אור מישל",
+        "parentPhone": "0523776899",
+        "parentEmail": "ormbenjamin@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:17.195Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc266b",
+      "personalInfo": {
+        "fullName": "בראונר איתן",
+        "phone": "0527252121",
+        "age": 13,
+        "address": "רחוב: אחד העם בית: 32 דירה:, רעננה",
+        "parentName": "בראונר שיע",
+        "parentPhone": "0527252121",
+        "parentEmail": "shiabrauner@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.778Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2691",
+      "personalInfo": {
+        "fullName": "בראשי ליבי",
+        "phone": "0544569130",
+        "age": 13,
+        "address": "רחוב: דמארי שושנה בית: 20 דירה: 10, רעננה",
+        "parentName": "בראשי טללית",
+        "parentPhone": "0544569130",
+        "parentEmail": "tlalit.f@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.382Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc268e",
+      "personalInfo": {
+        "fullName": "ברודסקי הילי",
+        "phone": "0586868103",
+        "age": 11,
+        "address": "דרך השדות 61, כפר שמריהו",
+        "parentName": "ברודסקי מיכל",
+        "parentPhone": "0586868103",
+        "parentEmail": "michal@lezgo.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.165Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc268a",
+      "personalInfo": {
+        "fullName": "ברודסקי נעם",
+        "phone": "0586868103",
+        "age": 13,
+        "address": "דרך השדות 61, כפר שמריהו",
+        "parentName": "ברודסקי מיכל",
+        "parentPhone": "0586868103",
+        "parentEmail": "michal@lezgo.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:19.880Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2667",
+      "personalInfo": {
+        "fullName": "ברזיס ארי",
+        "phone": "0524677782",
+        "age": 16,
+        "address": "רחוב: הירדן בית: 35 דירה:, רעננה",
+        "parentName": "ברזיס אתי אפרים",
+        "parentPhone": "0524677782",
+        "parentEmail": "brezis@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.488Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2696",
+      "personalInfo": {
+        "fullName": "ברקוביץ יעל",
+        "phone": "0586298483",
+        "age": 10,
+        "address": "הר סיני 28, רעננה",
+        "parentName": "ברקוביץ בנימין דוד",
+        "parentPhone": "0586298483",
+        "parentEmail": "binyamin.berkovits@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:20.745Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2697",
+      "personalInfo": {
+        "fullName": "ג'ובילר גדיאל",
+        "phone": "0584856300",
+        "age": 10,
+        "address": "רחוב: השרון בית: 22 דירה:18, רעננה",
+        "parentName": "ג'ובילר מיכאל אלן",
+        "parentPhone": "0584856300",
+        "parentEmail": "mjubiler@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:20.817Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2678",
+      "personalInfo": {
+        "fullName": "גואוק רון בנדיקט",
+        "phone": "0545263426",
+        "age": 13,
+        "address": "כיכר הראשונים 2, כפר שמריהו",
+        "parentName": "גואוק שרי",
+        "parentPhone": "0545263426",
+        "parentEmail": "ronche_gooc@yahoo.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.645Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc269a",
+      "personalInfo": {
+        "fullName": "גיט איתמר",
+        "phone": "0553086036",
+        "age": 14,
+        "address": "ברנדייס 32/5, רעננה",
+        "parentName": "גיט אנה",
+        "parentPhone": "0553086036",
+        "parentEmail": "Ann.git@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קרן יער",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:21.032Z"
+    },
+    {
+      "_id": "688a72ad3b8134c968b36f39",
+      "personalInfo": {
+        "fullName": "גילי קנט",
+        "phone": "0541234567",
+        "age": 15,
+        "address": "דוגמא",
+        "parentName": "לא צוין",
+        "parentPhone": "0500000000",
+        "parentEmail": "parent@example.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חליל צד",
+            "currentStage": 5,
+            "isPrimary": true,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "ט"
+      },
+      "isActive": true,
+      "teacherIds": [
+        "68813849abdf329e8afc25fe"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "68813849abdf329e8afc25fe",
+          "scheduleSlotId": "68871f9669eab862f9abaff9",
+          "day": "רביעי",
+          "time": "14:00",
+          "duration": 45,
+          "notes": "",
+          "startDate": "2025-07-30T19:29:49.801Z",
+          "isActive": true,
+          "isRecurring": true,
+          "scheduleInfo": {
+            "day": "רביעי",
+            "startTime": "14:00",
+            "endTime": "14:45",
+            "duration": 45,
+            "location": null,
+            "notes": null
+          },
+          "endDate": null,
+          "createdAt": "2025-08-11T06:57:34.216Z",
+          "updatedAt": "2025-08-11T06:57:34.228Z"
+        }
+      ],
+      "enrollments": {
+        "orchestraIds": [
+          "6882c783070ccc694d122d7d",
+          "6883badc14f0fcfae92ac453"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [
+          {
+            "schoolYearId": "67e153be046a2782476d17fe",
+            "isActive": true
+          }
+        ],
+        "theoryLessonIds": []
+      },
+      "createdAt": "2025-07-30T19:29:49.877Z",
+      "updatedAt": "2025-08-11T06:57:34.226Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2680",
+      "personalInfo": {
+        "fullName": "גרינפלד אורי",
+        "phone": "0528233378",
+        "age": 10,
+        "address": "רחוב: דיין משה בית: 40 דירה: 11, רעננה",
+        "parentName": "גרינפלד קרן",
+        "parentPhone": "0528233378",
+        "parentEmail": "Kerengreenfeld@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:19.219Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc265c",
+      "personalInfo": {
+        "fullName": "גרצ'יק אדם",
+        "phone": "0523435137",
+        "age": 10,
+        "address": "רחוב: יהודה הלוי 4ג, רעננה",
+        "parentName": "גורביץ' מאיה",
+        "parentPhone": "0523435137",
+        "parentEmail": "maiag72@yahoo.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.765Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc268d",
+      "personalInfo": {
+        "fullName": "דהן מאיה",
+        "phone": "0526042714",
+        "age": 11,
+        "address": "רחוב: הלוטוס בית: 5 דירה: 3, רעננה",
+        "parentName": "דהן דורית אסתר",
+        "parentPhone": "0526042714",
+        "parentEmail": "doritdahan@hotmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.094Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc265b",
+      "personalInfo": {
+        "fullName": "דיטשר שחר ציון",
+        "phone": "0533398530",
+        "age": 11,
+        "address": "רחוב: אנילביץ בית: 1 דירה: 5, רעננה",
+        "parentName": "דיטשר מעין",
+        "parentPhone": "0533398530",
+        "parentEmail": "mkoren18@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.692Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc266a",
+      "personalInfo": {
+        "fullName": "דרורי ניתאי",
+        "phone": "0528682266",
+        "age": 14,
+        "address": "רחוב: דגניה בית: 15 דירה:, רעננה",
+        "parentName": "סיטון דרורי ענבל",
+        "parentPhone": "0528682266",
+        "parentEmail": "inbayos@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.705Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965dbc",
+      "personalInfo": {
+        "fullName": "האס גרמי",
+        "phone": "0537082807",
+        "age": 12,
+        "address": "רחוב: בר אילן בית: 26 דירה: 7, רעננה",
+        "parentName": "האס סינטיה שרה",
+        "parentPhone": "0537082807",
+        "parentEmail": "cynthiasarahaas@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "אבוב",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "א"
+      },
+      "enrollments": {
+        "orchestraIds": [
+          "6883bac814f0fcfae92ac452"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:45.177Z",
+      "updatedAt": "2025-07-29T19:41:14.033Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2699",
+      "personalInfo": {
+        "fullName": "הולנד אביגיל שרה",
+        "phone": "0528119914",
+        "age": 14,
+        "address": "רחוב: אחוזה בית: 197 דירה: 3, רעננה",
+        "parentName": "הולנד יאיר",
+        "parentPhone": "0528119914",
+        "parentEmail": "orlyholland@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קרן יער",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:20.960Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2682",
+      "personalInfo": {
+        "fullName": "הרפז עמיר",
+        "phone": "0522503803",
+        "age": 69,
+        "address": "קרן היסוד 5, רעננה",
+        "parentName": "הרפז עמיר",
+        "parentPhone": "0522503803",
+        "parentEmail": "harpaz.amir@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:19.363Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2673",
+      "personalInfo": {
+        "fullName": "וולך שחף",
+        "phone": "0544333283",
+        "age": 30,
+        "address": "רחוב: בן גוריון בית: 6 דירה: 12, רעננה",
+        "parentName": "וולך שחף",
+        "parentPhone": "0544333283",
+        "parentEmail": "shahaf.leonkun@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.285Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2694",
+      "personalInfo": {
+        "fullName": "וולקן תמרה",
+        "phone": "0544771905",
+        "age": 10,
+        "address": "רחוב: אוסטרובסקי בית: 37 דירה: 16, רעננה",
+        "parentName": "וולקן ניצן",
+        "parentPhone": "0544771905",
+        "parentEmail": "nitzan.wulkan@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.600Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2695",
+      "personalInfo": {
+        "fullName": "ויגודה בועז",
+        "phone": "0547536303",
+        "age": 9,
+        "address": "החי\"ל 43א, רעננה",
+        "parentName": "אריאל ויגודה אדוה",
+        "parentPhone": "0547536303",
+        "parentEmail": "advo.ariel@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.673Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2641",
+      "personalInfo": {
+        "fullName": "ויגודה יעל",
+        "phone": "0547536303",
+        "age": 7,
+        "address": "החי\"ל 43א, רעננה",
+        "parentName": "אריאל ויגודה אדוה",
+        "parentPhone": "0547536303",
+        "parentEmail": "advo.ariel@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חלילית",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:15.466Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc267d",
+      "personalInfo": {
+        "fullName": "ולר  שחר יוסף",
+        "phone": "0547338829",
+        "age": 12,
+        "address": "שברץ 11 א דירה 9, רעננה",
+        "parentName": "ולר ניצן",
+        "parentPhone": "0547338829",
+        "parentEmail": "we.nitzan@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:19.004Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2687",
+      "personalInfo": {
+        "fullName": "וקחי תהלה",
+        "phone": "0525411388",
+        "age": null,
+        "address": "חנקין 36 ב, רעננה",
+        "parentName": "וקחי הראל",
+        "parentPhone": "0525411388",
+        "parentEmail": "Harel.vakhi@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:19.728Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc269b",
+      "personalInfo": {
+        "fullName": "זלצבורג מרינה",
+        "phone": "0543135002",
+        "age": null,
+        "address": "שיינפיין 28 דירה 9, כפר סבא",
+        "parentName": "זלצבורג מרינה",
+        "parentPhone": "0543135002",
+        "parentEmail": "shmayevich.marina@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קרן יער",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:21.104Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc265d",
+      "personalInfo": {
+        "fullName": "חן יהב",
+        "phone": "0545848816",
+        "age": 10,
+        "address": "רחוב: השלום בית: 45 דירה:, רעננה",
+        "parentName": "חן שני",
+        "parentPhone": "0545848816",
+        "parentEmail": "Shani.gimpel@icloud.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.838Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc268f",
+      "personalInfo": {
+        "fullName": "חנן ג'ים",
+        "phone": "0522834355",
+        "age": 15,
+        "address": "רחוב: עקיבא בית: 13 דירה: 2, רעננה",
+        "parentName": "חנן צחי",
+        "parentPhone": "0522834355",
+        "parentEmail": "tsachihanan@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.237Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2655",
+      "personalInfo": {
+        "fullName": "טופף נוה",
+        "phone": "0546668232",
+        "age": 9,
+        "address": "רחוב: אלעזר דוד בית: 2 דירה: 2, רעננה",
+        "parentName": "טופף משה",
+        "parentPhone": "0546668232",
+        "parentEmail": "mtofef@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "א"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [
+        "6880d12f5a3def220d8857d5"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "6880d12f5a3def220d8857d5",
+          "scheduleSlotId": "688bc392fb1d1bfedfa461b6",
+          "day": "שלישי",
+          "time": "16:00",
+          "duration": 45,
+          "notes": "",
+          "startDate": "2025-08-06T23:35:41.125Z",
+          "isActive": true,
+          "isRecurring": true,
+          "createdAt": "2025-08-06T23:35:41.125Z",
+          "updatedAt": "2025-08-06T23:35:41.424Z",
+          "scheduleInfo": {
+            "day": "שלישי",
+            "startTime": "16:00",
+            "endTime": "16:45",
+            "duration": 45,
+            "location": null,
+            "notes": null
+          }
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-06T23:35:41.331Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2693",
+      "personalInfo": {
+        "fullName": "טמרליס נועה אליה",
+        "phone": "0546684253",
+        "age": 12,
+        "address": "רחוב: סירקין בית: 6 דירה:, רעננה",
+        "parentName": "טמרליס מרק סטיוון",
+        "parentPhone": "0546684253",
+        "parentEmail": "marc.temerlies@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.527Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc264e",
+      "personalInfo": {
+        "fullName": "יגיל אסף",
+        "phone": "0523423557",
+        "age": null,
+        "address": "ניצנה 27, גבעתיים",
+        "parentName": "גולן  ענת",
+        "parentPhone": "0523423557",
+        "parentEmail": null,
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.042Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2671",
+      "personalInfo": {
+        "fullName": "ידידיה-עידן נוה",
+        "phone": "0526993333",
+        "age": 9,
+        "address": "רחוב: קלוזנר בית: 15 דירה: 5, רעננה",
+        "parentName": "ידידיה עידית",
+        "parentPhone": "0526993333",
+        "parentEmail": "idit.yedidya@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.211Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc265f",
+      "personalInfo": {
+        "fullName": "יואלי יהונתן",
+        "phone": "0524550120",
+        "age": 11,
+        "address": "רחוב: ארגוב סשה בית: 40 דירה: 1, רעננה",
+        "parentName": "יואלי מיטל",
+        "parentPhone": "0524550120",
+        "parentEmail": "meytalyoeli1@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.910Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2668",
+      "personalInfo": {
+        "fullName": "ירום טל",
+        "phone": "0544519712",
+        "age": 16,
+        "address": "הכלנית 24, רעננה",
+        "parentName": "ירום תמר",
+        "parentPhone": "0544519712",
+        "parentEmail": "tamaryarom77@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.561Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2645",
+      "personalInfo": {
+        "fullName": "כץ נטע",
+        "phone": "0523542992",
+        "age": 17,
+        "address": "רחוב: חטיבת גולני בית: 50 דירה:, רעננה",
+        "parentName": "כץ רויטל איטה",
+        "parentPhone": "0523542992",
+        "parentEmail": "revitalkatz40@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "יב"
+      },
+      "enrollments": {
+        "orchestraIds": [
+          "6883badc14f0fcfae92ac453",
+          "6882c783070ccc694d122d7d"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-05T04:35:37.272Z",
+      "teacherAssignments": [
+        {
+          "teacherId": "688136c194c6cd56db965db9",
+          "scheduleSlotId": "68860e9511976de8fd8cb375",
+          "day": "ראשון",
+          "time": "14:00",
+          "duration": 30,
+          "notes": "",
+          "updatedAt": "2025-07-30T09:32:01.817Z",
+          "scheduleInfo": {
+            "day": "ראשון",
+            "startTime": "14:00",
+            "endTime": "14:30",
+            "duration": 30
+          },
+          "isActive": true,
+          "createdAt": "2025-07-30T09:32:01.817Z"
+        }
+      ],
+      "teacherIds": [
+        "688136c194c6cd56db965db9"
+      ]
+    },
+    {
+      "_id": "68813849abdf329e8afc2664",
+      "personalInfo": {
+        "fullName": "לב אליעזר",
+        "phone": "0524782711",
+        "age": null,
+        "address": "איריס 8א, כפר סבא",
+        "parentName": "לב אליעזר",
+        "parentPhone": "0524782711",
+        "parentEmail": "eliezer.lev@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:17.267Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc265a",
+      "personalInfo": {
+        "fullName": "לוי יואל",
+        "phone": "0547661106",
+        "age": 11,
+        "address": "רחוב: הפעמונים בית: 19 דירה: 3, רעננה",
+        "parentName": "שינדלר לוי רבקה דינה",
+        "parentPhone": "0547661106",
+        "parentEmail": "rivkanono@GMAIL.COM",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טרומבון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.618Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2656",
+      "personalInfo": {
+        "fullName": "לוי ינאי",
+        "phone": "0547661106",
+        "age": 7,
+        "address": "רחוב: הפעמונים בית: 19 דירה: 3, רעננה",
+        "parentName": "שינדלר לוי רבקה דינה",
+        "parentPhone": "0547661106",
+        "parentEmail": "rivkanono@GMAIL.COM",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.329Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2654",
+      "personalInfo": {
+        "fullName": "לזר בנימין",
+        "phone": "0547473676",
+        "age": 10,
+        "address": "רחוב: הרצל בית: 63 דירה:, רעננה",
+        "parentName": "לזר אבנשטיין יעל רבקה",
+        "parentPhone": "0547473676",
+        "parentEmail": "yaelez@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "ה"
+      },
+      "enrollments": {
+        "orchestraIds": [
+          "6883baf814f0fcfae92ac454"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [
+        "6880d12f5a3def220d8857d5"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "6880d12f5a3def220d8857d5",
+          "scheduleSlotId": "688bc392fb1d1bfedfa461b6",
+          "day": "שלישי",
+          "time": "15:15",
+          "duration": 45,
+          "notes": "",
+          "startDate": "2025-07-31T19:28:43.064Z",
+          "isActive": true,
+          "isRecurring": true,
+          "createdAt": "2025-07-31T19:28:43.064Z",
+          "updatedAt": "2025-07-31T19:28:43.271Z",
+          "scheduleInfo": {
+            "day": "שלישי",
+            "startTime": "15:15",
+            "endTime": "16:00",
+            "duration": 45,
+            "location": null,
+            "notes": null
+          }
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-05T14:47:12.249Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2677",
+      "personalInfo": {
+        "fullName": "ליבר דנה",
+        "phone": "0544736429",
+        "age": 17,
+        "address": "רחוב: אשכול לוי בית: 19 דירה: 4, רעננה",
+        "parentName": "ליבר אושר",
+        "parentPhone": "0544736429",
+        "parentEmail": "rakefetl@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.573Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc267f",
+      "personalInfo": {
+        "fullName": "ליפמן סיינה",
+        "phone": "0544875640",
+        "age": 10,
+        "address": "רחוב: גרונר דב בית: 10 דירה:, רעננה",
+        "parentName": "ליפמן יהושוע גבריאל",
+        "parentPhone": "0544875640",
+        "parentEmail": "joshua.g.lipman@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:19.146Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc264c",
+      "personalInfo": {
+        "fullName": "לקנר ליה",
+        "phone": "0547792623",
+        "age": 10,
+        "address": "רחוב: קרן היסוד בית: 30 דירה: 10, רעננה",
+        "parentName": "לקנר גלי",
+        "parentPhone": "0547792623",
+        "parentEmail": "gali.lackner@gmail.com",
+        "studentEmail": "gali.lackner@gmail.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "ה"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [
+        "6880d12f5a3def220d8857d5"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "6880d12f5a3def220d8857d5",
+          "scheduleSlotId": "688bc392fb1d1bfedfa461b6",
+          "day": "שלישי",
+          "time": "14:00",
+          "duration": 30,
+          "notes": "",
+          "startDate": "2025-07-31T19:27:45.939Z",
+          "isActive": true,
+          "isRecurring": true,
+          "createdAt": "2025-07-31T19:27:45.939Z",
+          "updatedAt": "2025-07-31T19:27:46.149Z",
+          "scheduleInfo": {
+            "day": "שלישי",
+            "startTime": "14:00",
+            "endTime": "14:30",
+            "duration": 30,
+            "location": null,
+            "notes": null
+          }
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-07-31T19:27:46.078Z"
+    },
+    {
+      "_id": "689c5430ba03fdece4450df4",
+      "personalInfo": {
+        "fullName": "מאיה דהן",
+        "phone": "0526042714",
+        "age": 11,
+        "address": "רעננה",
+        "parentName": "דורית דהן",
+        "parentPhone": "0526042714",
+        "parentEmail": "parent@example.com",
+        "studentEmail": "student@gmail.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "currentStage": 2,
+            "isPrimary": true,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "notes": "",
+                "lastTestDate": "2025-08-13T09:02:09.341Z"
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "notes": "",
+                "lastTestDate": "2025-08-13T09:02:07.680Z"
+              }
+            }
+          }
+        ],
+        "class": "ה"
+      },
+      "isActive": true,
+      "teacherIds": [
+        "68813849abdf329e8afc2628"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "68813849abdf329e8afc2628",
+          "scheduleSlotId": "6899893be84119011da21dc4",
+          "day": "שלישי",
+          "time": "14:30",
+          "duration": 45,
+          "notes": "",
+          "startDate": "2025-08-13T09:00:32.814Z",
+          "isActive": true,
+          "isRecurring": true,
+          "scheduleInfo": {
+            "day": "שלישי",
+            "startTime": "14:30",
+            "endTime": "15:15",
+            "duration": 45,
+            "location": null,
+            "notes": null
+          },
+          "endDate": null,
+          "createdAt": "2025-08-13T09:06:18.735Z",
+          "updatedAt": "2025-08-13T09:06:18.745Z"
+        },
+        {
+          "teacherId": "68813849abdf329e8afc2628",
+          "scheduleSlotId": "6899893be84119011da21dc6",
+          "day": "חמישי",
+          "time": "15:15",
+          "duration": 45,
+          "notes": "",
+          "startDate": "2025-08-13T09:00:32.814Z",
+          "isActive": true,
+          "isRecurring": true,
+          "scheduleInfo": {
+            "day": "חמישי",
+            "startTime": "15:15",
+            "endTime": "16:00",
+            "duration": 45,
+            "location": null,
+            "notes": null
+          },
+          "endDate": null,
+          "createdAt": "2025-08-13T09:06:18.736Z",
+          "updatedAt": "2025-08-13T09:06:18.747Z"
+        }
+      ],
+      "enrollments": {
+        "orchestraIds": [
+          "6883bac814f0fcfae92ac452"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [
+          {
+            "schoolYearId": "67e153be046a2782476d17fe",
+            "isActive": true
+          }
+        ],
+        "theoryLessonIds": []
+      },
+      "createdAt": "2025-08-13T09:00:32.820Z",
+      "updatedAt": "2025-08-13T09:06:18.743Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2646",
+      "personalInfo": {
+        "fullName": "מאיר שמשון",
+        "phone": "0525572030",
+        "age": 16,
+        "address": "רחוב: הגדוד העברי בית: 19 דירה: 11, רעננה",
+        "parentName": "מאיר רחל",
+        "parentPhone": "0525572030",
+        "parentEmail": "rajelmeir@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:15.754Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc264b",
+      "personalInfo": {
+        "fullName": "מיוחס נאוה",
+        "phone": "0542328330",
+        "age": 10,
+        "address": "רחוב: דמארי שושנה בית: 6 דירה: 10, רעננה",
+        "parentName": "מיוחס שאנה אליין",
+        "parentPhone": "0542328330",
+        "parentEmail": "sebergman523@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:15.898Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2672",
+      "personalInfo": {
+        "fullName": "מיכל יונתן",
+        "phone": "0549871676",
+        "age": 14,
+        "address": "רחוב: העיט בית: 8 דירה: 16, רעננה",
+        "parentName": "מיכל תמרה",
+        "parentPhone": "0549871676",
+        "parentEmail": "tstelmacher@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "ז"
+      },
+      "enrollments": {
+        "orchestraIds": [
+          "6883badc14f0fcfae92ac453"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [
+        "68813849abdf329e8afc25e1"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "68813849abdf329e8afc25e1",
+          "scheduleSlotId": "68864c51f58c18f867e64c04",
+          "day": "ראשון",
+          "time": "14:00",
+          "duration": 45,
+          "notes": "",
+          "updatedAt": "2025-07-30T09:32:02.404Z",
+          "scheduleInfo": {
+            "day": "ראשון",
+            "startTime": "14:00",
+            "endTime": "14:45",
+            "duration": 45
+          },
+          "isActive": true,
+          "createdAt": "2025-07-30T09:32:02.404Z"
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-07-30T09:32:02.404Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2649",
+      "personalInfo": {
+        "fullName": "מירצין איתי",
+        "phone": "0543217086",
+        "age": 12,
+        "address": "רחוב: חנקין בית: 38 דירה: 13, רעננה",
+        "parentName": "מירצין אליהו",
+        "parentPhone": "0543217086",
+        "parentEmail": "elimirzin@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:15.828Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2681",
+      "personalInfo": {
+        "fullName": "מלר רעות",
+        "phone": "0527711531",
+        "age": 11,
+        "address": "רחוב: הגדוד העברי בית: 4 דירה: 8, רעננה",
+        "parentName": "מלר ישי יהושע איסק",
+        "parentPhone": "0527711531",
+        "parentEmail": "yishaimeller@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:19.290Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2670",
+      "personalInfo": {
+        "fullName": "מנקריז אלרואי",
+        "phone": "0542116621",
+        "age": 9,
+        "address": "רחוב: אבן עזרא בית: 14 דירה:, רעננה",
+        "parentName": "מנקריז שרון",
+        "parentPhone": "0542116621",
+        "parentEmail": "sharon.mankriz@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.133Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2658",
+      "personalInfo": {
+        "fullName": "נבו  נדב",
+        "phone": "0507204144",
+        "age": 17,
+        "address": "רחוב: דבורה עומר  בית: 1 דירה: 16, רעננה",
+        "parentName": "נבו רויטל ",
+        "parentPhone": "0507204144",
+        "parentEmail": "revitalgrossnevo@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "טובה/בריטון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.473Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2698",
+      "personalInfo": {
+        "fullName": "נווה אלה",
+        "phone": "0524483787",
+        "age": 15,
+        "address": "אוסטרובסקי 13/1, רעננה",
+        "parentName": "נווה דניאלה",
+        "parentPhone": "0524483787",
+        "parentEmail": "sdannip@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קרן יער",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:20.890Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2689",
+      "personalInfo": {
+        "fullName": "נושימובסקי יהודה ישראל",
+        "phone": "0545351287",
+        "age": 10,
+        "address": "רחוב: הדס 3 כניסה א, רעננה",
+        "parentName": "נושימובסקי דניאל",
+        "parentPhone": "0545351287",
+        "parentEmail": "danspingarn@yahoo.fr",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:19.809Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2652",
+      "personalInfo": {
+        "fullName": "סלומון דניאלה",
+        "phone": "0528588550",
+        "age": 13,
+        "address": "הערבה  8, רעננה",
+        "parentName": "סלומון שירי",
+        "parentPhone": "0528588550",
+        "parentEmail": "shirisalomon@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.185Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc269e",
+      "personalInfo": {
+        "fullName": "סלטקין דן",
+        "phone": "0544680908",
+        "age": 15,
+        "address": "הבנים 5, הרצליה",
+        "parentName": "סלטקין מייקל",
+        "parentPhone": "0544680908",
+        "parentEmail": "mikeslatkin@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קרן יער",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:21.318Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2690",
+      "personalInfo": {
+        "fullName": "סרי יעל אורה",
+        "phone": "0546875260",
+        "age": 11,
+        "address": "רחוב: בורוכוב בית: 69 דירה:, רעננה",
+        "parentName": "סרי ניר",
+        "parentPhone": "0546875260",
+        "parentEmail": "seris42@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.309Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc266c",
+      "personalInfo": {
+        "fullName": "ענבר איילת",
+        "phone": "0542292565",
+        "age": 13,
+        "address": "רחוב: היובל בית: 22 דירה: 5, רעננה",
+        "parentName": "פרידל שרה",
+        "parentPhone": "0542292565",
+        "parentEmail": "s.friedelinbar@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.851Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2665",
+      "personalInfo": {
+        "fullName": "פוגל-דרור יאיר",
+        "phone": "0532234432",
+        "age": 43,
+        "address": "רחוב: הפעמונים בית: 25 דירה: 4, רעננה",
+        "parentName": "פוגל-דרור יאיר",
+        "parentPhone": "0532234432",
+        "parentEmail": "yairfogel@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.340Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc264a",
+      "personalInfo": {
+        "fullName": "פורטר ירדן",
+        "phone": "0528197175",
+        "age": 12,
+        "address": "רחוב: מוצקין בית: 23 דירה:, רעננה",
+        "parentName": "האס פורטר בתיה",
+        "parentPhone": "0500000000",
+        "parentEmail": "batya.hp@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 3,
+            "tests": {
+              "stageTest": {
+                "status": "עבר/ה בהצטיינות",
+                "lastTestDate": "2025-07-30T11:11:06.978Z",
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "עבר/ה בהצטיינות",
+                "lastTestDate": "2025-07-30T11:11:04.119Z",
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [
+          "6883badc14f0fcfae92ac453",
+          "6882c783070ccc694d122d7d",
+          "6883baf814f0fcfae92ac454"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [
+        "688136c194c6cd56db965db9"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "688136c194c6cd56db965db9",
+          "scheduleSlotId": "68860e9511976de8fd8cb376",
+          "day": "שלישי",
+          "time": "14:00",
+          "duration": 30,
+          "notes": "",
+          "updatedAt": "2025-07-30T09:32:01.933Z",
+          "scheduleInfo": {
+            "day": "שלישי",
+            "startTime": "14:00",
+            "endTime": "14:30",
+            "duration": 30
+          },
+          "isActive": true,
+          "createdAt": "2025-07-30T09:32:01.933Z"
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T21:44:28.019Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc269c",
+      "personalInfo": {
+        "fullName": "פורמן איתן",
+        "phone": "0543515057",
+        "age": 17,
+        "address": "אלפסי, 3, רעננה",
+        "parentName": "פורמן חן",
+        "parentPhone": "0543515057",
+        "parentEmail": "mirifrmn@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קרן יער",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:21.176Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965dbe",
+      "personalInfo": {
+        "fullName": "פטאל פנינה",
+        "phone": "0545779687",
+        "age": 74,
+        "address": "רחוב: המעפילים בית: 3 דירה: 6, רעננה",
+        "parentName": "פטאל פנינה",
+        "parentPhone": "0545779687",
+        "parentEmail": "pninaer@walla.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חלילית",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:45.177Z",
+      "updatedAt": "2025-08-17T22:12:15.161Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2683",
+      "personalInfo": {
+        "fullName": "פיטוסי מרים חנה",
+        "phone": "0509793292",
+        "age": 16,
+        "address": "רחוב: עגנון בית: 29 דירה:, רעננה",
+        "parentName": "שטרן פיטוסי דבורה דומיניק",
+        "parentPhone": "0509793292",
+        "parentEmail": "dspitousi@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:19.436Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc267a",
+      "personalInfo": {
+        "fullName": "פרץ אבנר",
+        "phone": "0585979908",
+        "age": 13,
+        "address": "רחוב: עגנון בית: 9 דירה:, רעננה",
+        "parentName": "פרץ נועה שמחה",
+        "parentPhone": "0585979908",
+        "parentEmail": "noa.rozen@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.788Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc268b",
+      "personalInfo": {
+        "fullName": "פרץ אורן",
+        "phone": "0585979908",
+        "age": 10,
+        "address": "רחוב: עגנון בית: 9 דירה:, רעננה",
+        "parentName": "פרץ נועה שמחה",
+        "parentPhone": "0585979908",
+        "parentEmail": "noa.rozen@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:19.952Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2648",
+      "personalInfo": {
+        "fullName": "פרץ יובל",
+        "phone": "0585979908",
+        "age": 12,
+        "address": "רחוב: עגנון בית: 9 דירה:, רעננה",
+        "parentName": "פרץ נועה שמחה",
+        "parentPhone": "0541234567",
+        "parentEmail": "noa.rozen@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 3,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "ז"
+      },
+      "enrollments": {
+        "orchestraIds": [
+          "6883badc14f0fcfae92ac453"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [
+        "6880d12f5a3def220d8857d5"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "6880d12f5a3def220d8857d5",
+          "scheduleSlotId": "688bc392fb1d1bfedfa461b6",
+          "day": "שלישי",
+          "time": "14:30",
+          "duration": 45,
+          "notes": "",
+          "startDate": "2025-07-31T19:28:16.256Z",
+          "isActive": true,
+          "isRecurring": true,
+          "createdAt": "2025-07-31T19:28:16.256Z",
+          "updatedAt": "2025-07-31T19:28:16.456Z",
+          "scheduleInfo": {
+            "day": "שלישי",
+            "startTime": "14:30",
+            "endTime": "15:15",
+            "duration": 45,
+            "location": null,
+            "notes": null
+          }
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-05T04:35:36.598Z"
+    },
+    {
+      "_id": "689188a47b394802929b0e73",
+      "personalInfo": {
+        "fullName": "צחי בומשטיין",
+        "phone": "0505254433",
+        "age": 16,
+        "address": "רעננה",
+        "parentName": "לא צוין",
+        "parentPhone": "0500000000",
+        "parentEmail": "parent@example.com",
+        "studentEmail": "student@gmail.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "currentStage": 6,
+            "isPrimary": true,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "יב",
+        "tests": {
+          "bagrutId": "689a407086cdd73ed18a1300"
+        }
+      },
+      "isActive": true,
+      "teacherIds": [
+        "68813849abdf329e8afc25d5"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "68813849abdf329e8afc25d5",
+          "scheduleSlotId": "6883ba2014f0fcfae92ac44e",
+          "day": "ראשון",
+          "time": "16:00",
+          "duration": 30,
+          "notes": "",
+          "startDate": "2025-08-05T04:29:24.776Z",
+          "isActive": true,
+          "isRecurring": true,
+          "createdAt": "2025-08-05T04:29:24.776Z",
+          "updatedAt": "2025-08-05T04:29:24.778Z",
+          "scheduleInfo": {
+            "day": "ראשון",
+            "startTime": "16:00",
+            "endTime": "16:30",
+            "duration": 30,
+            "location": null,
+            "notes": null
+          },
+          "endDate": null
+        }
+      ],
+      "enrollments": {
+        "orchestraIds": [
+          "6883badc14f0fcfae92ac453",
+          "6883baf814f0fcfae92ac454"
+        ],
+        "ensembleIds": [],
+        "schoolYears": [
+          {
+            "schoolYearId": "67e153be046a2782476d17fe",
+            "isActive": true
+          }
+        ],
+        "theoryLessonIds": []
+      },
+      "createdAt": "2025-08-05T04:29:24.779Z",
+      "updatedAt": "2025-08-11T19:11:44.162Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2657",
+      "personalInfo": {
+        "fullName": "ציו   חונציו",
+        "phone": "0547878489",
+        "age": 46,
+        "address": "הדובדבה, אבן יהודה",
+        "parentName": "ציו   חונציו",
+        "parentPhone": "0547878489",
+        "parentEmail": null,
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.401Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2686",
+      "personalInfo": {
+        "fullName": "צפון יאיר ישראל",
+        "phone": "0527812912",
+        "age": 11,
+        "address": "רחוב: עציון בית: 6 דירה:, רעננה",
+        "parentName": "צפון שרה",
+        "parentPhone": "0527812912",
+        "parentEmail": "saratsafun@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:19.655Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2662",
+      "personalInfo": {
+        "fullName": "קדר מיכאל דוד",
+        "phone": "0546339939",
+        "age": 78,
+        "address": "החרוב 3, רעננה",
+        "parentName": "קדר מיכאל דוד",
+        "parentPhone": "0546339939",
+        "parentEmail": "mickyk@tauex.tau.ac.il",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:17.122Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2684",
+      "personalInfo": {
+        "fullName": "קוך אביגיל שמחה",
+        "phone": "0528388088",
+        "age": 13,
+        "address": "רחוב: אחוזה בית: 183 דירה: 3, רעננה",
+        "parentName": "קוך שירלי",
+        "parentPhone": "0528388088",
+        "parentEmail": "shirli.koch@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:19.509Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2679",
+      "personalInfo": {
+        "fullName": "קורזון דוד",
+        "phone": "0523315915",
+        "age": 14,
+        "address": "רחוב: הוז דב בית: 16 דירה:, רעננה",
+        "parentName": "קורזון אביטל",
+        "parentPhone": "0523315915",
+        "parentEmail": "almm48@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:18.717Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2692",
+      "personalInfo": {
+        "fullName": "קורזון מיכל",
+        "phone": "0523315915",
+        "age": 12,
+        "address": "רחוב: הוז דב בית: 16 דירה:, רעננה",
+        "parentName": "קורזון אביטל",
+        "parentPhone": "0523315915",
+        "parentEmail": "almm48@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.455Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2666",
+      "personalInfo": {
+        "fullName": "קוריסקי שוקי",
+        "phone": "0523063470",
+        "age": null,
+        "address": "סנה משה 3, רעננה",
+        "parentName": "קוריסקי שוקי",
+        "parentPhone": "0523063470",
+        "parentEmail": "skoriski@vzcode.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.413Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc268c",
+      "personalInfo": {
+        "fullName": "קרים אלינור",
+        "phone": "0547855100",
+        "age": 9,
+        "address": "רחוב: חיבת ציון בית: 8 דירה:, רעננה",
+        "parentName": "עמר טליה שמחה",
+        "parentPhone": "0547855100",
+        "parentEmail": "talia.talia.amar@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:20.023Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2651",
+      "personalInfo": {
+        "fullName": "קרסנופולסקי נתנאל",
+        "phone": "0584020431",
+        "age": 13,
+        "address": "רחוב: קלישר 5 דירה 3, רעננה",
+        "parentName": "קרסנופולסקי אולג",
+        "parentPhone": "0584020431",
+        "parentEmail": "oksense13@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.113Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965dc0",
+      "personalInfo": {
+        "fullName": "קרשנר מיה",
+        "phone": "0506666364",
+        "age": 8,
+        "address": "רחוב: הר סיני בית: 35 דירה: 4 4, רעננה",
+        "parentName": "קרשנר עדי",
+        "parentPhone": "0506666364",
+        "parentEmail": "adigat2@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חלילית",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:45.177Z",
+      "updatedAt": "2025-08-17T22:12:15.319Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc267e",
+      "personalInfo": {
+        "fullName": "רובין אריאל",
+        "phone": "0548013375",
+        "age": 12,
+        "address": "רחוב: יפה אליעזר בית: 35 דירה: 5, רעננה",
+        "parentName": "רובין בנימין",
+        "parentPhone": "0548013375",
+        "parentEmail": "rubinlawbr@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:19.074Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc269d",
+      "personalInfo": {
+        "fullName": "רוזנצוויג אביגיל",
+        "phone": "0544434804",
+        "age": 15,
+        "address": "בר אילן 12, רעננה",
+        "parentName": "רוזנצוויג ענת מישל",
+        "parentPhone": "0544434804",
+        "parentEmail": "elishanat@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קרן יער",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.336Z",
+      "updatedAt": "2025-08-17T22:12:21.248Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2653",
+      "personalInfo": {
+        "fullName": "רום גל",
+        "phone": "0542157117",
+        "age": 12,
+        "address": "רחוב: דורי יעקב בית: 28 דירה:, רעננה",
+        "parentName": "רום אייזיק",
+        "parentPhone": "0542157117",
+        "parentEmail": "rom.isaac@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:16.257Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc266e",
+      "personalInfo": {
+        "fullName": "רחבי עילי",
+        "phone": "0507224331",
+        "age": 12,
+        "address": "רחוב: פרץ בית: 5 דירה:, רעננה",
+        "parentName": "רחבי לוי דוד",
+        "parentPhone": "0507224331",
+        "parentEmail": "david.rahavy1@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.992Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2644",
+      "personalInfo": {
+        "fullName": "שטורך אגם",
+        "phone": "0542033227",
+        "age": 7,
+        "address": "רחוב: רמב\"ם בית: 7 דירה: 7, רעננה",
+        "parentName": "שטורך חיים",
+        "parentPhone": "0542033227",
+        "parentEmail": "mayaalon10@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חלילית",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:15.682Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2643",
+      "personalInfo": {
+        "fullName": "שטרנר גיל",
+        "phone": "0523644060",
+        "age": 7,
+        "address": "רחוב: וילנסקי משה בית: 3 דירה: 9, רעננה",
+        "parentName": "גורן שירה",
+        "parentPhone": "0523644060",
+        "parentEmail": "shiragoren2@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חלילית",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-17T22:12:15.611Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc266d",
+      "personalInfo": {
+        "fullName": "שליו מלודי",
+        "phone": "0526033176",
+        "age": 11,
+        "address": "שפיים, שפיים",
+        "parentName": "שליו איתמר",
+        "parentPhone": "0526033176",
+        "parentEmail": "itammar@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "סקסופון",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.334Z",
+      "updatedAt": "2025-08-17T22:12:17.922Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2685",
+      "personalInfo": {
+        "fullName": "שלמור זוהר",
+        "phone": "0502037823",
+        "age": 12,
+        "address": "חנקין 42, הוד השרון",
+        "parentName": "שלמור עינת",
+        "parentPhone": "0502037823",
+        "parentEmail": "einat.shalmor@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "קלרינט",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.335Z",
+      "updatedAt": "2025-08-17T22:12:19.582Z"
+    },
+    {
+      "_id": "68813849abdf329e8afc2650",
+      "personalInfo": {
+        "fullName": "שפי גיל",
+        "phone": "0506894169",
+        "age": 13,
+        "address": "פעמי אביב 3, גבעת ח\"ן",
+        "parentName": "שפי דורית",
+        "parentPhone": "0506894169",
+        "parentEmail": "dodorit@gmail.com",
+        "studentEmail": "student@example.com"
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חצוצרה",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "א"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "schoolYears": [],
+        "theoryLessonIds": []
+      },
+      "teacherIds": [
+        "688136c194c6cd56db965db9"
+      ],
+      "teacherAssignments": [
+        {
+          "teacherId": "688136c194c6cd56db965db9",
+          "scheduleSlotId": "68860e9711976de8fd8cb379",
+          "day": "שני",
+          "time": "14:00",
+          "duration": 30,
+          "notes": "",
+          "updatedAt": "2025-07-30T09:32:02.171Z",
+          "scheduleInfo": {
+            "day": "שני",
+            "startTime": "14:00",
+            "endTime": "14:30",
+            "duration": 30
+          },
+          "isActive": true,
+          "createdAt": "2025-07-30T09:32:02.171Z"
+        }
+      ],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:30:17.333Z",
+      "updatedAt": "2025-08-05T04:35:37.439Z"
+    },
+    {
+      "_id": "688136c194c6cd56db965dbf",
+      "personalInfo": {
+        "fullName": "ששון אגת",
+        "phone": "0526259134",
+        "age": 8,
+        "address": "דר יהודה פרח 12, נתניה",
+        "parentName": "ששון ערן",
+        "parentPhone": "0526259134",
+        "parentEmail": "eransasson2019@gmail.com",
+        "studentEmail": null
+      },
+      "academicInfo": {
+        "instrumentProgress": [
+          {
+            "instrumentName": "חלילית",
+            "isPrimary": true,
+            "currentStage": 1,
+            "tests": {
+              "stageTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              },
+              "technicalTest": {
+                "status": "לא נבחן",
+                "lastTestDate": null,
+                "nextTestDate": null,
+                "notes": ""
+              }
+            }
+          }
+        ],
+        "class": "אחר"
+      },
+      "enrollments": {
+        "orchestraIds": [],
+        "ensembleIds": [],
+        "theoryLessonIds": [],
+        "schoolYears": []
+      },
+      "teacherIds": [],
+      "teacherAssignments": [],
+      "isActive": true,
+      "createdAt": "2025-07-23T19:23:45.177Z",
+      "updatedAt": "2025-08-17T22:12:15.245Z"
+    }
+  ]
+}

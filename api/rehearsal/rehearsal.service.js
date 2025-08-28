@@ -2,6 +2,7 @@
 import { getCollection } from '../../services/mongoDB.service.js';
 import {
   validateRehearsal,
+  validateRehearsalUpdate,
   validateBulkCreate,
   validateAttendance,
 } from './rehearsal.validation.js';
@@ -27,6 +28,7 @@ export const rehearsalService = {
   removeRehearsal,
   bulkCreateRehearsals,
   bulkDeleteRehearsalsByOrchestra,
+  bulkDeleteRehearsalsByDateRange,
   bulkUpdateRehearsalsByOrchestra,
   updateAttendance,
 };
@@ -186,7 +188,7 @@ async function updateRehearsal(
   isAdmin = false
 ) {
   try {
-    const { error, value } = validateRehearsal(rehearsalToUpdate);
+    const { error, value } = validateRehearsalUpdate(rehearsalToUpdate);
 
     if (error) throw error;
 
@@ -605,6 +607,157 @@ async function bulkDeleteRehearsalsByOrchestra(orchestraId, userId, isAdmin = fa
   } catch (err) {
     console.error(`Failed to bulk delete rehearsals by orchestra: ${err}`);
     throw new Error(`Failed to bulk delete rehearsals by orchestra: ${err.message}`);
+  }
+}
+
+async function bulkDeleteRehearsalsByDateRange(orchestraId, startDate, endDate, userId, isAdmin = false) {
+  try {
+    // Input validation
+    if (!orchestraId || !ObjectId.isValid(orchestraId)) {
+      throw new Error('Invalid orchestra ID');
+    }
+
+    if (!startDate || !endDate) {
+      throw new Error('Start date and end date are required');
+    }
+
+    // Validate dates
+    if (!isValidDate(startDate) || !isValidDate(endDate)) {
+      throw new Error('Invalid start or end date provided');
+    }
+
+    const startUTC = getStartOfDay(startDate);
+    const endUTC = getEndOfDay(endDate);
+
+    if (startUTC > endUTC) {
+      throw new Error('Start date must be before or equal to end date');
+    }
+
+    // Get collections
+    const orchestraCollection = await getCollection('orchestra');
+    const rehearsalCollection = await getCollection('rehearsal');
+    const activityCollection = await getCollection('activity_attendance');
+
+    if (!orchestraCollection || !rehearsalCollection) {
+      throw new Error('Database error: Failed to access required collections');
+    }
+
+    // Verify orchestra exists
+    const orchestra = await orchestraCollection.findOne({
+      _id: ObjectId.createFromHexString(orchestraId)
+    });
+
+    if (!orchestra) {
+      throw new Error('Orchestra not found');
+    }
+
+    // Authorization check - only admin or conductor of this orchestra can delete
+    if (!isAdmin) {
+      if (orchestra.conductorId !== userId.toString()) {
+        throw new Error('Not authorized to delete rehearsals for this orchestra');
+      }
+    }
+
+    // Build query for rehearsals in date range for this orchestra
+    const deleteQuery = {
+      groupId: orchestraId,
+      date: {
+        $gte: startUTC,
+        $lte: endUTC
+      }
+    };
+
+    // Get rehearsals to be deleted for cleanup
+    const rehearsalsToDelete = await rehearsalCollection.find(deleteQuery).toArray();
+    const rehearsalIds = rehearsalsToDelete.map(r => r._id.toString());
+
+    let deletedCount = 0;
+
+    // Use transaction for data consistency
+    const client = rehearsalCollection.client || rehearsalCollection.s?.client;
+    if (client) {
+      const session = client.startSession();
+      
+      try {
+        await session.withTransaction(async () => {
+          // Delete rehearsals in the date range for this orchestra
+          const deleteResult = await rehearsalCollection.deleteMany(
+            deleteQuery,
+            { session }
+          );
+          
+          deletedCount = deleteResult.deletedCount;
+
+          // Clean up attendance records if collection exists
+          if (activityCollection && rehearsalIds.length > 0) {
+            await activityCollection.deleteMany(
+              { 
+                sessionId: { $in: rehearsalIds },
+                activityType: 'תזמורת'
+              },
+              { session }
+            );
+          }
+
+          // Update orchestra to remove deleted rehearsal IDs
+          if (rehearsalIds.length > 0) {
+            await orchestraCollection.updateOne(
+              { _id: ObjectId.createFromHexString(orchestraId) },
+              { 
+                $pull: { rehearsalIds: { $in: rehearsalIds } },
+                $set: { lastModified: toUTC(now()) }
+              },
+              { session }
+            );
+          }
+        });
+      } finally {
+        await session.endSession();
+      }
+    } else {
+      // Fallback without transaction if session not available
+      const deleteResult = await rehearsalCollection.deleteMany(deleteQuery);
+      deletedCount = deleteResult.deletedCount;
+
+      // Clean up attendance records
+      if (activityCollection && rehearsalIds.length > 0) {
+        try {
+          await activityCollection.deleteMany({
+            sessionId: { $in: rehearsalIds },
+            activityType: 'תזמורת'
+          });
+        } catch (attendanceErr) {
+          console.warn(`Failed to delete attendance records: ${attendanceErr.message}`);
+        }
+      }
+
+      // Update orchestra
+      if (rehearsalIds.length > 0) {
+        try {
+          await orchestraCollection.updateOne(
+            { _id: ObjectId.createFromHexString(orchestraId) },
+            { 
+              $pull: { rehearsalIds: { $in: rehearsalIds } },
+              $set: { lastModified: toUTC(now()) }
+            }
+          );
+        } catch (orchestraErr) {
+          console.warn(`Failed to update orchestra: ${orchestraErr.message}`);
+        }
+      }
+    }
+
+    // Logging
+    console.log(`User ${userId} deleted ${deletedCount} rehearsals for orchestra ${orchestraId} in date range ${startDate} to ${endDate}`);
+
+    return {
+      deletedCount,
+      dateRange: { startDate, endDate },
+      message: `Successfully deleted ${deletedCount} rehearsals between ${formatDate(startDate)} and ${formatDate(endDate)}`
+    };
+  } catch (err) {
+    console.error(`Failed to bulk delete rehearsals by date range: ${err}`);
+    throw new Error(`Failed to bulk delete rehearsals by date range: ${err.message}`);
   }
 }
 

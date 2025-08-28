@@ -1,392 +1,563 @@
+#!/usr/bin/env node
+
 /**
- * Test Script: Teacher-Student Relationship Synchronization
+ * Teacher-Student Assignment Synchronization Testing Script
  * 
- * This script tests the new bidirectional synchronization functionality
- * to ensure that when a student's teacherIds is updated, the teacher's
- * studentIds is automatically updated as well.
+ * Tests bidirectional sync between:
+ * - student.teacherAssignments (primary source)
+ * - teacher.teaching.studentIds (secondary reference)
  * 
- * Usage: node test-teacher-student-sync.js
+ * Verifies the system maintains consistency and teacher lesson endpoints work correctly.
  */
 
-import { studentService } from './api/student/student.service.js';
-import { getCollection } from './services/mongoDB.service.js';
-import { relationshipValidationService } from './services/relationshipValidationService.js';
+import fetch from 'node-fetch';
 import { ObjectId } from 'mongodb';
 
-async function runTests() {
-  console.log('🧪 Starting Teacher-Student Relationship Sync Tests');
-  console.log('=====================================================\n');
+const API_BASE_URL = 'http://localhost:3001/api';
+const TEST_CREDENTIALS = {
+  email: 'admin@example.com',
+  password: '123456'
+};
 
-  let testResults = {
-    passed: 0,
-    failed: 0,
-    errors: []
-  };
+let authToken = null;
+let testResults = {
+  passed: 0,
+  failed: 0,
+  tests: []
+};
 
-  try {
-    // Test 1: Create test data
-    console.log('📝 Test 1: Setting up test data...');
-    const { testStudentId, testTeacherId } = await setupTestData();
-    console.log(`   ✅ Created test student: ${testStudentId}`);
-    console.log(`   ✅ Created test teacher: ${testTeacherId}`);
+/**
+ * Test result logging
+ */
+function logTest(name, passed, details = '') {
+  const status = passed ? '✅ PASSED' : '❌ FAILED';
+  const result = { name, passed, details, timestamp: new Date().toISOString() };
+  testResults.tests.push(result);
+  
+  if (passed) {
     testResults.passed++;
-
-    // Test 2: Test adding teacher to student
-    console.log('\n📝 Test 2: Adding teacher to student (should sync bidirectionally)...');
-    await testAddTeacherToStudent(testStudentId, testTeacherId, testResults);
-
-    // Test 3: Test removing teacher from student
-    console.log('\n📝 Test 3: Removing teacher from student (should sync bidirectionally)...');
-    await testRemoveTeacherFromStudent(testStudentId, testTeacherId, testResults);
-
-    // Test 4: Test multiple teachers
-    console.log('\n📝 Test 4: Testing multiple teacher assignments...');
-    const { testTeacherId2 } = await createSecondTestTeacher();
-    await testMultipleTeachers(testStudentId, [testTeacherId, testTeacherId2], testResults);
-
-    // Test 5: Test validation service
-    console.log('\n📝 Test 5: Testing relationship validation service...');
-    await testValidationService(testStudentId, testTeacherId, testResults);
-
-    // Cleanup
-    console.log('\n🧹 Cleaning up test data...');
-    await cleanupTestData(testStudentId, testTeacherId);
-    console.log('   ✅ Test data cleaned up');
-
-    // Results
-    console.log('\n📊 Test Results Summary:');
-    console.log(`   ✅ Passed: ${testResults.passed}`);
-    console.log(`   ❌ Failed: ${testResults.failed}`);
-    
-    if (testResults.errors.length > 0) {
-      console.log('\n❌ Errors encountered:');
-      testResults.errors.forEach((error, index) => {
-        console.log(`   ${index + 1}. ${error}`);
-      });
-    }
-
-    if (testResults.failed === 0) {
-      console.log('\n🎉 All tests passed! The synchronization is working correctly.');
-    } else {
-      console.log('\n⚠️  Some tests failed. Please review the errors above.');
-    }
-
-  } catch (error) {
-    console.error('💥 Test suite failed with fatal error:', error);
+    console.log(`${status}: ${name}`);
+  } else {
     testResults.failed++;
-    testResults.errors.push(`Fatal error: ${error.message}`);
+    console.log(`${status}: ${name}`);
+    console.log(`   Details: ${details}`);
   }
-
-  return testResults;
+  
+  if (details && passed) {
+    console.log(`   ${details}`);
+  }
 }
 
-async function setupTestData() {
-  const studentCollection = await getCollection('student');
-  const teacherCollection = await getCollection('teacher');
+/**
+ * API Client
+ */
+async function apiRequest(method, endpoint, body = null) {
+  const url = `${API_BASE_URL}${endpoint}`;
+  const options = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`
+    }
+  };
 
-  // Create test student
-  const testStudent = {
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(`API Error ${response.status}: ${data.error || data.message || response.statusText}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error(`API Request failed: ${method} ${endpoint}`, error.message);
+    throw error;
+  }
+}
+
+/**
+ * Authentication
+ */
+async function authenticate() {
+  console.log('🔐 Authenticating...');
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(TEST_CREDENTIALS)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Authentication failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    authToken = data.accessToken || data.data?.accessToken;
+    
+    if (!authToken) {
+      throw new Error('No authentication token received');
+    }
+    
+    console.log('✅ Authentication successful');
+    return true;
+  } catch (error) {
+    console.error('❌ Authentication failed:', error.message);
+    return false;
+  }
+}
+
+/**
+ * Get a real teacher ID for testing
+ */
+async function getRealTeacherId() {
+  try {
+    const teachers = await apiRequest('GET', '/teacher');
+    if (!Array.isArray(teachers) || teachers.length === 0) {
+      throw new Error('No teachers found');
+    }
+    
+    // Find an active teacher
+    const activeTeacher = teachers.find(t => t.isActive && t._id);
+    if (!activeTeacher) {
+      throw new Error('No active teachers found');
+    }
+    
+    console.log(`📝 Using teacher: ${activeTeacher.personalInfo?.fullName} (${activeTeacher._id})`);
+    return activeTeacher._id;
+  } catch (error) {
+    throw new Error(`Failed to get teacher ID: ${error.message}`);
+  }
+}
+
+/**
+ * Create test student with teacher assignments
+ */
+async function createTestStudent(teacherId) {
+  const testStudentData = {
     personalInfo: {
-      fullName: 'TEST_STUDENT_SYNC_' + Date.now(),
-      idNumber: 'TEST' + Date.now(),
-      phone: '0501234567',
-      email: `test.student.${Date.now()}@test.com`,
-      address: 'Test Address',
-      birthDate: new Date('2000-01-01'),
-      gender: 'אחר'
+      fullName: "תלמיד טסט סינכרון",
+      phone: "0501234567",
+      age: 15,
+      address: "כתובת טסט",
+      parentName: "הורה טסט",
+      parentPhone: "0507654321",
+      parentEmail: "parent.test@example.com",
+      studentEmail: "student.test@example.com"
     },
     academicInfo: {
-      class: 'י',
-      instrumentProgress: [{
-        instrumentName: 'פסנתר',
-        currentStage: 1,
-        isPrimary: true,
-        tests: {}
-      }]
+      instrumentProgress: [
+        {
+          instrumentName: "פסנתר",
+          isPrimary: true,
+          currentStage: 3,
+          tests: {
+            stageTest: {
+              status: "לא נבחן",
+              lastTestDate: null,
+              nextTestDate: null,
+              notes: ""
+            },
+            technicalTest: {
+              status: "לא נבחן",
+              lastTestDate: null,
+              nextTestDate: null,
+              notes: ""
+            }
+          }
+        }
+      ],
+      class: "ט"
     },
     enrollments: {
-      schoolYears: [{
-        schoolYearId: '507f1f77bcf86cd799439011', // Mock school year ID
-        isActive: true
-      }]
+      orchestraIds: [],
+      ensembleIds: [],
+      theoryLessonIds: [],
+      schoolYears: []
     },
-    teacherIds: [],
-    teacherAssignments: [],
-    isActive: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
+    teacherIds: [], // Will be updated automatically
+    teacherAssignments: [
+      {
+        teacherId: teacherId,
+        scheduleSlotId: new ObjectId().toString(),
+        day: "ראשון",
+        time: "14:00",
+        duration: 45,
+        startDate: new Date().toISOString(),
+        endDate: null,
+        isActive: true,
+        isRecurring: true,
+        notes: "שיעור טסט",
+        scheduleInfo: {
+          day: "ראשון",
+          startTime: "14:00",
+          endTime: "14:45",
+          duration: 45,
+          location: "חדר טסט",
+          notes: "שיעור טסט"
+        }
+      }
+    ],
+    isActive: true
   };
 
-  // Create test teacher
-  const testTeacher = {
-    personalInfo: {
-      fullName: 'TEST_TEACHER_SYNC_' + Date.now(),
-      idNumber: 'TTEACH' + Date.now(),
-      phone: '0507654321',
-      email: `test.teacher.${Date.now()}@test.com`,
-      address: 'Test Address',
-      birthDate: new Date('1980-01-01'),
-      gender: 'אחר'
-    },
-    professionalInfo: {
-      instrument: 'פסנתר',
-      experience: 5,
-      education: 'בוגר מכללה'
-    },
-    teaching: {
-      studentIds: [],
-      schedule: [],
-      timeBlocks: []
-    },
-    isActive: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
-
-  const studentResult = await studentCollection.insertOne(testStudent);
-  const teacherResult = await teacherCollection.insertOne(testTeacher);
-
-  return {
-    testStudentId: studentResult.insertedId.toString(),
-    testTeacherId: teacherResult.insertedId.toString()
-  };
-}
-
-async function createSecondTestTeacher() {
-  const teacherCollection = await getCollection('teacher');
-
-  const testTeacher2 = {
-    personalInfo: {
-      fullName: 'TEST_TEACHER2_SYNC_' + Date.now(),
-      idNumber: 'TTEACH2' + Date.now(),
-      phone: '0507654322',
-      email: `test.teacher2.${Date.now()}@test.com`,
-      address: 'Test Address',
-      birthDate: new Date('1980-01-01'),
-      gender: 'אחר'
-    },
-    professionalInfo: {
-      instrument: 'גיטרה',
-      experience: 3,
-      education: 'בוגר מכללה'
-    },
-    teaching: {
-      studentIds: [],
-      schedule: [],
-      timeBlocks: []
-    },
-    isActive: true,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
-
-  const teacherResult = await teacherCollection.insertOne(testTeacher2);
-  return { testTeacherId2: teacherResult.insertedId.toString() };
-}
-
-async function testAddTeacherToStudent(studentId, teacherId, testResults) {
   try {
-    // Update student with teacher
-    await studentService.updateStudent(studentId, {
-      teacherIds: [teacherId]
-    }, null, true); // isAdmin = true
-
-    // Verify bidirectional sync
-    const studentCollection = await getCollection('student');
-    const teacherCollection = await getCollection('teacher');
-
-    const updatedStudent = await studentCollection.findOne({
-      _id: ObjectId.createFromHexString(studentId)
-    });
-
-    const updatedTeacher = await teacherCollection.findOne({
-      _id: ObjectId.createFromHexString(teacherId)
-    });
-
-    // Check if student has teacher
-    if (!updatedStudent.teacherIds.includes(teacherId)) {
-      throw new Error('Student does not have teacher in teacherIds');
-    }
-
-    // Check if teacher has student
-    const teacherStudentIds = updatedTeacher.teaching?.studentIds || [];
-    if (!teacherStudentIds.includes(studentId)) {
-      throw new Error('Teacher does not have student in studentIds (sync failed)');
-    }
-
-    console.log('   ✅ Student has teacher in teacherIds');
-    console.log('   ✅ Teacher has student in studentIds (bidirectional sync working)');
-    testResults.passed++;
-
+    const student = await apiRequest('POST', '/student', testStudentData);
+    console.log(`👤 Created test student: ${student.personalInfo?.fullName} (${student._id})`);
+    return student;
   } catch (error) {
-    console.log('   ❌ Test failed:', error.message);
-    testResults.failed++;
-    testResults.errors.push(`Add teacher to student test: ${error.message}`);
+    throw new Error(`Failed to create test student: ${error.message}`);
   }
 }
 
-async function testRemoveTeacherFromStudent(studentId, teacherId, testResults) {
+/**
+ * Test 1: Create student and verify teacher sync
+ */
+async function testCreateStudentSync() {
+  console.log('\n🧪 Test 1: Create Student with TeacherAssignment');
+  
   try {
-    // Remove teacher from student
-    await studentService.updateStudent(studentId, {
-      teacherIds: []
-    }, null, true); // isAdmin = true
-
-    // Verify bidirectional sync
-    const studentCollection = await getCollection('student');
-    const teacherCollection = await getCollection('teacher');
-
-    const updatedStudent = await studentCollection.findOne({
-      _id: ObjectId.createFromHexString(studentId)
-    });
-
-    const updatedTeacher = await teacherCollection.findOne({
-      _id: ObjectId.createFromHexString(teacherId)
-    });
-
-    // Check if student no longer has teacher
-    if (updatedStudent.teacherIds.includes(teacherId)) {
-      throw new Error('Student still has teacher in teacherIds');
-    }
-
-    // Check if teacher no longer has student
-    const teacherStudentIds = updatedTeacher.teaching?.studentIds || [];
-    if (teacherStudentIds.includes(studentId)) {
-      throw new Error('Teacher still has student in studentIds (sync failed)');
-    }
-
-    console.log('   ✅ Student no longer has teacher in teacherIds');
-    console.log('   ✅ Teacher no longer has student in studentIds (bidirectional sync working)');
-    testResults.passed++;
-
+    const teacherId = await getRealTeacherId();
+    
+    // Get teacher before creating student
+    const teacherBefore = await apiRequest('GET', `/teacher/${teacherId}`);
+    const studentIdsBefore = teacherBefore.teaching?.studentIds || [];
+    
+    // Create student with teacher assignment
+    const student = await createTestStudent(teacherId);
+    
+    // Wait a moment for potential async operations
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Get teacher after creating student
+    const teacherAfter = await apiRequest('GET', `/teacher/${teacherId}`);
+    const studentIdsAfter = teacherAfter.teaching?.studentIds || [];
+    
+    // Verify sync
+    const hasStudentId = studentIdsAfter.includes(student._id);
+    const wasAdded = !studentIdsBefore.includes(student._id) && studentIdsAfter.includes(student._id);
+    
+    logTest(
+      'Student creation syncs to teacher.teaching.studentIds',
+      hasStudentId,
+      hasStudentId ? 
+        `Student ID ${student._id} found in teacher.teaching.studentIds` :
+        `Student ID ${student._id} NOT found in teacher.teaching.studentIds (Before: ${studentIdsBefore.length}, After: ${studentIdsAfter.length})`
+    );
+    
+    return { student, teacherId };
+    
   } catch (error) {
-    console.log('   ❌ Test failed:', error.message);
-    testResults.failed++;
-    testResults.errors.push(`Remove teacher from student test: ${error.message}`);
+    logTest('Student creation sync', false, error.message);
+    throw error;
   }
 }
 
-async function testMultipleTeachers(studentId, teacherIds, testResults) {
+/**
+ * Test 2: Verify teacher lessons endpoint shows the new lesson
+ */
+async function testTeacherLessonsEndpoint(teacherId, studentId) {
+  console.log('\n🧪 Test 2: Teacher Lessons Endpoint After Sync');
+  
   try {
-    // Add multiple teachers to student
-    await studentService.updateStudent(studentId, {
-      teacherIds: teacherIds
-    }, null, true); // isAdmin = true
+    const response = await apiRequest('GET', `/teacher/${teacherId}/lessons`);
+    const lessons = response.lessons || response.data?.lessons || response;
+    
+    if (!Array.isArray(lessons)) {
+      throw new Error(`Teacher lessons response is not an array: ${typeof lessons}`);
+    }
+    
+    const studentLesson = lessons.find(lesson => 
+      lesson.studentId === studentId || lesson.studentId?.toString() === studentId
+    );
+    
+    logTest(
+      'Teacher lessons endpoint shows new lesson',
+      !!studentLesson,
+      studentLesson ? 
+        `Found lesson for student ${studentId} in teacher ${teacherId} lessons` :
+        `No lesson found for student ${studentId} in teacher ${teacherId} lessons (${lessons.length} total lessons)`
+    );
+    
+    return lessons;
+    
+  } catch (error) {
+    logTest('Teacher lessons endpoint', false, error.message);
+    return [];
+  }
+}
 
-    // Verify all teachers have the student
-    const teacherCollection = await getCollection('teacher');
+/**
+ * Test 3: Update student teacherAssignments
+ */
+async function testUpdateTeacherAssignments(studentId, teacherId) {
+  console.log('\n🧪 Test 3: Update Student TeacherAssignments');
+  
+  try {
+    // Get current student
+    const student = await apiRequest('GET', `/student/${studentId}`);
+    
+    // Update teacher assignment with new time
+    const updatedAssignments = student.teacherAssignments.map(assignment => {
+      if (assignment.teacherId === teacherId) {
+        return {
+          ...assignment,
+          time: "15:00",
+          notes: "שיעור טסט מעודכן",
+          scheduleInfo: {
+            ...assignment.scheduleInfo,
+            startTime: "15:00",
+            endTime: "15:45",
+            notes: "שיעור טסט מעודכן"
+          }
+        };
+      }
+      return assignment;
+    });
+    
+    // Update student
+    const updatedStudent = await apiRequest('PUT', `/student/${studentId}`, {
+      teacherAssignments: updatedAssignments
+    });
+    
+    // Wait for sync
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Verify teacher still has student ID
+    const teacher = await apiRequest('GET', `/teacher/${teacherId}`);
+    const hasStudentId = teacher.teaching?.studentIds?.includes(studentId);
+    
+    // Verify lessons endpoint reflects update
+    const response = await apiRequest('GET', `/teacher/${teacherId}/lessons`);
+    const lessons = response.lessons || response.data?.lessons || response;
+    const updatedLesson = lessons.find(lesson => 
+      (lesson.studentId === studentId || lesson.studentId?.toString() === studentId) &&
+      lesson.time === "15:00"
+    );
+    
+    logTest(
+      'Updated teacher assignments maintain sync',
+      hasStudentId && !!updatedLesson,
+      hasStudentId ? 
+        (updatedLesson ? 
+          `Teacher sync maintained and lesson updated to 15:00` :
+          `Teacher sync maintained but lesson time not updated`) :
+        `Teacher sync lost after assignment update`
+    );
+    
+    return updatedStudent;
+    
+  } catch (error) {
+    logTest('Update teacher assignments sync', false, error.message);
+    throw error;
+  }
+}
 
-    for (const teacherId of teacherIds) {
-      const teacher = await teacherCollection.findOne({
-        _id: ObjectId.createFromHexString(teacherId)
-      });
+/**
+ * Test 4: Remove teacher assignment
+ */
+async function testRemoveTeacherAssignment(studentId, teacherId) {
+  console.log('\n🧪 Test 4: Remove Teacher Assignment');
+  
+  try {
+    // Get current student
+    const student = await apiRequest('GET', `/student/${studentId}`);
+    
+    // Get teacher before removal
+    const teacherBefore = await apiRequest('GET', `/teacher/${teacherId}`);
+    const hadStudentId = teacherBefore.teaching?.studentIds?.includes(studentId);
+    
+    // Remove teacher assignment
+    const updatedAssignments = student.teacherAssignments.filter(
+      assignment => assignment.teacherId !== teacherId
+    );
+    
+    const updatedStudent = await apiRequest('PUT', `/student/${studentId}`, {
+      teacherAssignments: updatedAssignments
+    });
+    
+    // Wait for sync
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Get teacher after removal
+    const teacherAfter = await apiRequest('GET', `/teacher/${teacherId}`);
+    const hasStudentId = teacherAfter.teaching?.studentIds?.includes(studentId);
+    
+    // Verify lessons endpoint no longer shows lesson
+    const response = await apiRequest('GET', `/teacher/${teacherId}/lessons`);
+    const lessons = response.lessons || response.data?.lessons || response;
+    const remainingLesson = lessons.find(lesson => 
+      lesson.studentId === studentId || lesson.studentId?.toString() === studentId
+    );
+    
+    logTest(
+      'Removing teacher assignment syncs correctly',
+      hadStudentId && !hasStudentId && !remainingLesson,
+      hadStudentId ?
+        (!hasStudentId ? 
+          (!remainingLesson ?
+            `Student ${studentId} correctly removed from teacher ${teacherId} studentIds and lessons` :
+            `Student removed from studentIds but lesson still appears in lessons endpoint`) :
+          `Student ${studentId} still in teacher ${teacherId} studentIds (should be removed)`) :
+        `Student ${studentId} was not in teacher ${teacherId} studentIds before removal`
+    );
+    
+    return updatedStudent;
+    
+  } catch (error) {
+    logTest('Remove teacher assignment sync', false, error.message);
+    throw error;
+  }
+}
 
-      const teacherStudentIds = teacher.teaching?.studentIds || [];
-      if (!teacherStudentIds.includes(studentId)) {
-        throw new Error(`Teacher ${teacherId} does not have student in studentIds`);
+/**
+ * Cleanup test data
+ */
+async function cleanupTestData(studentId) {
+  console.log('\n🧹 Cleaning up test data...');
+  
+  try {
+    await apiRequest('DELETE', `/student/${studentId}`);
+    console.log(`✅ Deleted test student: ${studentId}`);
+  } catch (error) {
+    console.warn(`⚠️ Failed to delete test student: ${error.message}`);
+  }
+}
+
+/**
+ * Verify existing sync status
+ */
+async function verifyExistingSync() {
+  console.log('\n🔍 Verifying Existing Student-Teacher Sync');
+  console.log('='.repeat(45));
+  
+  try {
+    const students = await apiRequest('GET', '/student');
+    const teachers = await apiRequest('GET', '/teacher');
+    
+    let syncIssues = 0;
+    let checkedPairs = 0;
+    let studentsWithAssignments = 0;
+    
+    console.log(`\n📋 Checking ${students.length} students...`);
+    
+    for (const student of students.slice(0, 20)) { // Check first 20 students
+      if (!student.teacherAssignments || student.teacherAssignments.length === 0) {
+        continue;
+      }
+      
+      studentsWithAssignments++;
+      
+      for (const assignment of student.teacherAssignments) {
+        if (!assignment.isActive) continue;
+        
+        const teacher = teachers.find(t => t._id === assignment.teacherId);
+        if (!teacher) {
+          console.log(`⚠️ Teacher ${assignment.teacherId} not found for student ${student._id}`);
+          syncIssues++;
+          continue;
+        }
+        
+        const hasStudentId = teacher.teaching?.studentIds?.includes(student._id);
+        checkedPairs++;
+        
+        if (!hasStudentId) {
+          console.log(`❌ Sync issue: Student ${student._id} (${student.personalInfo?.fullName}) assigned to teacher ${teacher._id} (${teacher.personalInfo?.fullName}) but missing from teacher.teaching.studentIds`);
+          syncIssues++;
+        }
       }
     }
-
-    console.log(`   ✅ All ${teacherIds.length} teachers have student in their studentIds`);
-
-    // Now remove one teacher
-    const remainingTeachers = teacherIds.slice(1);
-    await studentService.updateStudent(studentId, {
-      teacherIds: remainingTeachers
-    }, null, true);
-
-    // Verify first teacher no longer has student
-    const firstTeacher = await teacherCollection.findOne({
-      _id: ObjectId.createFromHexString(teacherIds[0])
-    });
-
-    const firstTeacherStudentIds = firstTeacher.teaching?.studentIds || [];
-    if (firstTeacherStudentIds.includes(studentId)) {
-      throw new Error('Removed teacher still has student in studentIds');
+    
+    console.log(`\n📊 Existing Sync Status:`);
+    console.log(`   Students with assignments: ${studentsWithAssignments}`);
+    console.log(`   Checked assignment pairs: ${checkedPairs}`);
+    console.log(`   Sync issues found: ${syncIssues}`);
+    console.log(`   Success rate: ${checkedPairs > 0 ? ((checkedPairs - syncIssues) / checkedPairs * 100).toFixed(1) : 100}%`);
+    
+    if (syncIssues === 0) {
+      console.log('✅ All existing assignments are properly synced!');
+    } else {
+      console.log(`⚠️ Found ${syncIssues} sync inconsistencies that may need repair.`);
     }
-
-    // Verify remaining teacher still has student
-    const remainingTeacher = await teacherCollection.findOne({
-      _id: ObjectId.createFromHexString(teacherIds[1])
-    });
-
-    const remainingTeacherStudentIds = remainingTeacher.teaching?.studentIds || [];
-    if (!remainingTeacherStudentIds.includes(studentId)) {
-      throw new Error('Remaining teacher lost student from studentIds');
-    }
-
-    console.log('   ✅ Partial teacher removal working correctly');
-    testResults.passed++;
-
+    
   } catch (error) {
-    console.log('   ❌ Test failed:', error.message);
-    testResults.failed++;
-    testResults.errors.push(`Multiple teachers test: ${error.message}`);
+    console.error('❌ Existing sync verification failed:', error.message);
   }
 }
 
-async function testValidationService(studentId, teacherId, testResults) {
+/**
+ * Main test runner
+ */
+async function runSyncTests() {
+  console.log('🔄 Teacher-Student Assignment Synchronization Tests');
+  console.log('='.repeat(60));
+  
+  let studentId = null;
+  let teacherId = null;
+  
   try {
-    // First, create a relationship
-    await studentService.updateStudent(studentId, {
-      teacherIds: [teacherId]
-    }, null, true);
-
-    // Test validation
-    const validationResult = await relationshipValidationService.validateStudentTeacherRelationships(
-      studentId, 
-      [teacherId]
-    );
-
-    if (!validationResult.isValid) {
-      throw new Error(`Validation failed: ${validationResult.errors.join(', ')}`);
+    // Authenticate
+    const authenticated = await authenticate();
+    if (!authenticated) {
+      throw new Error('Authentication failed');
     }
-
-    if (validationResult.warnings.length > 0) {
-      throw new Error(`Validation warnings: ${validationResult.warnings.map(w => w.message).join(', ')}`);
-    }
-
-    console.log('   ✅ Relationship validation passed');
-
-    // Test inconsistency detection
-    const inconsistenciesReport = await relationshipValidationService.detectRelationshipInconsistencies();
-    console.log(`   📊 Database analysis: ${inconsistenciesReport.summary.inconsistentRelationships} inconsistencies found`);
-
-    testResults.passed++;
-
+    
+    // First, verify existing sync status
+    await verifyExistingSync();
+    
+    // Test 1: Create student with teacher assignment
+    const { student, teacherId: firstTeacherId } = await testCreateStudentSync();
+    studentId = student._id;
+    teacherId = firstTeacherId;
+    
+    // Test 2: Verify teacher lessons endpoint
+    await testTeacherLessonsEndpoint(teacherId, studentId);
+    
+    // Test 3: Update teacher assignments
+    await testUpdateTeacherAssignments(studentId, teacherId);
+    
+    // Test 4: Remove teacher assignment
+    await testRemoveTeacherAssignment(studentId, teacherId);
+    
   } catch (error) {
-    console.log('   ❌ Test failed:', error.message);
-    testResults.failed++;
-    testResults.errors.push(`Validation service test: ${error.message}`);
+    console.error('\n❌ Test execution failed:', error.message);
+  } finally {
+    // Cleanup
+    if (studentId) {
+      await cleanupTestData(studentId);
+    }
+    
+    // Test summary
+    console.log('\n📊 Test Summary');
+    console.log('='.repeat(30));
+    console.log(`✅ Passed: ${testResults.passed}`);
+    console.log(`❌ Failed: ${testResults.failed}`);
+    console.log(`📋 Total: ${testResults.tests.length}`);
+    
+    if (testResults.failed > 0) {
+      console.log('\n❌ Failed Tests:');
+      testResults.tests
+        .filter(t => !t.passed)
+        .forEach(t => console.log(`   • ${t.name}: ${t.details}`));
+      
+      console.log('\n🔧 Recommendations:');
+      console.log('   • Check if backend student/teacher sync middleware is properly implemented');
+      console.log('   • Verify database triggers or post-save hooks are working');
+      console.log('   • Test with actual schedule slot IDs from the schedule service');
+    } else {
+      console.log('\n🎉 All tests passed! Student-Teacher sync is working correctly.');
+    }
   }
 }
 
-async function cleanupTestData(studentId, teacherId) {
-  try {
-    const studentCollection = await getCollection('student');
-    const teacherCollection = await getCollection('teacher');
-
-    // Delete test student
-    await studentCollection.deleteOne({
-      _id: ObjectId.createFromHexString(studentId)
-    });
-
-    // Delete test teachers
-    await teacherCollection.deleteMany({
-      'personalInfo.fullName': { $regex: /^TEST_TEACHER.*_SYNC_/ }
-    });
-
-  } catch (error) {
-    console.error('Error during cleanup:', error);
-  }
-}
-
-// Execute tests if run directly
+// Run tests if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  runTests().catch(error => {
-    console.error('💥 Test execution failed:', error);
-    process.exit(1);
-  });
+  runSyncTests().catch(console.error);
 }
 
-export { runTests };
+export { runSyncTests, verifyExistingSync };

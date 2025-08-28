@@ -101,14 +101,44 @@ async function getTeacherIds() {
 
 async function addTeacher(teacherToAdd, adminId) {
   try {
+    console.log('🔍 Raw teacher data received:', JSON.stringify(teacherToAdd, null, 2));
+    
     // When admin creates a teacher, ensure required fields are present with defaults
     const teacherData = {
       ...teacherToAdd,
-      // Ensure teaching structure exists
-      teaching: teacherToAdd.teaching || {
-        studentIds: [],
-        schedule: []
-      },
+      // Ensure teaching structure exists and handle timeBlocks conversion
+      teaching: (() => {
+        let teaching = teacherToAdd.teaching || {
+          studentIds: [],
+          schedule: []
+        };
+        
+        console.log('🔍 Original teaching data:', JSON.stringify(teaching, null, 2));
+        
+        // Convert timeBlocks to schedule if present
+        if (teaching.timeBlocks && Array.isArray(teaching.timeBlocks)) {
+          console.log('🔄 Converting timeBlocks to schedule:', teaching.timeBlocks);
+          teaching.schedule = [...(teaching.schedule || []), ...teaching.timeBlocks];
+          // Remove timeBlocks after conversion
+          delete teaching.timeBlocks;
+          console.log('✅ After conversion - schedule:', teaching.schedule);
+        }
+        
+        // Debug schedule data
+        if (teaching.schedule && teaching.schedule.length > 0) {
+          console.log('📋 Schedule slots to validate:');
+          teaching.schedule.forEach((slot, index) => {
+            console.log(`  Slot ${index}:`, {
+              day: slot.day,
+              startTime: slot.startTime,
+              duration: slot.duration,
+              durationType: typeof slot.duration
+            });
+          });
+        }
+        
+        return teaching;
+      })(),
       // Ensure credentials exist - will be populated with invitation data
       credentials: teacherToAdd.credentials || {
         email: teacherToAdd.personalInfo?.email || '',

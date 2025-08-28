@@ -9,6 +9,7 @@ export const rehearsalController = {
   removeRehearsal,
   bulkCreateRehearsals,
   bulkDeleteRehearsalsByOrchestra,
+  bulkDeleteRehearsalsByDateRange,
   bulkUpdateRehearsalsByOrchestra,
   updateAttendance,
 }
@@ -59,8 +60,24 @@ async function getOrchestraRehearsals(req, res, next) {
 async function addRehearsal(req, res, next) {
   try {
     const rehearsalToAdd = req.body
-    const teacherId = req.teacher._id
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const teacherId = req.loggedinUser?._id || req.teacher._id
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher.roles.includes('מנהל')
+
+    // Add schoolYearId from request if not in body or empty
+    if (!rehearsalToAdd.schoolYearId && req.schoolYear && req.schoolYear._id) {
+      rehearsalToAdd.schoolYearId = req.schoolYear._id.toString();
+      console.log('Setting schoolYearId in rehearsal data from middleware:', rehearsalToAdd.schoolYearId);
+    }
+
+    // Validate that we have schoolYearId
+    if (!rehearsalToAdd.schoolYearId) {
+      console.error('Missing schoolYearId in rehearsal data');
+      return res.status(400).json({
+        error: 'Missing schoolYearId in rehearsal data',
+        rehearsalData: rehearsalToAdd,
+        schoolYear: req.schoolYear || null,
+      });
+    }
 
     const addedRehearsal = await rehearsalService.addRehearsal(
       rehearsalToAdd,
@@ -81,8 +98,8 @@ async function updateRehearsal(req, res, next) {
   try {
     const { id } = req.params
     const rehearsalToUpdate = req.body
-    const teacherId = req.teacher._id
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const teacherId = req.loggedinUser?._id || req.teacher._id
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher.roles.includes('מנהל')
 
     const updatedRehearsal = await rehearsalService.updateRehearsal(
       id,
@@ -104,8 +121,8 @@ async function updateRehearsal(req, res, next) {
 async function removeRehearsal(req, res, next) {
   try {
     const { id } = req.params
-    const teacherId = req.teacher._id
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const teacherId = req.loggedinUser?._id || req.teacher._id
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher.roles.includes('מנהל')
 
     const removedRehearsal = await rehearsalService.removeRehearsal(
       id,
@@ -201,8 +218,8 @@ async function updateAttendance(req, res, next) {
   try {
     const { rehearsalId } = req.params
     const attendanceData = req.body
-    const teacherId = req.teacher._id
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const teacherId = req.loggedinUser?._id || req.teacher._id
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher.roles.includes('מנהל')
 
     const updateRehearsal = await rehearsalService.updateAttendance(
       rehearsalId,
@@ -223,8 +240,8 @@ async function updateAttendance(req, res, next) {
 async function bulkDeleteRehearsalsByOrchestra(req, res, next) {
   try {
     const { orchestraId } = req.params
-    const userId = req.teacher._id
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const userId = req.loggedinUser?._id || req.teacher._id
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher.roles.includes('מנהל')
 
     // Input validation
     if (!orchestraId) {
@@ -235,7 +252,7 @@ async function bulkDeleteRehearsalsByOrchestra(req, res, next) {
     }
 
     // Authorization check
-    if (!isAdmin && !req.teacher.roles.includes('מנצח')) {
+    if (!isAdmin && !(req.loggedinUser?.roles?.includes('מנצח') || req.teacher.roles.includes('מנצח'))) {
       return res.status(403).json({
         error: "Forbidden",
         message: "Insufficient permissions to delete rehearsals"
@@ -282,12 +299,92 @@ async function bulkDeleteRehearsalsByOrchestra(req, res, next) {
   }
 }
 
+async function bulkDeleteRehearsalsByDateRange(req, res, next) {
+  try {
+    const { orchestraId } = req.params
+    const { startDate, endDate } = req.body
+    const userId = req.loggedinUser?._id || req.teacher._id
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher.roles.includes('מנהל')
+
+    // Input validation
+    if (!orchestraId) {
+      return res.status(400).json({
+        error: "Invalid orchestra ID",
+        message: "Orchestra ID is required and must be a valid ObjectId"
+      })
+    }
+
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        error: "Missing required fields",
+        message: "Start date and end date are required"
+      })
+    }
+
+    // Authorization check
+    if (!isAdmin && !(req.loggedinUser?.roles?.includes('מנצח') || req.teacher.roles.includes('מנצח'))) {
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "Insufficient permissions to delete rehearsals"
+      })
+    }
+
+    const result = await rehearsalService.bulkDeleteRehearsalsByDateRange(
+      orchestraId,
+      startDate,
+      endDate,
+      userId,
+      isAdmin
+    )
+
+    res.status(200).json({
+      deletedCount: result.deletedCount,
+      dateRange: result.dateRange,
+      message: result.message
+    })
+  } catch (err) {
+    if (err.message.includes('Orchestra not found')) {
+      return res.status(404).json({
+        error: "Orchestra not found",
+        message: "No orchestra found with the specified ID"
+      })
+    }
+
+    if (err.message.includes('Not authorized')) {
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "Insufficient permissions to delete rehearsals"
+      })
+    }
+
+    if (err.message.includes('Invalid orchestra ID') || err.message.includes('Invalid start or end date')) {
+      return res.status(400).json({
+        error: "Invalid input",
+        message: err.message
+      })
+    }
+
+    if (err.message.includes('Start date must be before')) {
+      return res.status(400).json({
+        error: "Invalid date range",
+        message: err.message
+      })
+    }
+
+    console.error('Error deleting rehearsals by date range:', err)
+    res.status(500).json({
+      error: "Internal server error",
+      message: "Failed to delete rehearsals by date range"
+    })
+  }
+}
+
 async function bulkUpdateRehearsalsByOrchestra(req, res, next) {
   try {
     const { orchestraId } = req.params
     const updateData = req.body
-    const userId = req.teacher._id
-    const isAdmin = req.teacher.roles.includes('מנהל')
+    const userId = req.loggedinUser?._id || req.teacher._id
+    const isAdmin = req.loggedinUser?.roles?.includes('מנהל') || req.teacher.roles.includes('מנהל')
 
     // Input validation
     if (!orchestraId) {
@@ -298,7 +395,7 @@ async function bulkUpdateRehearsalsByOrchestra(req, res, next) {
     }
 
     // Authorization check
-    if (!isAdmin && !req.teacher.roles.includes('מנצח')) {
+    if (!isAdmin && !(req.loggedinUser?.roles?.includes('מנצח') || req.teacher.roles.includes('מנצח'))) {
       return res.status(403).json({
         error: "Forbidden",
         message: "Insufficient permissions to update rehearsals"

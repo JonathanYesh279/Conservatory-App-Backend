@@ -1,0 +1,5458 @@
+{
+  "endpoint": "/rehearsal",
+  "status": 200,
+  "contentType": "application/json; charset=utf-8",
+  "success": true,
+  "data": [
+    {
+      "_id": "6883bbbf14f0fcfae92ac4ad",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-08-31T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "31/08/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac455",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-08-31T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "31/08/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac531",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-08-31T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "31/08/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dc7",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-09-04T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "04/09/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac456",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-09-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "07/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4ae",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-09-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "07/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21df2",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-09-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "07/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac532",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-09-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "07/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dc8",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-09-11T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "11/09/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac457",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-09-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "14/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21df3",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-09-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "14/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac533",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-09-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "14/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4af",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-09-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "14/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dc9",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-09-18T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "18/09/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21df4",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-09-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "21/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac534",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-09-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "21/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b0",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-09-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "21/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac458",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-09-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "21/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dca",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-09-25T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "25/09/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b1",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-09-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "28/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21df5",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-09-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "28/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac459",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-09-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "28/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac535",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-09-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "28/09/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dcb",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-10-02T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "02/10/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac45a",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-10-05T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "05/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac536",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-10-05T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "05/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21df6",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-10-05T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "05/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b2",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-10-05T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "05/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dcc",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-10-09T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "09/10/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac45b",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-10-12T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "12/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21df7",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-10-12T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "12/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b3",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-10-12T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "12/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac537",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-10-12T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "12/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dcd",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-10-16T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "16/10/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21df8",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-10-19T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "19/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b4",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-10-19T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "19/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac45c",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-10-19T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "19/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac538",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-10-19T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "19/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dce",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-10-23T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "23/10/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21df9",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-10-26T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "26/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b5",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-10-26T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "26/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac539",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-10-26T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "26/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac45d",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-10-26T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "26/10/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dcf",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-10-30T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "30/10/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b6",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-11-02T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "02/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac53a",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-11-02T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "02/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21dfa",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-11-02T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "02/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac45e",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-11-02T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "02/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd0",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-11-06T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "06/11/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21dfb",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-11-09T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "09/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac45f",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-11-09T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "09/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b7",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-11-09T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "09/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac53b",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-11-09T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "09/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd1",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-11-13T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "13/11/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21dfc",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-11-16T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "16/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac460",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-11-16T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "16/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b8",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-11-16T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "16/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac53c",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-11-16T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "16/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd2",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-11-20T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "20/11/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac53d",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-11-23T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "23/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac461",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-11-23T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "23/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21dfd",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-11-23T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "23/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4b9",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-11-23T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "23/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd3",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-11-27T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "27/11/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac53e",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-11-30T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "30/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21dfe",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-11-30T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "30/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac462",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-11-30T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "30/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4ba",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-11-30T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "30/11/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd4",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-12-04T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "04/12/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac463",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-12-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "07/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4bb",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-12-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "07/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21dff",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-12-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "07/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac53f",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-12-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "07/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd5",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-12-11T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "11/12/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4bc",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-12-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "14/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac540",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-12-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "14/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e00",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-12-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "14/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac464",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-12-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "14/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd6",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-12-18T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "18/12/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac541",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-12-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "21/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac465",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-12-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "21/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e01",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-12-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "21/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4bd",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-12-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "21/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd7",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2025-12-25T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "25/12/2025",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac542",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2025-12-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "28/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac466",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2025-12-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "28/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4be",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2025-12-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "28/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e02",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2025-12-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "28/12/2025",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd8",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-01-01T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "01/01/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac543",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-01-04T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "04/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4bf",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-01-04T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "04/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e03",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-01-04T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "04/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac467",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-01-04T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "04/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dd9",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-01-08T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "08/01/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e04",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-01-11T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "11/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac468",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-01-11T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "11/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c0",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-01-11T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "11/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac544",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-01-11T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "11/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dda",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-01-15T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "15/01/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e05",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-01-18T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "18/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac469",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-01-18T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "18/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac545",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-01-18T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "18/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c1",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-01-18T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "18/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21ddb",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-01-22T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "22/01/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e06",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-01-25T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "25/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac546",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-01-25T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "25/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c2",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-01-25T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "25/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac46a",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-01-25T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "25/01/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21ddc",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-01-29T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "29/01/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac547",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-02-01T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "01/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e07",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-02-01T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "01/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac46b",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-02-01T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "01/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c3",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-02-01T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "01/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21ddd",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-02-05T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "05/02/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e08",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-02-08T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "08/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac548",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-02-08T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "08/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac46c",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-02-08T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "08/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c4",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-02-08T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "08/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dde",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-02-12T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "12/02/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c5",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-02-15T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "15/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac46d",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-02-15T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "15/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac549",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-02-15T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "15/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e09",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-02-15T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "15/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21ddf",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-02-19T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "19/02/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c6",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-02-22T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "22/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e0a",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-02-22T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "22/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac54a",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-02-22T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "22/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac46e",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-02-22T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "22/02/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de0",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-02-26T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "26/02/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac54b",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-03-01T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "01/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c7",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-03-01T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "01/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e0b",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-03-01T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "01/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac46f",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-03-01T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "01/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de1",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-03-05T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "05/03/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac54c",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-03-08T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "08/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac470",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-03-08T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "08/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c8",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-03-08T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "08/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e0c",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-03-08T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "08/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de2",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-03-12T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "12/03/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac471",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-03-15T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "15/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4c9",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-03-15T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "15/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e0d",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-03-15T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "15/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac54d",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-03-15T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "15/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de3",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-03-19T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "19/03/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac472",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-03-22T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "22/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4ca",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-03-22T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "22/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e0e",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-03-22T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "22/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac54e",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-03-22T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "22/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de4",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-03-26T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "26/03/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e0f",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-03-29T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "29/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac473",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-03-29T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "29/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac54f",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-03-29T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "29/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4cb",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-03-29T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "29/03/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de5",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-04-02T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "02/04/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac474",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-04-05T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "05/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4cc",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-04-05T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "05/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e10",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-04-05T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "05/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac550",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-04-05T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "05/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de6",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-04-09T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "09/04/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4cd",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-04-12T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "12/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac475",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-04-12T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "12/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e11",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-04-12T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "12/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac551",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-04-12T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "12/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de7",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-04-16T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "16/04/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4ce",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-04-19T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "19/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e12",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-04-19T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "19/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac476",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-04-19T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "19/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac552",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-04-19T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "19/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de8",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-04-23T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "23/04/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac553",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-04-26T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "26/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4cf",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-04-26T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "26/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e13",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-04-26T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "26/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac477",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-04-26T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "26/04/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21de9",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-04-30T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "30/04/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac478",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-05-03T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "03/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d0",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-05-03T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "03/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac554",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-05-03T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "03/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e14",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-05-03T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "03/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dea",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-05-07T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "07/05/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e15",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-05-10T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "10/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac479",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-05-10T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "10/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac555",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-05-10T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "10/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d1",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-05-10T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "10/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21deb",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-05-14T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "14/05/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac47a",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-05-17T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "17/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac556",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-05-17T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "17/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d2",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-05-17T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "17/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e16",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-05-17T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "17/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dec",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-05-21T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "21/05/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac557",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-05-24T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "24/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e17",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-05-24T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "24/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac47b",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-05-24T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "24/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d3",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-05-24T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "24/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21ded",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-05-28T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "28/05/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac558",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-05-31T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "31/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac47c",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-05-31T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "31/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d4",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-05-31T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "31/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e18",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-05-31T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "31/05/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21dee",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-06-04T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "04/06/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac47d",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-06-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "07/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e19",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-06-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "07/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d5",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-06-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "07/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac559",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-06-07T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "07/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21def",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-06-11T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "11/06/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac55a",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-06-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "14/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e1a",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-06-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "14/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac47e",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-06-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "14/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d6",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-06-14T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "14/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21df0",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-06-18T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "18/06/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e1b",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-06-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "21/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d7",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-06-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "21/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac47f",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-06-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "21/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac55b",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-06-21T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "21/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "689989c0e84119011da21df1",
+      "groupId": "6883badc14f0fcfae92ac453",
+      "type": "תזמורת",
+      "date": "2026-06-25T00:00:00.000Z",
+      "dayOfWeek": 4,
+      "startTime": "17:30",
+      "endTime": "20:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:12:16.007Z",
+      "updatedAt": "2025-08-11T06:12:16.007Z",
+      "formatted": {
+        "date": "25/06/2026",
+        "dayName": "Thursday",
+        "timeRange": "17:30-20:00",
+        "createdAt": "2025-08-11 09:12",
+        "updatedAt": "2025-08-11 09:12"
+      }
+    },
+    {
+      "_id": "6883bb4314f0fcfae92ac480",
+      "groupId": "6882c783070ccc694d122d7d",
+      "type": "תזמורת",
+      "date": "2026-06-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "17:30",
+      "endTime": "20:30",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:13:39.030Z",
+      "updatedAt": "2025-07-25T17:13:39.030Z",
+      "formatted": {
+        "date": "28/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "17:30-20:30",
+        "createdAt": "2025-07-25 20:13",
+        "updatedAt": "2025-07-25 20:13"
+      }
+    },
+    {
+      "_id": "6883c03914f0fcfae92ac55c",
+      "groupId": "6883bac814f0fcfae92ac452",
+      "type": "תזמורת",
+      "date": "2026-06-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:34:49.397Z",
+      "updatedAt": "2025-07-25T17:34:49.397Z",
+      "formatted": {
+        "date": "28/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "16:00-17:00",
+        "createdAt": "2025-07-25 20:34",
+        "updatedAt": "2025-07-25 20:34"
+      }
+    },
+    {
+      "_id": "6883bbbf14f0fcfae92ac4d8",
+      "groupId": "6883bab314f0fcfae92ac451",
+      "type": "תזמורת",
+      "date": "2026-06-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "15:15",
+      "endTime": "16:00",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-07-25T17:15:43.825Z",
+      "updatedAt": "2025-07-25T17:15:43.825Z",
+      "formatted": {
+        "date": "28/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "15:15-16:00",
+        "createdAt": "2025-07-25 20:15",
+        "updatedAt": "2025-07-25 20:15"
+      }
+    },
+    {
+      "_id": "68998a2ae84119011da21e1c",
+      "groupId": "6883baa014f0fcfae92ac450",
+      "type": "תזמורת",
+      "date": "2026-06-28T00:00:00.000Z",
+      "dayOfWeek": 0,
+      "startTime": "14:30",
+      "endTime": "15:15",
+      "location": "אולם ערן",
+      "attendance": {
+        "present": [],
+        "absent": []
+      },
+      "notes": "",
+      "schoolYearId": "67e153be046a2782476d17fe",
+      "createdAt": "2025-08-11T06:14:02.507Z",
+      "updatedAt": "2025-08-11T06:14:02.507Z",
+      "formatted": {
+        "date": "28/06/2026",
+        "dayName": "Sunday",
+        "timeRange": "14:30-15:15",
+        "createdAt": "2025-08-11 09:14",
+        "updatedAt": "2025-08-11 09:14"
+      }
+    }
+  ]
+}

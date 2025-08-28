@@ -86,7 +86,7 @@ const teacherAssignmentSchema = Joi.object({
   teacherId: Joi.string().required().messages({
     'any.required': 'מזהה המורה הוא שדה חובה',
   }),
-  scheduleSlotId: Joi.string().required().messages({
+  scheduleSlotId: Joi.string().optional().allow(null, '').messages({
     'any.required': 'מזהה השיבוץ הוא שדה חובה',
   }),
   day: Joi.string()

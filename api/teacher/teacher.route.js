@@ -28,6 +28,10 @@ router.post('/:id/schedule', requireAuth(['מנהל, מורה']), teacherControl
 router.put('/:id', requireAuth(['מנהל']), teacherController.updateTeacher)
 router.delete('/:id', requireAuth(['מנהל']), teacherController.removeTeacher)
 
+// Student management routes
+router.post('/:teacherId/student/:studentId', requireAuth(['מנהל']), teacherController.addStudentToTeacher)
+router.delete('/:teacherId/student/:studentId', requireAuth(['מנהל']), teacherController.removeStudentFromTeacher)
+
 // Invitation routes
 router.get('/invitation/validate/:token', invitationController.validateInvitation)
 router.post('/invitation/accept/:token', invitationController.acceptInvitation)

@@ -25,6 +25,7 @@ export const VALID_THEORY_CATEGORIES = [
   "הכנה לרסיטל רוק\\פופ\\ג'אז יא",
   "הכנה לרסיטל רוק\\פופ\\ג'אז יב",
   'מגמה',
+  'תאוריה כלי',
 ];
 
 // Valid locations for theory lessons
@@ -115,7 +116,28 @@ export const theoryLessonSchema = Joi.object({
       'any.required': 'Location is required',
     }),
 
-  studentIds: Joi.array().items(Joi.string()).default([]).messages({
+  studentIds: Joi.array().items(
+    Joi.string().custom((value, helpers) => {
+      // Graceful ObjectId validation to prevent BSONError
+      if (typeof value !== 'string') {
+        return helpers.error('string.base', { value });
+      }
+      
+      if (value.length !== 24) {
+        return helpers.error('string.length', { value, limit: 24 });
+      }
+      
+      if (!/^[0-9a-fA-F]{24}$/.test(value)) {
+        return helpers.error('string.hex', { value });
+      }
+      
+      return value;
+    }).messages({
+      'string.base': 'Student ID must be a string',
+      'string.hex': 'Student ID must be a valid hexadecimal string',
+      'string.length': 'Student ID must be exactly 24 characters long',
+    })
+  ).default([]).messages({
     'array.base': 'Student IDs must be an array',
   }),
 
@@ -197,7 +219,28 @@ export const theoryBulkCreateSchema = Joi.object({
     .valid(...VALID_THEORY_LOCATIONS)
     .required(),
 
-  studentIds: Joi.array().items(Joi.string()).default([]),
+  studentIds: Joi.array().items(
+    Joi.string().custom((value, helpers) => {
+      // Graceful ObjectId validation to prevent BSONError
+      if (typeof value !== 'string') {
+        return helpers.error('string.base', { value });
+      }
+      
+      if (value.length !== 24) {
+        return helpers.error('string.length', { value, limit: 24 });
+      }
+      
+      if (!/^[0-9a-fA-F]{24}$/.test(value)) {
+        return helpers.error('string.hex', { value });
+      }
+      
+      return value;
+    }).messages({
+      'string.base': 'Student ID must be a string',
+      'string.hex': 'Student ID must be a valid hexadecimal string',
+      'string.length': 'Student ID must be exactly 24 characters long',
+    })
+  ).default([]),
 
   notes: Joi.string().allow('', null).default(''),
 
@@ -212,6 +255,116 @@ export const theoryBulkCreateSchema = Joi.object({
   }),
 }).custom((obj, helpers) => {
   // Custom validation for time consistency
+  const startTime = obj.startTime;
+  const endTime = obj.endTime;
+
+  if (startTime && endTime) {
+    const [startHour, startMin] = startTime.split(':').map(Number);
+    const [endHour, endMin] = endTime.split(':').map(Number);
+
+    const startMinutes = startHour * 60 + startMin;
+    const endMinutes = endHour * 60 + endMin;
+
+    if (endMinutes <= startMinutes) {
+      return helpers.error('any.invalid', {
+        message: 'End time must be after start time',
+      });
+    }
+  }
+
+  return obj;
+});
+
+// Schema for updating theory lessons (partial updates allowed)
+export const theoryLessonUpdateSchema = Joi.object({
+  category: Joi.string()
+    .valid(...VALID_THEORY_CATEGORIES)
+    .optional()
+    .messages({
+      'any.only': `Category must be one of: ${VALID_THEORY_CATEGORIES.join(
+        ', '
+      )}`,
+    }),
+
+  teacherId: Joi.string().optional(),
+
+  date: Joi.date().optional(),
+
+  dayOfWeek: Joi.number().integer().min(0).max(6).optional().messages({
+    'number.min': 'Day of week must be between 0 (Sunday) and 6 (Saturday)',
+    'number.max': 'Day of week must be between 0 (Sunday) and 6 (Saturday)',
+  }),
+
+  startTime: Joi.string()
+    .pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
+    .optional()
+    .messages({
+      'string.pattern.base': 'Start time must be in HH:MM format (e.g., 14:30)',
+    }),
+
+  endTime: Joi.string()
+    .pattern(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
+    .optional()
+    .messages({
+      'string.pattern.base': 'End time must be in HH:MM format (e.g., 15:15)',
+    }),
+
+  location: Joi.string()
+    .valid(...VALID_THEORY_LOCATIONS)
+    .optional()
+    .messages({
+      'any.only': `Location must be one of the valid classroom locations`,
+    }),
+
+  studentIds: Joi.array().items(
+    Joi.string().custom((value, helpers) => {
+      // Graceful ObjectId validation to prevent BSONError
+      if (typeof value !== 'string') {
+        return helpers.error('string.base', { value });
+      }
+      
+      if (value.length !== 24) {
+        return helpers.error('string.length', { value, limit: 24 });
+      }
+      
+      if (!/^[0-9a-fA-F]{24}$/.test(value)) {
+        return helpers.error('string.hex', { value });
+      }
+      
+      return value;
+    }).messages({
+      'string.base': 'Student ID must be a string',
+      'string.hex': 'Student ID must be a valid hexadecimal string',
+      'string.length': 'Student ID must be exactly 24 characters long',
+    })
+  ).optional().messages({
+    'array.base': 'Student IDs must be an array',
+  }),
+
+  attendance: Joi.object({
+    present: Joi.array().items(Joi.string()).default([]),
+    absent: Joi.array().items(Joi.string()).default([]),
+  }).optional(),
+
+  notes: Joi.string().allow('', null).optional().messages({
+    'string.base': 'Notes must be a string',
+  }),
+
+  syllabus: Joi.string().allow('', null).optional().messages({
+    'string.base': 'Syllabus must be a string',
+  }),
+
+  homework: Joi.string().allow('', null).optional().messages({
+    'string.base': 'Homework must be a string',
+  }),
+
+  schoolYearId: Joi.string().optional(),
+
+  isActive: Joi.boolean().optional(),
+
+  updatedAt: Joi.date().default(() => new Date()),
+}).custom((obj, helpers) => {
+  // Custom validation to ensure end time is after start time (only if both provided)
   const startTime = obj.startTime;
   const endTime = obj.endTime;
 
@@ -253,6 +406,13 @@ export function validateTheoryLesson(theoryLesson) {
 
 export function validateTheoryBulkCreate(bulkData) {
   return theoryBulkCreateSchema.validate(bulkData, {
+    abortEarly: false,
+    stripUnknown: false,
+  });
+}
+
+export function validateTheoryLessonUpdate(theoryLessonUpdate) {
+  return theoryLessonUpdateSchema.validate(theoryLessonUpdate, {
     abortEarly: false,
     stripUnknown: false,
   });

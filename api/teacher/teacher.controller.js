@@ -12,6 +12,9 @@ export const teacherController = {
   removeTeacher,
   getTeacherByRole,
   updateTeacherSchedule,
+  // Student management
+  addStudentToTeacher,
+  removeStudentFromTeacher,
   // New lesson-focused endpoints
   getTeacherLessons,
   getTeacherWeeklySchedule,
@@ -559,6 +562,72 @@ async function validateTeacherLessonData(req, res, next) {
         success: false,
         error: 'Teacher not found',
         code: 'TEACHER_NOT_FOUND'
+      });
+    }
+
+    next(err);
+  }
+}
+
+/**
+ * Add student to teacher
+ * @route POST /api/teacher/:teacherId/student/:studentId
+ */
+async function addStudentToTeacher(req, res, next) {
+  try {
+    const { teacherId, studentId } = req.params;
+    
+    console.log(`➕ Adding student ${studentId} to teacher ${teacherId}`);
+    
+    const result = await teacherService.addStudentToTeacher(teacherId, studentId);
+    
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: 'Student added to teacher successfully'
+    });
+
+  } catch (err) {
+    console.error(`❌ Error adding student to teacher: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: err.message,
+        code: 'RESOURCE_NOT_FOUND'
+      });
+    }
+
+    next(err);
+  }
+}
+
+/**
+ * Remove student from teacher
+ * @route DELETE /api/teacher/:teacherId/student/:studentId
+ */
+async function removeStudentFromTeacher(req, res, next) {
+  try {
+    const { teacherId, studentId } = req.params;
+    
+    console.log(`➖ Removing student ${studentId} from teacher ${teacherId}`);
+    
+    const result = await teacherService.removeStudentFromTeacher(teacherId, studentId);
+    
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: 'Student removed from teacher successfully'
+    });
+
+  } catch (err) {
+    console.error(`❌ Error removing student from teacher: ${err.message}`);
+    
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: err.message,
+        code: 'RESOURCE_NOT_FOUND'
       });
     }
 

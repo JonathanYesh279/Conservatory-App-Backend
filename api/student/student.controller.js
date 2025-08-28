@@ -7,6 +7,7 @@ export const studentController = {
   addStudent,
   updateStudent,
   updateStudentTest,
+  updateStudentStageLevel,
   removeStudent,
 };
 
@@ -145,6 +146,39 @@ async function updateStudentTest(req, res) {
       error: err.message,
       stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
     });
+  }
+}
+
+async function updateStudentStageLevel(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { stageLevel } = req.body;
+
+    console.log(`🎵 Updating stage level for student ${id} to ${stageLevel}`);
+
+    // Validate stage level
+    if (!stageLevel || stageLevel < 1 || stageLevel > 8) {
+      return res.status(400).json({
+        error: 'Invalid stage level',
+        details: 'Stage level must be between 1 and 8'
+      });
+    }
+
+    const teacherId = req.teacher?._id?.toString();
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false;
+
+    const updatedStudent = await studentService.updateStudentStageLevel(
+      id,
+      parseInt(stageLevel),
+      teacherId,
+      isAdmin
+    );
+
+    console.log(`✅ Successfully updated stage level for student ${id} to ${stageLevel}`);
+    res.json(updatedStudent);
+  } catch (err) {
+    console.error(`❌ Error updating student stage level: ${err.message}`);
+    next(err);
   }
 }
 
