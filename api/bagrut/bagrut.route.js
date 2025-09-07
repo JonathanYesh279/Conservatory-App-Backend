@@ -29,6 +29,10 @@ router.put('/:id/gradingDetails', requireAuth(['מנהל', 'מורה']), authori
 router.put('/:id/calculateFinalGrade', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.calculateFinalGrade)
 router.put('/:id/complete', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.completeBagrut)
 
+// Director evaluation and recital configuration routes
+router.put('/:id/directorEvaluation', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.updateDirectorEvaluation)
+router.put('/:id/recitalConfiguration', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.setRecitalConfiguration)
+
 // Document routes
 router.post('/:id/document', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, uploadSingleFile('document'), bagrutController.addDocument)
 router.delete('/:id/document/:documentId', requireAuth(['מנהל', 'מורה']), authorizeBagrutAccess, bagrutController.removeDocument)

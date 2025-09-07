@@ -65,6 +65,16 @@ export async function authenticateToken(req, res, next) {
       email: teacher.credentials?.email,
       requiresPasswordChange: teacher.credentials?.requiresPasswordChange || false,
     };
+
+    // Add user object for cascade management compatibility
+    req.user = {
+      id: teacher._id.toString(),
+      role: teacher.roles?.includes('מנהל') ? 'admin' : 'teacher',
+      isAdmin: teacher.roles?.includes('מנהל') || false,
+      email: teacher.credentials?.email,
+      fullName: teacher.personalInfo?.fullName
+    };
+
     next();
   } catch (err) {
     console.error('Authentication error:', {
@@ -92,6 +102,9 @@ export async function authenticateToken(req, res, next) {
     });
   }
 }
+
+// Default auth middleware export for cascade management
+export const authMiddleware = authenticateToken;
 
 export function requireAuth(roles) {
   return async (req, res, next) => {

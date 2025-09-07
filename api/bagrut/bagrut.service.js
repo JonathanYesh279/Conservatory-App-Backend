@@ -1,5 +1,5 @@
 import { getCollection } from '../../services/mongoDB.service.js'
-import { validateBagrut, getGradeLevelFromScore, validateGradeConsistency, calculateFinalGradeFromDetails, calculateTotalGradeFromDetailedGrading, validateBagrutCompletion } from './bagrut.validation.js'
+import { validateBagrut, getGradeLevelFromScore, validateGradeConsistency, calculateTotalGradeFromDetailedGrading, calculateFinalGradeWithDirectorEvaluation, validateBagrutCompletion } from './bagrut.validation.js'
 import { ObjectId } from 'mongodb'
 
 // Helper function to safely create ObjectId
@@ -41,7 +41,9 @@ export const bagrutService = {
   updateProgram,
   removeProgramPiece, 
   addAccompanist,
-  removeAccompanist
+  removeAccompanist,
+  updateDirectorEvaluation,
+  setRecitalConfiguration
 }
 
 async function getBagruts(filterBy = {}) {
@@ -173,42 +175,29 @@ async function removeBagrut(bagrutId) {
 
 async function updatePresentation(bagrutId, presentationIndex, presentationData, teacherId) {
   try {
-    if (presentationIndex < 0 || presentationIndex > 3) {
-      throw new Error(`Invalid presentation index: ${presentationIndex}. Must be 0-3.`)
+    if (presentationIndex < 0 || presentationIndex > 2) {
+      throw new Error(`Invalid presentation index: ${presentationIndex}. Must be 0-2.`)
     }
 
     const collection = await getCollection('bagrut')
-    await _migrateBagrutTo4Presentations(collection, bagrutId)
 
-    // Only validate grades for presentation 3 (מגן בגרות)
-    if (presentationIndex === 3) {
-      // Handle detailed grading if provided
-      if (presentationData.detailedGrading) {
-        const calculatedGrade = calculateTotalGradeFromDetailedGrading(presentationData.detailedGrading)
-        if (calculatedGrade !== null) {
-          presentationData.grade = calculatedGrade
-          presentationData.gradeLevel = getGradeLevelFromScore(calculatedGrade)
-        }
-      } else if (presentationData.grade !== null && presentationData.grade !== undefined) {
-        const autoGradeLevel = getGradeLevelFromScore(presentationData.grade)
-        if (!presentationData.gradeLevel) {
-          presentationData.gradeLevel = autoGradeLevel
-        } else if (!validateGradeConsistency(presentationData.grade, presentationData.gradeLevel)) {
-          throw new Error(`Grade ${presentationData.grade} does not match grade level ${presentationData.gradeLevel}`)
-        }
-      }
-    } else {
-      // For presentations 0-2, remove any grade/gradeLevel fields and ensure notes field exists
-      delete presentationData.grade
-      delete presentationData.gradeLevel
-      if (!presentationData.notes) {
-        presentationData.notes = ''
-      }
+    // For presentations 0-2, remove any grade/gradeLevel fields and ensure notes field exists
+    delete presentationData.grade
+    delete presentationData.gradeLevel
+    if (!presentationData.notes) {
+      presentationData.notes = ''
     }
 
     // Ensure date is properly set - either provided date or current date
     presentationData.date = presentationData.date ? new Date(presentationData.date) : new Date()
-    presentationData.reviewedBy = teacherId
+    
+    // Preserve the reviewedBy field from frontend (examiner names) - only set teacherId if not provided
+    if (!presentationData.reviewedBy) {
+      presentationData.reviewedBy = teacherId
+    }
+    
+    // Add a separate field to track who made the update (for audit purposes)
+    presentationData.lastUpdatedBy = teacherId
 
     const updateField = `presentations.${presentationIndex}`
 
@@ -251,7 +240,14 @@ async function updateMagenBagrut(bagrutId, magenBagrutData, teacherId) {
 
     // Ensure date is properly set - either provided date or current date
     magenBagrutData.date = magenBagrutData.date ? new Date(magenBagrutData.date) : new Date()
-    magenBagrutData.reviewedBy = teacherId
+    
+    // Preserve the reviewedBy field from frontend (examiner names) - only set teacherId if not provided
+    if (!magenBagrutData.reviewedBy) {
+      magenBagrutData.reviewedBy = teacherId
+    }
+    
+    // Add a separate field to track who made the update (for audit purposes)
+    magenBagrutData.lastUpdatedBy = teacherId
 
     const collection = await getCollection('bagrut')
     const result = await collection.findOneAndUpdate(
@@ -418,15 +414,14 @@ async function removeAccompanist(bagrutId, accompanistId) {
   }
 }
 
-async function updateGradingDetails(bagrutId, gradingDetails, teacherId) {
+async function updateGradingDetails(bagrutId, detailedGrading, teacherId) {
   try {
     const collection = await getCollection('bagrut')
-    await _migrateBagrutTo4Presentations(collection, bagrutId)
     const bagrut = await collection.findOne({ _id: createObjectId(bagrutId) })
     
     if (!bagrut) throw new Error(`Bagrut with id ${bagrutId} not found`)
 
-    const calculatedGrade = calculateFinalGradeFromDetails(gradingDetails)
+    const calculatedGrade = calculateTotalGradeFromDetailedGrading(detailedGrading)
     let finalGradeLevel = null
     
     if (calculatedGrade !== null) {
@@ -437,11 +432,11 @@ async function updateGradingDetails(bagrutId, gradingDetails, teacherId) {
       { _id: createObjectId(bagrutId) },
       {
         $set: {
-          gradingDetails,
-          'presentations.3.grade': calculatedGrade,
-          'presentations.3.gradeLevel': finalGradeLevel,
-          'presentations.3.reviewedBy': teacherId,
-          'presentations.3.date': new Date(),
+          'magenBagrut.detailedGrading': detailedGrading,
+          'magenBagrut.grade': calculatedGrade,
+          'magenBagrut.gradeLevel': finalGradeLevel,
+          'magenBagrut.lastUpdatedBy': teacherId,
+          'magenBagrut.date': new Date(),
           updatedAt: new Date()
         }
       },
@@ -458,13 +453,17 @@ async function updateGradingDetails(bagrutId, gradingDetails, teacherId) {
 async function calculateAndUpdateFinalGrade(bagrutId) {
   try {
     const collection = await getCollection('bagrut')
-    await _migrateBagrutTo4Presentations(collection, bagrutId)
     
     const bagrut = await collection.findOne({ _id: createObjectId(bagrutId) })
     
     if (!bagrut) throw new Error(`Bagrut with id ${bagrutId} not found`)
 
-    const finalGrade = calculateFinalGradeFromDetails(bagrut.gradingDetails || {})
+    // Calculate final grade including director evaluation
+    const finalGrade = calculateFinalGradeWithDirectorEvaluation(
+      bagrut.magenBagrut?.detailedGrading || {}, 
+      bagrut.directorEvaluation
+    )
+    
     const finalGradeLevel = finalGrade ? getGradeLevelFromScore(finalGrade) : null
 
     const result = await collection.findOneAndUpdate(
@@ -489,11 +488,25 @@ async function calculateAndUpdateFinalGrade(bagrutId) {
 async function completeBagrut(bagrutId, teacherId, teacherSignature) {
   try {
     const collection = await getCollection('bagrut')
-    await _migrateBagrutTo4Presentations(collection, bagrutId)
     
     const bagrut = await collection.findOne({ _id: createObjectId(bagrutId) })
     
     if (!bagrut) throw new Error(`Bagrut with id ${bagrutId} not found`)
+    
+    // Validate director evaluation is set
+    if (!bagrut.directorEvaluation?.points && bagrut.directorEvaluation?.points !== 0) {
+      throw new Error('הערכת מנהל חייבת להיות מושלמת לפני סיום הבגרות - Director evaluation must be completed before finalizing bagrut')
+    }
+    
+    // Validate recital units is set
+    if (!bagrut.recitalUnits) {
+      throw new Error('יחידות רסיטל חייבות להיות מוגדרות לפני השלמת הבגרות - Recital units must be set before completing bagrut')
+    }
+    
+    // Ensure all 5 pieces are entered (even if some are blank)
+    if (!bagrut.program || bagrut.program.length !== 5) {
+      throw new Error('כל 5 יצירות התוכנית חייבות להיות מוזנות לפני השלמת הבגרות - All 5 program pieces must be entered before completing bagrut')
+    }
     
     const updatedBagrut = await collection.findOne({ _id: createObjectId(bagrutId) })
     const validationErrors = validateBagrutCompletion(updatedBagrut)
@@ -522,105 +535,82 @@ async function completeBagrut(bagrutId, teacherId, teacherSignature) {
   }
 }
 
-async function _migrateBagrutTo4Presentations(collection, bagrutId) {
+async function updateDirectorEvaluation(bagrutId, evaluation) {
   try {
-    // Use safe ObjectId conversion
-    let objectId
-    try {
-      objectId = createObjectId(bagrutId)
-    } catch (error) {
-      console.warn(`Invalid bagrutId for migration: ${bagrutId} - ${error.message}`)
-      return
-    }
+    const collection = await getCollection('bagrut')
     
-    const bagrut = await collection.findOne({ _id: objectId })
+    const bagrut = await collection.findOne({ _id: createObjectId(bagrutId) })
     
-    if (bagrut && bagrut.presentations && bagrut.presentations.length === 3) {
-      console.log(`Migrating bagrut ${bagrutId} from 3 to 4 presentations`)
-      
-      const fourthPresentation = {
-        completed: false,
-        status: 'לא נבחן',
-        date: null,
-        review: null,
-        reviewedBy: null,
-        grade: null,
-        gradeLevel: null,
-        recordingLinks: [],
-        detailedGrading: {
-          playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
-          musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
-          textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
-          playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
-        }
-      }
-      
-      const updatedPresentations = bagrut.presentations.map((p, index) => {
-        if (index < 3) {
-          // For presentations 0-2, remove grade/gradeLevel and add notes + recordingLinks
-          const { grade, gradeLevel, ...presentationWithoutGrades } = p
-          return {
-            ...presentationWithoutGrades,
-            notes: p.notes || '',
-            recordingLinks: p.recordingLinks || []
-          }
-        } else {
-          // For presentation 3, keep grade/gradeLevel and add detailedGrading + recordingLinks if missing
-          return {
-            ...p,
-            grade: p.grade || null,
-            gradeLevel: p.gradeLevel || null,
-            recordingLinks: p.recordingLinks || [],
-            detailedGrading: p.detailedGrading || {
-              playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
-              musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
-              textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
-              playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
-            }
-          }
-        }
-      })
-      updatedPresentations.push(fourthPresentation)
-      
-      const defaultGradingDetails = {
-        technique: { grade: null, maxPoints: 20, comments: '' },
-        interpretation: { grade: null, maxPoints: 30, comments: '' },
-        musicality: { grade: null, maxPoints: 40, comments: '' },
-        overall: { grade: null, maxPoints: 10, comments: '' }
-      }
-      
-      await collection.updateOne(
-        { _id: objectId },
-        {
-          $set: {
-            presentations: updatedPresentations,
-            gradingDetails: bagrut.gradingDetails || defaultGradingDetails,
-            conservatoryName: bagrut.conservatoryName || '',
-            finalGrade: bagrut.finalGrade || null,
-            finalGradeLevel: bagrut.finalGradeLevel || null,
-            teacherSignature: bagrut.teacherSignature || '',
-            completionDate: bagrut.completionDate || null,
-            isCompleted: bagrut.isCompleted || false,
-            'magenBagrut.grade': bagrut.magenBagrut.grade || null,
-            'magenBagrut.gradeLevel': bagrut.magenBagrut.gradeLevel || null,
-            'magenBagrut.recordingLinks': bagrut.magenBagrut.recordingLinks || [],
-            'magenBagrut.detailedGrading': bagrut.magenBagrut.detailedGrading || {
-              playingSkills: { grade: 'לא הוערך', points: null, maxPoints: 20, comments: 'אין הערות' },
-              musicalUnderstanding: { grade: 'לא הוערך', points: null, maxPoints: 40, comments: 'אין הערות' },
-              textKnowledge: { grade: 'לא הוערך', points: null, maxPoints: 30, comments: 'אין הערות' },
-              playingByHeart: { grade: 'לא הוערך', points: null, maxPoints: 10, comments: 'אין הערות' }
-            },
-            updatedAt: new Date()
-          }
-        }
-      )
-      
-      console.log(`Successfully migrated bagrut ${bagrutId}`)
+    if (!bagrut) throw new Error(`Bagrut with id ${bagrutId} not found`)
+
+    // Validate evaluation points
+    if (evaluation.points < 0 || evaluation.points > 10) {
+      throw new Error('Director evaluation points must be between 0 and 10')
     }
+
+    const result = await collection.findOneAndUpdate(
+      { _id: createObjectId(bagrutId) },
+      {
+        $set: {
+          directorEvaluation: {
+            points: evaluation.points,
+            percentage: 10,
+            comments: evaluation.comments || ''
+          },
+          updatedAt: new Date()
+        }
+      },
+      { returnDocument: 'after' }
+    )
+
+    // Recalculate final grade including director evaluation
+    const updatedBagrut = await calculateAndUpdateFinalGrade(bagrutId)
+    
+    return updatedBagrut
   } catch (err) {
-    console.error(`Error migrating bagrut ${bagrutId}: ${err}`)
+    console.error(`Error in bagrutService.updateDirectorEvaluation: ${err}`)
+    throw new Error(`Error in bagrutService.updateDirectorEvaluation: ${err}`)
   }
 }
+
+async function setRecitalConfiguration(bagrutId, units, field) {
+  try {
+    const collection = await getCollection('bagrut')
+    
+    const bagrut = await collection.findOne({ _id: createObjectId(bagrutId) })
+    
+    if (!bagrut) throw new Error(`Bagrut with id ${bagrutId} not found`)
+
+    // Validate units
+    if (units !== 3 && units !== 5) {
+      throw new Error('Recital units must be either 3 or 5')
+    }
+
+    // Validate field
+    const validFields = ['קלאסי', 'ג\'אז', 'שירה']
+    if (!validFields.includes(field)) {
+      throw new Error(`Recital field must be one of: ${validFields.join(', ')}`)
+    }
+
+    const result = await collection.findOneAndUpdate(
+      { _id: createObjectId(bagrutId) },
+      {
+        $set: {
+          recitalUnits: units,
+          recitalField: field,
+          updatedAt: new Date()
+        }
+      },
+      { returnDocument: 'after' }
+    )
+
+    return result
+  } catch (err) {
+    console.error(`Error in bagrutService.setRecitalConfiguration: ${err}`)
+    throw new Error(`Error in bagrutService.setRecitalConfiguration: ${err}`)
+  }
+}
+
 
 function _buildCriteria(filterBy) {
   const criteria = {}

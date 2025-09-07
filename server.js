@@ -27,8 +27,10 @@ import analyticsRoutes from './api/analytics/attendance.routes.js';
 import adminValidationRoutes from './api/admin/consistency-validation.route.js';
 import dateMonitoringRoutes from './api/admin/date-monitoring.route.js';
 import pastActivitiesRoutes from './api/admin/past-activities.route.js';
+import cascadeDeletionRoutes from './api/admin/cascade-deletion.routes.js';
 import lessonRoutes from './api/lesson/lesson.route.js';
 import { invitationController } from './api/teacher/invitation.controller.js';
+import { cascadeSystemInitializer } from './services/cascadeSystemInitializer.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(_filename);
@@ -160,6 +162,11 @@ app.use(
   authenticateToken,
   pastActivitiesRoutes
 );
+app.use(
+  '/api/admin',
+  authenticateToken,
+  cascadeDeletionRoutes
+);
 app.use('/api/files', authenticateToken, fileRoutes);
 app.use(
   '/api/lessons',
@@ -250,12 +257,22 @@ const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || '0.0.0.0';
 
 // Improved server startup with error handling
-const startServer = () => {
-  // Create the server instance separately from starting it
-  const server = app.listen(PORT, HOST, () => {
+const startServer = async () => {
+  // Create the HTTP server instance separately from starting it
+  const server = app.listen(PORT, HOST, async () => {
     console.log(`🚀 Server is running on http://${HOST}:${PORT}`);
     console.log(`📱 External devices can access via: http://172.29.139.184:${PORT}`);
     console.log(`💻 Local access still works via: http://localhost:${PORT}`);
+    
+    // Initialize WebSocket and cascade system after server is running
+    try {
+      console.log('🔌 Initializing WebSocket and Cascade System...');
+      await cascadeSystemInitializer.initialize(server);
+      console.log('✅ WebSocket and Cascade System initialized successfully');
+    } catch (error) {
+      console.error('❌ Failed to initialize WebSocket/Cascade system:', error);
+      // Don't crash the server - continue without WebSocket
+    }
   });
 
   // Handle port in use errors
@@ -285,9 +302,9 @@ const startServer = () => {
         );
         temp.close();
 
-        setTimeout(() => {
+        setTimeout(async () => {
           console.log('Trying to restart server...');
-          startServer();
+          await startServer();
         }, 1000);
       });
     } else {
@@ -322,7 +339,7 @@ console.log('🚀 Starting server initialization...');
   try {
     await initializeMongoDB();
     console.log('✅ MongoDB initialized successfully');
-    startServer();
+    await startServer();
     console.log('🎯 Server startup function called');
   } catch (error) {
     console.error('❌ Failed to initialize server:', error);

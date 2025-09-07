@@ -21,6 +21,8 @@ export const bagrutController = {
   removeProgramPiece,
   addAccompanist,
   removeAccompanist,
+  updateDirectorEvaluation,
+  setRecitalConfiguration,
 }
 
 async function getBagruts(req, res, next) {
@@ -108,7 +110,10 @@ async function updatePresentation(req, res, next) {
 
     const index = parseInt(presentationIndex)
     if (isNaN(index) || index < 0 || index > 3) {
-      return res.status(400).json({ error: 'Invalid presentation index. Must be 0-3.' })
+      return res.status(400).json({ 
+        error: 'אינדקס מצגת לא תקין. חייב להיות בין 0-3',
+        errorEn: 'Invalid presentation index. Must be 0-3.'
+      })
     }
 
     // No need to check authorization - middleware already did it
@@ -148,7 +153,10 @@ async function addDocument(req, res, next) {
     const teacherId = req.teacher._id.toString()
 
     if (!req.processedFile) {
-      return res.status(400).json({ error: 'No file information available' })
+      return res.status(400).json({ 
+        error: 'אין מידע זמין על הקובץ',
+        errorEn: 'No file information available'
+      })
     }
 
     const documentData = {
@@ -269,23 +277,55 @@ async function removeAccompanist(req, res, next) {
 async function updateGradingDetails(req, res, next) {
   try {
     const { id } = req.params
-    const gradingDetails = req.body
+    const detailedGrading = req.body
     const teacherId = req.teacher._id.toString()
 
-    // Validate grading details structure
-    const requiredFields = ['technique', 'interpretation', 'musicality', 'overall']
-    const missingFields = requiredFields.filter(field => !gradingDetails[field])
+    // Validate detailed grading structure
+    const requiredFields = ['playingSkills', 'musicalUnderstanding', 'textKnowledge', 'playingByHeart']
+    const missingFields = requiredFields.filter(field => !detailedGrading[field])
     
     if (missingFields.length > 0) {
       return res.status(400).json({ 
-        error: `Missing required grading fields: ${missingFields.join(', ')}` 
+        error: `שדות הערכה חסרים: ${missingFields.join(', ')}`,
+        errorEn: `Missing required grading fields: ${missingFields.join(', ')}` 
+      })
+    }
+
+    // Validate point maximums for detailed grading
+    const { playingSkills, musicalUnderstanding, textKnowledge, playingByHeart } = detailedGrading
+
+    if (playingSkills?.points && playingSkills.points > 40) {
+      return res.status(400).json({ 
+        error: 'כישורי נגינה לא יכולים לעלות על 40 נקודות',
+        errorEn: 'Playing skills cannot exceed 40 points'
+        })
+      }
+
+    if (musicalUnderstanding?.points && musicalUnderstanding.points > 30) {
+      return res.status(400).json({ 
+        error: 'הבנה מוזיקלית לא יכולה לעלות על 30 נקודות',
+        errorEn: 'Musical understanding cannot exceed 30 points'
+      })
+    }
+
+    if (textKnowledge?.points && textKnowledge.points > 20) {
+      return res.status(400).json({ 
+        error: 'ידיעת הטקסט לא יכולה לעלות על 20 נקודות',
+        errorEn: 'Text knowledge cannot exceed 20 points'
+      })
+    }
+
+    if (playingByHeart?.points && playingByHeart.points > 10) {
+      return res.status(400).json({ 
+        error: 'נגינה בעל פה לא יכולה לעלות על 10 נקודות',
+        errorEn: 'Playing by heart cannot exceed 10 points'
       })
     }
 
     // No need to check authorization - middleware already did it
     const updatedBagrut = await bagrutService.updateGradingDetails(
       id,
-      gradingDetails,
+      detailedGrading,
       teacherId
     )
     res.json(updatedBagrut)
@@ -318,6 +358,83 @@ async function completeBagrut(req, res, next) {
       teacherId,
       teacherSignature
     )
+    res.json(updatedBagrut)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function updateDirectorEvaluation(req, res, next) {
+  try {
+    const { id } = req.params
+    const { points, comments } = req.body
+
+    // Validate points range
+    if (points === undefined || points === null) {
+      return res.status(400).json({ 
+        error: 'נקודות הערכת מנהל נדרשות',
+        errorEn: 'Director evaluation points are required'
+      })
+    }
+
+    if (typeof points !== 'number' || points < 0 || points > 10) {
+      return res.status(400).json({ 
+        error: 'נקודות הערכת מנהל חייבות להיות בין 0 ל-10',
+        errorEn: 'Director evaluation points must be between 0 and 10'
+      })
+    }
+
+    // No need to check authorization - middleware already did it
+    const updatedBagrut = await bagrutService.updateDirectorEvaluation(id, {
+      points,
+      comments: comments || ''
+    })
+    
+    res.json(updatedBagrut)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function setRecitalConfiguration(req, res, next) {
+  try {
+    const { id } = req.params
+    const { units, field } = req.body
+
+    // Validate units
+    if (units === undefined || units === null) {
+      return res.status(400).json({ 
+        error: 'יחידות רסיטל נדרשות',
+        errorEn: 'Recital units are required'
+      })
+    }
+
+    if (units !== 3 && units !== 5) {
+      return res.status(400).json({ 
+        error: 'יחידות רסיטל חייבות להיות 3 או 5',
+        errorEn: 'Recital units must be either 3 or 5'
+      })
+    }
+
+    // Validate field
+    if (!field) {
+      return res.status(400).json({ 
+        error: 'תחום רסיטל נדרש',
+        errorEn: 'Recital field is required'
+      })
+    }
+
+    const validFields = ['קלאסי', 'ג\'אז', 'שירה']
+    if (!validFields.includes(field)) {
+      return res.status(400).json({ 
+        error: `תחום רסיטל חייב להיות אחד מהבאים: ${validFields.join(', ')}`,
+        errorEn: `Recital field must be one of: ${validFields.join(', ')}`
+      })
+    }
+
+    // No need to check authorization - middleware already did it
+    const updatedBagrut = await bagrutService.setRecitalConfiguration(id, units, field)
+    
     res.json(updatedBagrut)
   } catch (err) {
     next(err)

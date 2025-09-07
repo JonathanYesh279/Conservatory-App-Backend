@@ -10,7 +10,17 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:unit": "vitest run --config vitest.config.unit.js",
+    "test:unit:watch": "vitest --config vitest.config.unit.js",
+    "test:integration": "vitest run --config vitest.config.integration.js",
+    "test:integration:watch": "vitest --config vitest.config.integration.js",
+    "test:performance": "vitest run --config vitest.config.performance.js",
+    "test:cascade": "npm run test:unit && npm run test:integration && npm run test:performance",
+    "test:cascade:unit": "vitest run --config vitest.config.unit.js test/unit/cascadeDeletionService.test.js",
+    "test:cascade:integration": "vitest run --config vitest.config.integration.js test/integration/cascade-deletion.test.js test/integration/data-integrity.test.js",
+    "test:cascade:performance": "vitest run --config vitest.config.performance.js test/performance/cascade-operations.test.js",
+    "test:coverage:cascade": "vitest run --coverage test/unit/cascadeDeletionService.test.js test/integration/cascade-deletion.test.js test/integration/data-integrity.test.js"
   },
   "author": "Yehonatan Yeshayahu",
   "license": "ISC",
@@ -32,7 +42,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.13.0",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^7.0.5"
+    "nodemailer": "^7.0.5",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.0.8",

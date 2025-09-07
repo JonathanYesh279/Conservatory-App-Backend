@@ -199,7 +199,7 @@ export const monitorValidationErrors = (req, res, next) => {
         }
 
         // Check if error is date-related
-        const isDateError = this._isDateRelatedError(errorData, req);
+        const isDateError = _isDateRelatedError(errorData, req);
         
         if (isDateError) {
           dateMonitoringService.logValidationFailure('date_validation_error', {
