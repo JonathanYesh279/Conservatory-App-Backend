@@ -80,6 +80,7 @@ app.use(helmet({
     directives: {
       ...helmet.contentSecurityPolicy.getDefaultDirectives(),
       "script-src": ["'self'", "'unsafe-inline'"],
+      "connect-src": ["'self'", "https://conservatory-app-backend.onrender.com", "https://your-api-domain.com"],
     },
   },
 }));
@@ -88,6 +89,14 @@ app.use(mongoSanitize());
 // Initialize MongoDB (moved to startup sequence below for better error handling)
 
 // Direct invitation routes (no auth required)
+
+// API configuration endpoint for frontend
+app.get('/api/config', (req, res) => {
+  res.json({
+    apiUrl: process.env.API_URL || `https://${req.get('host')}/api`,
+    environment: process.env.NODE_ENV
+  });
+});
 
 // API Routes
 app.use('/api/auth', authRoutes);
