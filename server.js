@@ -85,8 +85,7 @@ app.use(helmet({
 }));
 app.use(mongoSanitize());
 
-// Initialize MongoDB
-await initializeMongoDB(MONGO_URI).catch(console.error);
+// Initialize MongoDB (moved to startup sequence below for better error handling)
 
 // Direct invitation routes (no auth required)
 
@@ -348,14 +347,26 @@ const startServer = async () => {
 
 // Start the server using our improved startup function
 console.log('🚀 Starting server initialization...');
+console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
+console.log('📦 Storage Mode:', process.env.STORAGE_MODE || 'local');
+
 (async () => {
   try {
-    await initializeMongoDB();
+    // Initialize MongoDB with connection string
+    const mongoUri = process.env.MONGODB_URI;
+    if (!mongoUri) {
+      throw new Error('MONGODB_URI environment variable is not set. Please configure it on Render.com');
+    }
+
+    await initializeMongoDB(mongoUri);
     console.log('✅ MongoDB initialized successfully');
+
+    // Start the server
     await startServer();
     console.log('🎯 Server startup function called');
   } catch (error) {
     console.error('❌ Failed to initialize server:', error);
+    console.error('💡 Make sure to set the MONGODB_URI environment variable in Render.com dashboard');
     process.exit(1);
   }
 })();
