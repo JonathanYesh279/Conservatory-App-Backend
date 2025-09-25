@@ -19,6 +19,7 @@ async function getStudents(req, res, next) {
       stage: req.query.stage,
       isActive: req.query.isActive,
       showInactive: req.query.showInActive === 'true',
+      ids: req.query.ids // Add support for batch fetching by IDs
     };
     const students = await studentService.getStudents(filterBy);
     res.json(students);

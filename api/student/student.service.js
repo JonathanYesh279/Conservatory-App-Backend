@@ -926,6 +926,20 @@ async function syncTeacherRecordsForStudentUpdate(studentId, studentName, newAss
 
 function _buildCriteria(filterBy) {
   const criteria = {};
+  console.log('🔍 studentService._buildCriteria called with filterBy:', JSON.stringify(filterBy))
+
+  // Handle batch fetching by IDs - highest priority
+  if (filterBy.ids) {
+    console.log('🎯 Found student ids parameter:', filterBy.ids)
+    const idsArray = Array.isArray(filterBy.ids) ? filterBy.ids : filterBy.ids.split(',')
+    console.log('🎯 Parsed student IDs array:', idsArray)
+    criteria._id = { 
+      $in: idsArray.map(id => ObjectId.createFromHexString(id.trim())) 
+    }
+    console.log('🎯 Built student criteria with IDs:', JSON.stringify(criteria))
+    // When fetching by specific IDs, return all (active and inactive)
+    return criteria
+  }
 
   // Update to support instrument filtering against the new structure
   if (filterBy.instrument) {

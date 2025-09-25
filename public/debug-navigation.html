@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת ניווט</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .log {
+            background: #222;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 בדיקת ניווט - דף עזר לאבחון</h1>
+        
+        <div class="test-section">
+            <h2>📍 מיקום נוכחי</h2>
+            <p>URL: <strong id="current-url"></strong></p>
+            <p>Path: <strong id="current-path"></strong></p>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 בדיקות ניווט</h2>
+            
+            <button onclick="testDirectNavigation()">
+                1. ניווט ישיר ל-/students/test123
+            </button>
+            
+            <button onclick="testWindowLocation()">
+                2. window.location ל-/students/test456
+            </button>
+            
+            <button onclick="testWindowReplace()">
+                3. window.location.replace ל-/students/test789
+            </button>
+            
+            <button onclick="testHashNavigation()">
+                4. ניווט עם Hash
+            </button>
+            
+            <button onclick="checkReactRouter()">
+                5. בדוק React Router
+            </button>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 תוצאות</h2>
+            <div id="status"></div>
+            <div class="log" id="log"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>💡 הוראות</h2>
+            <ol>
+                <li>פתח את הדף הזה בדפדפן במקביל לאפליקציה</li>
+                <li>נסה את הבדיקות השונות</li>
+                <li>בדוק אם הניווט עובד</li>
+                <li>העתק את הלוג למפתח אם יש בעיה</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Update current location
+        function updateLocation() {
+            document.getElementById('current-url').textContent = window.location.href;
+            document.getElementById('current-path').textContent = window.location.pathname;
+        }
+        updateLocation();
+
+        // Log function
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#f44' : type === 'success' ? '#4f4' : '#fff';
+            logDiv.innerHTML += `<div style="color: ${color}">[${time}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // Status function
+        function setStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+        }
+
+        // Test functions
+        function testDirectNavigation() {
+            try {
+                log('ניסיון ניווט ישיר ל-/students/test123');
+                window.location.pathname = '/students/test123';
+                setStatus('✅ הניווט הישיר הושלם', 'success');
+            } catch (error) {
+                log(`❌ שגיאה: ${error.message}`, 'error');
+                setStatus('❌ הניווט נכשל', 'error');
+            }
+        }
+
+        function testWindowLocation() {
+            try {
+                log('ניסיון window.location ל-/students/test456');
+                window.location.href = '/students/test456';
+                setStatus('✅ window.location הושלם', 'success');
+            } catch (error) {
+                log(`❌ שגיאה: ${error.message}`, 'error');
+                setStatus('❌ window.location נכשל', 'error');
+            }
+        }
+
+        function testWindowReplace() {
+            try {
+                log('ניסיון window.location.replace ל-/students/test789');
+                window.location.replace('/students/test789');
+                setStatus('✅ window.location.replace הושלם', 'success');
+            } catch (error) {
+                log(`❌ שגיאה: ${error.message}`, 'error');
+                setStatus('❌ window.location.replace נכשל', 'error');
+            }
+        }
+
+        function testHashNavigation() {
+            try {
+                log('ניסיון ניווט עם Hash');
+                window.location.hash = '#test-navigation';
+                setTimeout(() => {
+                    if (window.location.hash === '#test-navigation') {
+                        setStatus('✅ Hash navigation עובד', 'success');
+                        log('Hash השתנה בהצלחה ל: ' + window.location.hash, 'success');
+                    } else {
+                        setStatus('❌ Hash navigation נכשל', 'error');
+                    }
+                }, 100);
+            } catch (error) {
+                log(`❌ שגיאה: ${error.message}`, 'error');
+            }
+        }
+
+        function checkReactRouter() {
+            try {
+                log('בודק React Router...');
+                
+                // Check if React is loaded
+                if (typeof React !== 'undefined') {
+                    log('✅ React נטען', 'success');
+                } else {
+                    log('⚠️ React לא זוהה בדף', 'error');
+                }
+                
+                // Check for common router issues
+                const scripts = Array.from(document.querySelectorAll('script'));
+                const hasRouter = scripts.some(s => s.src && s.src.includes('react-router'));
+                
+                if (hasRouter) {
+                    log('✅ React Router נמצא', 'success');
+                } else {
+                    log('⚠️ React Router לא זוהה בדף', 'error');
+                }
+                
+                // Check for any error in console
+                if (window.console && window.console.error) {
+                    log('בדוק את הקונסול לשגיאות נוספות', 'info');
+                }
+                
+                setStatus('בדיקת React Router הושלמה', 'success');
+            } catch (error) {
+                log(`❌ שגיאה בבדיקה: ${error.message}`, 'error');
+            }
+        }
+
+        // Listen for navigation changes
+        window.addEventListener('popstate', () => {
+            log('🔄 Navigation event detected (popstate)');
+            updateLocation();
+        });
+
+        // Initial log
+        log('🚀 דף בדיקת ניווט נטען בהצלחה');
+        log(`📍 מיקום נוכחי: ${window.location.pathname}`);
+    </script>
+</body>
+</html>

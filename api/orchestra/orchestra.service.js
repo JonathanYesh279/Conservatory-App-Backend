@@ -29,12 +29,27 @@ async function getOrchestras(filterBy) {
       {
         $lookup: {
           from: 'student',
-          let: { memberIds: '$memberIds' },
+          let: { memberIds: { $ifNull: ['$memberIds', []] } },
           pipeline: [
             {
               $match: {
                 $expr: {
-                  $in: [{ $toString: '$_id' }, '$$memberIds']
+                  $cond: {
+                    if: { $eq: [{ $size: '$$memberIds' }, 0] },
+                    then: false, // No members to match
+                    else: {
+                      $in: [
+                        '$_id',
+                        {
+                          $map: {
+                            input: '$$memberIds',
+                            as: 'memberId',
+                            in: { $toObjectId: '$$memberId' }
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             },
@@ -88,7 +103,24 @@ async function getOrchestras(filterBy) {
       console.log('   - Name:', orchestras[0].name)
       console.log('   - Members count:', orchestras[0].members ? orchestras[0].members.length : 'undefined')
       console.log('   - MemberIds:', orchestras[0].memberIds)
+      console.log('   - Members data sample:', JSON.stringify(orchestras[0].members?.slice(0, 1), null, 2))
       console.log('   - Conductor populated:', !!orchestras[0].conductor)
+      
+      // Special debugging for specific orchestra
+      const targetOrchestra = orchestras.find(o => o._id.toString() === '687a77cdca26e53e23b0ce4b')
+      if (targetOrchestra) {
+        console.log('🎯 FOUND TARGET ORCHESTRA 687a77cdca26e53e23b0ce4b:')
+        console.log('   - Name:', targetOrchestra.name)
+        console.log('   - MemberIds array:', targetOrchestra.memberIds)
+        console.log('   - MemberIds length:', targetOrchestra.memberIds ? targetOrchestra.memberIds.length : 0)
+        console.log('   - Members populated:', targetOrchestra.members ? targetOrchestra.members.length : 0)
+        if (targetOrchestra.members && targetOrchestra.members.length > 0) {
+          console.log('   - Populated member details:', targetOrchestra.members.map(m => ({
+            _id: m._id,
+            name: m.personalInfo ? `${m.personalInfo.firstName} ${m.personalInfo.lastName}` : 'No name'
+          })))
+        }
+      }
     }
 
     return orchestras
@@ -100,7 +132,17 @@ async function getOrchestras(filterBy) {
 
 async function getOrchestraById(orchestraId) {
   try {
+    console.log('🔍 getOrchestraById called with:', orchestraId)
     const collection = await getCollection('orchestra')
+    
+    // First, let's check what's actually in the database
+    if (orchestraId === '687a77cdca26e53e23b0ce4b') {
+      const rawOrchestra = await collection.findOne({ _id: ObjectId.createFromHexString(orchestraId) })
+      console.log('🎯 RAW DATABASE DATA for orchestra 687a77cdca26e53e23b0ce4b:')
+      console.log('   - memberIds:', rawOrchestra ? rawOrchestra.memberIds : 'Not found')
+      console.log('   - memberIds type:', rawOrchestra && rawOrchestra.memberIds ? typeof rawOrchestra.memberIds : 'N/A')
+      console.log('   - memberIds length:', rawOrchestra && rawOrchestra.memberIds ? rawOrchestra.memberIds.length : 0)
+    }
     
     // Use aggregation pipeline to populate members with full student data
     const orchestras = await collection.aggregate([
@@ -108,12 +150,27 @@ async function getOrchestraById(orchestraId) {
       {
         $lookup: {
           from: 'student',
-          let: { memberIds: '$memberIds' },
+          let: { memberIds: { $ifNull: ['$memberIds', []] } },
           pipeline: [
             {
               $match: {
                 $expr: {
-                  $in: [{ $toString: '$_id' }, '$$memberIds']
+                  $cond: {
+                    if: { $eq: [{ $size: '$$memberIds' }, 0] },
+                    then: false, // No members to match
+                    else: {
+                      $in: [
+                        '$_id',
+                        {
+                          $map: {
+                            input: '$$memberIds',
+                            as: 'memberId',
+                            in: { $toObjectId: '$$memberId' }
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             },
@@ -162,6 +219,23 @@ async function getOrchestraById(orchestraId) {
     ]).toArray()
 
     const orchestra = orchestras[0]
+    
+    // Debug logging for specific orchestra
+    if (orchestraId === '687a77cdca26e53e23b0ce4b' && orchestra) {
+      console.log('🎯 AGGREGATION RESULT for orchestra 687a77cdca26e53e23b0ce4b:')
+      console.log('   - Orchestra found:', !!orchestra)
+      console.log('   - memberIds:', orchestra.memberIds)
+      console.log('   - members populated count:', orchestra.members ? orchestra.members.length : 0)
+      if (orchestra.members && orchestra.members.length > 0) {
+        console.log('   - Member details:', orchestra.members.map(m => ({
+          _id: m._id,
+          name: m.personalInfo ? `${m.personalInfo.firstName} ${m.personalInfo.lastName}` : 'No name'
+        })))
+      } else {
+        console.log('   - ⚠️ No members populated despite having memberIds!')
+      }
+    }
+    
     if (!orchestra) throw new Error(`Orchestra with id ${orchestraId} not found`)
     return orchestra
   } catch (err) {
@@ -382,18 +456,52 @@ async function addMember(orchestraId, studentId, teacherId, isAdmin = false, use
     
     console.log('✅ Student enrollment updated, updating orchestra member list')
     const collection = await getCollection('orchestra')
-    const result = await collection.findOneAndUpdate(
-      { _id: ObjectId.createFromHexString(orchestraId) },
-      { $addToSet: { memberIds: studentId } },
-      { returnDocument: 'after' }
-    )
-
-    if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`)
     
-    console.log('🔍 Orchestra update result:', {
-      memberCount: result.memberIds ? result.memberIds.length : 0,
-      memberIds: result.memberIds
+    console.log('🔍 Before update - attempting to add studentId:', studentId)
+    console.log('🔍 Orchestra ID for update:', orchestraId)
+    
+    // First, let's use updateOne to get more detailed update information
+    const updateResult = await collection.updateOne(
+      { _id: ObjectId.createFromHexString(orchestraId) },
+      { $addToSet: { memberIds: studentId } }
+    )
+    
+    console.log('🔍 Update operation result:', {
+      acknowledged: updateResult.acknowledged,
+      matchedCount: updateResult.matchedCount,
+      modifiedCount: updateResult.modifiedCount,
+      upsertedCount: updateResult.upsertedCount
     })
+    
+    if (updateResult.matchedCount === 0) {
+      console.error('❌ Orchestra not found during update')
+      throw new Error(`Orchestra with id ${orchestraId} not found`)
+    }
+    
+    if (updateResult.acknowledged && updateResult.matchedCount > 0) {
+      console.log('✅ Database update operation completed successfully')
+      
+      // Now fetch the updated document to verify
+      const updatedOrchestra = await collection.findOne({ _id: ObjectId.createFromHexString(orchestraId) })
+      
+      console.log('🔍 Verification - Updated orchestra memberIds:', {
+        memberCount: updatedOrchestra.memberIds ? updatedOrchestra.memberIds.length : 0,
+        memberIds: updatedOrchestra.memberIds,
+        contains_new_student: updatedOrchestra.memberIds ? updatedOrchestra.memberIds.includes(studentId) : false
+      })
+      
+      if (!updatedOrchestra.memberIds.includes(studentId)) {
+        console.error('❌ CRITICAL: Student was not added to memberIds array despite successful update!')
+        console.error('Database state after update:', updatedOrchestra.memberIds)
+        console.error('Attempted to add studentId:', studentId)
+        throw new Error('Database inconsistency: Student not added to orchestra memberIds')
+      } else {
+        console.log('✅ Student successfully added to memberIds array - verification passed')
+      }
+    } else {
+      console.error('❌ Database update was not acknowledged')
+      throw new Error('Database update failed - operation not acknowledged')
+    }
     
     console.log('✅ Orchestra member list updated successfully')
     
@@ -577,6 +685,20 @@ async function getStudentAttendanceStats(orchestraId, studentId) {
 
 function _buildCriteria(filterBy) {
   const criteria = {}
+  console.log('🔍 orchestraService._buildCriteria called with filterBy:', JSON.stringify(filterBy))
+
+  // Handle batch fetching by IDs - highest priority
+  if (filterBy.ids) {
+    console.log('🎯 Found ids parameter:', filterBy.ids)
+    const idsArray = Array.isArray(filterBy.ids) ? filterBy.ids : filterBy.ids.split(',')
+    console.log('🎯 Parsed IDs array:', idsArray)
+    criteria._id = { 
+      $in: idsArray.map(id => ObjectId.createFromHexString(id.trim())) 
+    }
+    console.log('🎯 Built criteria with IDs:', JSON.stringify(criteria))
+    // When fetching by specific IDs, return all (active and inactive)
+    return criteria
+  }
 
   if (filterBy.name) {
     criteria.name = { $regex: filterBy.name, $options: 'i' }

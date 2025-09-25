@@ -2,11 +2,12 @@ import { theoryService } from './theory.service.js';
 import ConflictDetectionService from '../../services/conflictDetectionService.js';
 import { sendErrorResponse, sendSuccessResponse, formatConflictResponse } from '../../utils/errorResponses.js';
 import { isValidTimeFormat, isValidTimeRange } from '../../utils/timeUtils.js';
-import { 
-  validateTheoryBulkDeleteByDate, 
-  validateTheoryBulkDeleteByCategory, 
-  validateTheoryBulkDeleteByTeacher 
+import {
+  validateTheoryBulkDeleteByDate,
+  validateTheoryBulkDeleteByCategory,
+  validateTheoryBulkDeleteByTeacher
 } from './theory.validation.js';
+import { TheoryLessonValidationService } from '../../services/theoryLessonValidationService.js';
 
 export const theoryController = {
   getTheoryLessons,
@@ -37,13 +38,13 @@ async function getTheoryLessons(req, res, next) {
       roles: req.loggedinUser?.roles || req.teacher?.roles,
       schoolYear: req.schoolYear?._id
     });
-    
+
     // Check if schoolYearId was originally provided in the request
     const originalSchoolYearId = req.originalUrl.includes('schoolYearId') ? req.query.schoolYearId : null;
     console.log('🏫 Theory Controller: Original schoolYearId in request:', originalSchoolYearId);
-    
+
     const filterBy = {};
-    
+
     // Only add filters that have actual values
     if (req.query.category) filterBy.category = req.query.category;
     if (req.query.teacherId) filterBy.teacherId = req.query.teacherId;
@@ -52,20 +53,66 @@ async function getTheoryLessons(req, res, next) {
     if (req.query.toDate) filterBy.toDate = req.query.toDate;
     if (req.query.dayOfWeek !== undefined) filterBy.dayOfWeek = req.query.dayOfWeek;
     if (req.query.location) filterBy.location = req.query.location;
-    
+
     // Only apply school year filtering if explicitly provided by the client
     if (originalSchoolYearId) {
       filterBy.schoolYearId = originalSchoolYearId;
     }
-    
+
     console.log('🔧 Theory Controller: Built filter object:', JSON.stringify(filterBy, null, 2));
 
     const theoryLessons = await theoryService.getTheoryLessons(filterBy);
-    
-    console.log('📊 Theory Controller: Returning', theoryLessons.length, 'theory lessons');
-    res.json(theoryLessons);
+
+    // Validate and sanitize lesson data before sending to frontend
+    let validatedLessons = [];
+
+    if (theoryLessons && theoryLessons.length > 0) {
+      try {
+        validatedLessons = theoryLessons.map(lesson => {
+          try {
+            return TheoryLessonValidationService.sanitizeForResponse(lesson);
+          } catch (validationError) {
+            console.warn(`Skipping invalid lesson: ${validationError.message}`, lesson);
+            return null;
+          }
+        }).filter(lesson => lesson !== null);
+
+        console.log(`📊 Theory Controller: Validated ${validatedLessons.length} of ${theoryLessons.length} theory lessons`);
+      } catch (validationError) {
+        console.error('Error validating theory lessons:', validationError);
+        return sendErrorResponse(res, 'VALIDATION_ERROR', [{ message: 'Error processing theory lessons data' }]);
+      }
+    }
+
+    // If no lessons found, return appropriate message
+    if (validatedLessons.length === 0 && Object.keys(filterBy).length > 0) {
+      return res.status(200).json({
+        success: true,
+        data: [],
+        message: 'No theory lessons found matching the specified criteria',
+        filters: filterBy
+      });
+    }
+
+    console.log('📊 Theory Controller: Returning', validatedLessons.length, 'validated theory lessons');
+    res.json({
+      success: true,
+      data: validatedLessons,
+      count: validatedLessons.length,
+      filters: filterBy
+    });
   } catch (err) {
     console.error(`Error in getTheoryLessons controller: ${err.message}`);
+
+    // Enhanced error handling with specific messages
+    if (err.message.includes('database') || err.message.includes('connection')) {
+      return sendErrorResponse(res, 'DATABASE_ERROR', 'Unable to retrieve theory lessons due to database connectivity issues');
+    }
+
+    if (err.message.includes('filter') || err.message.includes('query')) {
+      return sendErrorResponse(res, 'INVALID_FILTER', 'Invalid filter parameters provided');
+    }
+
     next(err);
   }
 }
@@ -74,17 +121,75 @@ async function getTheoryLessonById(req, res, next) {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({ error: 'Theory lesson ID is required' });
+    if (!id || id === 'null' || id === 'undefined' || id === 'None') {
+      return res.status(400).json({
+        success: false,
+        error: 'Valid theory lesson ID is required',
+        toast: {
+          type: 'error',
+          message: 'No lesson selected. Please select a valid lesson to view details.',
+          title: 'No Lesson Selected',
+          duration: 3000,
+          position: 'bottom-left'
+        }
+      });
+    }
+
+    // Validate ID format
+    try {
+      TheoryLessonValidationService.validateId(id);
+    } catch (validationError) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid lesson ID format',
+        toast: {
+          type: 'error',
+          message: 'The lesson ID provided is not valid. Please try again.',
+          title: 'Invalid Lesson ID',
+          duration: 3000,
+          position: 'bottom-left'
+        }
+      });
     }
 
     const theoryLesson = await theoryService.getTheoryLessonById(id);
-    res.json(theoryLesson);
+
+    // Validate and sanitize the lesson data
+    const validatedLesson = TheoryLessonValidationService.sanitizeForResponse(theoryLesson);
+
+    res.json({
+      success: true,
+      data: validatedLesson
+    });
   } catch (err) {
     console.error(`Error in getTheoryLessonById controller: ${err.message}`);
 
     if (err.message.includes('not found')) {
-      return res.status(404).json({ error: err.message });
+      return res.status(404).json({
+        success: false,
+        error: 'Theory lesson not found',
+        toast: {
+          type: 'error',
+          message: 'The requested theory lesson could not be found. It may have been deleted or moved.',
+          title: 'Lesson Not Found',
+          duration: 5000,
+          position: 'bottom-left'
+        }
+      });
+    }
+
+    if (err.message.includes('validation') || err.message.includes('invalid')) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid lesson data',
+        toast: {
+          type: 'error',
+          message: 'The lesson data is incomplete or invalid. Please contact support if this problem persists.',
+          title: 'Data Error',
+          duration: 5000,
+          position: 'bottom-left'
+        }
+      });
     }
 
     next(err);
@@ -95,10 +200,35 @@ async function getTheoryLessonsByCategory(req, res, next) {
   try {
     const { category } = req.params;
 
-    if (!category) {
-      return res
-        .status(400)
-        .json({ error: 'Theory lesson category is required' });
+    if (!category || category === 'null' || category === 'undefined' || category === 'None') {
+      return res.status(400).json({
+        success: false,
+        error: 'Theory lesson category is required',
+        toast: {
+          type: 'error',
+          message: 'No lesson category selected. Please select a valid category to view lessons.',
+          title: 'No Category Selected',
+          duration: 3000,
+          position: 'bottom-left'
+        }
+      });
+    }
+
+    // Validate category
+    try {
+      TheoryLessonValidationService.validateCategory(category);
+    } catch (validationError) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid category format',
+        toast: {
+          type: 'error',
+          message: 'The lesson category provided is not valid. Please select a different category.',
+          title: 'Invalid Category',
+          duration: 3000,
+          position: 'bottom-left'
+        }
+      });
     }
 
     const filterBy = {
@@ -115,11 +245,48 @@ async function getTheoryLessonsByCategory(req, res, next) {
       category,
       filterBy
     );
-    res.json(theoryLessons);
+
+    // Validate and sanitize lesson data
+    let validatedLessons = [];
+    if (theoryLessons && theoryLessons.length > 0) {
+      validatedLessons = theoryLessons.map(lesson => {
+        try {
+          return TheoryLessonValidationService.sanitizeForResponse(lesson);
+        } catch (validationError) {
+          console.warn(`Skipping invalid lesson in category ${category}:`, validationError.message);
+          return null;
+        }
+      }).filter(lesson => lesson !== null);
+    }
+
+    res.json({
+      success: true,
+      data: validatedLessons,
+      count: validatedLessons.length,
+      category: category,
+      filters: filterBy
+    });
   } catch (err) {
     console.error(
       `Error in getTheoryLessonsByCategory controller: ${err.message}`
     );
+
+    if (err.message.includes('not found') || err.message.includes('No lessons found')) {
+      return res.status(200).json({
+        success: true,
+        data: [],
+        message: `No theory lessons found for category: ${req.params.category}`,
+        category: req.params.category,
+        toast: {
+          type: 'info',
+          message: `No lessons found for the selected category.`,
+          title: 'No Lessons Found',
+          duration: 3000,
+          position: 'bottom-left'
+        }
+      });
+    }
+
     next(err);
   }
 }

@@ -1,29 +1,37 @@
 import express from 'express';
 import { theoryController } from './theory.controller.js';
 import { requireAuth } from '../../middleware/auth.middleware.js';
-import { 
-  validateBulkCreate, 
-  validateSingleCreate, 
+import {
+  validateBulkCreate,
+  validateSingleCreate,
   validateUpdate,
-  validateObjectId 
+  validateObjectId
 } from '../../middleware/theoryValidation.js';
-import { 
-  validateLessonDate, 
-  validateBulkLessonDates, 
-  validateAttendanceDate 
+import {
+  validateLessonDate,
+  validateBulkLessonDates,
+  validateAttendanceDate
 } from '../../middleware/dateValidation.js';
-import { 
-  formatLessonResponse, 
-  formatAttendanceResponse 
+import {
+  formatLessonResponse,
+  formatAttendanceResponse
 } from '../../middleware/responseFormatterMiddleware.js';
-import { 
-  monitorLessonOperations, 
-  monitorBulkOperations, 
+import {
+  monitorLessonOperations,
+  monitorBulkOperations,
   monitorAttendanceOperations,
-  monitorValidationErrors 
+  monitorValidationErrors
 } from '../../middleware/dateMonitoringMiddleware.js';
+import {
+  addToastHelpers,
+  errorWithToast,
+  theoryLessonErrorHandler
+} from '../../middleware/toastNotificationMiddleware.js';
 
 const router = express.Router();
+
+// Add toast helpers to all routes
+router.use(addToastHelpers);
 
 // GET routes - All authenticated users can view theory lessons
 router.get('/', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל', 'מורה תאוריה']), formatLessonResponse(), theoryController.getTheoryLessons);
@@ -48,5 +56,9 @@ router.delete('/bulk-delete-by-category/:category', requireAuth(['מנהל', 'מ
 router.delete('/bulk-delete-by-teacher/:teacherId', requireAuth(['מנהל', 'מורה תאוריה', 'מורה']), validateObjectId('teacherId'), theoryController.bulkDeleteTheoryLessonsByTeacher);
 router.delete('/:id', requireAuth(['מנהל', 'מורה תאוריה']), validateObjectId('id'), theoryController.removeTheoryLesson);
 router.delete('/:id/student/:studentId', requireAuth(['מנהל', 'מורה תאוריה']), validateObjectId('id'), validateObjectId('studentId'), theoryController.removeStudentFromTheory);
+
+// Error handling middleware - must be last
+router.use(theoryLessonErrorHandler);
+router.use(errorWithToast);
 
 export default router;

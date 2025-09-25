@@ -110,6 +110,7 @@ const teacherAssignmentSchema = Joi.object({
       'any.required': 'משך השיעור הוא שדה חובה',
       'any.only': 'משך השיעור חייב להיות אחד מהערכים הבאים: ' + VALID_DURATIONS.join(', '),
     }),
+  location: Joi.string().allow('', null).default(null),
   // Optional fields for extended functionality
   startDate: Joi.date().default(() => new Date()),
   endDate: Joi.date().allow(null).default(null),

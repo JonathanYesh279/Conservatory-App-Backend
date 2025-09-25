@@ -4,7 +4,7 @@
  * for cascade deletion operations in conservatory system
  */
 
-import { getDB } from './mongoDB.service.js';
+import { getDB, getClient, withTransaction } from './mongoDB.service.js';
 import { cascadeDeletionService } from './cascadeDeletion.service.js';
 import { ObjectId } from 'mongodb';
 import { EventEmitter } from 'events';
@@ -400,26 +400,57 @@ class CascadeJobProcessor extends EventEmitter {
 
     try {
       if (fieldPath.includes('.')) {
-        // Handle nested fields like 'attendance.studentId'
-        const [arrayField, nestedField] = fieldPath.split('.');
+        const [parentField, childField] = fieldPath.split('.');
         
-        const docs = await db.collection(collectionName)
-          .find({ [arrayField]: { $exists: true, $ne: [] } })
-          .toArray();
+        // Special case for teaching.studentIds - it's an object with an array property
+        if (parentField === 'teaching' && childField === 'studentIds') {
+          const docs = await db.collection(collectionName)
+            .find({ 'teaching.studentIds': { $exists: true, $ne: [] } })
+            .toArray();
 
-        for (const doc of docs) {
-          const arrayData = doc[arrayField] || [];
-          for (const item of arrayData) {
-            if (item[nestedField]) {
-              const studentExists = await db.collection('student')
-                .findOne({ _id: new ObjectId(item[nestedField]), isActive: true });
-              
-              if (!studentExists) {
-                orphans.push({
-                  documentId: doc._id,
-                  orphanedId: item[nestedField],
-                  fieldPath
-                });
+          for (const doc of docs) {
+            const studentIds = doc.teaching?.studentIds || [];
+            // Ensure it's an array before iterating
+            if (Array.isArray(studentIds)) {
+              for (const studentId of studentIds) {
+                if (studentId) {
+                  const studentExists = await db.collection('student')
+                    .findOne({ _id: new ObjectId(studentId), isActive: true });
+                  
+                  if (!studentExists) {
+                    orphans.push({
+                      documentId: doc._id,
+                      orphanedId: studentId,
+                      fieldPath
+                    });
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          // Handle nested fields like 'attendance.studentId' where attendance is an array
+          const docs = await db.collection(collectionName)
+            .find({ [parentField]: { $exists: true, $ne: [] } })
+            .toArray();
+
+          for (const doc of docs) {
+            const arrayData = doc[parentField] || [];
+            // Ensure it's an array before iterating
+            if (Array.isArray(arrayData)) {
+              for (const item of arrayData) {
+                if (item && item[childField]) {
+                  const studentExists = await db.collection('student')
+                    .findOne({ _id: new ObjectId(item[childField]), isActive: true });
+                  
+                  if (!studentExists) {
+                    orphans.push({
+                      documentId: doc._id,
+                      orphanedId: item[childField],
+                      fieldPath
+                    });
+                  }
+                }
               }
             }
           }
@@ -489,24 +520,36 @@ class CascadeJobProcessor extends EventEmitter {
     const db = getDB();
     let cleaned = 0;
 
-    const session = db.startSession();
     try {
-      await session.withTransaction(async () => {
+      cleaned = await withTransaction(async (session) => {
+        let transactionCleaned = 0;
         for (const orphan of orphans) {
           if (fieldPath.includes('.')) {
-            // Handle nested array fields
-            const [arrayField, nestedField] = fieldPath.split('.');
+            const [parentField, childField] = fieldPath.split('.');
             
-            await db.collection(collectionName).updateOne(
-              { _id: orphan.documentId },
-              {
-                $pull: {
-                  [arrayField]: { [nestedField]: orphan.orphanedId }
+            // Special case for teaching.studentIds
+            if (parentField === 'teaching' && childField === 'studentIds') {
+              await db.collection(collectionName).updateOne(
+                { _id: orphan.documentId },
+                {
+                  $pull: { 'teaching.studentIds': orphan.orphanedId },
+                  $set: { 'cascadeMetadata.lastOrphanCleanup': new Date() }
                 },
-                $set: { 'cascadeMetadata.lastOrphanCleanup': new Date() }
-              },
-              { session }
-            );
+                { session }
+              );
+            } else {
+              // Handle nested array fields like attendance.studentId
+              await db.collection(collectionName).updateOne(
+                { _id: orphan.documentId },
+                {
+                  $pull: {
+                    [parentField]: { [childField]: orphan.orphanedId }
+                  },
+                  $set: { 'cascadeMetadata.lastOrphanCleanup': new Date() }
+                },
+                { session }
+              );
+            }
           } else {
             // Handle direct reference arrays
             await db.collection(collectionName).updateOne(
@@ -518,14 +561,13 @@ class CascadeJobProcessor extends EventEmitter {
               { session }
             );
           }
-          cleaned++;
+          transactionCleaned++;
         }
+        return transactionCleaned;
       });
     } catch (error) {
       console.error(`Error cleaning orphans in ${collectionName}.${fieldPath}:`, error);
       throw error;
-    } finally {
-      await session.endSession();
     }
 
     return cleaned;

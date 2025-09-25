@@ -23,11 +23,13 @@ import rehearsalRoutes from './api/rehearsal/rehearsal.route.js';
 import bagrutRoutes from './api/bagrut/bagrut.route.js';
 import scheduleRoutes from './api/schedule/schedule.route.js';
 import attendanceRoutes from './api/schedule/attendance.routes.js';
+import timeBlockRoutes from './api/schedule/time-block.route.js';
 import analyticsRoutes from './api/analytics/attendance.routes.js';
 import adminValidationRoutes from './api/admin/consistency-validation.route.js';
 import dateMonitoringRoutes from './api/admin/date-monitoring.route.js';
 import pastActivitiesRoutes from './api/admin/past-activities.route.js';
 import cascadeDeletionRoutes from './api/admin/cascade-deletion.routes.js';
+import cleanupRoutes from './api/admin/cleanup.route.js';
 import lessonRoutes from './api/lesson/lesson.route.js';
 import { invitationController } from './api/teacher/invitation.controller.js';
 import { cascadeSystemInitializer } from './services/cascadeSystemInitializer.js';
@@ -43,7 +45,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGODB_URI;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 const corsOptions = {
@@ -136,6 +138,12 @@ app.use(
   scheduleRoutes
 );
 app.use(
+  '/api',
+  authenticateToken,
+  addSchoolYearToRequest,
+  timeBlockRoutes
+);
+app.use(
   '/api/attendance',
   authenticateToken,
   addSchoolYearToRequest,
@@ -166,6 +174,11 @@ app.use(
   '/api/admin',
   authenticateToken,
   cascadeDeletionRoutes
+);
+app.use(
+  '/api/admin/cleanup',
+  authenticateToken,
+  cleanupRoutes
 );
 app.use('/api/files', authenticateToken, fileRoutes);
 app.use(
@@ -268,7 +281,7 @@ const startServer = async () => {
     try {
       console.log('🔌 Initializing WebSocket and Cascade System...');
       await cascadeSystemInitializer.initialize(server);
-      console.log('✅ WebSocket and Cascade System initialized successfully');
+      console.log('✅ Server started with Cascade System and WebSocket enabled');
     } catch (error) {
       console.error('❌ Failed to initialize WebSocket/Cascade system:', error);
       // Don't crash the server - continue without WebSocket
@@ -346,3 +359,4 @@ console.log('🚀 Starting server initialization...');
     process.exit(1);
   }
 })();
+

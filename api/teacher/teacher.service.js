@@ -1,4 +1,4 @@
-import { getCollection } from '../../services/mongoDB.service.js';
+import { getCollection, withTransaction } from '../../services/mongoDB.service.js';
 import {
   validateTeacher,
   validateTeacherUpdate,
@@ -664,46 +664,200 @@ async function addStudentToTeacher(teacherId, studentId) {
 
 async function removeStudentFromTeacher(teacherId, studentId) {
   try {
-    const teacherCollection = await getCollection('teacher');
-    const studentCollection = await getCollection('student');
+    console.log(`🔥 ATOMIC CASCADE DELETION: Starting removal of student ${studentId} from teacher ${teacherId}`);
     
-    // Remove all schedule slots for this student from this teacher
-    await teacherCollection.updateOne(
-      { _id: ObjectId.createFromHexString(teacherId) },
-      { 
-        $pull: { 
-          'teaching.studentIds': studentId,
-          'teaching.schedule': { studentId: studentId }
+    // Validate input parameters
+    if (!teacherId || !ObjectId.isValid(teacherId)) {
+      throw new Error(`Invalid teacher ID format: ${teacherId}`);
+    }
+    
+    if (!studentId || !ObjectId.isValid(studentId)) {
+      throw new Error(`Invalid student ID format: ${studentId}`);
+    }
+
+    const result = await withTransaction(async (session) => {
+      const teacherCollection = await getCollection('teacher');
+      const studentCollection = await getCollection('student');
+      
+      // First, verify both documents exist
+      const teacher = await teacherCollection.findOne(
+        { _id: ObjectId.createFromHexString(teacherId) },
+        { session }
+      );
+      
+      if (!teacher) {
+        throw new Error(`Teacher with id ${teacherId} not found`);
+      }
+      
+      const student = await studentCollection.findOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        { session }
+      );
+      
+      if (!student) {
+        throw new Error(`Student with id ${studentId} not found`);
+      }
+      
+      // Log current state for debugging
+      console.log(`📊 Current teacher studentIds: ${teacher.teaching?.studentIds || []}`);
+      console.log(`📊 Current student teacherIds: ${student.teacherIds || []}`);
+      console.log(`📊 Current student teacherAssignments: ${student.teacherAssignments?.length || 0}`);
+      
+      // Check if relationship exists
+      const hasTeacherRelation = teacher.teaching?.studentIds?.includes(studentId);
+      const hasStudentRelation = student.teacherIds?.includes(teacherId);
+      const hasActiveAssignments = student.teacherAssignments?.some(
+        assignment => assignment.teacherId === teacherId && assignment.isActive
+      );
+      
+      if (!hasTeacherRelation && !hasStudentRelation && !hasActiveAssignments) {
+        console.log(`⚠️ No relationship found between teacher ${teacherId} and student ${studentId}`);
+        return {
+          success: true,
+          message: 'No relationship found to remove',
+          teacherId,
+          studentId,
+          changes: {
+            teacher: { modified: false },
+            student: { modified: false }
+          }
+        };
+      }
+      
+      console.log(`🔍 Found relationship - Teacher: ${hasTeacherRelation}, Student: ${hasStudentRelation}, Assignments: ${hasActiveAssignments}`);
+      
+      // ATOMIC OPERATION 1: Update teacher document
+      const teacherUpdate = await teacherCollection.updateOne(
+        { _id: ObjectId.createFromHexString(teacherId) },
+        { 
+          $pull: { 
+            'teaching.studentIds': studentId,
+            'teaching.schedule': { studentId: studentId },
+            'teaching.timeBlocks': { studentId: studentId }
+          },
+          $set: { 
+            updatedAt: new Date(),
+            'metadata.lastModifiedBy': 'cascade_deletion_system'
+          }
         },
-        $set: { updatedAt: new Date() }
-      }
-    );
-    
-    // Mark all teacher assignments as inactive and remove from teacherIds
-    await studentCollection.updateOne(
-      { _id: ObjectId.createFromHexString(studentId) },
-      { 
-        $pull: { teacherIds: teacherId },
-        $set: { 
-          'teacherAssignments.$[elem].isActive': false,
-          'teacherAssignments.$[elem].endDate': new Date(),
-          updatedAt: new Date()
+        { session }
+      );
+      
+      console.log(`📝 Teacher update result: matched ${teacherUpdate.matchedCount}, modified ${teacherUpdate.modifiedCount}`);
+      
+      // ATOMIC OPERATION 2: Update student document - remove teacher relationship and assignments
+      const studentUpdate = await studentCollection.updateOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        { 
+          $pull: { 
+            teacherIds: teacherId 
+          },
+          $set: { 
+            'teacherAssignments.$[elem].isActive': false,
+            'teacherAssignments.$[elem].endDate': new Date(),
+            'teacherAssignments.$[elem].updatedAt': new Date(),
+            updatedAt: new Date(),
+            'metadata.lastModifiedBy': 'cascade_deletion_system'
+          }
+        },
+        {
+          arrayFilters: [{ 'elem.teacherId': teacherId, 'elem.isActive': true }],
+          session
         }
-      },
-      {
-        arrayFilters: [{ 'elem.teacherId': teacherId, 'elem.isActive': true }]
-      }
-    );
+      );
+      
+      console.log(`📝 Student update result: matched ${studentUpdate.matchedCount}, modified ${studentUpdate.modifiedCount}`);
+      
+      // ATOMIC OPERATION 3: Clean up orphaned schedule info in student document
+      const scheduleCleanup = await studentCollection.updateOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        {
+          $pull: {
+            'scheduleInfo.lessonSchedule': { teacherId: teacherId },
+            'scheduleInfo.weeklySchedule': { teacherId: teacherId }
+          },
+          $set: {
+            'scheduleInfo.lastUpdated': new Date()
+          }
+        },
+        { session }
+      );
+      
+      console.log(`📝 Schedule cleanup result: matched ${scheduleCleanup.matchedCount}, modified ${scheduleCleanup.modifiedCount}`);
+      
+      // Get updated documents to return
+      const updatedTeacher = await teacherCollection.findOne(
+        { _id: ObjectId.createFromHexString(teacherId) },
+        { 
+          projection: { 
+            'teaching.studentIds': 1, 
+            'teaching.schedule': 1,
+            updatedAt: 1 
+          },
+          session 
+        }
+      );
+      
+      const updatedStudent = await studentCollection.findOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        { 
+          projection: { 
+            teacherIds: 1, 
+            teacherAssignments: 1,
+            scheduleInfo: 1,
+            updatedAt: 1 
+          },
+          session 
+        }
+      );
+      
+      return {
+        success: true,
+        message: 'Student removed from teacher successfully with atomic cascade deletion',
+        teacherId,
+        studentId,
+        changes: {
+          teacher: {
+            modified: teacherUpdate.modifiedCount > 0,
+            studentsRemoved: hasTeacherRelation ? 1 : 0,
+            currentStudentIds: updatedTeacher?.teaching?.studentIds || []
+          },
+          student: {
+            modified: studentUpdate.modifiedCount > 0 || scheduleCleanup.modifiedCount > 0,
+            teachersRemoved: hasStudentRelation ? 1 : 0,
+            assignmentsDeactivated: hasActiveAssignments ? 1 : 0,
+            currentTeacherIds: updatedStudent?.teacherIds || [],
+            remainingActiveAssignments: updatedStudent?.teacherAssignments?.filter(a => a.isActive)?.length || 0
+          }
+        },
+        timestamp: new Date(),
+        operation: 'cascade_deletion'
+      };
+    });
     
-    return {
-      success: true,
-      message: 'Student removed from teacher successfully',
-      teacherId,
-      studentId
-    };
+    console.log(`✅ ATOMIC CASCADE DELETION COMPLETED: ${JSON.stringify(result.changes, null, 2)}`);
+    return result;
+    
   } catch (err) {
-    console.error(`Error removing student from teacher: ${err.message}`);
-    throw new Error(`Error removing student from teacher: ${err.message}`);
+    console.error(`❌ ATOMIC CASCADE DELETION FAILED: ${err.message}`);
+    console.error(`📊 Error details:`, {
+      teacherId,
+      studentId,
+      error: err.message,
+      stack: err.stack
+    });
+    
+    // Provide specific error messages for different failure scenarios
+    if (err.message.includes('not found')) {
+      throw new Error(`Cascade deletion failed: ${err.message}`);
+    }
+    
+    if (err.message.includes('Invalid') && err.message.includes('ID format')) {
+      throw new Error(`Cascade deletion failed: ${err.message}`);
+    }
+    
+    // Transaction was automatically rolled back by MongoDB
+    throw new Error(`Cascade deletion failed - all changes have been rolled back: ${err.message}`);
   }
 }
 

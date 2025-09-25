@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cascade Deletion System Health Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .status-healthy { color: #10b981; }
+        .status-degraded { color: #f59e0b; }
+        .status-unhealthy { color: #ef4444; }
+        .status-maintenance { color: #6b7280; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                Cascade Deletion System Health
+            </h1>
+            <p class="text-gray-600">
+                Real-time health monitoring for the conservatory cascade deletion system
+            </p>
+        </div>
+
+        <div id="loading" class="text-center py-8">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p class="mt-2 text-gray-600">Loading health status...</p>
+        </div>
+
+        <div id="health-dashboard" class="hidden">
+            <!-- Overall Status Card -->
+            <div id="overall-status" class="mb-8 p-6 bg-white rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold">Overall System Status</h2>
+                        <p id="overall-status-text" class="text-2xl font-bold mt-2"></p>
+                    </div>
+                    <div id="overall-status-icon" class="text-4xl"></div>
+                </div>
+                <div id="system-metadata" class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                    <div>Environment: <span id="environment" class="font-medium"></span></div>
+                    <div>Version: <span id="version" class="font-medium"></span></div>
+                    <div>Uptime: <span id="uptime" class="font-medium"></span></div>
+                    <div>Last Updated: <span id="last-updated" class="font-medium"></span></div>
+                </div>
+            </div>
+
+            <!-- Services Status Grid -->
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Service cards will be dynamically added here -->
+            </div>
+
+            <!-- Health Check Actions -->
+            <div class="mb-8 p-6 bg-white rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="refreshHealth()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        Refresh Status
+                    </button>
+                    <button onclick="runDiagnostics()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                        Run Diagnostics
+                    </button>
+                    <button onclick="exportHealthReport()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                        Export Report
+                    </button>
+                    <button onclick="toggleAutoRefresh()" id="auto-refresh-btn" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+                        Enable Auto-Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Health History -->
+            <div class="p-6 bg-white rounded-lg shadow">
+                <h3 class="text-lg font-semibold mb-4">Health History</h3>
+                <div id="health-history" class="space-y-2 max-h-64 overflow-y-auto">
+                    <!-- History entries will be added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        <div id="error-display" class="hidden p-6 bg-red-50 border border-red-200 rounded-lg">
+            <h3 class="text-lg font-semibold text-red-800 mb-2">Error Loading Health Status</h3>
+            <p id="error-message" class="text-red-700"></p>
+            <button onclick="refreshHealth()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                Try Again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let autoRefreshInterval = null;
+        let healthHistory = [];
+
+        async function loadHealthStatus() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('health-dashboard').classList.add('hidden');
+            document.getElementById('error-display').classList.add('hidden');
+
+            try {
+                // Try to load health from the app's health check service
+                let healthData;
+                
+                if (window.parent && window.parent.healthCheck) {
+                    healthData = await window.parent.healthCheck.system();
+                } else {
+                    // Fallback to API endpoint
+                    const response = await fetch('/api/health/cascade-deletion');
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    healthData = await response.json();
+                }
+
+                displayHealthStatus(healthData);
+                addToHistory(healthData);
+
+            } catch (error) {
+                console.error('Health check failed:', error);
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('error-display').classList.remove('hidden');
+                document.getElementById('error-message').textContent = error.message;
+            }
+        }
+
+        function displayHealthStatus(health) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('health-dashboard').classList.remove('hidden');
+
+            // Overall status
+            const overallStatus = document.getElementById('overall-status-text');
+            const overallIcon = document.getElementById('overall-status-icon');
+            
+            overallStatus.textContent = health.overall.toUpperCase();
+            overallStatus.className = `text-2xl font-bold mt-2 status-${health.overall}`;
+            
+            const icons = {
+                healthy: '✅',
+                degraded: '⚠️',
+                unhealthy: '❌',
+                maintenance: '🔧'
+            };
+            overallIcon.textContent = icons[health.overall] || '❓';
+
+            // Metadata
+            document.getElementById('environment').textContent = health.metadata.environment;
+            document.getElementById('version').textContent = health.metadata.version;
+            document.getElementById('uptime').textContent = formatUptime(health.metadata.uptime);
+            document.getElementById('last-updated').textContent = new Date(health.metadata.timestamp).toLocaleString();
+
+            // Services
+            const servicesGrid = document.getElementById('services-grid');
+            servicesGrid.innerHTML = '';
+            
+            health.services.forEach(service => {
+                const serviceCard = createServiceCard(service);
+                servicesGrid.appendChild(serviceCard);
+            });
+        }
+
+        function createServiceCard(service) {
+            const card = document.createElement('div');
+            card.className = 'bg-white p-4 rounded-lg shadow border-l-4 border-l-gray-300';
+            
+            // Set border color based on status
+            const borderColors = {
+                healthy: 'border-l-green-500',
+                degraded: 'border-l-yellow-500',
+                unhealthy: 'border-l-red-500',
+                maintenance: 'border-l-gray-500'
+            };
+            card.className += ' ' + borderColors[service.status];
+
+            const statusIcons = {
+                healthy: '✅',
+                degraded: '⚠️',
+                unhealthy: '❌',
+                maintenance: '🔧'
+            };
+
+            card.innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <h4 class="font-semibold text-gray-900 capitalize">
+                        ${service.service.replace(/[-_]/g, ' ')}
+                    </h4>
+                    <span class="text-lg">${statusIcons[service.status]}</span>
+                </div>
+                <p class="status-${service.status} font-medium mb-2">
+                    ${service.status.toUpperCase()}
+                </p>
+                ${service.responseTime ? `<p class="text-sm text-gray-600">Response: ${service.responseTime.toFixed(2)}ms</p>` : ''}
+                ${service.version ? `<p class="text-sm text-gray-600">Version: ${service.version}</p>` : ''}
+                <div class="mt-3">
+                    <button onclick="showServiceDetails('${service.service}')" class="text-blue-600 text-sm hover:underline">
+                        View Details
+                    </button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function formatUptime(ms) {
+            const seconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (days > 0) return `${days}d ${hours % 24}h ${minutes % 60}m`;
+            if (hours > 0) return `${hours}h ${minutes % 60}m`;
+            if (minutes > 0) return `${minutes}m ${seconds % 60}s`;
+            return `${seconds}s`;
+        }
+
+        function addToHistory(health) {
+            healthHistory.unshift({
+                timestamp: new Date().toISOString(),
+                status: health.overall,
+                services: health.services.map(s => ({ service: s.service, status: s.status }))
+            });
+            
+            // Keep only last 10 entries
+            healthHistory = healthHistory.slice(0, 10);
+            
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyContainer = document.getElementById('health-history');
+            historyContainer.innerHTML = healthHistory.map(entry => {
+                const time = new Date(entry.timestamp).toLocaleTimeString();
+                const unhealthyServices = entry.services.filter(s => s.status === 'unhealthy').length;
+                const degradedServices = entry.services.filter(s => s.status === 'degraded').length;
+                
+                return `
+                    <div class="flex items-center justify-between p-2 bg-gray-50 rounded text-sm">
+                        <div class="flex items-center">
+                            <span class="status-${entry.status} font-medium mr-2">${entry.status.toUpperCase()}</span>
+                            <span class="text-gray-600">${time}</span>
+                        </div>
+                        <div class="text-gray-600">
+                            ${unhealthyServices > 0 ? `${unhealthyServices} unhealthy, ` : ''}
+                            ${degradedServices > 0 ? `${degradedServices} degraded` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showServiceDetails(serviceName) {
+            // This would open a modal or navigate to detailed service view
+            alert(`Detailed view for ${serviceName} service would open here`);
+        }
+
+        async function refreshHealth() {
+            await loadHealthStatus();
+        }
+
+        async function runDiagnostics() {
+            alert('Running comprehensive diagnostics...\nThis would perform deeper health checks and report detailed findings.');
+        }
+
+        function exportHealthReport() {
+            const report = {
+                exportedAt: new Date().toISOString(),
+                healthHistory: healthHistory,
+                systemInfo: {
+                    userAgent: navigator.userAgent,
+                    url: window.location.href
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cascade-deletion-health-report-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function toggleAutoRefresh() {
+            const btn = document.getElementById('auto-refresh-btn');
+            
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+                btn.textContent = 'Enable Auto-Refresh';
+                btn.className = btn.className.replace('bg-red-600 hover:bg-red-700', 'bg-gray-600 hover:bg-gray-700');
+            } else {
+                autoRefreshInterval = setInterval(loadHealthStatus, 30000); // 30 seconds
+                btn.textContent = 'Disable Auto-Refresh';
+                btn.className = btn.className.replace('bg-gray-600 hover:bg-gray-700', 'bg-red-600 hover:bg-red-700');
+            }
+        }
+
+        // Load initial health status
+        loadHealthStatus();
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>
