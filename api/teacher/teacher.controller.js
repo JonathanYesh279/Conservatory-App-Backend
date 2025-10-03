@@ -22,6 +22,11 @@ export const teacherController = {
   getTeacherLessonStats,
   getTeacherStudentsWithLessons,
   validateTeacherLessonData,
+  // Time block management
+  getTimeBlocks,
+  createTimeBlock,
+  updateTimeBlock,
+  deleteTimeBlock,
 }
 
 async function getTeachers(req, res, next) {
@@ -622,7 +627,128 @@ async function removeStudentFromTeacher(req, res, next) {
 
   } catch (err) {
     console.error(`❌ Error removing student from teacher: ${err.message}`);
-    
+
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: err.message,
+        code: 'RESOURCE_NOT_FOUND'
+      });
+    }
+
+    next(err);
+  }
+}
+
+// Time Block Management Controllers
+async function getTimeBlocks(req, res, next) {
+  try {
+    const { teacherId } = req.params;
+    const timeBlocks = await teacherService.getTimeBlocks(teacherId);
+
+    res.json({
+      success: true,
+      data: timeBlocks
+    });
+  } catch (err) {
+    console.error(`Error getting time blocks: ${err.message}`);
+
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: err.message,
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+
+    next(err);
+  }
+}
+
+async function createTimeBlock(req, res, next) {
+  try {
+    const { teacherId } = req.params;
+    const timeBlockData = req.body;
+
+    const timeBlock = await teacherService.createTimeBlock(teacherId, timeBlockData);
+
+    res.status(201).json({
+      success: true,
+      data: timeBlock,
+      message: 'Time block created successfully'
+    });
+  } catch (err) {
+    console.error(`Error creating time block: ${err.message}`);
+
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: err.message,
+        code: 'TEACHER_NOT_FOUND'
+      });
+    }
+
+    if (err.message.includes('validation')) {
+      return res.status(400).json({
+        success: false,
+        error: err.message,
+        code: 'VALIDATION_ERROR'
+      });
+    }
+
+    next(err);
+  }
+}
+
+async function updateTimeBlock(req, res, next) {
+  try {
+    const { teacherId, timeBlockId } = req.params;
+    const timeBlockData = req.body;
+
+    const result = await teacherService.updateTimeBlock(teacherId, timeBlockId, timeBlockData);
+
+    res.json({
+      success: true,
+      data: result,
+      message: 'Time block updated successfully'
+    });
+  } catch (err) {
+    console.error(`Error updating time block: ${err.message}`);
+
+    if (err.message.includes('not found')) {
+      return res.status(404).json({
+        success: false,
+        error: err.message,
+        code: 'RESOURCE_NOT_FOUND'
+      });
+    }
+
+    if (err.message.includes('validation')) {
+      return res.status(400).json({
+        success: false,
+        error: err.message,
+        code: 'VALIDATION_ERROR'
+      });
+    }
+
+    next(err);
+  }
+}
+
+async function deleteTimeBlock(req, res, next) {
+  try {
+    const { teacherId, timeBlockId } = req.params;
+
+    const result = await teacherService.deleteTimeBlock(teacherId, timeBlockId);
+
+    res.json({
+      success: true,
+      data: result,
+      message: 'Time block deleted successfully'
+    });
+  } catch (err) {
+    console.error(`Error deleting time block: ${err.message}`);
+
     if (err.message.includes('not found')) {
       return res.status(404).json({
         success: false,

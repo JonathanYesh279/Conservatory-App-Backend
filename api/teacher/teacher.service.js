@@ -22,6 +22,10 @@ export const teacherService = {
   addStudentToTeacher,
   removeStudentFromTeacher,
   initializeTeachingStructure,
+  createTimeBlock,
+  updateTimeBlock,
+  deleteTimeBlock,
+  getTimeBlocks,
 };
 
 async function getTeachers(filterBy) {
@@ -919,4 +923,191 @@ function _buildCriteria(filterBy) {
   }
 
   return criteria;
+}
+
+// Time Block Management Functions
+async function getTimeBlocks(teacherId) {
+  try {
+    const collection = await getCollection('teacher');
+    const teacher = await collection.findOne({
+      _id: ObjectId.createFromHexString(teacherId)
+    });
+
+    if (!teacher) {
+      throw new Error(`Teacher with id ${teacherId} not found`);
+    }
+
+    // Return timeBlocks if they exist, otherwise fall back to schedule
+    return teacher.teaching?.timeBlocks || teacher.teaching?.schedule || [];
+  } catch (err) {
+    console.error(`Error getting time blocks: ${err.message}`);
+    throw err;
+  }
+}
+
+async function createTimeBlock(teacherId, timeBlockData) {
+  try {
+    const collection = await getCollection('teacher');
+
+    // Verify teacher exists
+    const teacher = await collection.findOne({
+      _id: ObjectId.createFromHexString(teacherId)
+    });
+
+    if (!teacher) {
+      throw new Error(`Teacher with id ${teacherId} not found`);
+    }
+
+    // Calculate end time if not provided
+    const endTime = timeBlockData.endTime || calculateEndTime(
+      timeBlockData.startTime,
+      calculateDurationFromTimes(timeBlockData.startTime, timeBlockData.endTime || '23:59')
+    );
+
+    // Create new time block
+    const newTimeBlock = {
+      _id: new ObjectId(),
+      day: timeBlockData.day,
+      startTime: timeBlockData.startTime,
+      endTime: endTime,
+      location: timeBlockData.location || null,
+      notes: timeBlockData.notes || null,
+      recurring: timeBlockData.recurring || {
+        isRecurring: true,
+        excludeDates: []
+      },
+      studentId: timeBlockData.studentId || null,
+      studentName: timeBlockData.studentName || null,
+      instrument: timeBlockData.instrument || null,
+      totalDuration: timeBlockData.totalDuration || calculateDurationFromTimes(timeBlockData.startTime, endTime),
+      isAvailable: !timeBlockData.studentId, // Available if no student assigned
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    // Add time block to teacher's timeBlocks array
+    const result = await collection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      {
+        $push: { 'teaching.timeBlocks': newTimeBlock },
+        $set: { updatedAt: new Date() }
+      }
+    );
+
+    if (result.modifiedCount === 0) {
+      throw new Error('Failed to create time block');
+    }
+
+    return newTimeBlock;
+  } catch (err) {
+    console.error(`Error creating time block: ${err.message}`);
+    throw err;
+  }
+}
+
+async function updateTimeBlock(teacherId, timeBlockId, timeBlockData) {
+  try {
+    const collection = await getCollection('teacher');
+
+    // Verify teacher exists
+    const teacher = await collection.findOne({
+      _id: ObjectId.createFromHexString(teacherId)
+    });
+
+    if (!teacher) {
+      throw new Error(`Teacher with id ${teacherId} not found`);
+    }
+
+    // Find the time block to update (check both timeBlocks and schedule)
+    const timeBlocks = teacher.teaching?.timeBlocks || teacher.teaching?.schedule || [];
+    const timeBlock = timeBlocks.find(
+      block => block._id && block._id.toString() === timeBlockId
+    );
+
+    if (!timeBlock) {
+      throw new Error(`Time block with id ${timeBlockId} not found`);
+    }
+
+    // Determine which field to update
+    const fieldToUpdate = teacher.teaching?.timeBlocks ? 'teaching.timeBlocks' : 'teaching.schedule';
+
+    // Calculate end time if not provided
+    const endTime = timeBlockData.endTime || calculateEndTime(
+      timeBlockData.startTime,
+      timeBlockData.duration || calculateDurationFromTimes(timeBlockData.startTime, timeBlock.endTime)
+    );
+
+    // Prepare update fields dynamically based on the field to update
+    const updateFields = {
+      [`${fieldToUpdate}.$.day`]: timeBlockData.day || timeBlock.day,
+      [`${fieldToUpdate}.$.startTime`]: timeBlockData.startTime || timeBlock.startTime,
+      [`${fieldToUpdate}.$.endTime`]: endTime,
+      [`${fieldToUpdate}.$.location`]: timeBlockData.location !== undefined ? timeBlockData.location : timeBlock.location,
+      [`${fieldToUpdate}.$.notes`]: timeBlockData.notes !== undefined ? timeBlockData.notes : timeBlock.notes,
+      [`${fieldToUpdate}.$.recurring`]: timeBlockData.recurring || timeBlock.recurring,
+      [`${fieldToUpdate}.$.updatedAt`]: new Date(),
+      'updatedAt': new Date()
+    };
+
+    // Update the time block
+    const result = await collection.updateOne(
+      {
+        _id: ObjectId.createFromHexString(teacherId),
+        [`${fieldToUpdate}._id`]: ObjectId.createFromHexString(timeBlockId)
+      },
+      { $set: updateFields }
+    );
+
+    if (result.modifiedCount === 0) {
+      throw new Error('Failed to update time block');
+    }
+
+    return { success: true, timeBlockId };
+  } catch (err) {
+    console.error(`Error updating time block: ${err.message}`);
+    throw err;
+  }
+}
+
+async function deleteTimeBlock(teacherId, timeBlockId) {
+  try {
+    const collection = await getCollection('teacher');
+
+    // Verify teacher exists
+    const teacher = await collection.findOne({
+      _id: ObjectId.createFromHexString(teacherId)
+    });
+
+    if (!teacher) {
+      throw new Error(`Teacher with id ${teacherId} not found`);
+    }
+
+    // Determine which field to delete from
+    const fieldToUpdate = teacher.teaching?.timeBlocks ? 'teaching.timeBlocks' : 'teaching.schedule';
+
+    // Remove the time block
+    const result = await collection.updateOne(
+      { _id: ObjectId.createFromHexString(teacherId) },
+      {
+        $pull: { [fieldToUpdate]: { _id: ObjectId.createFromHexString(timeBlockId) } },
+        $set: { updatedAt: new Date() }
+      }
+    );
+
+    if (result.modifiedCount === 0) {
+      throw new Error('Failed to delete time block');
+    }
+
+    return { success: true, timeBlockId };
+  } catch (err) {
+    console.error(`Error deleting time block: ${err.message}`);
+    throw err;
+  }
+}
+
+// Helper function to calculate duration from times
+function calculateDurationFromTimes(startTime, endTime) {
+  const [startHour, startMin] = startTime.split(':').map(Number);
+  const [endHour, endMin] = endTime.split(':').map(Number);
+  return (endHour * 60 + endMin) - (startHour * 60 + startMin);
 }

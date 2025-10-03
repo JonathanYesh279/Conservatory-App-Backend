@@ -102,17 +102,18 @@ async function updateTimeBlock(teacherId, blockId, updateData) {
     if (error) throw new Error(`Invalid update data: ${error.message}`);
 
     const teacherCollection = await getCollection('teacher');
+
+    // First get the teacher
     const teacher = await teacherCollection.findOne({
-      _id: ObjectId.createFromHexString(teacherId),
-      'teaching.timeBlocks._id': ObjectId.createFromHexString(blockId)
+      _id: ObjectId.createFromHexString(teacherId)
     });
 
     if (!teacher) {
-      throw new Error(`Teacher or time block not found`);
+      throw new Error(`Teacher with id ${teacherId} not found`);
     }
 
-    // Find the specific time block
-    const timeBlock = teacher.teaching.timeBlocks.find(
+    // Find the specific time block (handle both ObjectId and string _id)
+    const timeBlock = teacher.teaching?.timeBlocks?.find(
       block => block._id.toString() === blockId
     );
 
@@ -161,21 +162,36 @@ async function updateTimeBlock(teacherId, blockId, updateData) {
       }
     }
 
-    // Build update object
+    // Build update object for the specific time block
     const updateObject = {};
     for (const key in value) {
       updateObject[`teaching.timeBlocks.$.${key}`] = value[key];
     }
     updateObject['teaching.timeBlocks.$.updatedAt'] = new Date();
 
-    // Update the time block
-    await teacherCollection.updateOne(
-      { 
+    // Try to update with ObjectId first (for blocks stored as ObjectId)
+    let result = await teacherCollection.updateOne(
+      {
         _id: ObjectId.createFromHexString(teacherId),
         'teaching.timeBlocks._id': ObjectId.createFromHexString(blockId)
       },
       { $set: updateObject }
     );
+
+    // If no document was matched, try with string _id (for blocks stored as string)
+    if (result.matchedCount === 0) {
+      result = await teacherCollection.updateOne(
+        {
+          _id: ObjectId.createFromHexString(teacherId),
+          'teaching.timeBlocks._id': blockId
+        },
+        { $set: updateObject }
+      );
+    }
+
+    if (result.matchedCount === 0) {
+      throw new Error(`Failed to update time block: no matching document found`);
+    }
 
     // Get updated time block
     const updatedTeacher = await teacherCollection.findOne({

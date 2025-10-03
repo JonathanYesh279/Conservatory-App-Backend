@@ -174,8 +174,19 @@ async function updateStudent(
         teacherId,
         studentId
       );
+
+      // If teacher doesn't have access, check if they're only adding themselves to teacherAssignments
       if (!hasAccess) {
-        throw new Error('Not authorized to update student');
+        const isOnlyAddingSelfToAssignments = checkIfOnlyAddingSelfToAssignments(
+          studentToUpdate,
+          teacherId
+        );
+
+        if (!isOnlyAddingSelfToAssignments) {
+          throw new Error('Not authorized to update student');
+        }
+
+        console.log(`✅ Authorization granted: Teacher ${teacherId} is adding themselves to student ${studentId}'s teacherAssignments`);
       }
     }
 
@@ -282,28 +293,94 @@ async function updateStudent(
       await syncTeacherStudentRelationships(studentId, teachersToAdd, teachersToRemove, session);
     }
 
-    // 🔥 SYNC FIX: Extract teacher IDs from teacherAssignments for bidirectional sync
+    // 🔥 ENHANCED SYNC FIX: Robust bidirectional sync for teacherAssignments
+    // This ensures teaching.studentIds is ALWAYS in sync with active assignments
+    //
+    // The sync handles these cases:
+    // 1. New teacher assignment added (active) → Add student to teacher's studentIds
+    // 2. Existing assignment becomes active → Add student to teacher's studentIds
+    // 3. Existing assignment becomes inactive → Remove student from teacher's studentIds
+    // 4. Assignment completely removed → Remove student from teacher's studentIds
+    // 5. Safety fallback: If assignments updated but no changes detected, sync all active teachers
+    //    (This fixes any pre-existing sync issues using idempotent $addToSet)
     if (teacherAssignmentsSyncRequired || (value.teacherAssignments && value.teacherAssignments.length > 0)) {
       const originalTeacherIdsFromAssignments = (originalStudent.teacherAssignments || [])
         .filter(assignment => assignment.isActive)
         .map(assignment => assignment.teacherId)
         .filter(Boolean);
-        
+
       const newTeacherIdsFromAssignments = (value.teacherAssignments || [])
         .filter(assignment => assignment.isActive)
         .map(assignment => assignment.teacherId)
         .filter(Boolean);
-      
-      const teachersToAddFromAssignments = newTeacherIdsFromAssignments.filter(
-        id => !originalTeacherIdsFromAssignments.includes(id)
-      );
-      const teachersToRemoveFromAssignments = originalTeacherIdsFromAssignments.filter(
-        id => !newTeacherIdsFromAssignments.includes(id)
-      );
-      
+
+      // Find teachers that need to be added (active in new but not in original, OR became active)
+      const teachersToAddFromAssignments = [];
+      const teachersToRemoveFromAssignments = [];
+
+      // Check each new active assignment
+      for (const assignment of (value.teacherAssignments || [])) {
+        if (!assignment.teacherId) continue;
+
+        const originalAssignment = (originalStudent.teacherAssignments || []).find(
+          orig => orig.teacherId === assignment.teacherId
+        );
+
+        // Add teacher if:
+        // 1. Assignment is now active AND (wasn't in original OR was inactive before)
+        if (assignment.isActive) {
+          if (!originalAssignment || !originalAssignment.isActive) {
+            // Teacher should be added (assignment became active or is new)
+            if (!teachersToAddFromAssignments.includes(assignment.teacherId)) {
+              teachersToAddFromAssignments.push(assignment.teacherId);
+            }
+          }
+        }
+
+        // Remove teacher if:
+        // 1. Assignment exists in original as active
+        // 2. But is now inactive or removed
+        if (originalAssignment && originalAssignment.isActive && !assignment.isActive) {
+          if (!teachersToRemoveFromAssignments.includes(assignment.teacherId)) {
+            teachersToRemoveFromAssignments.push(assignment.teacherId);
+          }
+        }
+      }
+
+      // Also check for teachers that were removed entirely from assignments
+      for (const originalAssignment of (originalStudent.teacherAssignments || [])) {
+        if (!originalAssignment.teacherId || !originalAssignment.isActive) continue;
+
+        const stillExists = (value.teacherAssignments || []).some(
+          newAssign => newAssign.teacherId === originalAssignment.teacherId
+        );
+
+        if (!stillExists && !teachersToRemoveFromAssignments.includes(originalAssignment.teacherId)) {
+          teachersToRemoveFromAssignments.push(originalAssignment.teacherId);
+        }
+      }
+
+      // ALWAYS sync if there are any changes detected
+      // Even if the teacher ID didn't change, the isActive status might have
       if (teachersToAddFromAssignments.length > 0 || teachersToRemoveFromAssignments.length > 0) {
-        console.log(`🔥 SYNC FIX: TeacherAssignments sync required - Adding ${teachersToAddFromAssignments.length}, Removing ${teachersToRemoveFromAssignments.length} teacher IDs`);
+        console.log(`🔥 ENHANCED SYNC: TeacherAssignments sync - Adding ${teachersToAddFromAssignments.length} teachers, Removing ${teachersToRemoveFromAssignments.length} teachers`);
+        console.log(`Teachers to add: [${teachersToAddFromAssignments.join(', ')}]`);
+        console.log(`Teachers to remove: [${teachersToRemoveFromAssignments.join(', ')}]`);
         await syncTeacherStudentRelationships(studentId, teachersToAddFromAssignments, teachersToRemoveFromAssignments, session);
+      } else if (teacherAssignmentsSyncRequired) {
+        // Even if no changes detected in active status, ensure all currently active teachers have this student
+        // This is a safety measure to fix any pre-existing sync issues
+        const allActiveTeacherIds = (value.teacherAssignments || [])
+          .filter(assignment => assignment.isActive && assignment.teacherId)
+          .map(assignment => assignment.teacherId);
+
+        if (allActiveTeacherIds.length > 0) {
+          console.log(`🛡️ SAFETY SYNC: Ensuring ${allActiveTeacherIds.length} active teachers have student ${studentId} in their studentIds`);
+          // Use addToSet which is idempotent - won't duplicate if already exists
+          await syncTeacherStudentRelationships(studentId, allActiveTeacherIds, [], session);
+        } else {
+          console.log(`🔍 SYNC CHECK: No active teacher assignments for student ${studentId}`);
+        }
       }
     }
 
@@ -594,6 +671,46 @@ async function checkTeacherHasAccessToStudent(teacherId, studentId) {
     console.error(`Error checking teacher access to student: ${err.message}`);
     throw new Error(`Error checking teacher access to student: ${err.message}`);
   }
+}
+
+/**
+ * Check if the update only contains teacherAssignments where the teacher is adding/updating themselves
+ * This allows teachers to assign themselves to students without prior authorization
+ *
+ * The logic is permissive: if ONLY teacherAssignments is being updated AND the teacher
+ * is included in those assignments, we allow it. This handles both:
+ * 1. Adding themselves to a new student
+ * 2. Updating their existing assignment details (schedule, location, etc.)
+ */
+function checkIfOnlyAddingSelfToAssignments(studentUpdate, teacherId) {
+  // Get the keys being updated (excluding system fields)
+  const updateKeys = Object.keys(studentUpdate).filter(
+    key => !['updatedAt', 'createdAt', '_id'].includes(key)
+  );
+
+  // Check if ONLY teacherAssignments is being updated
+  if (updateKeys.length !== 1 || updateKeys[0] !== 'teacherAssignments') {
+    return false;
+  }
+
+  // Check if teacherAssignments is an array
+  const assignments = studentUpdate.teacherAssignments;
+  if (!Array.isArray(assignments)) {
+    return false;
+  }
+
+  // Allow empty array (teacher removing themselves)
+  if (assignments.length === 0) {
+    return true;
+  }
+
+  // Verify that the teacher is in at least one of the assignments
+  // This allows the teacher to update their own assignment even if other teachers are also assigned
+  const hasTeacherInAssignments = assignments.some(
+    assignment => assignment.teacherId === teacherId
+  );
+
+  return hasTeacherInAssignments;
 }
 
 async function associateStudentWithTeacher(studentId, teacherId, scheduleSlotId = null) {

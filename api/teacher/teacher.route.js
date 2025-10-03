@@ -32,6 +32,12 @@ router.delete('/:id', requireAuth(['מנהל']), teacherController.removeTeacher
 router.post('/:teacherId/student/:studentId', requireAuth(['מנהל']), teacherController.addStudentToTeacher)
 router.delete('/:teacherId/student/:studentId', requireAuth(['מנהל']), teacherController.removeStudentFromTeacher)
 
+// Time block management routes
+router.get('/:teacherId/time-blocks', requireAuth(['מורה', 'מנהל']), teacherController.getTimeBlocks)
+router.post('/:teacherId/time-block', requireAuth(['מורה', 'מנהל']), teacherController.createTimeBlock)
+router.put('/:teacherId/time-block/:timeBlockId', requireAuth(['מורה', 'מנהל']), teacherController.updateTimeBlock)
+router.delete('/:teacherId/time-block/:timeBlockId', requireAuth(['מורה', 'מנהל']), teacherController.deleteTimeBlock)
+
 // Invitation routes
 router.get('/invitation/validate/:token', invitationController.validateInvitation)
 router.post('/invitation/accept/:token', invitationController.acceptInvitation)
