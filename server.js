@@ -49,8 +49,14 @@ const MONGO_URI = process.env.MONGODB_URI;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 const corsOptions = {
-  origin: NODE_ENV === 'production' 
-    ? [FRONTEND_URL] 
+  origin: NODE_ENV === 'production'
+    ? [
+        'https://rmc-music.org',
+        'https://www.rmc-music.org',
+        'http://rmc-music.org',
+        'http://www.rmc-music.org',
+        FRONTEND_URL // Keep existing FRONTEND_URL for backward compatibility
+      ].filter(Boolean) // Remove any undefined values
     : [
         'http://localhost:5173',
         'http://172.29.139.184:5173',
@@ -80,7 +86,7 @@ app.use(helmet({
     directives: {
       ...helmet.contentSecurityPolicy.getDefaultDirectives(),
       "script-src": ["'self'", "'unsafe-inline'"],
-      "connect-src": ["'self'", "https://conservatory-app-backend.onrender.com", "https://your-api-domain.com"],
+      "connect-src": ["'self'", "https://rmc-music.org", "wss://rmc-music.org"],
     },
   },
 }));
