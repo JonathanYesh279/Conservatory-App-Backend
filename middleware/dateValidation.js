@@ -271,10 +271,10 @@ export const validateBulkLessonDates = (req, res, next) => {
     errors.push(rangeValidation.error);
   }
 
-  // Check maximum bulk creation range (6 months)
+  // Check maximum bulk creation range (1 year for full school year coverage)
   const daysDiff = parsedEndDate.diff(parsedStartDate, 'day');
-  if (daysDiff > 180) {
-    errors.push('Bulk creation range cannot exceed 6 months');
+  if (daysDiff > 365) {
+    errors.push('Bulk creation range cannot exceed 1 year');
   }
 
   // Validate future date limit
