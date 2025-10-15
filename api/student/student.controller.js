@@ -21,8 +21,13 @@ async function getStudents(req, res, next) {
       showInactive: req.query.showInActive === 'true',
       ids: req.query.ids // Add support for batch fetching by IDs
     };
-    const students = await studentService.getStudents(filterBy);
-    res.json(students);
+
+    // Pagination parameters
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 0; // 0 means no pagination (return all)
+
+    const result = await studentService.getStudents(filterBy, page, limit);
+    res.json(result);
   } catch (err) {
     next(err);
   }

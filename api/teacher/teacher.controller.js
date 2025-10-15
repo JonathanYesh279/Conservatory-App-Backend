@@ -39,9 +39,14 @@ async function getTeachers(req, res, next) {
       ensembleId: req.query.ensembleId,
       isActive: req.query.isActive,
       showInActive: req.query.showInActive === 'true'
-    }
-    const teachers = await teacherService.getTeachers(filterBy)
-    res.json(teachers)
+    };
+
+    // Pagination parameters
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 0; // 0 means no pagination (return all)
+
+    const result = await teacherService.getTeachers(filterBy, page, limit);
+    res.json(result);
   } catch (err) {
     next(err)
   }

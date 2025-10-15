@@ -21,13 +21,50 @@ export const studentService = {
   getStudentBagrut,
 };
 
-async function getStudents(filterBy = {}) {
+async function getStudents(filterBy = {}, page = 1, limit = 0) {
   try {
     const collection = await getCollection('student');
     const criteria = _buildCriteria(filterBy);
 
-    const students = await collection.find(criteria).toArray();
-    return students;
+    // If limit is 0 or not provided, return all students (backward compatibility)
+    if (limit === 0) {
+      const students = await collection.find(criteria).toArray();
+      return students;
+    }
+
+    // Pagination enabled
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination metadata
+    const totalCount = await collection.countDocuments(criteria);
+
+    // Get paginated students
+    const students = await collection
+      .find(criteria)
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+    const hasNextPage = page < totalPages;
+    const hasPreviousPage = page > 1;
+
+    console.log(`📄 Pagination: Page ${page}/${totalPages}, Limit: ${limit}, Total: ${totalCount}, Returned: ${students.length}`);
+
+    // Return paginated response with metadata
+    return {
+      data: students,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalCount,
+        limit,
+        hasNextPage,
+        hasPreviousPage,
+        resultsCount: students.length
+      }
+    };
   } catch (err) {
     console.error(`Error getting students: ${err.message}`);
     throw new Error(`Error getting students: ${err.message}`);

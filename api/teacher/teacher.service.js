@@ -28,13 +28,50 @@ export const teacherService = {
   getTimeBlocks,
 };
 
-async function getTeachers(filterBy) {
+async function getTeachers(filterBy = {}, page = 1, limit = 0) {
   try {
     const collection = await getCollection('teacher');
     const criteria = _buildCriteria(filterBy);
 
-    const teachers = await collection.find(criteria).toArray();
-    return teachers;
+    // If limit is 0 or not provided, return all teachers (backward compatibility)
+    if (limit === 0) {
+      const teachers = await collection.find(criteria).toArray();
+      return teachers;
+    }
+
+    // Pagination enabled
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination metadata
+    const totalCount = await collection.countDocuments(criteria);
+
+    // Get paginated teachers
+    const teachers = await collection
+      .find(criteria)
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+    const hasNextPage = page < totalPages;
+    const hasPreviousPage = page > 1;
+
+    console.log(`📄 Pagination: Page ${page}/${totalPages}, Limit: ${limit}, Total: ${totalCount}, Returned: ${teachers.length}`);
+
+    // Return paginated response with metadata
+    return {
+      data: teachers,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalCount,
+        limit,
+        hasNextPage,
+        hasPreviousPage,
+        resultsCount: teachers.length
+      }
+    };
   } catch (err) {
     console.error(`Error getting teachers: ${err.message}`);
     throw new Error(`Error getting teachers: ${err.message}`);
