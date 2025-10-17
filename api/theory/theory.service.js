@@ -45,10 +45,11 @@ export const theoryService = {
   getStudentTheoryAttendanceStats,
 };
 
-async function getTheoryLessons(filterBy = {}) {
+async function getTheoryLessons(filterBy = {}, paginationOptions = {}) {
   try {
     console.log('🔍 Theory Service: Getting theory lessons with filters:', JSON.stringify(filterBy, null, 2));
-    
+    console.log('📄 Theory Service: Pagination options:', JSON.stringify(paginationOptions, null, 2));
+
     // Temporarily disable cache for debugging
     // const cacheKey = 'theory_lessons';
     // const cachedResult = queryCacheService.get(cacheKey, filterBy);
@@ -59,21 +60,41 @@ async function getTheoryLessons(filterBy = {}) {
 
     const collection = await getCollection('theory_lesson');
     const criteria = createLessonFilterQuery(filterBy);
-    
+
     console.log('🔎 Theory Service: Built query criteria:', JSON.stringify(criteria, null, 2));
-    
-    // Debug: Count total documents in collection
-    const totalCount = await collection.countDocuments({});
-    console.log('📈 Theory Service: Total documents in theory_lesson collection:', totalCount);
+
+    // Count total matching documents
+    const totalCount = await collection.countDocuments(criteria);
+    console.log('📈 Theory Service: Total matching documents:', totalCount);
 
     // Estimate query complexity for monitoring
     const complexity = estimateQueryComplexity(criteria);
-    
+
+    // Extract pagination parameters with defaults
+    const page = parseInt(paginationOptions.page) || 1;
+    const limit = parseInt(paginationOptions.limit) || 20;
+    const sortField = paginationOptions.sortField || 'date';
+    const sortOrder = paginationOptions.sortOrder || 1; // 1 for ascending
+
+    // Create pagination query
+    const { pagination, sort } = createPaginationQuery({
+      page,
+      limit,
+      sortField,
+      sortOrder
+    });
+
+    // Build sort object with secondary sort on startTime
+    const sortObj = { ...sort, startTime: 1 };
+
+    // Execute query with pagination
     const theoryLessons = await collection
       .find(criteria)
-      .sort({ date: 1, startTime: 1 })
+      .sort(sortObj)
+      .skip(pagination.skip)
+      .limit(pagination.limit)
       .toArray();
-    
+
     console.log('✅ Theory Service: Query executed, found lessons:', theoryLessons.length);
     if (theoryLessons.length > 0) {
       console.log('📄 Theory Service: First lesson sample:', {
@@ -85,11 +106,26 @@ async function getTheoryLessons(filterBy = {}) {
       });
     }
 
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limit);
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 1;
+
     // Temporarily disable cache for debugging
     // const ttl = _calculateCacheTTL(filterBy, complexity);
     // queryCacheService.set(cacheKey, filterBy, theoryLessons, { ttl });
 
-    return theoryLessons;
+    return {
+      data: theoryLessons,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalCount,
+        limit,
+        hasNextPage,
+        hasPrevPage
+      }
+    };
   } catch (err) {
     console.error(`Error in theoryService.getTheoryLessons: ${err}`);
     throw new Error(`Error in theoryService.getTheoryLessons: ${err}`);
@@ -113,10 +149,10 @@ async function getTheoryLessonById(theoryLessonId) {
   }
 }
 
-async function getTheoryLessonsByCategory(category, filterBy = {}) {
+async function getTheoryLessonsByCategory(category, filterBy = {}, paginationOptions = {}) {
   try {
     filterBy.category = category;
-    return await getTheoryLessons(filterBy);
+    return await getTheoryLessons(filterBy, paginationOptions);
   } catch (err) {
     console.error(`Error in theoryService.getTheoryLessonsByCategory: ${err}`);
     throw new Error(
@@ -125,10 +161,10 @@ async function getTheoryLessonsByCategory(category, filterBy = {}) {
   }
 }
 
-async function getTheoryLessonsByTeacher(teacherId, filterBy = {}) {
+async function getTheoryLessonsByTeacher(teacherId, filterBy = {}, paginationOptions = {}) {
   try {
     filterBy.teacherId = teacherId;
-    return await getTheoryLessons(filterBy);
+    return await getTheoryLessons(filterBy, paginationOptions);
   } catch (err) {
     console.error(`Error in theoryService.getTheoryLessonsByTeacher: ${err}`);
     throw new Error(`Error in theoryService.getTheoryLessonsByTeacher: ${err}`);

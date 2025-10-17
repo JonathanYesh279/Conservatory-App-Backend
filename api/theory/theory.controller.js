@@ -59,9 +59,19 @@ async function getTheoryLessons(req, res, next) {
       filterBy.schoolYearId = originalSchoolYearId;
     }
 
-    console.log('🔧 Theory Controller: Built filter object:', JSON.stringify(filterBy, null, 2));
+    // Extract pagination parameters
+    const paginationOptions = {
+      page: req.query.page,
+      limit: req.query.limit,
+      sortField: req.query.sortField,
+      sortOrder: req.query.sortOrder
+    };
 
-    const theoryLessons = await theoryService.getTheoryLessons(filterBy);
+    console.log('🔧 Theory Controller: Built filter object:', JSON.stringify(filterBy, null, 2));
+    console.log('📄 Theory Controller: Pagination options:', JSON.stringify(paginationOptions, null, 2));
+
+    const result = await theoryService.getTheoryLessons(filterBy, paginationOptions);
+    const { data: theoryLessons, pagination } = result;
 
     // Validate and sanitize lesson data before sending to frontend
     let validatedLessons = [];
@@ -90,7 +100,8 @@ async function getTheoryLessons(req, res, next) {
         success: true,
         data: [],
         message: 'No theory lessons found matching the specified criteria',
-        filters: filterBy
+        filters: filterBy,
+        pagination
       });
     }
 
@@ -99,7 +110,8 @@ async function getTheoryLessons(req, res, next) {
       success: true,
       data: validatedLessons,
       count: validatedLessons.length,
-      filters: filterBy
+      filters: filterBy,
+      pagination
     });
   } catch (err) {
     console.error(`Error in getTheoryLessons controller: ${err.message}`);
@@ -241,10 +253,20 @@ async function getTheoryLessonsByCategory(req, res, next) {
       schoolYearId: req.query.schoolYearId,
     };
 
-    const theoryLessons = await theoryService.getTheoryLessonsByCategory(
+    // Extract pagination parameters
+    const paginationOptions = {
+      page: req.query.page,
+      limit: req.query.limit,
+      sortField: req.query.sortField,
+      sortOrder: req.query.sortOrder
+    };
+
+    const result = await theoryService.getTheoryLessonsByCategory(
       category,
-      filterBy
+      filterBy,
+      paginationOptions
     );
+    const { data: theoryLessons, pagination } = result;
 
     // Validate and sanitize lesson data
     let validatedLessons = [];
@@ -264,7 +286,8 @@ async function getTheoryLessonsByCategory(req, res, next) {
       data: validatedLessons,
       count: validatedLessons.length,
       category: category,
-      filters: filterBy
+      filters: filterBy,
+      pagination
     });
   } catch (err) {
     console.error(
@@ -309,11 +332,21 @@ async function getTheoryLessonsByTeacher(req, res, next) {
       schoolYearId: req.query.schoolYearId,
     };
 
-    const theoryLessons = await theoryService.getTheoryLessonsByTeacher(
+    // Extract pagination parameters
+    const paginationOptions = {
+      page: req.query.page,
+      limit: req.query.limit,
+      sortField: req.query.sortField,
+      sortOrder: req.query.sortOrder
+    };
+
+    const result = await theoryService.getTheoryLessonsByTeacher(
       teacherId,
-      filterBy
+      filterBy,
+      paginationOptions
     );
-    res.json(theoryLessons);
+
+    res.json(result);
   } catch (err) {
     console.error(
       `Error in getTheoryLessonsByTeacher controller: ${err.message}`
