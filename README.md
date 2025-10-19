@@ -74,52 +74,7 @@ This system provides complete management capabilities for a music conservatory, 
 ### Prerequisites
 - Node.js (v16+)
 - MongoDB
-- npm or yarn
-
-### Installation
-
-1. Clone the repository
-   ```
-   git clone https://github.com/yourusername/conservatory-app-backend.git
-   cd conservatory-app-backend
-   ```
-
-2. Install dependencies
-   ```
-   npm install
-   ```
-
-3. Environment Setup
-
-   Create a `.env` file in the root directory with the following variables:
-   ```
-   NODE_ENV=development
-   MONGODB_URI=mongodb://localhost:27017/conservatory-db
-   ACCESS_TOKEN_SECRET=your_access_token_secret
-   REFRESH_TOKEN_SECRET=your_refresh_token_secret
-   PORT=3000
-   FRONTEND_URL=http://localhost:5173
-   
-   # For S3 file storage (optional)
-   STORAGE_MODE=local  # Change to 's3' for AWS S3 storage
-   S3_BUCKET=your-bucket-name
-   S3_REGION=your-region
-   S3_ACCESS_KEY=your-access-key
-   S3_SECRET_KEY=your-secret-key
-   ```
-
-4. Start the development server
-   ```
-   npm run dev
-   ```
-
-5. Initialize admin user
-   ```
-   curl -X POST http://localhost:3000/api/auth/init-admin
-   ```
-   This creates an admin user with:
-   - Email: admin@example.com
-   - Password: 123456
+- npm or yar
 
 ## API Documentation
 
