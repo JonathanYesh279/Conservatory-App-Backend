@@ -81,15 +81,26 @@ if (STORAGE_MODE === 'local') {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
+// Configure Helmet with proper CSP for Vite/ES modules
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-      "script-src": ["'self'", "'unsafe-inline'"],
-      "connect-src": ["'self'", "https://rmc-music.org", "wss://rmc-music.org"],
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "blob:"],
+      fontSrc: ["'self'", "data:"],
+      connectSrc: ["'self'", "https://rmc-music.org", "wss://rmc-music.org"],
+      frameSrc: ["'none'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
     },
   },
+  crossOriginEmbedderPolicy: false,
 }));
+
 app.use(mongoSanitize());
 
 // Initialize MongoDB (moved to startup sequence below for better error handling)
@@ -259,7 +270,19 @@ app.get('/force-password-change', (req, res) => {
 
 // Static files and catch-all route for production (AFTER API routes)
 if (NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'public')));
+  // Serve static files with proper MIME types
+  app.use(express.static(path.join(__dirname, 'public'), {
+    setHeaders: (res, filepath) => {
+      // Set correct MIME types for JavaScript modules
+      if (filepath.endsWith('.js')) {
+        res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+      } else if (filepath.endsWith('.mjs')) {
+        res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+      } else if (filepath.endsWith('.css')) {
+        res.setHeader('Content-Type', 'text/css; charset=UTF-8');
+      }
+    }
+  }));
 
   // Catch-all route for frontend routing - ONLY for non-API routes
   app.get('*', (req, res, next) => {
