@@ -292,7 +292,7 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
   try {
     const { error, value } = validateOrchestra(orchestraToUpdate)
     if (error) throw new Error(`Validation error: ${error.message}`)
-    
+
     const collection = await getCollection('orchestra')
     const existingOrchestra = await getOrchestraById(orchestraId)
 
@@ -301,13 +301,13 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
     const isEnsembleInstructor = userRoles.includes('מדריך הרכב')
     const canEditBasedOnRole = isConductor || isEnsembleInstructor
     const isAssignedConductor = existingOrchestra.conductorId === teacherId.toString()
-    
+
     if (!isAdmin && !(canEditBasedOnRole && isAssignedConductor)) {
       throw new Error('Not authorized to modify this orchestra')
     }
 
     if (existingOrchestra.conductorId !== value.conductorId) {
-      const teacherCollection = await getCollection('teacher')  
+      const teacherCollection = await getCollection('teacher')
 
       await teacherCollection.updateOne(
         { _id: ObjectId.createFromHexString(existingOrchestra.conductorId) },
@@ -324,14 +324,43 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
       )
     }
 
+    // 🔥 CRITICAL FIX: Preserve memberIds and rehearsalIds from existing document
+    // The frontend may send partial updates without these arrays, and the validation
+    // schema applies default([]) which would wipe out existing data.
+    // Only use the validated value if it was EXPLICITLY provided in the original request
+    // AND contains actual data (not just an empty default).
+    const updateValue = { ...value }
+
+    // Preserve memberIds: Only update if explicitly provided with actual member IDs
+    // The orchestraToUpdate check ensures we use frontend intent, not validation defaults
+    if (!orchestraToUpdate.memberIds || orchestraToUpdate.memberIds.length === 0) {
+      // Frontend didn't send memberIds or sent empty array - preserve existing
+      updateValue.memberIds = existingOrchestra.memberIds || []
+      console.log(`🛡️ PROTECTION: Preserving ${updateValue.memberIds.length} memberIds for orchestra ${orchestraId}`)
+    } else {
+      console.log(`📝 UPDATE: Frontend explicitly sent ${orchestraToUpdate.memberIds.length} memberIds for orchestra ${orchestraId}`)
+    }
+
+    // Preserve rehearsalIds: Only update if explicitly provided with actual rehearsal IDs
+    if (!orchestraToUpdate.rehearsalIds || orchestraToUpdate.rehearsalIds.length === 0) {
+      // Frontend didn't send rehearsalIds or sent empty array - preserve existing
+      updateValue.rehearsalIds = existingOrchestra.rehearsalIds || []
+      console.log(`🛡️ PROTECTION: Preserving ${updateValue.rehearsalIds.length} rehearsalIds for orchestra ${orchestraId}`)
+    } else {
+      console.log(`📝 UPDATE: Frontend explicitly sent ${orchestraToUpdate.rehearsalIds.length} rehearsalIds for orchestra ${orchestraId}`)
+    }
+
+    // Add lastModified timestamp
+    updateValue.lastModified = new Date()
+
     const result = await collection.findOneAndUpdate(
       { _id: ObjectId.createFromHexString(orchestraId) },
-      { $set: value },
+      { $set: updateValue },
       { returnDocument: 'after' }
     )
 
     if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`)
-    
+
     // Return populated orchestra with full member data
     return await getOrchestraById(orchestraId)
   } catch (err) {
