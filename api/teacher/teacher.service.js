@@ -939,6 +939,12 @@ function _buildCriteria(filterBy) {
     criteria['personalInfo.instrument'] = filterBy.instrument;
   }
 
+  // Filter by role - checks if the role is in the roles array
+  // This handles teachers with multiple roles (e.g., ['מורה', 'מנצח'])
+  if (filterBy.role) {
+    criteria.roles = filterBy.role;
+  }
+
   if (filterBy.studentId) {
     criteria['teaching.studentIds'] = filterBy.studentId;
   }

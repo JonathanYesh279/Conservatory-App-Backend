@@ -1,0 +1,45 @@
+
+STRINGS DEPARTMENT IMPORT ANALYSIS REPORT
+Generated: 2026-01-15T17:50:40.683Z
+============================================================
+
+STUDENT IMPORT STATUS
+---------------------
+Total in Excel: 123
+Matched in DB: 101
+Missing from DB: 22
+Success Rate: 82.1%
+
+Missing Students:
+1. דמבו בן יוחנה ללה (Teacher: זיסקינד מרינה, Instrument: כינור)
+2. מילס טרכטנברג מלאכי ישראל (Teacher: קוטליאר אלונה, Instrument: כינור)
+3. גל הדר ארייה (Teacher: מורה אחר, Instrument: כינור)
+4. גולן ליבי רינה (Teacher: מורה אחר, Instrument: כינור)
+5. שקלרסקי נעה (Teacher: מורה אחר, Instrument: כינור)
+6. אהרוני מיכאלה (Teacher: מורה אחר, Instrument: כינור)
+7. אליאב שחר (Teacher: מורה אחר, Instrument: כינור)
+8. קאופמן אלמוג (Teacher: מורה אחר, Instrument: כינור)
+9. גרפילד בנימין  טוביה (Teacher: מורה אחר, Instrument: כינור)
+10. שוורץ אלה סופיה שרה (Teacher: זיסקינד מרינה, Instrument: כינור)
+11. מקובצקי הלל (Teacher: מורה אחר, Instrument: כינור)
+12. בן זמרה אגם שרה (Teacher: אברהם סבטלנה, Instrument: כינור)
+13. גנץ ארייה (Teacher: מורה אחר, Instrument: כינור)
+14. ישעיה שירה זכה ישעיה (Teacher: פורמן נטליה, Instrument: כינור)
+15. אלפרן  הלנה (Teacher: מורה אחר, Instrument: כינור)
+16. מילס טרכטנברג אביגיל (Teacher: מורה אחר, Instrument: צ'לו)
+17. פורת לביא (Teacher: מורה אחר, Instrument: צ'לו)
+18. גרפילד  נועם (Teacher: מורה אחר, Instrument: צ'לו)
+19. סויברט ניאה (Teacher: מורה אחר, Instrument: צ'לו)
+20. שחר זיו (Teacher: מורה אחר, Instrument: צ'לו)
+21. שטורך אגם (Teacher: מורה אחר, Instrument: צ'לו)
+22. סלטקין דן (Teacher: גילנסון מרק, Instrument: קונטרבס)
+
+SCHEDULE STATUS
+---------------
+Total lessons in Excel: 0
+Matched in DB: 0
+Missing from DB: 0
+Success Rate: NaN%
+
+Missing Schedules by Teacher:
+

@@ -1,0 +1,947 @@
+{
+  "teachers": {
+    "אברהם סבטלנה": {
+      "timeBlocks": []
+    },
+    "ארונזון אנה": {
+      "timeBlocks": [
+        {
+          "day": "ראשון",
+          "startTime": "13:00",
+          "endTime": "19:15",
+          "totalDuration": 375,
+          "location": "21",
+          "lessonsCount": 8
+        },
+        {
+          "day": "שני",
+          "startTime": "15:30",
+          "endTime": "18:00",
+          "totalDuration": 150,
+          "location": "21",
+          "lessonsCount": 4
+        },
+        {
+          "day": "שלישי",
+          "startTime": "13:30",
+          "endTime": "19:00",
+          "totalDuration": 330,
+          "location": "21",
+          "lessonsCount": 7
+        },
+        {
+          "day": "שישי",
+          "startTime": "11:30",
+          "endTime": "13:30",
+          "totalDuration": 120,
+          "location": "11",
+          "lessonsCount": 3
+        }
+      ]
+    },
+    "ברגמן מרסל": {
+      "timeBlocks": [
+        {
+          "day": "ראשון",
+          "startTime": "15:15",
+          "endTime": "16:30",
+          "totalDuration": 75,
+          "location": "סטודיו 1",
+          "lessonsCount": 2
+        },
+        {
+          "day": "שלישי",
+          "startTime": "14:30",
+          "endTime": "15:15",
+          "totalDuration": 45,
+          "location": "תיאוריה ב'",
+          "lessonsCount": 1
+        },
+        {
+          "day": "חמישי",
+          "startTime": "17:15",
+          "endTime": "18:30",
+          "totalDuration": 75,
+          "location": "תיאוריה ב'",
+          "lessonsCount": 2
+        },
+        {
+          "day": "שישי",
+          "startTime": "13:00",
+          "endTime": "13:45",
+          "totalDuration": 45,
+          "location": "תיאוריה ב'",
+          "lessonsCount": 1
+        }
+      ]
+    },
+    "סלטקין אלה": {
+      "timeBlocks": []
+    },
+    "זיסקינד מרינה": {
+      "timeBlocks": [
+        {
+          "day": "שני",
+          "startTime": "15:00",
+          "endTime": "18:30",
+          "totalDuration": 210,
+          "location": "45",
+          "lessonsCount": 5
+        },
+        {
+          "day": "חמישי",
+          "startTime": "16:00",
+          "endTime": "18:30",
+          "totalDuration": 150,
+          "location": "5",
+          "lessonsCount": 4
+        }
+      ]
+    },
+    "לוין ורוניקה": {
+      "timeBlocks": [
+        {
+          "day": "ראשון",
+          "startTime": "13:00",
+          "endTime": "20:00",
+          "totalDuration": 420,
+          "location": "דולב 2",
+          "lessonsCount": 10
+        },
+        {
+          "day": "שני",
+          "startTime": "14:30",
+          "endTime": "20:30",
+          "totalDuration": 360,
+          "location": "דולב 2",
+          "lessonsCount": 7
+        },
+        {
+          "day": "רביעי",
+          "startTime": "14:15",
+          "endTime": "15:15",
+          "totalDuration": 60,
+          "location": "דולב 2",
+          "lessonsCount": 2
+        }
+      ]
+    },
+    "פלדמן אלסיה": {
+      "timeBlocks": [
+        {
+          "day": "חמישי",
+          "startTime": "14:45",
+          "endTime": "20:15",
+          "totalDuration": 330,
+          "location": "24",
+          "lessonsCount": 8
+        }
+      ]
+    },
+    "קוטליאר אלונה": {
+      "timeBlocks": [
+        {
+          "day": "ראשון",
+          "startTime": "14:15",
+          "endTime": "17:30",
+          "totalDuration": 195,
+          "location": "45",
+          "lessonsCount": 4
+        },
+        {
+          "day": "שני",
+          "startTime": "12:45",
+          "endTime": "15:45",
+          "totalDuration": 180,
+          "location": "45",
+          "lessonsCount": 3
+        }
+      ]
+    },
+    "רבין לובה": {
+      "timeBlocks": [
+        {
+          "day": "רביעי",
+          "startTime": "14:30",
+          "endTime": "20:45",
+          "totalDuration": 375,
+          "location": "16",
+          "lessonsCount": 4
+        },
+        {
+          "day": "חמישי",
+          "startTime": "14:15",
+          "endTime": "20:00",
+          "totalDuration": 345,
+          "location": "16",
+          "lessonsCount": 8
+        }
+      ]
+    }
+  },
+  "schedules": {
+    "אברהם סבטלנה": [],
+    "ארונזון אנה": [
+      {
+        "studentFamilyName": "שורץ ציגלר",
+        "studentFirstName": "כחל",
+        "studentFullName": "שורץ ציגלר כחל",
+        "day": "ראשון",
+        "time": "13:00",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "אלחרט",
+        "studentFirstName": "שרה",
+        "studentFullName": "אלחרט שרה",
+        "day": "ראשון",
+        "time": "14:15",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "ויינר",
+        "studentFirstName": "אדר",
+        "studentFullName": "ויינר אדר",
+        "day": "ראשון",
+        "time": "14:45",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "סורקין",
+        "studentFirstName": "שרה",
+        "studentFullName": "סורקין שרה",
+        "day": "ראשון",
+        "time": "15:15",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "נייטס",
+        "studentFirstName": "אלה",
+        "studentFullName": "נייטס אלה",
+        "day": "ראשון",
+        "time": "16:15",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "שראיזין",
+        "studentFirstName": "איתי",
+        "studentFullName": "שראיזין איתי",
+        "day": "ראשון",
+        "time": "17:15",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "סופיר",
+        "studentFirstName": "ליטל",
+        "studentFullName": "סופיר ליטל",
+        "day": "ראשון",
+        "time": "18:15",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "בן זמרה",
+        "studentFirstName": "אגם",
+        "studentFullName": "בן זמרה אגם",
+        "day": "ראשון",
+        "time": "18:45",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "ויינר",
+        "studentFirstName": "אדר",
+        "studentFullName": "ויינר אדר",
+        "day": "שני",
+        "time": "15:30",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "קאופמן",
+        "studentFirstName": "אלמוג",
+        "studentFullName": "קאופמן אלמוג",
+        "day": "שני",
+        "time": "16:00",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "אלטמן",
+        "studentFirstName": "אמה",
+        "studentFullName": "אלטמן אמה",
+        "day": "שני",
+        "time": "16:30",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "צדוק",
+        "studentFirstName": "ניתאי",
+        "studentFullName": "צדוק ניתאי",
+        "day": "שני",
+        "time": "17:00",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "שורץ ציגלר",
+        "studentFirstName": "כחל",
+        "studentFullName": "שורץ ציגלר כחל",
+        "day": "שלישי",
+        "time": "13:30",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "נייטס",
+        "studentFirstName": "אלה",
+        "studentFullName": "נייטס אלה",
+        "day": "שלישי",
+        "time": "14:30",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "סופיר",
+        "studentFirstName": "ליטל",
+        "studentFullName": "סופיר ליטל",
+        "day": "שלישי",
+        "time": "15:30",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "סורקין",
+        "studentFirstName": "שרה",
+        "studentFullName": "סורקין שרה",
+        "day": "שלישי",
+        "time": "16:00",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "בן זמרה",
+        "studentFirstName": "אגם",
+        "studentFullName": "בן זמרה אגם",
+        "day": "שלישי",
+        "time": "17:00",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "אלחרט",
+        "studentFirstName": "שרה",
+        "studentFullName": "אלחרט שרה",
+        "day": "שלישי",
+        "time": "17:30",
+        "duration": 30,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "שראיזין",
+        "studentFirstName": "איתי",
+        "studentFullName": "שראיזין איתי",
+        "day": "שלישי",
+        "time": "18:00",
+        "duration": 60,
+        "room": "21"
+      },
+      {
+        "studentFamilyName": "צדוק",
+        "studentFirstName": "ניתאי",
+        "studentFullName": "צדוק ניתאי",
+        "day": "שישי",
+        "time": "11:30",
+        "duration": 60,
+        "room": "11"
+      },
+      {
+        "studentFamilyName": "אלטמן",
+        "studentFirstName": "אמה",
+        "studentFullName": "אלטמן אמה",
+        "day": "שישי",
+        "time": "12:30",
+        "duration": 30,
+        "room": "11"
+      },
+      {
+        "studentFamilyName": "קאופמן",
+        "studentFirstName": "אלמוג",
+        "studentFullName": "קאופמן אלמוג",
+        "day": "שישי",
+        "time": "13:00",
+        "duration": 30,
+        "room": "11"
+      }
+    ],
+    "ברגמן מרסל": [
+      {
+        "studentFamilyName": "קרבלניק",
+        "studentFirstName": "בן",
+        "studentFullName": "קרבלניק בן",
+        "day": "ראשון",
+        "time": "15:15",
+        "duration": 30,
+        "room": "סטודיו 1"
+      },
+      {
+        "studentFamilyName": "רוטקופ",
+        "studentFirstName": "שקד",
+        "studentFullName": "רוטקופ שקד",
+        "day": "ראשון",
+        "time": "15:45",
+        "duration": 45,
+        "room": "סטודיו 1"
+      },
+      {
+        "studentFamilyName": "גרינפלד",
+        "studentFirstName": "אורי",
+        "studentFullName": "גרינפלד אורי",
+        "day": "שלישי",
+        "time": "14:30",
+        "duration": 45,
+        "room": "תיאוריה ב'"
+      },
+      {
+        "studentFamilyName": "קרבלניק",
+        "studentFirstName": "בן",
+        "studentFullName": "קרבלניק בן",
+        "day": "חמישי",
+        "time": "17:15",
+        "duration": 30,
+        "room": "תיאוריה ב'"
+      },
+      {
+        "studentFamilyName": "גרינפלד",
+        "studentFirstName": "אורי",
+        "studentFullName": "גרינפלד אורי",
+        "day": "חמישי",
+        "time": "17:45",
+        "duration": 45,
+        "room": "תיאוריה ב'"
+      },
+      {
+        "studentFamilyName": "רוטקופ",
+        "studentFirstName": "שקד",
+        "studentFullName": "רוטקופ שקד",
+        "day": "שישי",
+        "time": "13:00",
+        "duration": 45,
+        "room": "תיאוריה ב'"
+      }
+    ],
+    "סלטקין אלה": [],
+    "זיסקינד מרינה": [
+      {
+        "studentFamilyName": "שוורץ",
+        "studentFirstName": "אלה",
+        "studentFullName": "שוורץ אלה",
+        "day": "שני",
+        "time": "15:00",
+        "duration": 45,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "גולן",
+        "studentFirstName": "ליבי",
+        "studentFullName": "גולן ליבי",
+        "day": "שני",
+        "time": "16:00",
+        "duration": 30,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "גל הדר",
+        "studentFirstName": "ארייה",
+        "studentFullName": "גל הדר ארייה",
+        "day": "שני",
+        "time": "16:30",
+        "duration": 30,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "אלפרן",
+        "studentFirstName": "הלנה",
+        "studentFullName": "אלפרן הלנה",
+        "day": "שני",
+        "time": "17:00",
+        "duration": 45,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "לוי",
+        "studentFirstName": "לילה",
+        "studentFullName": "לוי לילה",
+        "day": "שני",
+        "time": "17:45",
+        "duration": 45,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "אלפרן",
+        "studentFirstName": "הלנה",
+        "studentFullName": "אלפרן הלנה",
+        "day": "חמישי",
+        "time": "16:00",
+        "duration": 45,
+        "room": "5"
+      },
+      {
+        "studentFamilyName": "גל הדר",
+        "studentFirstName": "ארייה",
+        "studentFullName": "גל הדר ארייה",
+        "day": "חמישי",
+        "time": "16:45",
+        "duration": 30,
+        "room": "5"
+      },
+      {
+        "studentFamilyName": "גולן",
+        "studentFirstName": "ליבי",
+        "studentFullName": "גולן ליבי",
+        "day": "חמישי",
+        "time": "17:15",
+        "duration": 30,
+        "room": "5"
+      },
+      {
+        "studentFamilyName": "לוי",
+        "studentFirstName": "לילה",
+        "studentFullName": "לוי לילה",
+        "day": "חמישי",
+        "time": "17:45",
+        "duration": 45,
+        "room": "5"
+      }
+    ],
+    "לוין ורוניקה": [
+      {
+        "studentFamilyName": "אנטונוב",
+        "studentFirstName": "ליזה",
+        "studentFullName": "אנטונוב ליזה",
+        "day": "ראשון",
+        "time": "13:00",
+        "duration": 45,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "סורקין",
+        "studentFirstName": "איתן",
+        "studentFullName": "סורקין איתן",
+        "day": "ראשון",
+        "time": "13:45",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "שם טוב",
+        "studentFirstName": "הילה",
+        "studentFullName": "שם טוב הילה",
+        "day": "ראשון",
+        "time": "14:15",
+        "duration": 45,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "יעקב הכהן",
+        "studentFirstName": "גאיה",
+        "studentFullName": "יעקב הכהן גאיה",
+        "day": "ראשון",
+        "time": "15:00",
+        "duration": 60,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "שם טוב",
+        "studentFirstName": "שירה",
+        "studentFullName": "שם טוב שירה",
+        "day": "ראשון",
+        "time": "16:00",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "אליהו",
+        "studentFirstName": "שירה",
+        "studentFullName": "אליהו שירה",
+        "day": "ראשון",
+        "time": "16:30",
+        "duration": 45,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "אליאב",
+        "studentFirstName": "שחר",
+        "studentFullName": "אליאב שחר",
+        "day": "ראשון",
+        "time": "17:15",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "שמיר",
+        "studentFirstName": "גילי",
+        "studentFullName": "שמיר גילי",
+        "day": "ראשון",
+        "time": "17:45",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "יחזקאל",
+        "studentFirstName": "שרה",
+        "studentFullName": "יחזקאל שרה",
+        "day": "ראשון",
+        "time": "18:15",
+        "duration": 45,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "שם טוב",
+        "studentFirstName": "קרולין",
+        "studentFullName": "שם טוב קרולין",
+        "day": "ראשון",
+        "time": "19:00",
+        "duration": 60,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "מזרחי",
+        "studentFirstName": "שיר",
+        "studentFullName": "מזרחי שיר",
+        "day": "שני",
+        "time": "14:30",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "אהרוני",
+        "studentFirstName": "מיכאלה",
+        "studentFullName": "אהרוני מיכאלה",
+        "day": "שני",
+        "time": "15:00",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "גרפילד",
+        "studentFirstName": "בנימין",
+        "studentFullName": "גרפילד בנימין",
+        "day": "שני",
+        "time": "15:30",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "שקלוסקי",
+        "studentFirstName": "נעה",
+        "studentFullName": "שקלוסקי נעה",
+        "day": "שני",
+        "time": "17:00",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "הולנד",
+        "studentFirstName": "יעל",
+        "studentFullName": "הולנד יעל",
+        "day": "שני",
+        "time": "17:30",
+        "duration": 45,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "בן הרוש",
+        "studentFirstName": "שנה",
+        "studentFullName": "בן הרוש שנה",
+        "day": "שני",
+        "time": "18:45",
+        "duration": 45,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "יליזרוב",
+        "studentFirstName": "נועה",
+        "studentFullName": "יליזרוב נועה",
+        "day": "שני",
+        "time": "19:30",
+        "duration": 60,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "אהרוני",
+        "studentFirstName": "מיכאלה",
+        "studentFullName": "אהרוני מיכאלה",
+        "day": "רביעי",
+        "time": "14:15",
+        "duration": 30,
+        "room": "דולב 2"
+      },
+      {
+        "studentFamilyName": "יפעת",
+        "studentFirstName": "ליה",
+        "studentFullName": "יפעת ליה",
+        "day": "רביעי",
+        "time": "14:45",
+        "duration": 30,
+        "room": "דולב 2"
+      }
+    ],
+    "פלדמן אלסיה": [
+      {
+        "studentFamilyName": "בן הרוש",
+        "studentFirstName": "שנה",
+        "studentFullName": "בן הרוש שנה",
+        "day": "חמישי",
+        "time": "14:45",
+        "duration": 45,
+        "room": "24"
+      },
+      {
+        "studentFamilyName": "שם טוב",
+        "studentFirstName": "הילה",
+        "studentFullName": "שם טוב הילה",
+        "day": "חמישי",
+        "time": "15:30",
+        "duration": 45,
+        "room": "24"
+      },
+      {
+        "studentFamilyName": "גרפילד",
+        "studentFirstName": "בנימין",
+        "studentFullName": "גרפילד בנימין",
+        "day": "חמישי",
+        "time": "16:15",
+        "duration": 30,
+        "room": "24"
+      },
+      {
+        "studentFamilyName": "אליאב",
+        "studentFirstName": "שחר",
+        "studentFullName": "אליאב שחר",
+        "day": "חמישי",
+        "time": "16:45",
+        "duration": 30,
+        "room": "24"
+      },
+      {
+        "studentFamilyName": "הולנד",
+        "studentFirstName": "יעל",
+        "studentFullName": "הולנד יעל",
+        "day": "חמישי",
+        "time": "17:15",
+        "duration": 45,
+        "room": "24"
+      },
+      {
+        "studentFamilyName": "אליהו",
+        "studentFirstName": "שירה",
+        "studentFullName": "אליהו שירה",
+        "day": "חמישי",
+        "time": "18:00",
+        "duration": 30,
+        "room": "24"
+      },
+      {
+        "studentFamilyName": "אנטוב",
+        "studentFirstName": "ליזה",
+        "studentFullName": "אנטוב ליזה",
+        "day": "חמישי",
+        "time": "18:30",
+        "duration": 45,
+        "room": "24"
+      },
+      {
+        "studentFamilyName": "יליזרוב",
+        "studentFirstName": "נועה",
+        "studentFullName": "יליזרוב נועה",
+        "day": "חמישי",
+        "time": "19:15",
+        "duration": 60,
+        "room": "24"
+      }
+    ],
+    "קוטליאר אלונה": [
+      {
+        "studentFamilyName": "טיחונצ'יק",
+        "studentFirstName": "אליסה",
+        "studentFullName": "טיחונצ'יק אליסה",
+        "day": "ראשון",
+        "time": "14:15",
+        "duration": 45,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "דרור",
+        "studentFirstName": "מטע",
+        "studentFullName": "דרור מטע",
+        "day": "ראשון",
+        "time": "15:00",
+        "duration": 45,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "מרגולין",
+        "studentFirstName": "הדר",
+        "studentFullName": "מרגולין הדר",
+        "day": "ראשון",
+        "time": "15:45",
+        "duration": 60,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "לסר",
+        "studentFirstName": "שחר",
+        "studentFullName": "לסר שחר",
+        "day": "ראשון",
+        "time": "16:45",
+        "duration": 45,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "חופרי",
+        "studentFirstName": "יובל",
+        "studentFullName": "חופרי יובל",
+        "day": "שני",
+        "time": "12:45",
+        "duration": 45,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "תמרקין",
+        "studentFirstName": "אורי",
+        "studentFullName": "תמרקין אורי",
+        "day": "שני",
+        "time": "14:45",
+        "duration": 30,
+        "room": "45"
+      },
+      {
+        "studentFamilyName": "בירמן",
+        "studentFirstName": "ביאנקה",
+        "studentFullName": "בירמן ביאנקה",
+        "day": "שני",
+        "time": "15:15",
+        "duration": 30,
+        "room": "45"
+      }
+    ],
+    "רבין לובה": [
+      {
+        "studentFamilyName": "תמרקין",
+        "studentFirstName": "אורי",
+        "studentFullName": "תמרקין אורי",
+        "day": "רביעי",
+        "time": "14:30",
+        "duration": 30,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "לסר",
+        "studentFirstName": "שחר",
+        "studentFullName": "לסר שחר",
+        "day": "רביעי",
+        "time": "15:30",
+        "duration": 45,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "דרור",
+        "studentFirstName": "מטע",
+        "studentFullName": "דרור מטע",
+        "day": "רביעי",
+        "time": "18:00",
+        "duration": 45,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "רזאל",
+        "studentFirstName": "בארי",
+        "studentFullName": "רזאל בארי",
+        "day": "רביעי",
+        "time": "19:45",
+        "duration": 60,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "טיחונצ'יק",
+        "studentFirstName": "אליסה",
+        "studentFullName": "טיחונצ'יק אליסה",
+        "day": "חמישי",
+        "time": "14:15",
+        "duration": 45,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "חופרי",
+        "studentFirstName": "יובל",
+        "studentFullName": "חופרי יובל",
+        "day": "חמישי",
+        "time": "15:00",
+        "duration": 45,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "מרגולין",
+        "studentFirstName": "הדר",
+        "studentFullName": "מרגולין הדר",
+        "day": "חמישי",
+        "time": "15:45",
+        "duration": 60,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "סויסה",
+        "studentFirstName": "פז",
+        "studentFullName": "סויסה פז",
+        "day": "חמישי",
+        "time": "16:45",
+        "duration": 30,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "סויסה",
+        "studentFirstName": "אגם",
+        "studentFullName": "סויסה אגם",
+        "day": "חמישי",
+        "time": "17:15",
+        "duration": 45,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "בירמן",
+        "studentFirstName": "ביאנקה",
+        "studentFullName": "בירמן ביאנקה",
+        "day": "חמישי",
+        "time": "18:00",
+        "duration": 30,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "מילס",
+        "studentFirstName": "מלאכי",
+        "studentFullName": "מילס מלאכי",
+        "day": "חמישי",
+        "time": "18:30",
+        "duration": 45,
+        "room": "16"
+      },
+      {
+        "studentFamilyName": "שטראוס",
+        "studentFirstName": "שושנה",
+        "studentFullName": "שטראוס שושנה",
+        "day": "חמישי",
+        "time": "19:15",
+        "duration": 45,
+        "room": "16"
+      }
+    ]
+  }
+}

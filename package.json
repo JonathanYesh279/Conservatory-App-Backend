@@ -50,6 +50,7 @@
     "mongodb-memory-server": "^10.1.4",
     "nodemon": "^3.1.9",
     "supertest": "^7.0.0",
-    "vitest": "^3.0.8"
+    "vitest": "^3.0.8",
+    "xlsx": "^0.18.5"
   }
 }
