@@ -431,9 +431,22 @@ async function bulkCreateTheoryLessons(bulkData) {
     }
     
     // Generate dates for theory lessons using timezone-aware helper
+    console.log(`📅 Bulk creation: Generating dates for dayOfWeek=${dayOfWeek} (0=Sun, 6=Sat) from ${startDate} to ${endDate}`);
     const utcDates = generateDatesForDayOfWeek(startDate, endDate, dayOfWeek, excludeDates || []);
 
     console.log(`Generated ${utcDates.length} dates for theory lessons`);
+
+    // CRITICAL: Verify generated dates match the requested day of week
+    if (utcDates.length > 0) {
+      const firstDate = createAppDate(utcDates[0]);
+      const firstDateDay = firstDate.day();
+      if (firstDateDay !== dayOfWeek) {
+        console.error(`❌ CRITICAL DATE MISMATCH: Requested dayOfWeek=${dayOfWeek} but first generated date ${firstDate.format('YYYY-MM-DD')} has dayOfWeek=${firstDateDay}`);
+        console.error(`   Input startDate: ${startDate}, Input endDate: ${endDate}`);
+        throw new Error(`Date generation mismatch: requested day ${dayOfWeek} but generated dates for day ${firstDateDay}`);
+      }
+      console.log(`✅ Date verification passed: First date ${firstDate.format('YYYY-MM-DD')} is dayOfWeek=${firstDateDay}`);
+    }
 
     // Create theory lesson documents with proper timezone handling
     const currentTime = now();

@@ -936,7 +936,11 @@ function _buildCriteria(filterBy) {
   }
 
   if (filterBy.instrument) {
-    criteria['personalInfo.instrument'] = filterBy.instrument;
+    // Use regex for flexible instrument matching (e.g., "כינור" matches "כינור בארוק")
+    criteria['professionalInfo.instrument'] = {
+      $regex: filterBy.instrument,
+      $options: 'i'
+    };
   }
 
   // Filter by role - checks if the role is in the roles array

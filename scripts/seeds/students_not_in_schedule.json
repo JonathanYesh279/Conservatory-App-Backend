@@ -1,0 +1,168 @@
+[
+  {
+    "_id": "12e197c62a28400d860932c4",
+    "personalInfo": {
+      "fullName": "מקובצקי הלל",
+      "phone": "524373279",
+      "age": null,
+      "address": "רעננה",
+      "parentName": "בורשטיין רות",
+      "parentPhone": "524373279",
+      "parentEmail": "ruthburstein@gmail.com",
+      "studentEmail": "ruthburstein@gmail.com"
+    },
+    "academicInfo": {
+      "instrumentProgress": [
+        {
+          "instrumentName": "כינור",
+          "isPrimary": true,
+          "currentStage": 1,
+          "tests": {
+            "stageTest": {
+              "status": "לא נבחן",
+              "lastTestDate": null,
+              "nextTestDate": null,
+              "notes": ""
+            },
+            "technicalTest": {
+              "status": "לא נבחן",
+              "lastTestDate": null,
+              "nextTestDate": null,
+              "notes": ""
+            }
+          }
+        }
+      ],
+      "class": null
+    },
+    "enrollments": {
+      "orchestraIds": [],
+      "ensembleIds": [],
+      "schoolYears": [],
+      "theoryLessonIds": [],
+      "teacherIds": [
+        "84f841e595e24a9fadd2983e"
+      ]
+    },
+    "teacherAssignments": [
+      {
+        "teacherId": "84f841e595e24a9fadd2983e",
+        "day": "שני",
+        "time": "17:30",
+        "duration": 30,
+        "isActive": true,
+        "startDate": "2026-01-17T21:38:16.794538+00:00",
+        "isRecurring": true,
+        "createdAt": "2026-01-17T21:38:16.794538+00:00",
+        "updatedAt": "2026-01-17T21:38:16.794538+00:00"
+      },
+      {
+        "teacherId": "84f841e595e24a9fadd2983e",
+        "day": "שישי",
+        "time": "15:30",
+        "duration": 30,
+        "isActive": true,
+        "startDate": "2026-01-17T21:38:16.794538+00:00",
+        "isRecurring": true,
+        "createdAt": "2026-01-17T21:38:16.794538+00:00",
+        "updatedAt": "2026-01-17T21:38:16.794538+00:00"
+      }
+    ],
+    "scheduleInfo": {
+      "day": "שני",
+      "startTime": "17:30",
+      "endTime": "18:00",
+      "duration": 30,
+      "location": "חדר סטודיו 1",
+      "notes": null,
+      "isActive": true,
+      "createdAt": "2026-01-17T21:38:16.794538+00:00",
+      "updatedAt": "2026-01-17T21:38:16.794538+00:00"
+    },
+    "createdAt": "2026-01-17T21:38:16.794538+00:00",
+    "updatedAt": "2026-01-17T21:38:16.794538+00:00"
+  },
+  {
+    "_id": "0c364e7d3b9b471ea4a4def1",
+    "personalInfo": {
+      "fullName": "מעוז תהל-אור ליה",
+      "phone": "543453546",
+      "age": null,
+      "address": "עקיבא, רעננה",
+      "parentName": "מעוז דרור",
+      "parentPhone": "543453546",
+      "parentEmail": "drorrmaoz@aol.com",
+      "studentEmail": "drorrmaoz@aol.com"
+    },
+    "academicInfo": {
+      "instrumentProgress": [
+        {
+          "instrumentName": "כינור",
+          "isPrimary": true,
+          "currentStage": 1,
+          "tests": {
+            "stageTest": {
+              "status": "לא נבחן",
+              "lastTestDate": null,
+              "nextTestDate": null,
+              "notes": ""
+            },
+            "technicalTest": {
+              "status": "לא נבחן",
+              "lastTestDate": null,
+              "nextTestDate": null,
+              "notes": ""
+            }
+          }
+        }
+      ],
+      "class": "2.0"
+    },
+    "enrollments": {
+      "orchestraIds": [],
+      "ensembleIds": [],
+      "schoolYears": [],
+      "theoryLessonIds": [],
+      "teacherIds": [
+        "84f841e595e24a9fadd2983e"
+      ]
+    },
+    "teacherAssignments": [
+      {
+        "teacherId": "84f841e595e24a9fadd2983e",
+        "day": "שני",
+        "time": "15:30",
+        "duration": 30,
+        "isActive": true,
+        "startDate": "2026-01-17T21:38:16.794538+00:00",
+        "isRecurring": true,
+        "createdAt": "2026-01-17T21:38:16.794538+00:00",
+        "updatedAt": "2026-01-17T21:38:16.794538+00:00"
+      },
+      {
+        "teacherId": "84f841e595e24a9fadd2983e",
+        "day": "חמישי",
+        "time": "18:30",
+        "duration": 30,
+        "isActive": true,
+        "startDate": "2026-01-17T21:38:16.794538+00:00",
+        "isRecurring": true,
+        "createdAt": "2026-01-17T21:38:16.794538+00:00",
+        "updatedAt": "2026-01-17T21:38:16.794538+00:00"
+      }
+    ],
+    "scheduleInfo": {
+      "day": "שני",
+      "startTime": "15:30",
+      "endTime": "16:00",
+      "duration": 30,
+      "location": "חדר 7",
+      "notes": null,
+      "isActive": true,
+      "createdAt": "2026-01-17T21:38:16.794538+00:00",
+      "updatedAt": "2026-01-17T21:38:16.794538+00:00"
+    },
+    "createdAt": "2026-01-17T21:38:16.794538+00:00",
+    "updatedAt": "2026-01-17T21:38:16.794538+00:00"
+  }
+]

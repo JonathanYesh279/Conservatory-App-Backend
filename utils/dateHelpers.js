@@ -228,28 +228,34 @@ export const generateDatesForDayOfWeek = (startDate, endDate, dayOfWeek, exclude
   const dates = [];
   const start = createAppDate(startDate);
   const end = createAppDate(endDate);
-  
+
   // Find first occurrence of the specified day of week
   let current = start.clone();
   const daysToAdd = (dayOfWeek - current.day() + 7) % 7;
   current = current.add(daysToAdd, 'day');
-  
+
   // Convert exclude dates to comparable format
   const excludeSet = new Set(
     excludeDates.map(date => createAppDate(date).format('YYYY-MM-DD'))
   );
-  
+
   // Generate weekly recurring dates
   while (current.isSameOrBefore(end, 'day')) {
     const dateString = current.format('YYYY-MM-DD');
-    
+
     if (!excludeSet.has(dateString)) {
-      dates.push(toUTC(current));
+      // CRITICAL FIX: Set time to noon (12:00) before converting to UTC
+      // This prevents the date from shifting to the previous day when
+      // midnight in Israel time (UTC+2/+3) converts to the previous day in UTC.
+      // Example: Oct 26 00:00 Israel = Oct 25 22:00 UTC (wrong day!)
+      //          Oct 26 12:00 Israel = Oct 26 10:00 UTC (correct day!)
+      const noonDate = current.hour(12).minute(0).second(0).millisecond(0);
+      dates.push(toUTC(noonDate));
     }
-    
+
     current = current.add(7, 'day');
   }
-  
+
   return dates;
 };
 

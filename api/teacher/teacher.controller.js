@@ -33,6 +33,7 @@ async function getTeachers(req, res, next) {
   try {
     const filterBy = {
       name: req.query.name,
+      instrument: req.query.instrument,
       role: req.query.role,
       studentId: req.query.studentId,
       orchestraId: req.query.orchestraId,

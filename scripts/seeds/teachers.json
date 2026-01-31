@@ -1,0 +1,584 @@
+[
+  {
+    "_id": "4dd6966241ab77007aaf1aed",
+    "personalInfo": {
+      "fullName": "סבטלנה אברהם",
+      "phone": "054-2192466",
+      "email": null
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "כינור",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": []
+    },
+    "schedule": [],
+    "studentIds": []
+  },
+  {
+    "_id": "adc1ff3192a3aaed640612a9",
+    "personalInfo": {
+      "fullName": "אנה ארונזון",
+      "phone": null,
+      "email": "anna.aronzon1@gmail.com"
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "כינור",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": [
+        {
+          "_id": "85c7914bd9711473befd6ed8",
+          "day": "שני",
+          "startTime": "15:00",
+          "endTime": "19:30",
+          "totalDuration": 270,
+          "location": "חדר 7",
+          "notes": null,
+          "isActive": true,
+          "recurring": {
+            "isRecurring": true,
+            "excludeDates": []
+          }
+        },
+        {
+          "_id": "148d2c696a90cc6a2c3b8e74",
+          "day": "חמישי",
+          "startTime": "15:30",
+          "endTime": "20:30",
+          "totalDuration": 300,
+          "location": "חדר 7",
+          "notes": null,
+          "isActive": true,
+          "recurring": {
+            "isRecurring": true,
+            "excludeDates": []
+          }
+        }
+      ]
+    },
+    "schedule": [
+      {
+        "studentId": "d19182b2e4789b15948d4b22",
+        "studentName": "רויטמן רוני",
+        "day": "שני",
+        "startTime": "15:00",
+        "endTime": "15:30",
+        "duration": 30,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "b6807230d83a3ff833dd8d59",
+        "studentName": "כהן פרל",
+        "day": "שני",
+        "startTime": "16:00",
+        "endTime": "16:45",
+        "duration": 45,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "c5844c0207b8a055111c6965",
+        "studentName": "פאסי יעל",
+        "day": "שני",
+        "startTime": "16:45",
+        "endTime": "17:30",
+        "duration": 45,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "1599c79378e4cb07e0a47852",
+        "studentName": "פרץ ליהיא",
+        "day": "שני",
+        "startTime": "17:30",
+        "endTime": "18:30",
+        "duration": 60,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "3c0342b9c0056d609a21d7c2",
+        "studentName": "מעוז מתן",
+        "day": "שני",
+        "startTime": "19:00",
+        "endTime": "19:30",
+        "duration": 30,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "d19182b2e4789b15948d4b22",
+        "studentName": "רויטמן רוני",
+        "day": "חמישי",
+        "startTime": "15:30",
+        "endTime": "16:00",
+        "duration": 30,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "c5844c0207b8a055111c6965",
+        "studentName": "פאסי יעל",
+        "day": "חמישי",
+        "startTime": "16:45",
+        "endTime": "17:30",
+        "duration": 45,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "1599c79378e4cb07e0a47852",
+        "studentName": "פרץ ליהיא",
+        "day": "חמישי",
+        "startTime": "17:30",
+        "endTime": "18:30",
+        "duration": 60,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "3c0342b9c0056d609a21d7c2",
+        "studentName": "מעוז מתן",
+        "day": "חמישי",
+        "startTime": "19:45",
+        "endTime": "20:30",
+        "duration": 45,
+        "location": "חדר 7",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      }
+    ],
+    "studentIds": [
+      "1599c79378e4cb07e0a47852",
+      "3c0342b9c0056d609a21d7c2",
+      "b6807230d83a3ff833dd8d59",
+      "c5844c0207b8a055111c6965",
+      "d19182b2e4789b15948d4b22"
+    ]
+  },
+  {
+    "_id": "4c86b826875f285548991448",
+    "personalInfo": {
+      "fullName": "מרסל ברגמן",
+      "phone": "052-6-610884",
+      "email": "bergman@gmail.com"
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "צ'לו מתקדמים",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": [
+        {
+          "_id": "7f585fb44899dc1079a45782",
+          "day": "ראשון",
+          "startTime": "15:15",
+          "endTime": "15:45",
+          "totalDuration": 30,
+          "location": "חדר 1",
+          "notes": null,
+          "isActive": true,
+          "recurring": {
+            "isRecurring": true,
+            "excludeDates": []
+          }
+        },
+        {
+          "_id": "3ee344c1842213682ba10297",
+          "day": "חמישי",
+          "startTime": "17:15",
+          "endTime": "17:45",
+          "totalDuration": 30,
+          "location": "חדר 1",
+          "notes": null,
+          "isActive": true,
+          "recurring": {
+            "isRecurring": true,
+            "excludeDates": []
+          }
+        }
+      ]
+    },
+    "schedule": [
+      {
+        "studentId": "07f8244696f86695badfd993",
+        "studentName": "קרבלניק בן",
+        "day": "ראשון",
+        "startTime": "15:15",
+        "endTime": "15:45",
+        "duration": 30,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "07f8244696f86695badfd993",
+        "studentName": "קרבלניק בן",
+        "day": "חמישי",
+        "startTime": "17:15",
+        "endTime": "17:45",
+        "duration": 30,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      }
+    ],
+    "studentIds": [
+      "07f8244696f86695badfd993"
+    ]
+  },
+  {
+    "_id": "f5ac2dde9ba92d9f58a35145",
+    "personalInfo": {
+      "fullName": "סשה דולוב",
+      "phone": "052-7265423",
+      "email": null
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "צ'לו",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": []
+    },
+    "schedule": [],
+    "studentIds": []
+  },
+  {
+    "_id": "5d6bf4334015a2425e4eb65b",
+    "personalInfo": {
+      "fullName": "אלה סלטקין",
+      "phone": "052-4409312",
+      "email": null
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "כינור",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": []
+    },
+    "schedule": [],
+    "studentIds": []
+  },
+  {
+    "_id": "9b5817cc00d45c59e841e86e",
+    "personalInfo": {
+      "fullName": "מרינה זיסקינד",
+      "phone": "054-6-665847",
+      "email": null
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "כינור / ויולה",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": []
+    },
+    "schedule": [],
+    "studentIds": []
+  },
+  {
+    "_id": "671976982ca24c8e6e1f5dfc",
+    "personalInfo": {
+      "fullName": "ורוניקה לוין",
+      "phone": "054-6-312877",
+      "email": null
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "כינור",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": []
+    },
+    "schedule": [],
+    "studentIds": []
+  },
+  {
+    "_id": "43d4738984b91210df8c3154",
+    "personalInfo": {
+      "fullName": "אלונה קוטליאר",
+      "phone": "054-5-997257",
+      "email": null
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "כינור",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": []
+    },
+    "schedule": [],
+    "studentIds": []
+  },
+  {
+    "_id": "7d8f6b146ea9e36f61c2c9d6",
+    "personalInfo": {
+      "fullName": "אלסיה פלדמן",
+      "phone": "054-4790175",
+      "email": null
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "צ'לו",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": []
+    },
+    "schedule": [],
+    "studentIds": []
+  },
+  {
+    "_id": "df90b04e1b8aa81567d5239f",
+    "personalInfo": {
+      "fullName": "לובה רבין",
+      "phone": "054-7-655245",
+      "email": "lubarabin@gmail.com"
+    },
+    "roles": [
+      "מורה"
+    ],
+    "professionalInfo": {
+      "instrument": "צ'לו",
+      "isActive": true
+    },
+    "teaching": {
+      "timeBlocks": [
+        {
+          "_id": "c645a9a7c50e568de77aa672",
+          "day": "שני",
+          "startTime": "15:15",
+          "endTime": "21:15",
+          "totalDuration": 360,
+          "location": "חדר 1",
+          "notes": null,
+          "isActive": true,
+          "recurring": {
+            "isRecurring": true,
+            "excludeDates": []
+          }
+        },
+        {
+          "_id": "133c2ae4353a66f504a5a4eb",
+          "day": "רביעי",
+          "startTime": "15:15",
+          "endTime": "21:00",
+          "totalDuration": 345,
+          "location": "חדר 1",
+          "notes": null,
+          "isActive": true,
+          "recurring": {
+            "isRecurring": true,
+            "excludeDates": []
+          }
+        }
+      ]
+    },
+    "schedule": [
+      {
+        "studentId": "353fcf6579d5c14fb5caa4bc",
+        "studentName": "מיכנובסקי איתן",
+        "day": "שני",
+        "startTime": "15:15",
+        "endTime": "16:15",
+        "duration": 60,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "b8ad122e4ae8a9e72eba0eed",
+        "studentName": "עין צבי גלעד",
+        "day": "שני",
+        "startTime": "16:45",
+        "endTime": "17:30",
+        "duration": 45,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "d2004fbee08a1ba5d57a0c0f",
+        "studentName": "פיש יונתן",
+        "day": "שני",
+        "startTime": "17:45",
+        "endTime": "18:30",
+        "duration": 45,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "67ee04487aa36951425f0bfd",
+        "studentName": "שם טוב שי",
+        "day": "שני",
+        "startTime": "18:30",
+        "endTime": "19:30",
+        "duration": 60,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "03bc0d93c8501fda3a144041",
+        "studentName": "זלצבורג ברטה",
+        "day": "שני",
+        "startTime": "19:30",
+        "endTime": "20:15",
+        "duration": 45,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "61e3535e2df1e19ec4da69f2",
+        "studentName": "הרבר מאיה",
+        "day": "שני",
+        "startTime": "20:15",
+        "endTime": "21:15",
+        "duration": 60,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "125fd13c83138ec97d26c6b9",
+        "studentName": "גולוב תום",
+        "day": "רביעי",
+        "startTime": "15:15",
+        "endTime": "15:45",
+        "duration": 30,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "d2004fbee08a1ba5d57a0c0f",
+        "studentName": "פיש יונתן",
+        "day": "רביעי",
+        "startTime": "15:45",
+        "endTime": "16:15",
+        "duration": 30,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "353fcf6579d5c14fb5caa4bc",
+        "studentName": "מיכנובסקי איתן",
+        "day": "רביעי",
+        "startTime": "17:00",
+        "endTime": "18:00",
+        "duration": 60,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "b8ad122e4ae8a9e72eba0eed",
+        "studentName": "עין צבי גלעד",
+        "day": "רביעי",
+        "startTime": "18:30",
+        "endTime": "19:15",
+        "duration": 45,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "03bc0d93c8501fda3a144041",
+        "studentName": "זלצבורג ברטה",
+        "day": "רביעי",
+        "startTime": "19:15",
+        "endTime": "20:00",
+        "duration": 45,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      },
+      {
+        "studentId": "61e3535e2df1e19ec4da69f2",
+        "studentName": "הרבר מאיה",
+        "day": "רביעי",
+        "startTime": "20:00",
+        "endTime": "21:00",
+        "duration": 60,
+        "location": "חדר 1",
+        "isRecurring": true,
+        "recurringType": "weekly",
+        "status": "active"
+      }
+    ],
+    "studentIds": [
+      "03bc0d93c8501fda3a144041",
+      "125fd13c83138ec97d26c6b9",
+      "353fcf6579d5c14fb5caa4bc",
+      "61e3535e2df1e19ec4da69f2",
+      "67ee04487aa36951425f0bfd",
+      "b8ad122e4ae8a9e72eba0eed",
+      "d2004fbee08a1ba5d57a0c0f"
+    ]
+  }
+]

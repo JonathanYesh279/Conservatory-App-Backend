@@ -46,36 +46,55 @@ async function getTeacherLessons(teacherId, options = {}) {
     }
 
     // Query students with active assignments to this teacher
+    // Support both data locations: root-level teacherAssignments AND enrollments.teacherAssignments
     const studentCollection = await getCollection('student');
-    
+
+    // Build match stage to check BOTH paths where teacherAssignments might be stored
     const matchStage = {
-      'teacherAssignments.teacherId': teacherId,
-      'teacherAssignments.isActive': { $ne: false },
+      $or: [
+        {
+          'teacherAssignments.teacherId': teacherId,
+          'teacherAssignments.isActive': { $ne: false }
+        },
+        {
+          'enrollments.teacherAssignments.teacherId': teacherId,
+          'enrollments.teacherAssignments.isActive': { $ne: false }
+        }
+      ],
       isActive: { $ne: false }
     };
 
     // Add optional filters
-    if (options.day) {
-      matchStage['teacherAssignments.day'] = options.day;
-    }
-    
     if (options.studentId) {
       matchStage._id = ObjectId.createFromHexString(options.studentId);
     }
 
-    // Build aggregation pipeline
+    // Build aggregation pipeline that handles both data locations
     const pipeline = [
       { $match: matchStage },
-      { $unwind: '$teacherAssignments' },
+      // Create a unified teacherAssignments field from both possible locations
+      {
+        $addFields: {
+          _unifiedAssignments: {
+            $cond: {
+              if: { $gt: [{ $size: { $ifNull: ['$teacherAssignments', []] } }, 0] },
+              then: '$teacherAssignments',
+              else: { $ifNull: ['$enrollments.teacherAssignments', []] }
+            }
+          }
+        }
+      },
+      { $unwind: '$_unifiedAssignments' },
       {
         $match: {
-          'teacherAssignments.teacherId': teacherId,
-          'teacherAssignments.isActive': { $ne: false }
+          '_unifiedAssignments.teacherId': teacherId,
+          '_unifiedAssignments.isActive': { $ne: false },
+          ...(options.day ? { '_unifiedAssignments.day': options.day } : {})
         }
       },
       {
         $project: {
-          lessonId: '$teacherAssignments._id',
+          lessonId: '$_unifiedAssignments._id',
           studentId: '$_id',
           studentName: '$personalInfo.fullName',
           studentPhone: '$personalInfo.phone',
@@ -93,24 +112,24 @@ async function getTeacherLessons(teacherId, options = {}) {
             ]
           },
           // Lesson schedule information
-          day: '$teacherAssignments.day',
-          time: '$teacherAssignments.time',
-          duration: '$teacherAssignments.duration',
-          location: '$teacherAssignments.location',
-          notes: '$teacherAssignments.notes',
+          day: '$_unifiedAssignments.day',
+          time: '$_unifiedAssignments.time',
+          duration: '$_unifiedAssignments.duration',
+          location: '$_unifiedAssignments.location',
+          notes: '$_unifiedAssignments.notes',
           // Schedule metadata
-          scheduleSlotId: '$teacherAssignments.scheduleSlotId',
-          timeBlockId: '$teacherAssignments.timeBlockId',
-          lessonId: '$teacherAssignments.lessonId',
+          scheduleSlotId: '$_unifiedAssignments.scheduleSlotId',
+          timeBlockId: '$_unifiedAssignments.timeBlockId',
+          lessonId: '$_unifiedAssignments.lessonId',
           // Timing information
-          startDate: '$teacherAssignments.startDate',
-          endDate: '$teacherAssignments.endDate',
-          isRecurring: '$teacherAssignments.isRecurring',
+          startDate: '$_unifiedAssignments.startDate',
+          endDate: '$_unifiedAssignments.endDate',
+          isRecurring: '$_unifiedAssignments.isRecurring',
           // Enhanced schedule info if available
-          scheduleInfo: '$teacherAssignments.scheduleInfo',
+          scheduleInfo: '$_unifiedAssignments.scheduleInfo',
           // Metadata
-          createdAt: '$teacherAssignments.createdAt',
-          updatedAt: '$teacherAssignments.updatedAt'
+          createdAt: '$_unifiedAssignments.createdAt',
+          updatedAt: '$_unifiedAssignments.updatedAt'
         }
       },
       {
