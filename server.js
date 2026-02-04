@@ -33,6 +33,7 @@ import cleanupRoutes from './api/admin/cleanup.route.js';
 import lessonRoutes from './api/lesson/lesson.route.js';
 import { invitationController } from './api/teacher/invitation.controller.js';
 import { cascadeSystemInitializer } from './services/cascadeSystemInitializer.js';
+import { errorHandler } from './middleware/error.handler.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(_filename);
@@ -294,7 +295,10 @@ if (NODE_ENV === 'production') {
   });
 }
 
-// 404 handler - Must come AFTER production routes
+// Global error handler - Must come BEFORE 404 handler
+app.use(errorHandler);
+
+// 404 handler - Must come AFTER production routes and error handler
 app.use((req, res) => {
   console.log('404 Not Found:', req.method, req.originalUrl);
   res.status(404).json({

@@ -203,7 +203,29 @@ async function addTeacher(req, res, next) {
     res.status(201).json({ success: true, data: addedTeacher })
   } catch (err) {
     console.error(`Error adding teacher: ${err.message}`);
-    
+
+    // Handle validation errors - parse field-level errors from the message
+    if (err.message && err.message.startsWith('Error adding teacher: Invalid teacher data:')) {
+      const validationErrors = {};
+      const errorParts = err.message.replace('Error adding teacher: Invalid teacher data: ', '').split('. ');
+
+      errorParts.forEach(part => {
+        const fieldMatch = part.match(/"([^"]+)"/);
+        if (fieldMatch) {
+          const fieldPath = fieldMatch[1];
+          const message = part.replace(`"${fieldPath}" `, '');
+          validationErrors[fieldPath] = message;
+        }
+      });
+
+      return res.status(400).json({
+        error: 'שגיאת אימות נתונים',
+        code: 'VALIDATION_ERROR',
+        validationErrors: validationErrors,
+        message: err.message
+      });
+    }
+
     // Handle duplicate detection errors
     if (err.code === 'DUPLICATE_TEACHER_DETECTED') {
       return res.status(409).json({
@@ -212,7 +234,7 @@ async function addTeacher(req, res, next) {
         details: err.duplicateInfo
       });
     }
-    
+
     // Handle email duplicate errors
     if (err.code === 'EMAIL_DUPLICATE') {
       return res.status(409).json({
@@ -221,7 +243,7 @@ async function addTeacher(req, res, next) {
         suggestion: 'A teacher with this email already exists. Please check if you need to resend invitation or update existing teacher.'
       });
     }
-    
+
     next(err)
   }
 }
@@ -234,7 +256,31 @@ async function updateTeacher(req, res, next) {
     res.json({ success: true, data: updatedTeacher })
   } catch (err) {
     console.error(`Error updating teacher: ${err.message}`);
-    
+
+    // Handle validation errors - parse field-level errors from the message
+    if (err.message && err.message.startsWith('Invalid teacher data:')) {
+      // Extract field errors from Joi-style error message
+      const validationErrors = {};
+      const errorParts = err.message.replace('Invalid teacher data: ', '').split('. ');
+
+      errorParts.forEach(part => {
+        // Match patterns like "personalInfo.email" must be a valid email
+        const fieldMatch = part.match(/"([^"]+)"/);
+        if (fieldMatch) {
+          const fieldPath = fieldMatch[1];
+          const message = part.replace(`"${fieldPath}" `, '');
+          validationErrors[fieldPath] = message;
+        }
+      });
+
+      return res.status(400).json({
+        error: 'שגיאת אימות נתונים',
+        code: 'VALIDATION_ERROR',
+        validationErrors: validationErrors,
+        message: err.message
+      });
+    }
+
     // Handle duplicate detection errors
     if (err.code === 'DUPLICATE_TEACHER_DETECTED') {
       return res.status(409).json({
@@ -243,7 +289,7 @@ async function updateTeacher(req, res, next) {
         details: err.duplicateInfo
       });
     }
-    
+
     // Handle email duplicate errors
     if (err.code === 'EMAIL_DUPLICATE') {
       return res.status(409).json({
@@ -252,8 +298,8 @@ async function updateTeacher(req, res, next) {
         suggestion: 'A teacher with this email already exists. Please check if you need to resend invitation or update existing teacher.'
       });
     }
-    
-    next(err) 
+
+    next(err)
   }
 }
 
