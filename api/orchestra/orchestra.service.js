@@ -270,31 +270,13 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
       )
     }
 
-    // 🔥 CRITICAL FIX: Preserve memberIds and rehearsalIds from existing document
-    // The frontend may send partial updates without these arrays, and the validation
-    // schema applies default([]) which would wipe out existing data.
-    // Only use the validated value if it was EXPLICITLY provided in the original request
-    // AND contains actual data (not just an empty default).
+    // ALWAYS preserve memberIds and rehearsalIds from the existing document.
+    // These arrays are only modified through their dedicated endpoints
+    // (addMember/removeMember for members, rehearsal service for rehearsals).
+    // The updateOrchestra endpoint is for basic fields only (name, type, location, etc).
     const updateValue = { ...value }
-
-    // Preserve memberIds: Only update if explicitly provided with actual member IDs
-    // The orchestraToUpdate check ensures we use frontend intent, not validation defaults
-    if (!orchestraToUpdate.memberIds || orchestraToUpdate.memberIds.length === 0) {
-      // Frontend didn't send memberIds or sent empty array - preserve existing
-      updateValue.memberIds = existingOrchestra.memberIds || []
-      logger.debug({ orchestraId, count: updateValue.memberIds.length }, 'Preserving existing memberIds')
-    } else {
-      logger.debug({ orchestraId, count: orchestraToUpdate.memberIds.length }, 'Frontend sent explicit memberIds')
-    }
-
-    // Preserve rehearsalIds: Only update if explicitly provided with actual rehearsal IDs
-    if (!orchestraToUpdate.rehearsalIds || orchestraToUpdate.rehearsalIds.length === 0) {
-      // Frontend didn't send rehearsalIds or sent empty array - preserve existing
-      updateValue.rehearsalIds = existingOrchestra.rehearsalIds || []
-      logger.debug({ orchestraId, count: updateValue.rehearsalIds.length }, 'Preserving existing rehearsalIds')
-    } else {
-      logger.debug({ orchestraId, count: orchestraToUpdate.rehearsalIds.length }, 'Frontend sent explicit rehearsalIds')
-    }
+    updateValue.memberIds = existingOrchestra.memberIds || []
+    updateValue.rehearsalIds = existingOrchestra.rehearsalIds || []
 
     // Add lastModified timestamp
     updateValue.lastModified = new Date()
