@@ -163,6 +163,22 @@ notes.txt
 *.notes
 planning/
 
+# Markdown / documentation files (AI-generated guides, etc.)
+*.md
+
+# Scripts (migrations, seeds, one-off fixes, utilities)
+scripts/
+
+# Reports and test result JSON files
+reports/
+response.json
+test-results-*.json
+
+# Junk / one-off test files
+add-test-theory-direct.js
+bash.exe.stackdump
+*.stackdump
+
 # Archive files that might contain sensitive data
 *.zip
 *.tar
