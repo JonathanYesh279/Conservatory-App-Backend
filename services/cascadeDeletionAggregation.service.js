@@ -433,11 +433,11 @@ export const cascadeDeletionAggregationService = {
 
       // Find all teacher relationships
       const teacherImpact = await db.collection('teacher').aggregate([
-        { 
-          $match: { 
+        {
+          $match: {
             $or: [
               { 'teaching.studentIds': studentObjectId },
-              { 'teaching.schedule.studentId': studentObjectId }
+              { 'teaching.timeBlocks.assignedLessons.studentId': studentId }
             ],
             isActive: true
           }
@@ -447,11 +447,22 @@ export const cascadeDeletionAggregationService = {
             teacherId: '$_id',
             teacherName: { $concat: ['$personalInfo.firstName', ' ', '$personalInfo.lastName'] },
             studentInTeaching: { $in: [studentObjectId, '$teaching.studentIds'] },
-            scheduleSlotsCount: {
+            timeBlockLessonsCount: {
               $size: {
-                $filter: {
-                  input: { $ifNull: ['$teaching.schedule', []] },
-                  cond: { $eq: ['$$this.studentId', studentObjectId] }
+                $reduce: {
+                  input: { $ifNull: ['$teaching.timeBlocks', []] },
+                  initialValue: [],
+                  in: {
+                    $concatArrays: [
+                      '$$value',
+                      {
+                        $filter: {
+                          input: { $ifNull: ['$$this.assignedLessons', []] },
+                          cond: { $eq: ['$$this.studentId', studentId] }
+                        }
+                      }
+                    ]
+                  }
                 }
               }
             }

@@ -217,11 +217,9 @@ async function createTimeBlocksFromSlots(results) {
       if (!results.dryRun && timeBlocks.length > 0) {
         await teacherCollection.updateOne(
           { _id: ObjectId.createFromHexString(analysis.teacherId) },
-          { 
-            $set: { 
-              'teaching.timeBlocks': timeBlocks,
-              updatedAt: new Date()
-            }
+          {
+            $push: { 'teaching.timeBlocks': { $each: timeBlocks } },
+            $set: { updatedAt: new Date() }
           }
         );
       }
@@ -250,7 +248,7 @@ async function migrateStudentAssignments(results) {
       
       // For each assigned slot, find corresponding time block and create lesson assignment
       for (const slot of originalSlots) {
-        if (!slot.studentId || !slot.isAvailable === false) continue;
+        if (!slot.studentId || slot.isAvailable === false) continue;
         
         // Find the time block that should contain this slot
         const containingBlock = timeBlocks.find(block => 
@@ -267,8 +265,8 @@ async function migrateStudentAssignments(results) {
         const lessonAssignment = {
           _id: new ObjectId(),
           studentId: slot.studentId,
-          lessonStartTime: slot.startTime,
-          lessonEndTime: slot.endTime || addMinutesToTime(slot.startTime, slot.duration),
+          startTime: slot.startTime,
+          endTime: slot.endTime || addMinutesToTime(slot.startTime, slot.duration),
           duration: slot.duration || 60,
           assignmentDate: slot.createdAt || new Date(),
           isActive: true,
@@ -304,7 +302,7 @@ async function migrateStudentAssignments(results) {
             scheduleInfo: {
               day: slot.day,
               startTime: slot.startTime,
-              endTime: lessonAssignment.lessonEndTime,
+              endTime: lessonAssignment.endTime,
               duration: slot.duration || 60,
               location: containingBlock.location
             },
@@ -317,13 +315,26 @@ async function migrateStudentAssignments(results) {
             }
           };
 
-          await studentCollection.updateOne(
-            { _id: ObjectId.createFromHexString(slot.studentId) },
-            { 
-              $push: { teacherAssignments: teacherAssignment },
-              $set: { updatedAt: new Date() }
+          // Only push if no active assignment for this teacher already exists
+          const existingAssignment = await studentCollection.findOne({
+            _id: ObjectId.createFromHexString(slot.studentId),
+            'teacherAssignments': {
+              $elemMatch: {
+                teacherId: teacher._id.toString(),
+                isActive: true
+              }
             }
-          );
+          });
+
+          if (!existingAssignment) {
+            await studentCollection.updateOne(
+              { _id: ObjectId.createFromHexString(slot.studentId) },
+              {
+                $push: { teacherAssignments: teacherAssignment },
+                $set: { updatedAt: new Date() }
+              }
+            );
+          }
         }
 
         results.lessonsPreserved++;
@@ -397,10 +408,13 @@ export async function createBackup() {
     students: students,
     version: '1.0'
   };
-  
-  // In a real implementation, you'd save this to a file or backup collection
-  console.log(`Backup created with ${teachers.length} teachers and ${students.length} students`);
-  
+
+  // Persist backup to MongoDB
+  const backupCollection = await getCollection('migration_backups');
+  await backupCollection.insertOne(backup);
+
+  console.log(`Backup created and saved with ${teachers.length} teachers and ${students.length} students`);
+
   return backup;
 }
 
@@ -410,11 +424,11 @@ export async function rollbackMigration() {
   const teacherCollection = await getCollection('teacher');
   const studentCollection = await getCollection('student');
   
-  // Remove time blocks
+  // Only remove migrated time blocks (preserve UI-created ones)
   await teacherCollection.updateMany(
-    {},
-    { 
-      $unset: { 'teaching.timeBlocks': '' },
+    { 'teaching.timeBlocks.migrationInfo.migratedAt': { $exists: true } },
+    {
+      $pull: { 'teaching.timeBlocks': { 'migrationInfo.migratedAt': { $exists: true } } },
       $set: { updatedAt: new Date() }
     }
   );

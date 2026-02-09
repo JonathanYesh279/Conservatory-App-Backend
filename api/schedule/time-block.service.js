@@ -1069,35 +1069,16 @@ async function checkStudentScheduleConflict(studentId, excludeTeacherId, day, st
   const teacherCollection = await getCollection('teacher');
   
   const teachers = await teacherCollection
-    .find({ 
-      $or: [
-        { 'teaching.schedule.studentId': studentId },
-        { 'teaching.timeBlocks.assignedLessons.studentId': studentId }
-      ]
-    })
+    .find({ 'teaching.timeBlocks.assignedLessons.studentId': studentId })
     .toArray();
-  
+
   const lessonStart = timeToMinutes(startTime);
   const lessonEnd = lessonStart + duration;
-  
+
   for (const teacher of teachers) {
     if (teacher._id.toString() === excludeTeacherId) continue;
-    
-    // Check old schedule format
-    if (teacher.teaching?.schedule) {
-      const conflicts = teacher.teaching.schedule.filter(slot => {
-        if (slot.studentId !== studentId || slot.day !== day) return false;
-        
-        const slotStart = timeToMinutes(slot.startTime);
-        const slotEnd = slotStart + slot.duration;
-        
-        return (lessonStart < slotEnd) && (slotStart < lessonEnd);
-      });
-      
-      if (conflicts.length > 0) return true;
-    }
-    
-    // Check new time block format
+
+    // Check time block conflicts
     if (teacher.teaching?.timeBlocks) {
       for (const block of teacher.teaching.timeBlocks) {
         if (block.day !== day || !block.isActive) continue;

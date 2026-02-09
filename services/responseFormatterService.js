@@ -366,33 +366,24 @@ class ResponseFormatterService {
     const formatted = { ...schedule };
 
     if (options.includeFormatted) {
-      // Format schedule slots if they exist
-      if (schedule.teaching && schedule.teaching.schedule) {
+      // Format timeBlocks if they exist
+      if (schedule.teaching && schedule.teaching.timeBlocks) {
         formatted.teaching = {
-          ...schedule.teaching,
-          schedule: schedule.teaching.schedule.map(slot => {
-            const formattedSlot = { ...slot };
-            
-            if (slot.attendance && slot.attendance.lessonDate) {
-              const lessonDate = createAppDate(slot.attendance.lessonDate);
-              formattedSlot.formatted = {
-                lessonDate: formatDate(lessonDate, options.dateFormat),
-                dayName: createAppDate(lessonDate).format('dddd')
-              };
-
-              if (options.includeRelative) {
-                formattedSlot.formatted.relative = lessonDate.fromNow();
-                formattedSlot.formatted.isToday = lessonDate.isSame(now(), 'day');
-              }
+          ...(formatted.teaching || schedule.teaching),
+          timeBlocks: schedule.teaching.timeBlocks.map(block => {
+            const formattedBlock = { ...block };
+            if (block.assignedLessons) {
+              formattedBlock.assignedLessons = block.assignedLessons.map(lesson => {
+                const formattedLesson = { ...lesson };
+                if (lesson.createdAt) {
+                  formattedLesson.formatted = {
+                    createdAt: formatDateTime(createAppDate(lesson.createdAt))
+                  };
+                }
+                return formattedLesson;
+              });
             }
-
-            if (slot.attendance && slot.attendance.markedAt) {
-              const markedDate = createAppDate(slot.attendance.markedAt);
-              formattedSlot.formatted = formattedSlot.formatted || {};
-              formattedSlot.formatted.markedAt = formatDateTime(markedDate);
-            }
-
-            return formattedSlot;
+            return formattedBlock;
           })
         };
       }

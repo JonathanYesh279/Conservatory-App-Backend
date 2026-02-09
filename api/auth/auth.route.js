@@ -1,7 +1,7 @@
 import express from 'express'
 import rateLimit from 'express-rate-limit'
 import { authController } from './auth.controller.js'
-import { authenticateToken } from '../../middleware/auth.middleware.js'
+import { authenticateToken, requireAuth } from '../../middleware/auth.middleware.js'
 
 const router = express.Router()
 
@@ -13,13 +13,17 @@ const loginLimiter = rateLimit({
   message: { error: 'Too many login attempts, please try again in 5 minutes' }
 })
 
-// Public routes
+// Self-protecting: checks internally if admin already exists, rejects if so
 router.post('/init-admin', authController.initAdmin);
-router.post('/migrate-users', authController.migrateExistingUsers); // Migration endpoint
-router.post('/migrate-invitations', authController.migratePendingInvitations); // Invitation migration
-router.get('/invitation-stats', authController.getInvitationModeStats); // Invitation mode stats
-router.get('/check-teacher/:email', authController.checkTeacherByEmail); // Check teacher by email
-router.delete('/remove-teacher/:email', authController.removeTeacherByEmail); // Remove teacher by email
+
+// Admin-only routes
+router.post('/migrate-users', authenticateToken, requireAuth(['מנהל']), authController.migrateExistingUsers);
+router.post('/migrate-invitations', authenticateToken, requireAuth(['מנהל']), authController.migratePendingInvitations);
+router.get('/invitation-stats', authenticateToken, requireAuth(['מנהל']), authController.getInvitationModeStats);
+router.get('/check-teacher/:email', authenticateToken, requireAuth(['מנהל']), authController.checkTeacherByEmail);
+router.delete('/remove-teacher/:email', authenticateToken, requireAuth(['מנהל']), authController.removeTeacherByEmail);
+
+// Public routes
 router.post('/login', loginLimiter, authController.login)
 router.post('/refresh', authController.refresh)
 router.post('/forgot-password', authController.forgotPassword)

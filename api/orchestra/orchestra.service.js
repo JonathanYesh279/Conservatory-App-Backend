@@ -1,6 +1,9 @@
 import { getCollection } from '../../services/mongoDB.service.js'
 import { validateOrchestra } from './orchestra.validation.js'
 import { ObjectId } from 'mongodb'
+import { createLogger } from '../../services/logger.service.js'
+
+const logger = createLogger('orchestraService')
 
 export const orchestraService = {
   getOrchestras,
@@ -17,13 +20,9 @@ export const orchestraService = {
 
 async function getOrchestras(filterBy) {
   try {
-    console.log('🔍 orchestraService.getOrchestras called with filterBy:', filterBy)
     const collection = await getCollection('orchestra')
     const criteria = _buildCriteria(filterBy)
-    console.log('🔍 Built criteria:', criteria)
 
-    // Use aggregation pipeline to populate members with full student data
-    console.log('🔍 Starting aggregation pipeline...')
     const orchestras = await collection.aggregate([
       { $match: criteria },
       {
@@ -97,54 +96,17 @@ async function getOrchestras(filterBy) {
       }
     ]).toArray()
 
-    console.log('🔍 Aggregation completed. Found orchestras:', orchestras.length)
-    if (orchestras.length > 0) {
-      console.log('🔍 First orchestra sample:')
-      console.log('   - Name:', orchestras[0].name)
-      console.log('   - Members count:', orchestras[0].members ? orchestras[0].members.length : 'undefined')
-      console.log('   - MemberIds:', orchestras[0].memberIds)
-      console.log('   - Members data sample:', JSON.stringify(orchestras[0].members?.slice(0, 1), null, 2))
-      console.log('   - Conductor populated:', !!orchestras[0].conductor)
-      
-      // Special debugging for specific orchestra
-      const targetOrchestra = orchestras.find(o => o._id.toString() === '687a77cdca26e53e23b0ce4b')
-      if (targetOrchestra) {
-        console.log('🎯 FOUND TARGET ORCHESTRA 687a77cdca26e53e23b0ce4b:')
-        console.log('   - Name:', targetOrchestra.name)
-        console.log('   - MemberIds array:', targetOrchestra.memberIds)
-        console.log('   - MemberIds length:', targetOrchestra.memberIds ? targetOrchestra.memberIds.length : 0)
-        console.log('   - Members populated:', targetOrchestra.members ? targetOrchestra.members.length : 0)
-        if (targetOrchestra.members && targetOrchestra.members.length > 0) {
-          console.log('   - Populated member details:', targetOrchestra.members.map(m => ({
-            _id: m._id,
-            name: m.personalInfo ? `${m.personalInfo.firstName} ${m.personalInfo.lastName}` : 'No name'
-          })))
-        }
-      }
-    }
-
     return orchestras
   } catch (err) {
-    console.error(`Error in orchestraService.getOrchestras: ${err}`)
+    logger.error({ err: err.message }, 'Error in getOrchestras')
     throw new Error(`Error in orchestraService.getOrchestras: ${err}`)
   }
 }
 
 async function getOrchestraById(orchestraId) {
   try {
-    console.log('🔍 getOrchestraById called with:', orchestraId)
     const collection = await getCollection('orchestra')
-    
-    // First, let's check what's actually in the database
-    if (orchestraId === '687a77cdca26e53e23b0ce4b') {
-      const rawOrchestra = await collection.findOne({ _id: ObjectId.createFromHexString(orchestraId) })
-      console.log('🎯 RAW DATABASE DATA for orchestra 687a77cdca26e53e23b0ce4b:')
-      console.log('   - memberIds:', rawOrchestra ? rawOrchestra.memberIds : 'Not found')
-      console.log('   - memberIds type:', rawOrchestra && rawOrchestra.memberIds ? typeof rawOrchestra.memberIds : 'N/A')
-      console.log('   - memberIds length:', rawOrchestra && rawOrchestra.memberIds ? rawOrchestra.memberIds.length : 0)
-    }
-    
-    // Use aggregation pipeline to populate members with full student data
+
     const orchestras = await collection.aggregate([
       { $match: { _id: ObjectId.createFromHexString(orchestraId) } },
       {
@@ -219,27 +181,11 @@ async function getOrchestraById(orchestraId) {
     ]).toArray()
 
     const orchestra = orchestras[0]
-    
-    // Debug logging for specific orchestra
-    if (orchestraId === '687a77cdca26e53e23b0ce4b' && orchestra) {
-      console.log('🎯 AGGREGATION RESULT for orchestra 687a77cdca26e53e23b0ce4b:')
-      console.log('   - Orchestra found:', !!orchestra)
-      console.log('   - memberIds:', orchestra.memberIds)
-      console.log('   - members populated count:', orchestra.members ? orchestra.members.length : 0)
-      if (orchestra.members && orchestra.members.length > 0) {
-        console.log('   - Member details:', orchestra.members.map(m => ({
-          _id: m._id,
-          name: m.personalInfo ? `${m.personalInfo.firstName} ${m.personalInfo.lastName}` : 'No name'
-        })))
-      } else {
-        console.log('   - ⚠️ No members populated despite having memberIds!')
-      }
-    }
-    
+
     if (!orchestra) throw new Error(`Orchestra with id ${orchestraId} not found`)
     return orchestra
   } catch (err) {
-    console.error(`Error in orchestraService.getOrchestraById: ${err}`)
+    logger.error({ orchestraId, err: err.message }, 'Error in getOrchestraById')
     throw new Error(`Error in orchestraService.getOrchestraById: ${err}`)
   }
 }
@@ -267,7 +213,7 @@ async function addOrchestra(orchestraToAdd) {
       !teacherCollection ||
       typeof teacherCollection.updateOne !== 'function'
     ) {
-      console.error('Teacher collection is not valid:', teacherCollection);
+      logger.error('Teacher collection is not valid');
       throw new Error(
         'Database connection issue: Cannot access teacher collection'
       );
@@ -283,7 +229,7 @@ async function addOrchestra(orchestraToAdd) {
 
     return { _id: result.insertedId, ...value };
   } catch (err) {
-    console.error(`Error in orchestraService.addOrchestra: ${err}`);
+    logger.error({ err: err.message }, 'Error in addOrchestra');
     throw new Error(`Error in orchestraService.addOrchestra: ${err}`);
   }
 }
@@ -336,18 +282,18 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
     if (!orchestraToUpdate.memberIds || orchestraToUpdate.memberIds.length === 0) {
       // Frontend didn't send memberIds or sent empty array - preserve existing
       updateValue.memberIds = existingOrchestra.memberIds || []
-      console.log(`🛡️ PROTECTION: Preserving ${updateValue.memberIds.length} memberIds for orchestra ${orchestraId}`)
+      logger.debug({ orchestraId, count: updateValue.memberIds.length }, 'Preserving existing memberIds')
     } else {
-      console.log(`📝 UPDATE: Frontend explicitly sent ${orchestraToUpdate.memberIds.length} memberIds for orchestra ${orchestraId}`)
+      logger.debug({ orchestraId, count: orchestraToUpdate.memberIds.length }, 'Frontend sent explicit memberIds')
     }
 
     // Preserve rehearsalIds: Only update if explicitly provided with actual rehearsal IDs
     if (!orchestraToUpdate.rehearsalIds || orchestraToUpdate.rehearsalIds.length === 0) {
       // Frontend didn't send rehearsalIds or sent empty array - preserve existing
       updateValue.rehearsalIds = existingOrchestra.rehearsalIds || []
-      console.log(`🛡️ PROTECTION: Preserving ${updateValue.rehearsalIds.length} rehearsalIds for orchestra ${orchestraId}`)
+      logger.debug({ orchestraId, count: updateValue.rehearsalIds.length }, 'Preserving existing rehearsalIds')
     } else {
-      console.log(`📝 UPDATE: Frontend explicitly sent ${orchestraToUpdate.rehearsalIds.length} rehearsalIds for orchestra ${orchestraId}`)
+      logger.debug({ orchestraId, count: orchestraToUpdate.rehearsalIds.length }, 'Frontend sent explicit rehearsalIds')
     }
 
     // Add lastModified timestamp
@@ -364,7 +310,7 @@ async function updateOrchestra(orchestraId, orchestraToUpdate, teacherId, isAdmi
     // Return populated orchestra with full member data
     return await getOrchestraById(orchestraId)
   } catch (err) {
-    console.error(`Error in orchestraService.updateOrchestra: ${err}`)
+    logger.error({ orchestraId, err: err.message }, 'Error in updateOrchestra')
     throw new Error(`Error in orchestraService.updateOrchestra: ${err}`)
   }
 }
@@ -422,122 +368,60 @@ async function removeOrchestra(orchestraId, teacherId, isAdmin = false, userRole
     if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`);
     return result;
   } catch (err) {
-    console.error(`Error in orchestraService.removeOrchestra: ${err}`);
+    logger.error({ orchestraId, err: err.message }, 'Error in removeOrchestra');
     throw new Error(`Error in orchestraService.removeOrchestra: ${err}`);
   }
 }
 
 async function addMember(orchestraId, studentId, teacherId, isAdmin = false, userRoles = []) {
   try {
-    console.log('=== ADD MEMBER SERVICE DEBUG ===')
-    console.log('Parameters received:', {
-      orchestraId,
-      studentId,
-      teacherId,
-      isAdmin,
-      userRoles
-    })
-    
     const orchestra = await getOrchestraById(orchestraId)
-    console.log('Orchestra found:', {
-      _id: orchestra._id,
-      name: orchestra.name,
-      conductorId: orchestra.conductorId
-    })
 
     // Check authorization: admin can always edit, conductor can edit only if they conduct this orchestra
     const isConductor = userRoles.includes('מנצח')
     const isEnsembleInstructor = userRoles.includes('מדריך הרכב')
     const canEditBasedOnRole = isConductor || isEnsembleInstructor
     const isAssignedConductor = orchestra.conductorId === teacherId.toString()
-    
-    console.log('Authorization check:', {
-      isConductor,
-      isEnsembleInstructor,
-      canEditBasedOnRole,
-      isAssignedConductor,
-      isAdmin,
-      orchestraConductorId: orchestra.conductorId,
-      requestingTeacherId: teacherId.toString()
-    })
-    
+
     if (!isAdmin && !(canEditBasedOnRole && isAssignedConductor)) {
-      console.error('❌ Authorization failed in addMember service')
       throw new Error('Not authorized to modify this orchestra')
     }
-    
-    console.log('✅ Authorization passed, updating student enrollment')
-    console.log('🔍 Student ID to update:', studentId)
-    console.log('🔍 Orchestra ID to add:', orchestraId)
-    
-    const studentCollection = await getCollection('student')
-    const studentUpdateResult = await studentCollection.updateOne(
-      { _id: ObjectId.createFromHexString(studentId) },
-      { $addToSet: { 'enrollments.orchestraIds': orchestraId } }
-    )
-    
-    console.log('🔍 Student update result:', {
-      acknowledged: studentUpdateResult.acknowledged,
-      matchedCount: studentUpdateResult.matchedCount,
-      modifiedCount: studentUpdateResult.modifiedCount,
-      upsertedCount: studentUpdateResult.upsertedCount
-    })
-    
-    console.log('✅ Student enrollment updated, updating orchestra member list')
+
+    // Step 1: Update orchestra memberIds FIRST (authoritative side)
     const collection = await getCollection('orchestra')
-    
-    console.log('🔍 Before update - attempting to add studentId:', studentId)
-    console.log('🔍 Orchestra ID for update:', orchestraId)
-    
-    // First, let's use updateOne to get more detailed update information
-    const updateResult = await collection.updateOne(
+    const orchestraResult = await collection.updateOne(
       { _id: ObjectId.createFromHexString(orchestraId) },
       { $addToSet: { memberIds: studentId } }
     )
-    
-    console.log('🔍 Update operation result:', {
-      acknowledged: updateResult.acknowledged,
-      matchedCount: updateResult.matchedCount,
-      modifiedCount: updateResult.modifiedCount,
-      upsertedCount: updateResult.upsertedCount
-    })
-    
-    if (updateResult.matchedCount === 0) {
-      console.error('❌ Orchestra not found during update')
+
+    if (orchestraResult.matchedCount === 0) {
       throw new Error(`Orchestra with id ${orchestraId} not found`)
     }
-    
-    if (updateResult.acknowledged && updateResult.matchedCount > 0) {
-      console.log('✅ Database update operation completed successfully')
-      
-      // Now fetch the updated document to verify
-      const updatedOrchestra = await collection.findOne({ _id: ObjectId.createFromHexString(orchestraId) })
-      
-      console.log('🔍 Verification - Updated orchestra memberIds:', {
-        memberCount: updatedOrchestra.memberIds ? updatedOrchestra.memberIds.length : 0,
-        memberIds: updatedOrchestra.memberIds,
-        contains_new_student: updatedOrchestra.memberIds ? updatedOrchestra.memberIds.includes(studentId) : false
-      })
-      
-      if (!updatedOrchestra.memberIds.includes(studentId)) {
-        console.error('❌ CRITICAL: Student was not added to memberIds array despite successful update!')
-        console.error('Database state after update:', updatedOrchestra.memberIds)
-        console.error('Attempted to add studentId:', studentId)
-        throw new Error('Database inconsistency: Student not added to orchestra memberIds')
-      } else {
-        console.log('✅ Student successfully added to memberIds array - verification passed')
-      }
-    } else {
-      console.error('❌ Database update was not acknowledged')
-      throw new Error('Database update failed - operation not acknowledged')
+
+    logger.info({ orchestraId, studentId, modified: orchestraResult.modifiedCount }, 'Updated orchestra memberIds')
+
+    // Step 2: Update student enrollments
+    try {
+      const studentCollection = await getCollection('student')
+      await studentCollection.updateOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        { $addToSet: { 'enrollments.orchestraIds': orchestraId } }
+      )
+      logger.info({ orchestraId, studentId }, 'Updated student enrollments.orchestraIds')
+    } catch (studentErr) {
+      // Rollback orchestra update
+      logger.error({ orchestraId, studentId, err: studentErr.message }, 'Student update failed, rolling back orchestra memberIds')
+      await collection.updateOne(
+        { _id: ObjectId.createFromHexString(orchestraId) },
+        { $pull: { memberIds: studentId } }
+      )
+      throw studentErr
     }
-    
-    console.log('✅ Orchestra member list updated successfully')
-    
+
     // Return populated orchestra with full member data
     return await getOrchestraById(orchestraId)
   } catch (err) {
-    console.error(`❌ Error in orchestraService.addMember: ${err}`)
+    logger.error({ orchestraId, studentId, err: err.message }, 'Error in addMember')
     throw new Error(`Error in orchestraService.addMember: ${err}`)
   }
 }
@@ -551,30 +435,46 @@ async function removeMember(orchestraId, studentId, teacherId, isAdmin = false, 
     const isEnsembleInstructor = userRoles.includes('מדריך הרכב')
     const canEditBasedOnRole = isConductor || isEnsembleInstructor
     const isAssignedConductor = orchestra.conductorId === teacherId.toString()
-    
+
     if (!isAdmin && !(canEditBasedOnRole && isAssignedConductor)) {
       throw new Error('Not authorized to modify this orchestra')
     }
-    
-    const studentCollection = await getCollection('student')
-    await studentCollection.updateOne(
-      { _id: ObjectId.createFromHexString(studentId) },
-      { $pull: { 'enrollments.orchestraIds': orchestraId } }
-    )
 
+    // Step 1: Update orchestra memberIds FIRST (authoritative side)
     const collection = await getCollection('orchestra')
-    const result = await collection.findOneAndUpdate(
+    const orchestraResult = await collection.updateOne(
       { _id: ObjectId.createFromHexString(orchestraId) },
-      { $pull: { memberIds: studentId } },
-      { returnDocument: 'after' }
+      { $pull: { memberIds: studentId } }
     )
 
-    if (!result) throw new Error(`Orchestra with id ${orchestraId} not found`)
-    
+    if (orchestraResult.matchedCount === 0) {
+      throw new Error(`Orchestra with id ${orchestraId} not found`)
+    }
+
+    logger.info({ orchestraId, studentId, modified: orchestraResult.modifiedCount }, 'Removed student from orchestra memberIds')
+
+    // Step 2: Update student enrollments
+    try {
+      const studentCollection = await getCollection('student')
+      await studentCollection.updateOne(
+        { _id: ObjectId.createFromHexString(studentId) },
+        { $pull: { 'enrollments.orchestraIds': orchestraId } }
+      )
+      logger.info({ orchestraId, studentId }, 'Removed orchestraId from student enrollments')
+    } catch (studentErr) {
+      // Rollback orchestra update
+      logger.error({ orchestraId, studentId, err: studentErr.message }, 'Student update failed, rolling back orchestra memberIds')
+      await collection.updateOne(
+        { _id: ObjectId.createFromHexString(orchestraId) },
+        { $addToSet: { memberIds: studentId } }
+      )
+      throw studentErr
+    }
+
     // Return populated orchestra with full member data
     return await getOrchestraById(orchestraId)
   } catch (err) {
-    console.error(`Error in orchestraService.removeMember: ${err}`)
+    logger.error({ orchestraId, studentId, err: err.message }, 'Error in removeMember')
     throw new Error(`Error in orchestraService.removeMember: ${err}`)
   }
 }
@@ -649,7 +549,7 @@ async function updateRehearsalAttendance(rehearsalId, attendance, teacherId, isA
     await Promise.all([...presentPromises, ...absentPromises])
     return updatedRehearsal
   } catch (err) {
-    console.error(`Error in orchestraService.updateRehearsalAttendance: ${err}`)
+    logger.error({ rehearsalId, err: err.message }, 'Error in updateRehearsalAttendance')
     throw new Error(`Error in orchestraService.updateRehearsalAttendance: ${err}`)
   }
 }
@@ -664,7 +564,7 @@ async function getRehearsalAttendance(rehearsalId) {
     if (!rehearsal) throw new Error(`Rehearsal with id ${rehearsalId} not found`)
     return rehearsal.attendance
   } catch (err) {
-    console.error(`Error in orchestraService.getRehearsalAttendance: ${err}`)
+    logger.error({ rehearsalId, err: err.message }, 'Error in getRehearsalAttendance')
     throw new Error(`Error in orchestraService.getRehearsalAttendance: ${err}`)
   }
 }
@@ -707,24 +607,20 @@ async function getStudentAttendanceStats(orchestraId, studentId) {
     }
     return result
   } catch (err) {
-    console.error(`Error in orchestraService.getStudentAttendanceStats: ${err}`)
+    logger.error({ orchestraId, studentId, err: err.message }, 'Error in getStudentAttendanceStats')
     throw new Error(`Error in orchestraService.getStudentAttendanceStats: ${err}`)
   }
 }
 
 function _buildCriteria(filterBy) {
   const criteria = {}
-  console.log('🔍 orchestraService._buildCriteria called with filterBy:', JSON.stringify(filterBy))
 
   // Handle batch fetching by IDs - highest priority
   if (filterBy.ids) {
-    console.log('🎯 Found ids parameter:', filterBy.ids)
     const idsArray = Array.isArray(filterBy.ids) ? filterBy.ids : filterBy.ids.split(',')
-    console.log('🎯 Parsed IDs array:', idsArray)
-    criteria._id = { 
-      $in: idsArray.map(id => ObjectId.createFromHexString(id.trim())) 
+    criteria._id = {
+      $in: idsArray.map(id => ObjectId.createFromHexString(id.trim()))
     }
-    console.log('🎯 Built criteria with IDs:', JSON.stringify(criteria))
     // When fetching by specific IDs, return all (active and inactive)
     return criteria
   }

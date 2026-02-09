@@ -6,7 +6,7 @@ const VALID_DURATION = [30, 45, 60];
 const VALID_AVAILABILITY_DURATION = [15, 30, 45, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480]; // Support longer availability blocks
 const VALID_DAYS = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי'];
 
-// Schema for schedule slot
+// Schema for time block
 const scheduleSlotSchema = Joi.object({
   _id: Joi.any().default(() => new ObjectId()),
   studentId: Joi.string().allow(null).default(null),
@@ -70,13 +70,10 @@ export const teacherSchema = Joi.object({
 
   teaching: Joi.object({
     studentIds: Joi.array().items(Joi.string()).default([]),
-    schedule: Joi.array()
-      .items(scheduleSlotSchema)
-      .default([]),
+    schedule: Joi.array().optional().default([]), // Deprecated — accepted for backward compat
     timeBlocks: Joi.array()
       .items(scheduleSlotSchema)
-      .optional()
-      .default([]), // Allow timeBlocks as alias for schedule
+      .default([]),
   }).required(),
 
   conducting: Joi.object({
@@ -115,7 +112,7 @@ export const teacherSchema = Joi.object({
   return obj;
 });
 
-// Schedule slot schema for updates - allows partial updates
+// Time block schema for updates - allows partial updates
 const scheduleSlotUpdateSchema = Joi.object({
   _id: Joi.any().optional(),
   studentId: Joi.string().allow(null).optional(),
@@ -177,12 +174,10 @@ export const teacherUpdateSchema = Joi.object({
 
   teaching: Joi.object({
     studentIds: Joi.array().items(Joi.string()).optional(),
-    schedule: Joi.array()
-      .items(scheduleSlotUpdateSchema)
-      .optional(),
+    schedule: Joi.array().optional(), // Deprecated — accepted for backward compat
     timeBlocks: Joi.array()
       .items(scheduleSlotUpdateSchema)
-      .optional(), // Allow timeBlocks as alias for schedule
+      .optional(),
   }).optional(),
 
   conducting: Joi.object({

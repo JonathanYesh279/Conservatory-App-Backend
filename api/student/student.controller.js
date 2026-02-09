@@ -26,7 +26,11 @@ async function getStudents(req, res, next) {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 0; // 0 means no pagination (return all)
 
-    const result = await studentService.getStudents(filterBy, page, limit);
+    // Authorization context for IDOR prevention
+    const teacherId = req.teacher?._id?.toString();
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false;
+
+    const result = await studentService.getStudents(filterBy, page, limit, { teacherId, isAdmin });
     res.json(result);
   } catch (err) {
     next(err);
@@ -36,13 +40,21 @@ async function getStudents(req, res, next) {
 async function getStudentById(req, res, next) {
   try {
     const { id } = req.params;
-    console.log(`🔍 Getting student by ID: ${id}`);
+    const teacherId = req.teacher?._id?.toString();
+    const isAdmin = req.teacher?.roles?.includes('מנהל') || false;
+
     const student = await studentService.getStudentById(id);
-    console.log(`✅ Successfully retrieved student: ${student.personalInfo?.fullName || 'Unknown'}`);
+
+    // IDOR prevention: non-admin teachers can only access their own students
+    if (teacherId && !isAdmin) {
+      const hasAccess = await studentService.checkTeacherHasAccessToStudent(teacherId, id);
+      if (!hasAccess) {
+        return res.status(403).json({ error: 'Access denied: student not assigned to you' });
+      }
+    }
+
     res.json(student);
   } catch (err) {
-    console.error(`❌ Error getting student by ID ${req.params.id}:`, err.message);
-    console.error('Stack trace:', err.stack);
     next(err);
   }
 }

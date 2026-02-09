@@ -1,6 +1,5 @@
 import { rehearsalService } from '../rehearsal/rehearsal.service.js';
 import { theoryService } from '../theory/theory.service.js';
-import { attendanceService } from '../schedule/attendance.service.js';
 import { getCollection } from '../../services/mongoDB.service.js';
 import { ObjectId } from 'mongodb';
 import { 
@@ -219,65 +218,60 @@ async function _getPastTheoryLessons(dateFilter) {
 
 /**
  * Get past private lessons for a specific teacher
+ * Reads from teaching.timeBlocks.assignedLessons
  */
 async function _getPastPrivateLessons(filterBy) {
   try {
     const { teacherId, startDate, endDate } = filterBy;
-    
+
     if (!teacherId) {
       throw new Error('teacherId is required for private lessons');
     }
 
     const teacherCollection = await getCollection('teacher');
-    
-    // Build date filter criteria
-    const today = new Date();
-    today.setHours(23, 59, 59, 999); // End of today
-    
-    const dateQuery = {
-      'teaching.schedule.date': { $lt: today } // Only past dates
-    };
-    
-    if (startDate) {
-      dateQuery['teaching.schedule.date'].$gte = getStartOfDay(startDate);
-    }
-    
-    if (endDate) {
-      dateQuery['teaching.schedule.date'].$lt = getEndOfDay(endDate);
-    }
 
-    // Find teacher with past scheduled lessons
     const teacher = await teacherCollection.findOne({
-      _id: ObjectId.createFromHexString(teacherId),
-      ...dateQuery
+      _id: ObjectId.createFromHexString(teacherId)
     });
 
-    if (!teacher) {
+    if (!teacher || !teacher.teaching?.timeBlocks) {
       return [];
     }
 
-    // Filter schedule to only past lessons with students
-    const pastLessons = teacher.teaching.schedule
-      .filter(slot => {
-        const lessonDate = new Date(slot.date);
-        lessonDate.setHours(23, 59, 59, 999);
-        return lessonDate < today && slot.studentId; // Only past lessons with assigned students
-      })
-      .map(slot => ({
-        _id: slot._id,
-        title: `שיעור פרטי - ${slot.instrument}`,
-        date: slot.date,
-        time: `${slot.startTime} - ${slot.endTime}`,
-        teacherId: teacher._id,
-        teacherName: `${teacher.personalInfo.firstName} ${teacher.personalInfo.lastName}`,
-        studentId: slot.studentId,
-        studentName: slot.studentName,
-        instrument: slot.instrument,
-        location: slot.location || 'לא צוין',
-        attendance: slot.attendance || [],
-        notes: slot.notes,
-        lessonType: 'private'
-      }));
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const pastLessons = [];
+    for (const block of teacher.teaching.timeBlocks) {
+      if (!block.assignedLessons) continue;
+      for (const lesson of block.assignedLessons) {
+        if (!lesson.studentId) continue;
+
+        // Use lesson startDate or block day as reference date
+        const lessonDate = lesson.startDate ? new Date(lesson.startDate) : null;
+        if (!lessonDate || lessonDate >= today) continue;
+
+        // Apply date range filters
+        if (startDate && lessonDate < getStartOfDay(startDate)) continue;
+        if (endDate && lessonDate > getEndOfDay(endDate)) continue;
+
+        pastLessons.push({
+          _id: lesson._id || block._id,
+          title: `שיעור פרטי - ${lesson.instrument || block.instrument || ''}`,
+          date: lessonDate,
+          time: `${lesson.startTime || block.startTime} - ${lesson.endTime || block.endTime}`,
+          teacherId: teacher._id,
+          teacherName: `${teacher.personalInfo.firstName} ${teacher.personalInfo.lastName}`,
+          studentId: lesson.studentId,
+          studentName: lesson.studentName,
+          instrument: lesson.instrument || block.instrument || '',
+          location: block.location || 'לא צוין',
+          attendance: lesson.attendance || [],
+          notes: lesson.notes,
+          lessonType: 'private'
+        });
+      }
+    }
 
     return pastLessons;
   } catch (err) {

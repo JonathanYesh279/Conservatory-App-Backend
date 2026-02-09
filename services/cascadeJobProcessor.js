@@ -315,7 +315,7 @@ class CascadeJobProcessor extends EventEmitter {
     };
 
     const collections = [
-      { name: 'teacher', studentRefFields: ['teaching.studentIds', 'teaching.schedule.studentId'] },
+      { name: 'teacher', studentRefFields: ['teaching.studentIds', 'teaching.timeBlocks.assignedLessons.studentId'] },
       { name: 'orchestra', studentRefFields: ['memberIds'] },
       { name: 'theory_lesson', studentRefFields: ['studentIds'] },
       { name: 'rehearsal', studentRefFields: ['attendance.studentId'] },
@@ -715,15 +715,17 @@ class CascadeJobProcessor extends EventEmitter {
   async validateScheduleConsistency(db) {
     let issuesFound = 0;
 
-    // Check for schedule conflicts
-    const scheduleConflicts = await db.collection('teacher').aggregate([
-      { $unwind: '$teaching.schedule' },
+    // Check for timeBlock lesson conflicts
+    const timeBlockConflicts = await db.collection('teacher').aggregate([
+      { $unwind: { path: '$teaching.timeBlocks', preserveNullAndEmptyArrays: false } },
+      { $unwind: { path: '$teaching.timeBlocks.assignedLessons', preserveNullAndEmptyArrays: false } },
+      { $match: { 'teaching.timeBlocks.assignedLessons.isActive': { $ne: false } } },
       {
         $group: {
           _id: {
-            day: '$teaching.schedule.day',
-            time: '$teaching.schedule.time',
-            studentId: '$teaching.schedule.studentId'
+            day: '$teaching.timeBlocks.day',
+            startTime: '$teaching.timeBlocks.assignedLessons.lessonStartTime',
+            studentId: '$teaching.timeBlocks.assignedLessons.studentId'
           },
           count: { $sum: 1 },
           teachers: { $push: '$_id' }
@@ -732,14 +734,14 @@ class CascadeJobProcessor extends EventEmitter {
       { $match: { count: { $gt: 1 }, '_id.studentId': { $ne: null } } }
     ]).toArray();
 
-    issuesFound += scheduleConflicts.length;
+    issuesFound += timeBlockConflicts.length;
 
     return {
       issuesFound,
       details: {
-        scheduleConflicts: scheduleConflicts.length
+        timeBlockConflicts: timeBlockConflicts.length
       },
-      recommendations: scheduleConflicts.length > 0 ? 
+      recommendations: issuesFound > 0 ?
         ['Review and resolve schedule conflicts for students with multiple bookings'] : []
     };
   }

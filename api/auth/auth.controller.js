@@ -2,6 +2,9 @@ import { authService } from './auth.service.js'
 import { getCollection } from '../../services/mongoDB.service.js'
 import { invitationMigration } from '../../services/invitationMigration.js'
 import { ObjectId } from 'mongodb'
+import { createLogger } from '../../services/logger.service.js'
+
+const log = createLogger('auth.controller')
 
 export const authController = {
   login,
@@ -25,12 +28,10 @@ async function login(req, res) {
   try {
     const { email, password } = req.body
 
-    console.log('Controller received:', { email, password });
-
     if (!email || !password) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Email and password are required' 
+      return res.status(400).json({
+        success: false,
+        error: 'Email and password are required'
       })
     }
 
@@ -43,47 +44,31 @@ async function login(req, res) {
       maxAge: 30 * 24 * 60 * 60 * 1000
     })
 
-    // Try both formats to see which one works
-    const newResponse = {
-      success: true,
-      data: {
-        accessToken,
-        teacher
-      },
-      message: 'Login successful'
-    };
-    
-    const oldResponse = {
+    res.json({
       accessToken,
       teacher
-    };
-    
-    console.log('🔍 NEW FORMAT RESPONSE:', JSON.stringify(newResponse, null, 2));
-    console.log('🔍 OLD FORMAT RESPONSE:', JSON.stringify(oldResponse, null, 2));
-    
-    // Send the old format first to test
-    res.json(oldResponse);
+    })
   } catch (err) {
-    console.error(`Error in login: ${err.message}`);
-    
+    log.error({ err: err.message }, 'Login error')
+
     if (err.message === 'Invalid Credentials' || err.message === 'Invalid email or password') {
-      res.status(401).json({ 
-        success: false, 
+      res.status(401).json({
+        success: false,
         error: 'Invalid email or password',
         code: 'INVALID_CREDENTIALS'
-      });
+      })
     } else if (err.message === 'Please accept your invitation first') {
-      res.status(400).json({ 
-        success: false, 
+      res.status(400).json({
+        success: false,
         error: 'Please accept your invitation first',
         code: 'INVITATION_REQUIRED'
-      });
+      })
     } else {
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: 'Internal Server Error',
         code: 'INTERNAL_ERROR'
-      });
+      })
     }
   }
 }
@@ -93,38 +78,38 @@ async function refresh(req, res) {
     const refreshToken = req.cookies.refreshToken
 
     if (!refreshToken) {
-      return res.status(401).json({ 
-        success: false, 
+      return res.status(401).json({
+        success: false,
         error: 'Refresh token is required',
         code: 'MISSING_REFRESH_TOKEN'
       })
     }
 
     const { accessToken } = await authService.refreshAccessToken(refreshToken)
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       data: { accessToken },
       message: 'Token refreshed successfully'
     })
   } catch (err) {
-    console.error('Refresh token error:', err.message);
-    
-    let errorCode = 'INVALID_REFRESH_TOKEN';
-    let errorMessage = 'Invalid refresh token';
-    
+    log.error({ err: err.message }, 'Refresh token error')
+
+    let errorCode = 'INVALID_REFRESH_TOKEN'
+    let errorMessage = 'Invalid refresh token'
+
     if (err.message.includes('expired')) {
-      errorCode = 'REFRESH_TOKEN_EXPIRED';
-      errorMessage = 'Refresh token has expired';
+      errorCode = 'REFRESH_TOKEN_EXPIRED'
+      errorMessage = 'Refresh token has expired'
     } else if (err.message.includes('revoked')) {
-      errorCode = 'REFRESH_TOKEN_REVOKED';
-      errorMessage = 'Refresh token has been revoked';
+      errorCode = 'REFRESH_TOKEN_REVOKED'
+      errorMessage = 'Refresh token has been revoked'
     } else if (err.message.includes('malformed')) {
-      errorCode = 'MALFORMED_REFRESH_TOKEN';
-      errorMessage = 'Malformed refresh token';
+      errorCode = 'MALFORMED_REFRESH_TOKEN'
+      errorMessage = 'Malformed refresh token'
     }
-    
-    res.status(401).json({ 
-      success: false, 
+
+    res.status(401).json({
+      success: false,
       error: errorMessage,
       code: errorCode
     })
@@ -139,18 +124,18 @@ async function logout(req, res) {
 
     const teacherId = req.teacher._id.toString()
 
-    console.log('Logging out teacher:', teacherId)
+    log.info({ teacherId }, 'Logging out teacher')
     await authService.logout(req.teacher._id)
 
     res.clearCookie('refreshToken')
-    res.json({ 
-      success: true, 
-      message: 'Logged out successfully' 
+    res.json({
+      success: true,
+      message: 'Logged out successfully'
     })
   } catch (err) {
-    console.error(`Error in logout: ${err.message}`)
-    res.status(500).json({ 
-      success: false, 
+    log.error({ err: err.message }, 'Logout error')
+    res.status(500).json({
+      success: false,
       error: 'Logout failed',
       code: 'LOGOUT_FAILED'
     })
@@ -159,9 +144,8 @@ async function logout(req, res) {
 
 async function validateToken(req, res) {
   try {
-    // This endpoint uses authenticateToken middleware, so if we reach here, token is valid
     const user = req.loggedinUser || req.user;
-    
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -184,7 +168,7 @@ async function validateToken(req, res) {
       message: 'Token is valid'
     });
   } catch (err) {
-    console.error(`Error in validateToken: ${err.message}`);
+    log.error({ err: err.message }, 'Token validation error')
     res.status(500).json({
       success: false,
       error: 'Token validation failed',
@@ -196,7 +180,7 @@ async function validateToken(req, res) {
 async function changePassword(req, res) {
   try {
     const { currentPassword, newPassword } = req.body;
-    
+
     if (!currentPassword || !newPassword) {
       return res.status(400).json({
         success: false,
@@ -207,40 +191,32 @@ async function changePassword(req, res) {
 
     const teacherId = req.teacher._id.toString();
     const result = await authService.changePassword(teacherId, currentPassword, newPassword);
-    
-    // Set refresh token cookie if provided
+
     if (result.refreshToken) {
       res.cookie('refreshToken', result.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+        maxAge: 30 * 24 * 60 * 60 * 1000
       });
     }
-    
-    console.log('🔍 Password change result:', {
-      hasAccessToken: !!result.accessToken,
-      hasRefreshToken: !!result.refreshToken,
-      accessTokenLength: result.accessToken?.length,
-      refreshTokenLength: result.refreshToken?.length
-    });
-    
+
     res.json({
       success: true,
       message: result.message,
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,
-      data: { 
+      data: {
         tokenVersion: result.tokenVersion,
         teacher: result.teacher
       }
     });
   } catch (err) {
-    console.error('Change password error:', err.message);
-    
+    log.error({ err: err.message }, 'Change password error')
+
     let errorCode = 'CHANGE_PASSWORD_FAILED';
     let status = 400;
-    
+
     if (err.message.includes('Current password is incorrect')) {
       errorCode = 'INCORRECT_CURRENT_PASSWORD';
       status = 401;
@@ -249,7 +225,7 @@ async function changePassword(req, res) {
     } else if (err.message.includes('must be different')) {
       errorCode = 'SAME_PASSWORD';
     }
-    
+
     res.status(status).json({
       success: false,
       error: err.message,
@@ -261,7 +237,7 @@ async function changePassword(req, res) {
 async function forcePasswordChange(req, res) {
   try {
     const { newPassword } = req.body;
-    
+
     if (!newPassword) {
       return res.status(400).json({
         success: false,
@@ -272,34 +248,33 @@ async function forcePasswordChange(req, res) {
 
     const teacherId = req.teacher._id.toString();
     const result = await authService.forcePasswordChange(teacherId, newPassword);
-    
-    // Set refresh token cookie if provided
+
     if (result.refreshToken) {
       res.cookie('refreshToken', result.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+        maxAge: 30 * 24 * 60 * 60 * 1000
       });
     }
-    
+
     res.json({
       success: true,
       message: result.message,
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,
-      data: { 
+      data: {
         tokenVersion: result.tokenVersion,
         requiresPasswordChange: false,
         teacher: result.teacher
       }
     });
   } catch (err) {
-    console.error('Force password change error:', err.message);
-    
+    log.error({ err: err.message }, 'Force password change error')
+
     let errorCode = 'FORCE_PASSWORD_CHANGE_FAILED';
     let status = 400;
-    
+
     if (err.message.includes('must be at least 6 characters')) {
       errorCode = 'WEAK_PASSWORD';
     } else if (err.message.includes('must be different')) {
@@ -307,7 +282,7 @@ async function forcePasswordChange(req, res) {
     } else if (err.message.includes('not required')) {
       errorCode = 'PASSWORD_CHANGE_NOT_REQUIRED';
     }
-    
+
     res.status(status).json({
       success: false,
       error: err.message,
@@ -319,7 +294,7 @@ async function forcePasswordChange(req, res) {
 async function forgotPassword(req, res) {
   try {
     const { email } = req.body;
-    
+
     if (!email) {
       return res.status(400).json({
         success: false,
@@ -329,16 +304,14 @@ async function forgotPassword(req, res) {
     }
 
     const result = await authService.forgotPassword(email);
-    
-    // Always return success for security (don't reveal if user exists)
+
     res.json({
       success: true,
       message: result.message
     });
   } catch (err) {
-    console.error('Forgot password error:', err.message);
-    
-    // Always return generic success message for security
+    log.error({ err: err.message }, 'Forgot password error')
+
     res.json({
       success: true,
       message: 'If an account with this email exists, a password reset link has been sent'
@@ -349,7 +322,7 @@ async function forgotPassword(req, res) {
 async function resetPassword(req, res) {
   try {
     const { token, newPassword } = req.body;
-    
+
     if (!token || !newPassword) {
       return res.status(400).json({
         success: false,
@@ -359,18 +332,18 @@ async function resetPassword(req, res) {
     }
 
     const result = await authService.resetPassword(token, newPassword);
-    
+
     res.json({
       success: true,
       message: result.message,
       data: { tokenVersion: result.tokenVersion }
     });
   } catch (err) {
-    console.error('Reset password error:', err.message);
-    
+    log.error({ err: err.message }, 'Reset password error')
+
     let errorCode = 'RESET_PASSWORD_FAILED';
     let status = 400;
-    
+
     if (err.message.includes('expired')) {
       errorCode = 'RESET_TOKEN_EXPIRED';
       status = 401;
@@ -380,7 +353,7 @@ async function resetPassword(req, res) {
     } else if (err.message.includes('must be at least 6 characters')) {
       errorCode = 'WEAK_PASSWORD';
     }
-    
+
     res.status(status).json({
       success: false,
       error: err.message,
@@ -392,7 +365,7 @@ async function resetPassword(req, res) {
 async function acceptInvitation(req, res) {
   try {
     const { token, newPassword } = req.body;
-    
+
     if (!token || !newPassword) {
       return res.status(400).json({
         success: false,
@@ -402,17 +375,16 @@ async function acceptInvitation(req, res) {
     }
 
     const result = await authService.acceptInvitation(token, newPassword);
-    
-    // If we got tokens, set the refresh token as a cookie
+
     if (result.refreshToken) {
       res.cookie('refreshToken', result.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+        maxAge: 30 * 24 * 60 * 60 * 1000
       });
     }
-    
+
     res.json({
       success: true,
       message: result.message,
@@ -421,11 +393,11 @@ async function acceptInvitation(req, res) {
       teacher: result.teacher
     });
   } catch (err) {
-    console.error('Accept invitation error:', err.message);
-    
+    log.error({ err: err.message }, 'Accept invitation error')
+
     let errorCode = 'ACCEPT_INVITATION_FAILED';
     let status = 400;
-    
+
     if (err.message.includes('expired')) {
       errorCode = 'INVITATION_TOKEN_EXPIRED';
       status = 401;
@@ -435,7 +407,7 @@ async function acceptInvitation(req, res) {
     } else if (err.message.includes('must be at least 6 characters')) {
       errorCode = 'WEAK_PASSWORD';
     }
-    
+
     res.status(status).json({
       success: false,
       error: err.message,
@@ -448,27 +420,24 @@ async function initAdmin(req, res) {
   try {
     const collection = await getCollection('teacher');
 
-    // Check if admin already exists by role
     const adminExists = await collection.findOne({ roles: { $in: ['מנהל'] } });
     if (adminExists) {
-      console.log('Found existing admin:', adminExists._id.toString())
+      log.info({ adminId: adminExists._id.toString() }, 'Admin already exists')
       return res.status(400).json({ error: 'Admin already exists' });
     }
 
-    // Additional check: ensure admin email is not already taken
     const emailExists = await collection.findOne({
       $or: [
         { 'credentials.email': 'admin@example.com' },
         { 'personalInfo.email': 'admin@example.com' }
       ]
     });
-    
+
     if (emailExists) {
-      console.log('Admin email already in use by user:', emailExists._id.toString());
+      log.info({ userId: emailExists._id.toString() }, 'Admin email already in use')
       return res.status(400).json({ error: 'Admin email already in use' });
     }
 
-    // Create admin
     const adminData = {
       personalInfo: {
         fullName: 'מנהל מערכת',
@@ -487,8 +456,8 @@ async function initAdmin(req, res) {
       ensembleIds: [],
       credentials: {
         email: 'admin@example.com',
-        password: await authService.encryptPassword('123456'), // Hash the password
-        isInvitationAccepted: true, // Admin account is pre-approved
+        password: await authService.encryptPassword('123456'),
+        isInvitationAccepted: true,
         passwordSetAt: new Date(),
       },
       isActive: true,
@@ -496,54 +465,51 @@ async function initAdmin(req, res) {
     };
 
     const result = await collection.insertOne(adminData)
-    console.log('Created new admin with ID:', result.insertedId.toString())
+    log.info({ adminId: result.insertedId.toString() }, 'Created new admin')
     res.status(201).json({ message: 'Admin created successfully' });
   } catch (err) {
-    console.error('Error creating admin:', err);
+    log.error({ err: err.message }, 'Error creating admin')
     res.status(500).json({ error: 'Failed to create admin' });
   }
 }
 
 async function migrateExistingUsers(req, res) {
   try {
-    console.log('Starting migration of existing users...');
-    
+    log.info('Starting migration of existing users')
+
     const collection = await getCollection('teacher');
-    
-    // Find all teachers that don't have invitation fields
+
     const teachersToUpdate = await collection.find({
       'credentials.isInvitationAccepted': { $exists: false }
     }).toArray();
-    
-    console.log(`Found ${teachersToUpdate.length} teachers to migrate`);
-    
+
+    log.info({ count: teachersToUpdate.length }, 'Found teachers to migrate')
+
     if (teachersToUpdate.length === 0) {
-      return res.json({ 
+      return res.json({
         message: 'No teachers need migration',
-        migratedCount: 0 
+        migratedCount: 0
       });
     }
-    
+
     let migratedCount = 0;
     const errors = [];
-    
-    // Update each teacher
+
     for (const teacher of teachersToUpdate) {
       try {
         const updateResult = await collection.updateOne(
           { _id: teacher._id },
           {
             $set: {
-              'credentials.isInvitationAccepted': true, // Mark as accepted (legacy accounts)
+              'credentials.isInvitationAccepted': true,
               'credentials.passwordSetAt': teacher.createdAt || new Date(),
               updatedAt: new Date()
             }
           }
         );
-        
+
         if (updateResult.modifiedCount === 1) {
           migratedCount++;
-          console.log(`✅ Updated teacher: ${teacher.personalInfo.fullName} (${teacher._id})`);
         } else {
           errors.push(`Failed to update teacher: ${teacher.personalInfo.fullName} (${teacher._id})`);
         }
@@ -551,18 +517,18 @@ async function migrateExistingUsers(req, res) {
         errors.push(`Error updating teacher ${teacher.personalInfo.fullName}: ${error.message}`);
       }
     }
-    
-    console.log(`Migration completed. ${migratedCount} teachers migrated.`);
-    
+
+    log.info({ migratedCount }, 'Migration completed')
+
     res.json({
       message: 'Migration completed successfully',
       migratedCount,
       totalFound: teachersToUpdate.length,
       errors: errors.length > 0 ? errors : undefined
     });
-    
+
   } catch (error) {
-    console.error('Migration failed:', error);
+    log.error({ err: error.message }, 'Migration failed')
     res.status(500).json({ error: 'Migration failed: ' + error.message });
   }
 }
@@ -570,16 +536,16 @@ async function migrateExistingUsers(req, res) {
 async function checkTeacherByEmail(req, res) {
   try {
     const { email } = req.params;
-    
+
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
     }
-    
+
     const collection = await getCollection('teacher');
     const teacher = await collection.findOne({
       'credentials.email': email
     });
-    
+
     if (teacher) {
       res.json({
         exists: true,
@@ -600,7 +566,7 @@ async function checkTeacherByEmail(req, res) {
       res.json({ exists: false });
     }
   } catch (error) {
-    console.error('Error checking teacher by email:', error);
+    log.error({ err: error.message }, 'Error checking teacher by email')
     res.status(500).json({ error: 'Failed to check teacher' });
   }
 }
@@ -608,29 +574,27 @@ async function checkTeacherByEmail(req, res) {
 async function removeTeacherByEmail(req, res) {
   try {
     const { email } = req.params;
-    
+
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
     }
-    
+
     const collection = await getCollection('teacher');
-    
-    // First check if teacher exists
+
     const teacher = await collection.findOne({
       'credentials.email': email
     });
-    
+
     if (!teacher) {
       return res.status(404).json({ error: 'Teacher not found' });
     }
-    
-    // Remove the teacher completely
+
     const result = await collection.deleteOne({
       'credentials.email': email
     });
-    
+
     if (result.deletedCount === 1) {
-      console.log(`✅ Removed teacher: ${teacher.personalInfo.fullName} (${email})`);
+      log.info({ email, teacherName: teacher.personalInfo.fullName }, 'Removed teacher')
       res.json({
         success: true,
         message: 'Teacher removed successfully',
@@ -644,7 +608,7 @@ async function removeTeacherByEmail(req, res) {
       res.status(500).json({ error: 'Failed to remove teacher' });
     }
   } catch (error) {
-    console.error('Error removing teacher by email:', error);
+    log.error({ err: error.message }, 'Error removing teacher by email')
     res.status(500).json({ error: 'Failed to remove teacher' });
   }
 }
@@ -657,10 +621,10 @@ async function migratePendingInvitations(req, res) {
       ...result
     });
   } catch (error) {
-    console.error('Migration error:', error);
-    res.status(500).json({ 
+    log.error({ err: error.message }, 'Migration error')
+    res.status(500).json({
       success: false,
-      error: 'Migration failed: ' + error.message 
+      error: 'Migration failed: ' + error.message
     });
   }
 }
@@ -673,10 +637,10 @@ async function getInvitationModeStats(req, res) {
       data: stats
     });
   } catch (error) {
-    console.error('Stats retrieval error:', error);
-    res.status(500).json({ 
+    log.error({ err: error.message }, 'Stats retrieval error')
+    res.status(500).json({
       success: false,
-      error: 'Failed to retrieve stats: ' + error.message 
+      error: 'Failed to retrieve stats: ' + error.message
     });
   }
 }

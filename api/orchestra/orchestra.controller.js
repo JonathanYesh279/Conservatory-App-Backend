@@ -99,38 +99,13 @@ async function removeOrchestra(req, res, next) {
   }
 } 
 
-async function addMember(req, res, next) { 
+async function addMember(req, res, next) {
   try {
-    console.log('=== ADD MEMBER CONTROLLER DEBUG ===')
-    console.log('Request params:', req.params)
-    console.log('Request body:', req.body)
-    console.log('req.teacher exists:', !!req.teacher)
-    console.log('req.teacher full object:', req.teacher)
-    
     const { id: orchestraId } = req.params
     const { studentId } = req.body
-    
-    if (!req.teacher) {
-      console.error('❌ No req.teacher found in addMember controller')
-      return res.status(401).json({ error: 'Authentication required - no teacher in request' })
-    }
-    
-    if (!req.teacher._id) {
-      console.error('❌ req.teacher exists but has no _id:', req.teacher)
-      return res.status(401).json({ error: 'Invalid teacher object - missing _id' })
-    }
-    
     const teacherId = req.teacher._id
-    const isAdmin = req.teacher.roles && req.teacher.roles.includes('מנהל')
+    const isAdmin = req.teacher.roles.includes('מנהל')
     const userRoles = req.teacher.roles || []
-    
-    console.log('Extracted data:', {
-      orchestraId,
-      studentId,
-      teacherId,
-      isAdmin,
-      userRoles
-    })
 
     const updatedOrchestra = await orchestraService.addMember(
       orchestraId,
@@ -139,12 +114,9 @@ async function addMember(req, res, next) {
       isAdmin,
       userRoles
     )
-    
-    console.log('✅ Successfully added member')
+
     res.json(updatedOrchestra)
   } catch (err) {
-    console.error('❌ Error in addMember controller:', err)
-    
     if (err.message === 'Not authorized to modify this orchestra') {
       return res.status(403).json({ error: err.message })
     }

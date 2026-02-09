@@ -199,11 +199,11 @@ export const cascadeDeletionService = {
         db.collection('teacher').find({
           $or: [
             { 'teaching.studentIds': studentId },
-            { 'teaching.schedule.studentId': studentId }
+            { 'teaching.timeBlocks.assignedLessons.studentId': studentId }
           ],
           isActive: true
         }, { session }).toArray(),
-        
+
         db.collection('orchestra').find({
           memberIds: studentId,
           isActive: true
@@ -256,29 +256,33 @@ export const cascadeDeletionService = {
       const affectedTeachers = await db.collection('teacher').find({
         $or: [
           { 'teaching.studentIds': studentId },
-          { 'teaching.schedule.studentId': studentId }
+          { 'teaching.timeBlocks.assignedLessons.studentId': studentId }
         ],
         isActive: true
       }, { session }).toArray();
-      
+
       let studentsRemoved = 0;
-      let scheduleSlotsFreed = 0;
-      
+      let timeBlockLessonsDeactivated = 0;
+
       // Count removals for reporting
       affectedTeachers.forEach(teacher => {
         if (teacher.teaching?.studentIds?.includes(studentId)) {
           studentsRemoved++;
         }
-        if (teacher.teaching?.schedule) {
-          scheduleSlotsFreed += teacher.teaching.schedule.filter(
-            slot => slot.studentId && slot.studentId.equals(studentId)
-          ).length;
+        if (teacher.teaching?.timeBlocks) {
+          teacher.teaching.timeBlocks.forEach(block => {
+            if (block.assignedLessons) {
+              timeBlockLessonsDeactivated += block.assignedLessons.filter(
+                lesson => lesson.studentId === studentId.toString() || (lesson.studentId?.equals && lesson.studentId.equals(studentId))
+              ).length;
+            }
+          });
         }
       });
-      
+
       // Remove student from teaching.studentIds arrays
       const studentIdsUpdate = await db.collection('teacher').updateMany(
-        { 
+        {
           'teaching.studentIds': studentId,
           isActive: true
         },
@@ -288,31 +292,34 @@ export const cascadeDeletionService = {
         },
         { session }
       );
-      
-      // Remove student from schedule slots and mark as available
-      const scheduleUpdate = await db.collection('teacher').updateMany(
-        { 
-          'teaching.schedule.studentId': studentId,
+
+      // Deactivate student lessons in timeBlocks
+      const timeBlockUpdate = await db.collection('teacher').updateMany(
+        {
+          'teaching.timeBlocks.assignedLessons.studentId': studentId,
           isActive: true
         },
         {
-          $set: { 
-            'teaching.schedule.$[slot].studentId': null,
-            'teaching.schedule.$[slot].status': 'available',
-            'teaching.schedule.$[slot].updatedAt': new Date(),
+          $set: {
+            'teaching.timeBlocks.$[block].assignedLessons.$[lesson].isActive': false,
+            'teaching.timeBlocks.$[block].assignedLessons.$[lesson].endDate': new Date(),
+            'teaching.timeBlocks.$[block].assignedLessons.$[lesson].updatedAt': new Date(),
             'cascadeMetadata.lastUpdated': new Date()
           }
         },
-        { 
-          arrayFilters: [{ 'slot.studentId': studentId }],
-          session 
+        {
+          arrayFilters: [
+            { 'block.assignedLessons.studentId': studentId },
+            { 'lesson.studentId': studentId }
+          ],
+          session
         }
       );
-      
+
       return {
-        modifiedCount: Math.max(studentIdsUpdate.modifiedCount, scheduleUpdate.modifiedCount),
+        modifiedCount: Math.max(studentIdsUpdate.modifiedCount, timeBlockUpdate.modifiedCount),
         studentsRemoved,
-        scheduleSlotsFreed,
+        timeBlockLessonsDeactivated,
         affectedTeachers: affectedTeachers.map(t => t._id)
       };
       
@@ -744,43 +751,31 @@ export const cascadeDeletionService = {
         for (const operation of operations) {
           switch (operation.type) {
             case 'free_student_slots':
-              const freeResult = await db.collection('teacher').updateMany(
-                { 
-                  'teaching.schedule.studentId': new ObjectId(operation.studentId),
+              // Deactivate student lessons in timeBlocks
+              const freeTimeBlockResult = await db.collection('teacher').updateMany(
+                {
+                  'teaching.timeBlocks.assignedLessons.studentId': operation.studentId,
                   isActive: true
                 },
                 {
                   $set: {
-                    'teaching.schedule.$[slot].studentId': null,
-                    'teaching.schedule.$[slot].status': 'available',
-                    'teaching.schedule.$[slot].updatedAt': new Date()
+                    'teaching.timeBlocks.$[block].assignedLessons.$[lesson].isActive': false,
+                    'teaching.timeBlocks.$[block].assignedLessons.$[lesson].endDate': new Date(),
+                    'teaching.timeBlocks.$[block].assignedLessons.$[lesson].updatedAt': new Date()
                   }
                 },
                 {
-                  arrayFilters: [{ 'slot.studentId': new ObjectId(operation.studentId) }],
+                  arrayFilters: [
+                    { 'block.assignedLessons.studentId': operation.studentId },
+                    { 'lesson.studentId': operation.studentId }
+                  ],
                   session
                 }
               );
-              results.push({ operation: operation.type, result: freeResult });
-              break;
-              
-            case 'assign_student_slot':
-              const assignResult = await db.collection('teacher').updateOne(
-                { 
-                  _id: new ObjectId(operation.teacherId),
-                  'teaching.schedule.slotId': operation.slotId,
-                  'teaching.schedule.status': 'available'
-                },
-                {
-                  $set: {
-                    'teaching.schedule.$.studentId': new ObjectId(operation.studentId),
-                    'teaching.schedule.$.status': 'occupied',
-                    'teaching.schedule.$.updatedAt': new Date()
-                  }
-                },
-                { session }
-              );
-              results.push({ operation: operation.type, result: assignResult });
+              results.push({
+                operation: operation.type,
+                result: { timeBlocks: freeTimeBlockResult }
+              });
               break;
           }
         }

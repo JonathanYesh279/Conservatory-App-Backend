@@ -372,8 +372,8 @@ export function suggestOptimalIndexes() {
     {
       collection: 'teacher',
       indexes: [
-        { 'teaching.schedule.attendance.lessonDate': 1 },
-        { 'teaching.schedule.dayOfWeek': 1 }
+        { 'teaching.timeBlocks.assignedLessons.studentId': 1 },
+        { 'teaching.timeBlocks.day': 1 }
       ]
     }
   ];

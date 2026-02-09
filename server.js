@@ -12,6 +12,9 @@ import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import { authenticateToken } from './middleware/auth.middleware.js';
 import { addSchoolYearToRequest } from './middleware/school-year.middleware.js';
+import { validateEnvironment } from './config/validateEnv.js';
+import logger from './services/logger.service.js';
+import healthRoutes from './api/health/health.route.js';
 
 import schoolYearRoutes from './api/school-year/school-year.route.js';
 import studentRoutes from './api/student/student.route.js';
@@ -214,58 +217,16 @@ app.use(
   lessonRoutes
 );
 
-// Test route
-app.get('/api/test', (req, res) => {
-  console.log('API test route hit');
-  res.status(200).json({
-    success: true,
-    data: {
-      status: 'OK',
-      message: 'API Server is running',
-      time: new Date().toISOString(),
-      path: req.originalUrl,
-      environment: process.env.NODE_ENV,
-      trustProxy: app.get('trust proxy')
-    },
-    message: 'Server is running properly'
-  });
-});
-
-// Test invitation URL generation
-app.get('/api/test-invitation-url', (req, res) => {
-  const testToken = 'test-token-123';
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-  const invitationUrl = `${frontendUrl}/accept-invitation/${testToken}`;
-  
-  console.log('=== TEST INVITATION URL ===');
-  console.log('FRONTEND_URL env var:', process.env.FRONTEND_URL);
-  console.log('Generated invitation URL:', invitationUrl);
-  console.log('===========================');
-  
-  res.status(200).json({
-    success: true,
-    data: {
-      frontendUrl,
-      invitationUrl,
-      testToken,
-      environment: process.env.NODE_ENV
-    },
-    message: 'Invitation URL test'
-  });
-});
+// Health check endpoints (no auth required)
+app.use('/api/health', healthRoutes);
 
 // Serve invitation acceptance page
 app.get('/accept-invitation/:token', (req, res) => {
-  const token = req.params.token;
-  console.log('Serving invitation acceptance page for token:', token);
-  
-  // Serve the HTML file
   res.sendFile(path.join(__dirname, 'views/accept-invitation.html'));
 });
 
 // Serve force password change page (for default password users)
 app.get('/force-password-change', (req, res) => {
-  console.log('Serving force password change page');
   res.sendFile(path.join(__dirname, 'views/force-password-change.html'));
 });
 
@@ -300,7 +261,7 @@ app.use(errorHandler);
 
 // 404 handler - Must come AFTER production routes and error handler
 app.use((req, res) => {
-  console.log('404 Not Found:', req.method, req.originalUrl);
+  logger.debug({ method: req.method, path: req.originalUrl }, '404 Not Found')
   res.status(404).json({
     error: 'Not Found',
     path: req.originalUrl,
@@ -314,17 +275,15 @@ const HOST = process.env.HOST || '0.0.0.0';
 const startServer = async () => {
   // Create the HTTP server instance separately from starting it
   const server = app.listen(PORT, HOST, async () => {
-    console.log(`🚀 Server is running on http://${HOST}:${PORT}`);
-    console.log(`📱 External devices can access via: http://172.29.139.184:${PORT}`);
-    console.log(`💻 Local access still works via: http://localhost:${PORT}`);
-    
+    logger.info({ host: HOST, port: PORT }, 'Server is running');
+
     // Initialize WebSocket and cascade system after server is running
     try {
-      console.log('🔌 Initializing WebSocket and Cascade System...');
+      logger.info('Initializing WebSocket and Cascade System...');
       await cascadeSystemInitializer.initialize(server);
-      console.log('✅ Server started with Cascade System and WebSocket enabled');
+      logger.info('Server started with Cascade System and WebSocket enabled');
     } catch (error) {
-      console.error('❌ Failed to initialize WebSocket/Cascade system:', error);
+      logger.error({ err: error.message }, 'Failed to initialize WebSocket/Cascade system');
       // Don't crash the server - continue without WebSocket
     }
   });
@@ -332,54 +291,42 @@ const startServer = async () => {
   // Handle port in use errors
   server.on('error', (error) => {
     if (error.code === 'EADDRINUSE') {
-      console.log(`Port ${PORT} is already in use`);
+      logger.warn({ port: PORT }, 'Port is already in use');
 
-      // Try to release the port
-      console.log('Attempting to free the port...');
-
-      // Create a temporary server to attempt releasing the port
       const temp = createServer();
-
-      // Try to listen on the port
       temp.listen(PORT);
 
-      // If we can't listen, the port is truly in use
       temp.on('error', () => {
-        console.error(`Port ${PORT} is still in use by another process.`);
+        logger.error({ port: PORT }, 'Port is still in use by another process');
         process.exit(1);
       });
 
-      // If we can listen, close the connection and try again
       temp.on('listening', () => {
-        console.log(
-          `Found orphaned connection on port ${PORT}, cleaning up...`
-        );
+        logger.info({ port: PORT }, 'Found orphaned connection, cleaning up');
         temp.close();
 
         setTimeout(async () => {
-          console.log('Trying to restart server...');
+          logger.info('Trying to restart server...');
           await startServer();
         }, 1000);
       });
     } else {
-      console.error('Server error:', error);
+      logger.error({ err: error.message }, 'Server error');
       process.exit(1);
     }
   });
 
   // Handle graceful shutdown for nodemon restarts
   process.on('SIGINT', () => {
-    console.log('SIGINT received, shutting down server gracefully');
+    logger.info('SIGINT received, shutting down gracefully');
     server.close(() => {
-      console.log('Server closed');
       process.exit(0);
     });
   });
 
   process.on('SIGTERM', () => {
-    console.log('SIGTERM received, shutting down server gracefully');
+    logger.info('SIGTERM received, shutting down gracefully');
     server.close(() => {
-      console.log('Server closed');
       process.exit(0);
     });
   });
@@ -388,27 +335,22 @@ const startServer = async () => {
 };
 
 // Start the server using our improved startup function
-console.log('🚀 Starting server initialization...');
-console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
-console.log('📦 Storage Mode:', process.env.STORAGE_MODE || 'local');
+logger.info({ env: process.env.NODE_ENV || 'development', storageMode: process.env.STORAGE_MODE || 'local' }, 'Starting server initialization');
 
 (async () => {
   try {
-    // Initialize MongoDB with connection string
-    const mongoUri = process.env.MONGODB_URI;
-    if (!mongoUri) {
-      throw new Error('MONGODB_URI environment variable is not set. Please configure it on Render.com');
-    }
+    // Validate environment variables before anything else
+    validateEnvironment();
 
-    await initializeMongoDB(mongoUri);
-    console.log('✅ MongoDB initialized successfully');
+    // Initialize MongoDB with connection string
+    await initializeMongoDB(process.env.MONGODB_URI);
+    logger.info('MongoDB initialized successfully');
 
     // Start the server
     await startServer();
-    console.log('🎯 Server startup function called');
+    logger.info('Server startup complete');
   } catch (error) {
-    console.error('❌ Failed to initialize server:', error);
-    console.error('💡 Make sure to set the MONGODB_URI environment variable in Render.com dashboard');
+    logger.fatal({ err: error.message }, 'Failed to initialize server');
     process.exit(1);
   }
 })();

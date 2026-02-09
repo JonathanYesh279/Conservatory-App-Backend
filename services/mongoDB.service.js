@@ -1,4 +1,7 @@
 import { MongoClient } from 'mongodb'
+import { createLogger } from './logger.service.js'
+
+const log = createLogger('mongodb')
 
 let db = null
 let client = null
@@ -13,8 +16,7 @@ export async function initializeMongoDB(uri) {
       throw new Error('MongoDB connection string is missing. Please set MONGODB_URI environment variable.')
     }
 
-    console.log('📊 Attempting MongoDB connection...')
-    console.log('🔗 Using database:', process.env.MONGODB_NAME || 'Conservatory-DB')
+    log.info({ database: process.env.MONGODB_NAME || 'Conservatory-DB' }, 'Attempting MongoDB connection')
 
     client = await MongoClient.connect(connectionString, {
       serverSelectionTimeoutMS: 5000,
@@ -22,13 +24,10 @@ export async function initializeMongoDB(uri) {
     })
 
     db = client.db(process.env.MONGODB_NAME || 'Conservatory-DB')
-    console.log('✅ Connected to MongoDB successfully')
+    log.info('Connected to MongoDB successfully')
     return db
   } catch (err) {
-    console.error('❌ MongoDB connection error:', err.message)
-    if (err.message.includes('connection string is missing')) {
-      console.error('⚠️  Please ensure MONGODB_URI is set in your environment variables on Render.com')
-    }
+    log.error({ err: err.message }, 'MongoDB connection error')
     throw err
   }
 }
@@ -64,7 +63,7 @@ export async function withTransaction(transactionFn) {
   }
 
   const session = client.startSession()
-  
+
   try {
     return await session.withTransaction(async () => {
       return await transactionFn(session)

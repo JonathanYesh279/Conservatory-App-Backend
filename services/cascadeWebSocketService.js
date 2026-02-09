@@ -552,7 +552,7 @@ class CascadeWebSocketService {
         userId: socket.userId,
         $or: [
           { 'teaching.studentIds': studentId },
-          { 'teaching.schedule.studentId': studentId }
+          { 'teaching.timeBlocks.assignedLessons.studentId': studentId }
         ],
         isActive: true
       });

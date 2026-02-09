@@ -11,8 +11,8 @@ router.post('/', requireAuth(['מנהל']), orchestraController.addOrchestra)
 router.put('/:id', requireAuth(['מנהל', 'מנצח']), orchestraController.updateOrchestra)
 router.delete('/:id', requireAuth(['מנהל']), orchestraController.removeOrchestra)
 
-router.post('/:id/members', requireAuth(['מנהל', 'מנצח']), orchestraController.addMember)
-router.delete('/:id/members/:studentId', requireAuth(['מנצח', 'מנהל']), orchestraController.removeMember)
+router.post('/:id/members', requireAuth(['מנהל', 'מנצח', 'מדריך הרכב']), orchestraController.addMember)
+router.delete('/:id/members/:studentId', requireAuth(['מנהל', 'מנצח', 'מדריך הרכב']), orchestraController.removeMember)
 
 router.get('/:id/rehearsals/:rehearsalId/attendance', requireAuth(['מורה', 'מנצח', 'מדריך הרכב', 'מנהל']), orchestraController.getRehearsalAttendance)
 router.put('/:id/rehearsals/:rehearsalId/attendance', requireAuth(['מנצח', 'מנהל']), orchestraController.updateRehearsalAttendance)

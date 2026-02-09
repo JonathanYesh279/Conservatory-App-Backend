@@ -151,33 +151,14 @@ async function addTeacher(teacherToAdd, adminId) {
       teaching: (() => {
         let teaching = teacherToAdd.teaching || {
           studentIds: [],
-          schedule: []
+          timeBlocks: []
         };
-        
-        console.log('🔍 Original teaching data:', JSON.stringify(teaching, null, 2));
-        
-        // Convert timeBlocks to schedule if present
-        if (teaching.timeBlocks && Array.isArray(teaching.timeBlocks)) {
-          console.log('🔄 Converting timeBlocks to schedule:', teaching.timeBlocks);
-          teaching.schedule = [...(teaching.schedule || []), ...teaching.timeBlocks];
-          // Remove timeBlocks after conversion
-          delete teaching.timeBlocks;
-          console.log('✅ After conversion - schedule:', teaching.schedule);
+
+        // Ensure timeBlocks array exists
+        if (!teaching.timeBlocks) {
+          teaching.timeBlocks = [];
         }
-        
-        // Debug schedule data
-        if (teaching.schedule && teaching.schedule.length > 0) {
-          console.log('📋 Schedule slots to validate:');
-          teaching.schedule.forEach((slot, index) => {
-            console.log(`  Slot ${index}:`, {
-              day: slot.day,
-              startTime: slot.startTime,
-              duration: slot.duration,
-              durationType: typeof slot.duration
-            });
-          });
-        }
-        
+
         return teaching;
       })(),
       // Ensure credentials exist - will be populated with invitation data
@@ -255,13 +236,10 @@ async function addTeacher(teacherToAdd, adminId) {
     if (!value.teaching) {
       value.teaching = {
         studentIds: [],
-        schedule: [], // Legacy slot-based schedule
-        timeBlocks: [] // New time block system
+        timeBlocks: []
       };
     } else {
-      // Ensure arrays are initialized
       if (!value.teaching.studentIds) value.teaching.studentIds = [];
-      if (!value.teaching.schedule) value.teaching.schedule = [];
       if (!value.teaching.timeBlocks) value.teaching.timeBlocks = [];
     }
 
@@ -485,8 +463,8 @@ async function updateTeacherSchedule(teacherId, scheduleData) {
       throw new Error(`Student with id ${studentId} not found`);
     }
 
-    // Check for time conflicts
-    const hasConflict = checkScheduleConflict(teacher.teaching?.schedule || [], {
+    // Check for time conflicts in timeBlocks
+    const hasConflict = checkScheduleConflict(teacher.teaching?.timeBlocks || [], {
       day,
       startTime,
       duration
@@ -533,7 +511,7 @@ async function updateTeacherSchedule(teacherId, scheduleData) {
       {
         $addToSet: { 'teaching.studentIds': studentId },
         $push: {
-          'teaching.schedule': scheduleSlot,
+          'teaching.timeBlocks': scheduleSlot,
         },
         $set: { updatedAt: new Date() }
       }
@@ -602,41 +580,39 @@ function timeToMinutes(timeString) {
 // Helper function to check for student schedule conflicts
 async function checkStudentScheduleConflict(studentId, excludeTeacherId, day, startTime, duration, excludeSlotId = null) {
   const teacherCollection = await getCollection('teacher');
-  
+
   // Find all teachers who have this student assigned
   const teachers = await teacherCollection
-    .find({ 'teaching.schedule.studentId': studentId })
+    .find({
+      'teaching.timeBlocks.assignedLessons.studentId': studentId
+    })
     .toArray();
-  
+
+  const newStart = timeToMinutes(startTime);
+  const newEnd = newStart + duration;
+
   // Check each teacher's schedule
   for (const teacher of teachers) {
     // Skip the excluded teacher
     if (teacher._id.toString() === excludeTeacherId) continue;
-    
-    const conflictingSlots = teacher.teaching.schedule.filter(slot => {
-      // Skip if not assigned to this student or if it's the excluded slot
-      if (slot.studentId !== studentId || 
-         (excludeSlotId && slot._id.toString() === excludeSlotId)) {
-        return false;
+
+    // Check timeBlocks system
+    if (teacher.teaching?.timeBlocks) {
+      for (const block of teacher.teaching.timeBlocks) {
+        if (block.day !== day || !block.assignedLessons) continue;
+
+        const conflictingLessons = block.assignedLessons.filter(lesson => {
+          if (lesson.studentId !== studentId || lesson.isActive === false) return false;
+
+          const lessonStart = timeToMinutes(lesson.lessonStartTime);
+          const lessonEnd = timeToMinutes(lesson.lessonEndTime);
+          return (newStart < lessonEnd) && (lessonStart < newEnd);
+        });
+        if (conflictingLessons.length > 0) return true;
       }
-      
-      // Skip if not on the same day
-      if (slot.day !== day) return false;
-      
-      // Convert times to minutes for easier comparison
-      const slotStart = timeToMinutes(slot.startTime);
-      const slotEnd = slotStart + slot.duration;
-      
-      const newStart = timeToMinutes(startTime);
-      const newEnd = newStart + duration;
-      
-      // Check for overlap
-      return (newStart < slotEnd) && (slotStart < newEnd);
-    });
-    
-    if (conflictingSlots.length > 0) return true;
+    }
   }
-  
+
   return false;
 }
 
@@ -767,23 +743,43 @@ async function removeStudentFromTeacher(teacherId, studentId) {
       
       console.log(`🔍 Found relationship - Teacher: ${hasTeacherRelation}, Student: ${hasStudentRelation}, Assignments: ${hasActiveAssignments}`);
       
-      // ATOMIC OPERATION 1: Update teacher document
+      // ATOMIC OPERATION 1a: Remove student from teacher's studentIds
       const teacherUpdate = await teacherCollection.updateOne(
         { _id: ObjectId.createFromHexString(teacherId) },
-        { 
-          $pull: { 
-            'teaching.studentIds': studentId,
-            'teaching.schedule': { studentId: studentId },
-            'teaching.timeBlocks': { studentId: studentId }
+        {
+          $pull: {
+            'teaching.studentIds': studentId
           },
-          $set: { 
+          $set: {
             updatedAt: new Date(),
             'metadata.lastModifiedBy': 'cascade_deletion_system'
           }
         },
         { session }
       );
-      
+
+      // ATOMIC OPERATION 1b: Deactivate student's lessons in timeBlocks
+      await teacherCollection.updateOne(
+        {
+          _id: ObjectId.createFromHexString(teacherId),
+          'teaching.timeBlocks.assignedLessons.studentId': studentId
+        },
+        {
+          $set: {
+            'teaching.timeBlocks.$[block].assignedLessons.$[lesson].isActive': false,
+            'teaching.timeBlocks.$[block].assignedLessons.$[lesson].endDate': new Date(),
+            'teaching.timeBlocks.$[block].assignedLessons.$[lesson].updatedAt': new Date()
+          }
+        },
+        {
+          arrayFilters: [
+            { 'block.assignedLessons.studentId': studentId },
+            { 'lesson.studentId': studentId }
+          ],
+          session
+        }
+      );
+
       console.log(`📝 Teacher update result: matched ${teacherUpdate.matchedCount}, modified ${teacherUpdate.modifiedCount}`);
       
       // ATOMIC OPERATION 2: Update student document - remove teacher relationship and assignments
@@ -830,10 +826,10 @@ async function removeStudentFromTeacher(teacherId, studentId) {
       const updatedTeacher = await teacherCollection.findOne(
         { _id: ObjectId.createFromHexString(teacherId) },
         { 
-          projection: { 
-            'teaching.studentIds': 1, 
-            'teaching.schedule': 1,
-            updatedAt: 1 
+          projection: {
+            'teaching.studentIds': 1,
+            'teaching.timeBlocks': 1,
+            updatedAt: 1
           },
           session 
         }
@@ -911,8 +907,7 @@ async function initializeTeachingStructure(teacherId) {
       { 
         $set: {
           'teaching.studentIds': [],
-          'teaching.schedule': [], // Legacy slot-based schedule
-          'teaching.timeBlocks': [], // New time block system
+          'teaching.timeBlocks': [],
           updatedAt: new Date()
         }
       }
@@ -985,7 +980,7 @@ async function getTimeBlocks(teacherId) {
     }
 
     // Return timeBlocks if they exist, otherwise fall back to schedule
-    return teacher.teaching?.timeBlocks || teacher.teaching?.schedule || [];
+    return teacher.teaching?.timeBlocks || [];
   } catch (err) {
     console.error(`Error getting time blocks: ${err.message}`);
     throw err;
@@ -1066,7 +1061,7 @@ async function updateTimeBlock(teacherId, timeBlockId, timeBlockData) {
     }
 
     // Find the time block to update (check both timeBlocks and schedule)
-    const timeBlocks = teacher.teaching?.timeBlocks || teacher.teaching?.schedule || [];
+    const timeBlocks = teacher.teaching?.timeBlocks || [];
     const timeBlock = timeBlocks.find(
       block => block._id && block._id.toString() === timeBlockId
     );
@@ -1076,7 +1071,7 @@ async function updateTimeBlock(teacherId, timeBlockId, timeBlockData) {
     }
 
     // Determine which field to update
-    const fieldToUpdate = teacher.teaching?.timeBlocks ? 'teaching.timeBlocks' : 'teaching.schedule';
+    const fieldToUpdate = 'teaching.timeBlocks';
 
     // Calculate end time if not provided
     const endTime = timeBlockData.endTime || calculateEndTime(
@@ -1130,7 +1125,7 @@ async function deleteTimeBlock(teacherId, timeBlockId) {
     }
 
     // Determine which field to delete from
-    const fieldToUpdate = teacher.teaching?.timeBlocks ? 'teaching.timeBlocks' : 'teaching.schedule';
+    const fieldToUpdate = 'teaching.timeBlocks';
 
     // Remove the time block
     const result = await collection.updateOne(

@@ -21,10 +21,16 @@ export const studentService = {
   getStudentBagrut,
 };
 
-async function getStudents(filterBy = {}, page = 1, limit = 0) {
+async function getStudents(filterBy = {}, page = 1, limit = 0, options = {}) {
   try {
+    const { teacherId, isAdmin } = options;
     const collection = await getCollection('student');
     const criteria = _buildCriteria(filterBy);
+
+    // IDOR prevention: non-admin teachers only see their own students
+    if (teacherId && !isAdmin) {
+      criteria.teacherIds = teacherId;
+    }
 
     // If limit is 0 or not provided, return all students (backward compatibility)
     if (limit === 0) {
@@ -750,7 +756,7 @@ function checkIfOnlyAddingSelfToAssignments(studentUpdate, teacherId) {
   return hasTeacherInAssignments;
 }
 
-async function associateStudentWithTeacher(studentId, teacherId, scheduleSlotId = null) {
+async function associateStudentWithTeacher(studentId, teacherId) {
   try {
     const teacherCollection = await getCollection('teacher');
     const studentCollection = await getCollection('student');
@@ -767,49 +773,6 @@ async function associateStudentWithTeacher(studentId, teacherId, scheduleSlotId 
       { $addToSet: { teacherIds: teacherId } }
     );
     
-    // If a schedule slot is provided, create a proper teacher assignment
-    if (scheduleSlotId) {
-      const assignment = {
-        teacherId,
-        scheduleSlotId,
-        startDate: new Date(),
-        endDate: null,
-        isActive: true,
-        notes: null,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
-      
-      // Add the assignment to the student's record
-      await studentCollection.updateOne(
-        { _id: ObjectId.createFromHexString(studentId) },
-        { $push: { teacherAssignments: assignment } }
-      );
-      
-      // Update the schedule slot to mark it as assigned
-      await teacherCollection.updateOne(
-        { 
-          _id: ObjectId.createFromHexString(teacherId),
-          'teaching.schedule._id': ObjectId.createFromHexString(scheduleSlotId)
-        },
-        { 
-          $set: { 
-            'teaching.schedule.$.studentId': studentId,
-            'teaching.schedule.$.isAvailable': false,
-            'teaching.schedule.$.updatedAt': new Date()
-          }
-        }
-      );
-      
-      return {
-        success: true,
-        studentId,
-        teacherId,
-        scheduleSlotId,
-        assignment
-      };
-    }
-
     return {
       success: true,
       studentId,
@@ -832,24 +795,27 @@ async function removeStudentTeacherAssociation(studentId, teacherId) {
       { $pull: { 'teaching.studentIds': studentId } }
     );
 
-    // Update all schedule slots for this student to be available again
+    // Deactivate lessons in timeBlocks for this student
     await teacherCollection.updateMany(
-      { 
+      {
         _id: ObjectId.createFromHexString(teacherId),
-        'teaching.schedule.studentId': studentId
+        'teaching.timeBlocks.assignedLessons.studentId': studentId
       },
-      { 
-        $set: { 
-          'teaching.schedule.$[elem].studentId': null,
-          'teaching.schedule.$[elem].isAvailable': true,
-          'teaching.schedule.$[elem].updatedAt': new Date()
+      {
+        $set: {
+          'teaching.timeBlocks.$[block].assignedLessons.$[lesson].isActive': false,
+          'teaching.timeBlocks.$[block].assignedLessons.$[lesson].endDate': new Date(),
+          'teaching.timeBlocks.$[block].assignedLessons.$[lesson].updatedAt': new Date()
         }
       },
       {
-        arrayFilters: [{ 'elem.studentId': studentId }]
+        arrayFilters: [
+          { 'block.assignedLessons.studentId': studentId },
+          { 'lesson.studentId': studentId }
+        ]
       }
     );
-    
+
     // Mark all teacher assignments for this student as inactive
     await studentCollection.updateMany(
       { 

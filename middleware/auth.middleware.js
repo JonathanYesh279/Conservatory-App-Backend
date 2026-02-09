@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { getCollection } from '../services/mongoDB.service.js';
 import { ObjectId } from 'mongodb';
+import { createLogger } from '../services/logger.service.js';
+
+const log = createLogger('auth.middleware');
 
 export async function authenticateToken(req, res, next) {
   try {
@@ -8,9 +11,9 @@ export async function authenticateToken(req, res, next) {
     const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
     if (!token) {
-      console.log('No auth token found for request to:', req.path);
-      return res.status(401).json({ 
-        success: false, 
+      log.debug({ path: req.path }, 'No auth token found')
+      return res.status(401).json({
+        success: false,
         error: 'Authentication required',
         code: 'MISSING_TOKEN'
       });
@@ -18,16 +21,16 @@ export async function authenticateToken(req, res, next) {
 
     // Validate token format
     if (!token || token === 'undefined' || token === 'null') {
-      console.log('Invalid token format:', token);
-      return res.status(401).json({ 
-        success: false, 
+      log.debug({ path: req.path }, 'Invalid token format')
+      return res.status(401).json({
+        success: false,
         error: 'Invalid token format',
         code: 'INVALID_TOKEN_FORMAT'
       });
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    console.log('Decoded ID from token:', decoded._id);
+    log.debug({ userId: decoded._id }, 'Token decoded')
 
     const collection = await getCollection('teacher');
 
@@ -35,11 +38,10 @@ export async function authenticateToken(req, res, next) {
       _id: ObjectId.createFromHexString(decoded._id),
       isActive: true,
     });
-    console.log('Query result:', teacher);
 
     if (!teacher) {
-      return res.status(401).json({ 
-        success: false, 
+      return res.status(401).json({
+        success: false,
         error: 'Teacher was not found',
         code: 'USER_NOT_FOUND'
       });
@@ -48,8 +50,8 @@ export async function authenticateToken(req, res, next) {
     // Check token version for revocation support
     const tokenVersion = teacher.credentials?.tokenVersion || 0;
     if (decoded.version !== undefined && decoded.version < tokenVersion) {
-      return res.status(401).json({ 
-        success: false, 
+      return res.status(401).json({
+        success: false,
         error: 'Token has been revoked',
         code: 'TOKEN_REVOKED'
       });
@@ -77,16 +79,11 @@ export async function authenticateToken(req, res, next) {
 
     next();
   } catch (err) {
-    console.error('Authentication error:', {
-      name: err.name,
-      message: err.message,
-      expiredAt: err.expiredAt, // This will show when TokenExpiredError
-      currentTime: new Date(),
-    });
-    
+    log.debug({ errName: err.name, errMessage: err.message }, 'Authentication error')
+
     let errorCode = 'INVALID_TOKEN';
     let errorMessage = 'Invalid token';
-    
+
     if (err.name === 'TokenExpiredError') {
       errorCode = 'TOKEN_EXPIRED';
       errorMessage = 'Token has expired';
@@ -94,9 +91,9 @@ export async function authenticateToken(req, res, next) {
       errorCode = 'MALFORMED_TOKEN';
       errorMessage = 'Malformed token';
     }
-    
-    return res.status(401).json({ 
-      success: false, 
+
+    return res.status(401).json({
+      success: false,
       error: errorMessage,
       code: errorCode
     });
@@ -109,48 +106,30 @@ export const authMiddleware = authenticateToken;
 export function requireAuth(roles) {
   return async (req, res, next) => {
     try {
-      console.log('=== REQUIRE AUTH DEBUG ===');
-      console.log('Required roles:', roles);
-      console.log('Request path:', req.path);
-      console.log('Request method:', req.method);
-      
       const teacher = req.teacher;
-      console.log('Teacher from req:', teacher ? 'exists' : 'missing');
-      console.log('Teacher roles:', teacher?.roles);
-      
+
       if (!teacher) {
-        console.log('AUTH FAILED: No teacher in request');
-        return res.status(401).json({ 
-          success: false, 
+        log.debug({ path: req.path }, 'No teacher in request')
+        return res.status(401).json({
+          success: false,
           error: 'Authentication required',
           code: 'AUTH_REQUIRED'
         });
       }
 
-      console.log('Checking if teacher has מנהל role...');
       if (teacher.roles && teacher.roles.includes('מנהל')) {
-        console.log('✅ User is admin, granting access');
         req.isAdmin = true;
         return next();
       }
 
-      console.log('User is not admin, checking required roles...');
-      console.log('Teacher roles array:', teacher.roles);
-      console.log('Required roles array:', roles);
-      
       const hasRequiredRole = teacher.roles && teacher.roles.some((role) =>
         roles.includes(role)
       );
-      console.log('Has required role:', hasRequiredRole);
-      
+
       if (!hasRequiredRole) {
-        console.log('❌ INSUFFICIENT PERMISSIONS');
-        console.log('Required:', roles);
-        console.log('Current:', teacher.roles);
-        console.log('Teacher roles type:', typeof teacher.roles);
-        console.log('Roles array type:', typeof roles);
-        return res.status(403).json({ 
-          success: false, 
+        log.debug({ required: roles, current: teacher.roles }, 'Insufficient permissions')
+        return res.status(403).json({
+          success: false,
           error: 'Insufficient permissions',
           code: 'INSUFFICIENT_PERMISSIONS',
           required: roles,
@@ -158,12 +137,11 @@ export function requireAuth(roles) {
         });
       }
 
-      console.log('✅ Permission granted');
       next();
     } catch (err) {
-      console.error('Role authorization error:', err);
-      res.status(500).json({ 
-        success: false, 
+      log.error({ err: err.message }, 'Role authorization error')
+      res.status(500).json({
+        success: false,
         error: 'Authorization failed',
         code: 'AUTH_FAILED'
       });
@@ -174,7 +152,7 @@ export function requireAuth(roles) {
 export function checkPasswordChangeRequired(req, res, next) {
   try {
     const teacher = req.teacher;
-    
+
     // Allow these specific routes even if password change is required
     const allowedPaths = [
       '/api/auth/force-password-change',
@@ -182,11 +160,11 @@ export function checkPasswordChangeRequired(req, res, next) {
       '/api/auth/validate',
       '/force-password-change'  // Allow access to the password change page
     ];
-    
+
     if (allowedPaths.includes(req.path)) {
       return next();
     }
-    
+
     // For API routes, return JSON error
     if (req.path.startsWith('/api/')) {
       if (teacher && teacher.credentials && teacher.credentials.requiresPasswordChange) {
@@ -204,11 +182,11 @@ export function checkPasswordChangeRequired(req, res, next) {
         return res.redirect('/force-password-change');
       }
     }
-    
+
     next();
   } catch (err) {
-    console.error('Password change check error:', err);
-    
+    log.error({ err: err.message }, 'Password change check error')
+
     if (req.path.startsWith('/api/')) {
       res.status(500).json({
         success: false,

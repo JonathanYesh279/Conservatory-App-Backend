@@ -233,38 +233,32 @@ class DateConsistencyService {
       const teachers = await collection.find({}).toArray();
 
       for (const teacher of teachers) {
-        if (teacher.teaching && teacher.teaching.schedule) {
-          for (const slot of teacher.teaching.schedule) {
-            results.total++;
-            const issues = [];
+        // Check timeBlocks system
+        if (teacher.teaching && teacher.teaching.timeBlocks) {
+          for (const block of teacher.teaching.timeBlocks) {
+            if (!block.assignedLessons) continue;
+            for (const lesson of block.assignedLessons) {
+              results.total++;
+              const issues = [];
 
-            // Check if attendance has valid dates
-            if (slot.attendance) {
-              if (slot.attendance.lessonDate && !isValidDate(slot.attendance.lessonDate)) {
-                issues.push('Invalid lesson date in attendance');
+              if (lesson.createdAt && !isValidDate(lesson.createdAt)) {
+                issues.push('Invalid createdAt timestamp in timeBlock lesson');
               }
-              if (slot.attendance.markedAt && !isValidDate(slot.attendance.markedAt)) {
-                issues.push('Invalid markedAt date in attendance');
+              if (lesson.updatedAt && !isValidDate(lesson.updatedAt)) {
+                issues.push('Invalid updatedAt timestamp in timeBlock lesson');
               }
-            }
 
-            // Check timestamps
-            if (slot.createdAt && !isValidDate(slot.createdAt)) {
-              issues.push('Invalid createdAt timestamp');
-            }
-            if (slot.updatedAt && !isValidDate(slot.updatedAt)) {
-              issues.push('Invalid updatedAt timestamp');
-            }
-
-            if (issues.length > 0) {
-              results.invalid++;
-              results.issues.push({
-                teacherId: teacher._id.toString(),
-                slotId: slot._id?.toString(),
-                issues: issues
-              });
-            } else {
-              results.valid++;
+              if (issues.length > 0) {
+                results.invalid++;
+                results.issues.push({
+                  teacherId: teacher._id.toString(),
+                  blockId: block._id?.toString(),
+                  lessonId: lesson._id?.toString(),
+                  issues: issues
+                });
+              } else {
+                results.valid++;
+              }
             }
           }
         }
